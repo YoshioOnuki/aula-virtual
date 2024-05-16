@@ -27,6 +27,11 @@ class Foro extends Model
         return $this->belongsTo(GestionAula::class, 'id_gestion_aula');
     }
 
+    public function foroRespuesta()
+    {
+        return $this->hasMany(ForoRespuesta::class, 'id_foro');
+    }
+
     protected static function boot()
     {
         parent::boot();
