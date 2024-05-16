@@ -1,0 +1,48 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class ComentarioTrabajoAcademico extends Model
+{
+    use HasFactory;
+    use SoftDeletes;
+
+    protected $table = 'comentario_trabajo_academico';
+    protected $primaryKey = 'id_comentario_trabajo_academico';
+    protected $fillable = [
+        'id_comentario_trabajo_academico',
+        'descripcion_comentario_trabajo_academico',
+        'id_trabajo_academico_alumno',
+        'id_gestion_aula_usuario',
+    ];
+
+    public function trabajoAcademicoAlumno()
+    {
+        return $this->belongsTo(TrabajoAcademicoAlumno::class, 'id_trabajo_academico_alumno');
+    }
+
+    public function gestionAulaUsuario()
+    {
+        return $this->belongsTo(GestionAulaUsuario::class, 'id_gestion_aula_usuario');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($comentario_trabajo_academico) {
+            $comentario_trabajo_academico->created_by = auth()->id();
+        });
+        static::updating(function ($comentario_trabajo_academico) {
+            $comentario_trabajo_academico->updated_by = auth()->id();
+        });
+        static::deleting(function ($comentario_trabajo_academico) {
+            $comentario_trabajo_academico->deleted_by = auth()->id();
+            $comentario_trabajo_academico->save();
+        });
+    }
+}
