@@ -14,4 +14,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/inicio', HomeIndex::class)
         ->name('inicio');
 
+    Route::get('/configuracion', HomeIndex::class)
+        ->name('configuracion');
 });

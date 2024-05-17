@@ -21,7 +21,6 @@ class Usuario extends Authenticatable
         'foto_usuario',
         'estado_usuario',
         'id_persona',
-        'id_rol',
     ];
 
     public function persona()
@@ -29,13 +28,40 @@ class Usuario extends Authenticatable
         return $this->belongsTo(Persona::class, 'id_persona');
     }
 
+    public function usuarioRol()
+    {
+        return $this->hasMany(UsuarioRol::class, 'id_usuario');
+    }
+
     public function rol()
     {
-        return $this->belongsTo(Rol::class, 'id_rol');
+        return $this->belongsToMany(Rol::class, 'usuario_rol', 'id_usuario', 'id_rol');
     }
+    
 
     public function gestionAulaUsuario(){
         return $this->hasMany(GestionAulaUsuario::class, 'id_usuario');
+    }
+
+    // Validar que rol es, mandando como parametro el nombre del rol
+    public function esRol($nombreRol)
+    {
+        foreach ($this->rol as $rol) {
+            if ($rol->nombre_rol == $nombreRol) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //Mostrar el rol, si tiene mas de un rol, concatenar
+    public function mostrarRol()
+    {
+        $roles = '';
+        foreach ($this->rol as $rol) {
+            $roles .= $rol->nombre_rol . ', ';
+        }
+        return substr($roles, 0, -2);
     }
 
     protected static function boot()

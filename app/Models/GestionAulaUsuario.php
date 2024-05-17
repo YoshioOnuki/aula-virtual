@@ -17,7 +17,7 @@ class GestionAulaUsuario extends Model
         'id_gestion_aula_usuario',
         'estado_gestion_aula_usuario',
         'id_usuario',
-        'id_usuario_rol',
+        'id_rol',
         'id_gestion_aula',
     ];
 
@@ -26,9 +26,9 @@ class GestionAulaUsuario extends Model
         return $this->belongsTo(Usuario::class, 'id_usuario');
     }
 
-    public function usuarioRol()
+    public function rol()
     {
-        return $this->belongsTo(UsuarioRol::class, 'id_usuario_rol');
+        return $this->belongsTo(Rol::class, 'id_rol');
     }
 
     public function gestionAula()

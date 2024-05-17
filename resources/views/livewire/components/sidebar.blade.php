@@ -45,7 +45,7 @@
                 </span>
                 <div class="mt-3 w-full ps-3">
                     <span class="badge bg-teal-lt px-3 py-2 w-100">
-                        {{ $usuario->rol->nombre_rol }}
+                        {{ $usuario->mostrarRol() }}
                     </span>
                 </div>
             </div>
@@ -102,68 +102,145 @@
                     </a>
                 </li>
 
+                @if ($usuario->esRol('ADMINISTRADOR'))
+                {{-- <li class="nav-item {{ request()->routeIs('configuracion-rol*') || request()->routeIs('configuracion-permiso') ? 'active' : '' }} dropdown"> --}}
+                <li class="nav-item {{ request()->routeIs('configuracion*') ? 'active' : '' }} dropdown">
+                    <a class="nav-link dropdown-toggle" href="#navbar-layout" data-bs-toggle="dropdown"
+                        data-bs-auto-close="false" role="button" aria-expanded="true">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path
+                                    d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z">
+                                </path>
+                                <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path>
+                            </svg>
+                        </span>
+                        <span class="nav-link-title">
+                            Configuración
+                        </span>
+                    </a>
+                    <div class="dropdown-menu {{ request()->routeIs('configuracion*') ? 'show' : '' }}">
+                        <div class="dropdown-menu-columns">
+                            <div class="dropdown-menu-column">
+                                <a class="dropdown-item {{ request()->routeIs('configuracion*') ? 'active fw-medium' : '' }}"
+                                    href="{{ route('configuracion') }}">
+                                    Usuarios
+                                </a>
+                                <a class="dropdown-item {{ request()->routeIs('configuracion*') ? 'active fw-medium' : '' }}"
+                                    href="{{ route('configuracion') }}">
+                                    Proceso
+                                </a>
+                                <a class="dropdown-item {{ request()->routeIs('configuracion*') ? 'active fw-medium' : '' }}"
+                                    href="{{ route('configuracion') }}">
+                                    Registrar Alumnos
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                @endif
+
+                @if ($usuario->esRol('ALUMNO') || $usuario->esRol('DOCENTE'))
+                    <hr class="ms-lg-3 mt-3 mb-3 hide-theme-dark">
+                    <hr class="ms-lg-3 mt-3 mb-3 hide-theme-light text-white">
+
+
+                    @if ($usuario->esRol('ALUMNO'))
+                        {{-- <li class="nav-item {{ request()->routeIs('empleados*') ? 'active' : '' }}"> --}}
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('inicio') }}">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-books">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path
+                                            d="M5 4m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" />
+                                        <path
+                                            d="M9 4m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" />
+                                        <path d="M5 8h4" />
+                                        <path d="M9 16h4" />
+                                        <path
+                                            d="M13.803 4.56l2.184 -.53c.562 -.135 1.133 .19 1.282 .732l3.695 13.418a1.02 1.02 0 0 1 -.634 1.219l-.133 .041l-2.184 .53c-.562 .135 -1.133 -.19 -1.282 -.732l-3.695 -13.418a1.02 1.02 0 0 1 .634 -1.219l.133 -.041z" />
+                                        <path d="M14 9l4 -1" />
+                                        <path d="M16 16l3.923 -.98" />
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title hide-theme-dark">
+                                    Mis cursos
+                                </span>
+                                <span class="nav-link-title hide-theme-light text-white">
+                                    Mis cursos
+                                </span>
+                            </a>
+                        </li>
+                    @endif
+
+                    @if ($usuario->esRol('DOCENTE'))
+                        {{-- <li class="nav-item {{ request()->routeIs('empleados*') ? 'active' : '' }}"> --}}
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('inicio') }}">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-chalkboard">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path
+                                            d="M8 19h-3a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v11a1 1 0 0 1 -1 1" />
+                                        <path
+                                            d="M11 16m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v1a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title hide-theme-dark">
+                                    Carga académica
+                                </span>
+                                <span class="nav-link-title hide-theme-light text-white">
+                                    Carga académica
+                                </span>
+                            </a>
+                        </li>
+                    @endif
+                @endif
+
                 <hr class="ms-lg-3 mt-3 mb-3 hide-theme-dark">
                 <hr class="ms-lg-3 mt-3 mb-3 hide-theme-light text-white">
 
-                {{-- <li class="nav-item {{ request()->routeIs('empleados*') ? 'active' : '' }}"> --}}
-                <li class="nav-item ">
-                    <a class="nav-link" href="{{ route('inicio') }}">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-books">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path
-                                    d="M5 4m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" />
-                                <path
-                                    d="M9 4m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" />
-                                <path d="M5 8h4" />
-                                <path d="M9 16h4" />
-                                <path
-                                    d="M13.803 4.56l2.184 -.53c.562 -.135 1.133 .19 1.282 .732l3.695 13.418a1.02 1.02 0 0 1 -.634 1.219l-.133 .041l-2.184 .53c-.562 .135 -1.133 -.19 -1.282 -.732l-3.695 -13.418a1.02 1.02 0 0 1 .634 -1.219l.133 -.041z" />
-                                <path d="M14 9l4 -1" />
-                                <path d="M16 16l3.923 -.98" />
-                            </svg>
-                        </span>
-                        <span class="nav-link-title hide-theme-dark">
-                            Mis cursos
-                        </span>
-                        <span class="nav-link-title hide-theme-light text-white">
-                            Mis cursos
-                        </span>
-                    </a>
-                </li>
+                @if ($usuario->esRol('ALUMNO'))
+                    {{-- <li class="nav-item {{ request()->routeIs('modalidades*') ? 'active' : '' }}"> --}}
+                    <li class="nav-item ">
+                        <a class="nav-link" href="{{ route('inicio') }}">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-list-details">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M13 5h8" />
+                                    <path d="M13 9h5" />
+                                    <path d="M13 15h8" />
+                                    <path d="M13 19h5" />
+                                    <path
+                                        d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+                                    <path
+                                        d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+                                </svg>
+                            </span>
+                            <span class="nav-link-title hide-theme-dark">
+                                Plan de estudios
+                            </span>
+                            <span class="nav-link-title hide-theme-light text-white">
+                                Plan de estudios
+                            </span>
+                        </a>
+                    </li>
+                @endif
 
-                <hr class="ms-lg-3 mt-3 mb-3 hide-theme-dark">
-                <hr class="ms-lg-3 mt-3 mb-3 hide-theme-light text-white">
-
-                {{-- <li class="nav-item {{ request()->routeIs('modalidades*') ? 'active' : '' }}"> --}}
-                <li class="nav-item ">
-                    <a class="nav-link" href="{{ route('inicio') }}">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round"
-                                class="icon icon-tabler icons-tabler-outline icon-tabler-list-details">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M13 5h8" />
-                                <path d="M13 9h5" />
-                                <path d="M13 15h8" />
-                                <path d="M13 19h5" />
-                                <path
-                                    d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
-                                <path
-                                    d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
-                            </svg>
-                        </span>
-                        <span class="nav-link-title hide-theme-dark">
-                            Plan de estudios
-                        </span>
-                        <span class="nav-link-title hide-theme-light text-white">
-                            Plan de estudios
-                        </span>
-                    </a>
-                </li>
+                {{-- <li class="nav-item {{ request()->routeIs('manuales*') ? 'active' : '' }}"> --}}
                 <li class="nav-item ">
                     <a class="nav-link" href="{{ route('inicio') }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">

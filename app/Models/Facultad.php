@@ -22,6 +22,11 @@ class Facultad extends Model
         return $this->hasMany(Programa::class, 'id_facultad');
     }
 
+    public function autoridad()
+    {
+        return $this->hasMany(Autoridad::class, 'id_facultad');
+    }
+
     public $timestamps = false;
-    
+
 }

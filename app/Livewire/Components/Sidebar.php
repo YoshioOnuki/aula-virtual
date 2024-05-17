@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Components;
 
+use App\Models\UsuarioRol;
 use Livewire\Component;
 
 class Sidebar extends Component

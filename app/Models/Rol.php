@@ -19,8 +19,13 @@ class Rol extends Model
 
     public $timestamps = false;
 
-    public function usuario()
+    public function usuarioRol()
     {
-        return $this->hasMany(Usuario::class, 'id_rol');
+        return $this->hasMany(UsuarioRol::class, 'id_rol');
+    }
+
+    public function gestionAulaUsuario()
+    {
+        return $this->hasMany(GestionAulaUsuario::class, 'id_rol');
     }
 }

@@ -154,7 +154,7 @@
                         <div class="d-none d-xl-block ps-2">
                             <div>{{ $nombre}}</div>
                             <div class="mt-1 small text-teal fw-bold">
-                                    {{ $usuario->rol->nombre_rol }}
+                                    {{ $usuario->nombre_rol }}
                             </div>
                         </div>
                     </a>

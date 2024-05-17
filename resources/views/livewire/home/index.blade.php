@@ -86,141 +86,29 @@
                         </div>
                         <div class="card-body">
                             <div class="d-flex flex-column align-items-cent justify-content-center gap-5 ">
+                                @forelse($autoridades_model as $item)
+                                    <div class="form-selectgroup-label-content d-flex align-items-start">
+                                        <span class="avatar me-3" style="background-image: url({{ $item->foto_autoridad && Storage::exists($item->foto_autoridad) ? Storage::url($item->foto_autoridad) : '/media/avatar-none.webp' }})"></span>
+                                        <div>
+                                            <div class="fs-3">{{ $item->nombre_autoridad }}</div>
+                                            <div class="text-muted fs-4">
+                                                {{ $item->cargo->nombre_cargo }}
+                                                {{ $item->facultad ? 'de la ' . $item->facultad->nombre_facultad : '' }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                @empty
                                 <div class="form-selectgroup-label-content d-flex align-items-start">
-                                    <span class="avatar me-3"
-                                        style="background-image: url(/media/avatar-none.webp)"></span>
-                                    <div>
-                                        <div class="fs-3">Dr. Edgardo Leoncio Braúl Gomero</div>
-                                        <div class="text-muted fs-4">Rector</div>
+                                    <div class="fs-3 text-center">
+                                        No se encontraron Autoridades.
                                     </div>
                                 </div>
-                                <div class="form-selectgroup-label-content d-flex align-items-start">
-                                    <span class="avatar me-3"
-                                        style="background-image: url(/media/avatar-none.webp)"></span>
-                                    <div>
-                                        <div class="fs-3">Dr. Julio Pastor Segura</div>
-                                        <div class="text-muted fs-4">Vicerrector</div>
-                                    </div>
-                                </div>
-                                <div class="form-selectgroup-label-content d-flex align-items-start">
-                                    <span class="avatar me-3"
-                                        style="background-image: url(/media/avatar-none.webp)"></span>
-                                    <div>
-                                        <div class="fs-3">Dr. Romel Pinedo Rios</div>
-                                        <div class="text-muted fs-4">Director de la Escuela de Posgrado</div>
-                                    </div>
-                                </div>
-                                <div class="form-selectgroup-label-content d-flex align-items-start">
-                                    <span class="avatar me-3"
-                                        style="background-image: url(/media/avatar-none.webp)"></span>
-                                    <div>
-                                        <div class="fs-3">Dr. Romel Pinedo Rios</div>
-                                        <div class="text-muted fs-4">Secretario General</div>
-                                    </div>
-                                </div>
-                                <div class="form-selectgroup-label-content d-flex align-items-start">
-                                    <span class="avatar me-3"
-                                        style="background-image: url(/media/avatar-none.webp)"></span>
-                                    <div>
-                                        <div class="fs-3">Ing. Msc. Diana Diaz Estrada</div>
-                                        <div class="text-muted fs-4">Director(a) de Unidad</div>
-                                    </div>
-                                </div>
+                                @endforelse
                             </div>
                         </div>
                     </div>
-
-                    {{-- <div class="card card-stacked animate__animated animate__fadeIn animate__faster mb-3">
-                        <div class="card-header" style="background: rgb(12, 166, 120);">
-                            <h3 class="card-title text-white fw-bold">Manuales</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="form-selectgroup w-100 gap-3">
-                                <div class="col-lg-3 text-center" style="cursor: pointer;">
-                                    <a class="w-100 p-2 text-center avatar btn btn-outline-teal "
-                                        style="position: relative;">
-                                        <span class="hover-
-                                        style="hover: color:
-                                            rgb(255,255,255);">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                class="icon icon-tabler icons-tabler-outline icon-tabler-book m-auto">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path d="M3 19a9 9 0 0 1 9 0a9 9 0 0 1 9 0" />
-                                                <path d="M3 6a9 9 0 0 1 9 0a9 9 0 0 1 9 0" />
-                                                <path d="M3 6l0 13" />
-                                                <path d="M12 6l0 13" />
-                                                <path d="M21 6l0 13" />
-                                            </svg>
-                                        </span>
-                                    </a>
-                                    <div class="w-100 bg-light text-center mt-1 fs-5">
-                                        Guía del aula virtual
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 text-center" style="cursor: pointer;">
-                                    <div class="w-100 p-2 bg-teal-lt text-white avatar" style="position: relative;">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-book m-auto">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M3 19a9 9 0 0 1 9 0a9 9 0 0 1 9 0" />
-                                            <path d="M3 6a9 9 0 0 1 9 0a9 9 0 0 1 9 0" />
-                                            <path d="M3 6l0 13" />
-                                            <path d="M12 6l0 13" />
-                                            <path d="M21 6l0 13" />
-                                        </svg>
-                                    </div>
-                                    <div class="w-100 bg-light text-center mt-1 fs-5">
-                                        Guía ingreso a clases
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 text-center" style="cursor: pointer;">
-                                    <div class="w-100 p-2 bg-teal-lt text-white avatar" style="position: relative;">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-book m-auto">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M3 19a9 9 0 0 1 9 0a9 9 0 0 1 9 0" />
-                                            <path d="M3 6a9 9 0 0 1 9 0a9 9 0 0 1 9 0" />
-                                            <path d="M3 6l0 13" />
-                                            <path d="M12 6l0 13" />
-                                            <path d="M21 6l0 13" />
-                                        </svg>
-                                    </div>
-                                    <div class="w-100 bg-light text-center mt-1 fs-5">
-                                        Subir trabajos académicos
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 text-center" style="cursor: pointer;">
-                                    <div class="w-100 p-2 bg-teal-lt text-white avatar" style="position: relative;">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-book m-auto">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M3 19a9 9 0 0 1 9 0a9 9 0 0 1 9 0" />
-                                            <path d="M3 6a9 9 0 0 1 9 0a9 9 0 0 1 9 0" />
-                                            <path d="M3 6l0 13" />
-                                            <path d="M12 6l0 13" />
-                                            <path d="M21 6l0 13" />
-                                        </svg>
-                                    </div>
-                                    <div class="w-100 bg-light text-center mt-1 fs-5">
-                                        marcar asistencia
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div> --}}
                 </div>
-
             </div>
-
         </div>
     </div>
 </div>

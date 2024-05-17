@@ -13,13 +13,20 @@ class UsuarioRol extends Model
     protected $primaryKey = 'id_usuario_rol';
     protected $fillable = [
         'id_usuario_rol',
-        'nombre_usuario_rol',
-        'estado_usuario_rol',
+        'id_usuario',
+        'id_rol',
     ];
 
     public $timestamps = false;
     
-    public function gestionAulaUsuario(){
-        return $this->hasMany(GestionAulaUsuario::class, 'id_usuario_rol');
+    public function usuario()
+    {
+        return $this->belongsTo(Usuario::class, 'id_usuario');
     }
+
+    public function rol()
+    {
+        return $this->belongsTo(Rol::class, 'id_rol');
+    }
+
 }
