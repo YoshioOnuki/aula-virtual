@@ -16,6 +16,7 @@ class GestionAulaUsuario extends Model
     protected $fillable = [
         'id_gestion_aula_usuario',
         'estado_gestion_aula_usuario',
+        'favorito_gestion_aula_usuario',
         'id_usuario',
         'id_rol',
         'id_gestion_aula',

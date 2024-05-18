@@ -25590,3 +25590,12 @@ img {
     -webkit-font-smoothing: auto;
     -moz-osx-font-smoothing: auto;
 }
+
+
+.custom-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.custom-card:hover {
+    transform: scale(1.03);
+}

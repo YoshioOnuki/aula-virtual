@@ -34,9 +34,9 @@ class Curso extends Model
         return $this->belongsTo(Programa::class, 'id_programa');
     }
 
-    public function gestionCurso()
+    public function gestionAula()
     {
-        return $this->hasMany(GestionCurso::class, 'id_curso');
+        return $this->hasMany(GestionAula::class, 'id_curso');
     }
 
     protected static function boot()

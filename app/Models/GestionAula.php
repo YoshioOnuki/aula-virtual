@@ -15,13 +15,20 @@ class GestionAula extends Model
     protected $primaryKey = 'id_gestion_aula';
     protected $fillable = [
         'id_gestion_aula',
+        'grupo_gestion_aula',
         'estado_gestion_aula',
-        'id_gestion_curso',
+        'id_curso',
+        'id_proceso',
     ];
 
-    public function gestionCurso()
+    public function curso()
     {
-        return $this->belongsTo(GestionCurso::class, 'id_gestion_curso');
+        return $this->belongsTo(Curso::class, 'id_curso');
+    }
+
+    public function proceso()
+    {
+        return $this->belongsTo(Proceso::class, 'id_proceso');
     }
 
     public function asistencia()

@@ -19,9 +19,9 @@ class Proceso extends Model
         'estado_proceso',
     ];
 
-    public function gestionCurso()
+    public function gestionAula()
     {
-        return $this->hasMany(GestionCurso::class, 'id_proceso');
+        return $this->hasMany(GestionAula::class, 'id_proceso');
     }
 
     protected static function boot()

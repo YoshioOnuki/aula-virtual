@@ -45,27 +45,26 @@
         @livewire('components.navbar')
 
         <div class="page-wrapper">
-            <div>
+            
                 {{ $slot }}
                 
-                <footer class="footer footer-transparent border-top d-print-none py-3">
-                    <div class="container-xl">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <a href="#" class="footer-link">
-                                    Aula Virtual
-                                </a>
-                                <span class="ms-1">
-                                    &copy; {{ date('Y') }} - Todos los derechos reservados
-                                </span>
-                            </div>
-                            <div>
-                                Universidad Nacional de Ucayali - Escuela de Postgrado
-                            </div>
+            <footer class="footer footer-transparent border-top d-print-none py-3">
+                <div class="container-xl">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <a href="#" class="footer-link">
+                                Aula Virtual
+                            </a>
+                            <span class="ms-1">
+                                &copy; {{ date('Y') }} - Todos los derechos reservados
+                            </span>
+                        </div>
+                        <div>
+                            Universidad Nacional de Ucayali - Escuela de Postgrado
                         </div>
                     </div>
-                </footer>
-            </div>
+                </div>
+            </footer>
         </div>
     </div>
 

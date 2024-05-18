@@ -75,10 +75,8 @@
                     </a>
                 </li>
 
-                {{-- <li class="nav-item {{ request()->routeIs('perfil*') ? 'active' : '' }}"> --}}
-                <li class="nav-item">
-                    {{-- <a class="nav-link" href="{{ route('perfil', ['usuario_id' => auth()->user()->usuario_id]) }}"> --}}
-                    <a class="nav-link" href="">
+                <li class="nav-item {{ request()->routeIs('perfil*') ? 'active' : '' }}">
+                    <a class="nav-link" style="cursor: pointer;" wire:click="mostrar_perfil">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon " width="24" height="24"
                                 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -103,44 +101,45 @@
                 </li>
 
                 @if ($usuario->esRol('ADMINISTRADOR'))
-                {{-- <li class="nav-item {{ request()->routeIs('configuracion-rol*') || request()->routeIs('configuracion-permiso') ? 'active' : '' }} dropdown"> --}}
-                <li class="nav-item {{ request()->routeIs('configuracion*') ? 'active' : '' }} dropdown">
-                    <a class="nav-link dropdown-toggle" href="#navbar-layout" data-bs-toggle="dropdown"
-                        data-bs-auto-close="false" role="button" aria-expanded="true">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path
-                                    d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z">
-                                </path>
-                                <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path>
-                            </svg>
-                        </span>
-                        <span class="nav-link-title">
-                            Configuración
-                        </span>
-                    </a>
-                    <div class="dropdown-menu {{ request()->routeIs('configuracion*') ? 'show' : '' }}">
-                        <div class="dropdown-menu-columns">
-                            <div class="dropdown-menu-column">
-                                <a class="dropdown-item {{ request()->routeIs('configuracion*') ? 'active fw-medium' : '' }}"
-                                    href="{{ route('configuracion') }}">
-                                    Usuarios
-                                </a>
-                                <a class="dropdown-item {{ request()->routeIs('configuracion*') ? 'active fw-medium' : '' }}"
-                                    href="{{ route('configuracion') }}">
-                                    Proceso
-                                </a>
-                                <a class="dropdown-item {{ request()->routeIs('configuracion*') ? 'active fw-medium' : '' }}"
-                                    href="{{ route('configuracion') }}">
-                                    Registrar Alumnos
-                                </a>
+                    <li
+                        class="nav-item {{ request()->routeIs('usuarios*') || request()->routeIs('proceso*') || request()->routeIs('registro-alumnos*') ? 'active' : '' }} dropdown">
+                        <a class="nav-link dropdown-toggle" href="#navbar-layout" data-bs-toggle="dropdown"
+                            data-bs-auto-close="false" role="button" aria-expanded="true">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path
+                                        d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z">
+                                    </path>
+                                    <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path>
+                                </svg>
+                            </span>
+                            <span class="nav-link-title">
+                                Configuración
+                            </span>
+                        </a>
+                        <div
+                            class="dropdown-menu {{ request()->routeIs('usuarios*') || request()->routeIs('proceso*') || request()->routeIs('registro-alumnos*') ? 'show' : '' }}">
+                            <div class="dropdown-menu-columns">
+                                <div class="dropdown-menu-column">
+                                    <a class="dropdown-item {{ request()->routeIs('usuarios') ? 'active fw-medium' : '' }}"
+                                        style="cursor: pointer;" wire:click="mostrar_usuarios">
+                                        Usuarios
+                                    </a>
+                                    <a class="dropdown-item {{ request()->routeIs('proceso') ? 'active fw-medium' : '' }}"
+                                        style="cursor: pointer;" wire:click="mostrar_proceso">
+                                        Proceso
+                                    </a>
+                                    <a class="dropdown-item {{ request()->routeIs('registro-alumnos') ? 'active fw-medium' : '' }}"
+                                        style="cursor: pointer;" wire:click="mostrar_registro_alumnos">
+                                        Registrar Alumnos
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
                 @endif
 
                 @if ($usuario->esRol('ALUMNO') || $usuario->esRol('DOCENTE'))
@@ -149,9 +148,8 @@
 
 
                     @if ($usuario->esRol('ALUMNO'))
-                        {{-- <li class="nav-item {{ request()->routeIs('empleados*') ? 'active' : '' }}"> --}}
-                        <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('inicio') }}">
+                        <li class="nav-item {{ request()->routeIs('cursos*') ? 'active' : '' }}">
+                            <a class="nav-link" style="cursor: pointer;" wire:click="mostrar_cursos">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -181,9 +179,8 @@
                     @endif
 
                     @if ($usuario->esRol('DOCENTE'))
-                        {{-- <li class="nav-item {{ request()->routeIs('empleados*') ? 'active' : '' }}"> --}}
-                        <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('inicio') }}">
+                        <li class="nav-item {{ request()->routeIs('carga-academica*') ? 'active' : '' }}">
+                            <a class="nav-link" style="cursor: pointer;" wire:click="mostrar_carga_academica">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -211,9 +208,31 @@
                 <hr class="ms-lg-3 mt-3 mb-3 hide-theme-light text-white">
 
                 @if ($usuario->esRol('ALUMNO'))
-                    {{-- <li class="nav-item {{ request()->routeIs('modalidades*') ? 'active' : '' }}"> --}}
-                    <li class="nav-item ">
-                        <a class="nav-link" href="{{ route('inicio') }}">
+                    <li class="nav-item {{ request()->routeIs('plan-estudio*') ? 'active' : '' }}">
+                        <a class="nav-link" style="cursor: pointer;" wire:click="mostrar_plan_estudio">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-checklist">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M9.615 20h-2.615a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8" />
+                                    <path d="M14 19l2 2l4 -4" />
+                                    <path d="M9 8h4" />
+                                    <path d="M9 12h2" />
+                                </svg>
+                            </span>
+                            <span class="nav-link-title hide-theme-dark">
+                                Calificaciones
+                            </span>
+                            <span class="nav-link-title hide-theme-light text-white">
+                                Calificaciones
+                            </span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item {{ request()->routeIs('plan-estudio*') ? 'active' : '' }}">
+                        <a class="nav-link" style="cursor: pointer;" wire:click="mostrar_plan_estudio">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -240,9 +259,8 @@
                     </li>
                 @endif
 
-                {{-- <li class="nav-item {{ request()->routeIs('manuales*') ? 'active' : '' }}"> --}}
-                <li class="nav-item ">
-                    <a class="nav-link" href="{{ route('inicio') }}">
+                <li class="nav-item {{ request()->routeIs('manuales*') ? 'active' : '' }}">
+                    <a class="nav-link" style="cursor: pointer;" wire:click="mostrar_manuales">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
