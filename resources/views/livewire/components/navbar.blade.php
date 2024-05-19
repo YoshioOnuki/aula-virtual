@@ -147,10 +147,10 @@
                 </div>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown">
-                        <span class="avatar avatar-sm d-none d-lg-block"
-                            style="background-image: url(
-                                {{ $usuario->foto ? asset($usuario->foto) : asset('media/avatar-none.webp') }} )">
-                        </span>
+                        <div class="avatar avatar-sm d-none d-lg-block">
+                            <img src="{{ asset($usuario->mostrar_foto ?? 'media/avatar-none.webp') }}"
+                                alt="avatar">
+                        </div>
                         <div class="d-none d-xl-block ps-2">
                             <div>{{ $nombre}}</div>
                             <div class="mt-1 small text-teal fw-bold">

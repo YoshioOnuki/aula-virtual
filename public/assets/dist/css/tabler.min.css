@@ -18320,7 +18320,7 @@ body[data-bs-theme="dark"] .hide-theme-dark {
     height: var(--tblr-avatar-size);
     font-size: calc(var(--tblr-avatar-size) / 2.8571428572);
     font-weight: var(--tblr-font-weight-medium);
-    display: inline-flex;
+    /* display: inline-flex; */
     align-items: center;
     justify-content: center;
     color: var(--tblr-muted);
@@ -18334,6 +18334,9 @@ body[data-bs-theme="dark"] .hide-theme-dark {
     background: var(--tblr-avatar-bg) no-repeat center/cover;
     border-radius: var(--tblr-border-radius);
     box-shadow: var(--tblr-avatar-shadow);
+
+    overflow: hidden; /* Esto evitará que cualquier contenido se desborde */
+    display: inline-block;
 }
 .avatar svg {
     width: calc(var(--tblr-avatar-size) / 1.6666666667);
@@ -18365,6 +18368,13 @@ a.avatar {
 .avatar-sm .badge:empty {
     width: 0.5rem;
     height: 0.5rem;
+}
+.avatar-smm {
+    --tblr-avatar-size: 2.5rem;
+}
+.avatar-smm .badge:empty {
+    width: 0.7rem;
+    height: 0.7rem;
 }
 .avatar-md {
     --tblr-avatar-size: 4rem;

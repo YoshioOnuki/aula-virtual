@@ -16,6 +16,7 @@ class GestionAula extends Model
     protected $fillable = [
         'id_gestion_aula',
         'grupo_gestion_aula',
+        'fondo_gestion_aula',
         'estado_gestion_aula',
         'id_curso',
         'id_proceso',

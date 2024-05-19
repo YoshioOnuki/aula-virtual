@@ -86,6 +86,8 @@ class Sidebar extends Component
         $this->usuario = auth()->user();
         $this->persona = $this->usuario->persona;
         $this->nombre = strtoupper($this->persona->soloPrimerosNombres);
+        // dd($this->usuario->mostrar_foto);
+
     }
 
     public function render()

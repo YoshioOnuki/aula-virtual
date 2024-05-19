@@ -73,12 +73,12 @@
                                         <div class="col-sm-4 col-lg-4 col-xl-3 p-xl-2 p-lg-1 p-2">
                                             <div class="card card-sm hover-shadow custom-card">
                                                 <div class="img-responsive img-responsive-16x9 card-img-top"
-                                                    style="background-image: url('/media/fondo-unu.webp');
-                                                    cursor: pointer;" wire:click="curso_detalle({{ $item->id_gestion_aula_usuario }})">
+                                                    style="background-image: url('{{ $item->gestionAula->fondo_gestion_aula ?? '/media/fondo-cursos/fondo-infor.webp' }}'); cursor: pointer;" wire:click="curso_detalle({{ $item->id_gestion_aula_usuario }})">
                                                 </div>
 
-                                                <div class="card-avatar avatar avatar-sm rounded-circle">
-                                                    <img src="/media/avatar-none.webp" alt="Avatar">
+                                                <div class="card-avatar avatar avatar-smm rounded-circle">
+                                                    <img src="{{ $foto_docente[$item->gestionAula->id_gestion_aula] }}"
+                                                        alt="avatar">
                                                 </div>
 
                                                 <div class="card-body">

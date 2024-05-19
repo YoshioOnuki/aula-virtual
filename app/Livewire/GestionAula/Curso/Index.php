@@ -4,6 +4,7 @@ namespace App\Livewire\GestionAula\Curso;
 
 use App\Models\AsistenciaAlumno;
 use App\Models\ForoRespuesta;
+use App\Models\GestionAula;
 use App\Models\GestionAulaUsuario;
 use App\Models\TrabajoAcademico;
 use Livewire\Component;
@@ -15,6 +16,7 @@ class Index extends Component
     public $numero_progreso = array();
     public $numero_progreso_realizados = array();
     public $progreso = array();
+    public $foto_docente = array();
 
     public function curso_favorito($id)
     {
@@ -135,10 +137,26 @@ class Index extends Component
         }
     }
 
+    public function mostrar_foto_docente()
+    {
+        foreach ($this->cursos as $curso) {
+            // Sacar el docente del curso desde la gestion aula usuario
+            $docente = GestionAulaUsuario::with('usuario.persona')
+                ->where('id_gestion_aula', $curso->gestionAula->id_gestion_aula)
+                ->whereHas('rol', function ($query) {
+                    $query->where('nombre_rol', 'DOCENTE');
+                })
+                ->first();
+            $this->foto_docente[$curso->id_gestion_aula] = $docente->usuario->mostrar_foto ?? '/media/avatar-none.webp';
+        }
+    }
+
     public function mount()
     {
         $this->mostrar_cursos();
         $this->calcular_progreso();
+        $this->mostrar_foto_docente();
+
     }
 
     public function render()

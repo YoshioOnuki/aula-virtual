@@ -54,6 +54,11 @@ class Usuario extends Authenticatable
         return false;
     }
 
+    public function getMostrarFotoAttribute()
+    {
+        return $this->foto_usuario ?? 'https://ui-avatars.com/api/?name=' . $this->persona->solo_primeros_nombres . '&size=64&&color=e8f6f8&background=17a2b8&bold=true';
+    }
+
     //Mostrar el rol, si tiene mas de un rol, concatenar
     public function mostrarRol()
     {
