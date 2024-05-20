@@ -35,11 +35,13 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/cursos', CursoIndex::class)
         ->name('cursos');
-    Route::get('/cursos/detalle', CursoDetalle::class)
+    Route::get('/cursos/detalle/{id}', CursoDetalle::class)
         ->name('cursos.detalle');
 
     Route::get('/carga-academica', CursoIndex::class)
         ->name('carga-academica');
+    Route::get('/carga-academica/detalle/{id}', CursoDetalle::class)
+        ->name('carga-academica.detalle');
 
     Route::get('/plan-estudio', PlanEstudioIndex::class)
         ->name('plan-estudio');

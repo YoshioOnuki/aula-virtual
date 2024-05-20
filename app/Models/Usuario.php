@@ -54,9 +54,30 @@ class Usuario extends Authenticatable
         return false;
     }
 
-    public function getMostrarFotoAttribute()
+    public function MostrarFoto($tipo)
     {
-        return $this->foto_usuario ?? 'https://ui-avatars.com/api/?name=' . $this->persona->solo_primeros_nombres . '&size=64&&color=e8f6f8&background=17a2b8&bold=true';
+        $color = '000000';
+        $color_lt = 'ffffff';
+
+        if($tipo === 'usuario')
+        {
+            $color = config('settings.color_usuario');
+            $color_lt = config('settings.color_lt_usuario');
+        }
+
+        if($tipo === 'docente')
+        {
+            $color = config('settings.color_docentes');
+            $color_lt = config('settings.color_lt_docentes');
+        }
+
+        if($tipo === 'alumno')
+        {
+            $color = config('settings.color_alumnos');
+            $color_lt = config('settings.color_lt_alumnos');
+        }
+
+        return $this->foto_usuario ?? 'https://ui-avatars.com/api/?name=' . $this->persona->solo_primeros_nombres . '&size=64&&color='. $color_lt .'&background='. $color .'&bold=true';
     }
 
     //Mostrar el rol, si tiene mas de un rol, concatenar
@@ -67,6 +88,16 @@ class Usuario extends Authenticatable
             $roles .= $rol->nombre_rol . ', ';
         }
         return substr($roles, 0, -2);
+    }
+
+    public function getNombreCompletoAttribute()
+    {
+        return $this->persona->nombre_completo;
+    }
+
+    public function getSoloPrimerosNombresAttribute()
+    {
+        return $this->persona->solo_primeros_nombres;
     }
 
     protected static function boot()

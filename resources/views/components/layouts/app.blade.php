@@ -18,6 +18,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+
     <style>
         :root {
             --tblr-font-sans-serif: 'Inter', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
@@ -33,6 +34,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
     <script src="{{ asset('assets/dist/libs/tom-select/dist/js/tom-select.base.min.js?1684106062') }}" defer></script>
+
 </head>
 
 <body class="layout-fluid">
@@ -70,35 +72,31 @@
 
     <script>
         document.addEventListener('livewire:navigated', () => {
-            var notyf = new Notyf();
-            window.addEventListener('toast-basico', event => {
-                if (event.detail.type == 'success') {
-                    notyf.success({
-                        message: event.detail.mensaje,
-                        duration: 5000,
-                        position: {
-                            x: 'center',
-                            y: 'top',
-                        },
-                        dismissible: true
-                    });
+            // Configuración inicial de Notyf
+            var notyf = new Notyf({
+                duration: 6000, // Duración predeterminada de la notificación
+                position: {x: 'center', y: 'top'}, // Posición predeterminada
+                dismissible: true // Hacer todas las notificaciones descartables
+            });
+
+            // Función para mostrar notificaciones
+            function mostrarNotificacion(tipo, mensaje) {
+                if (tipo === 'success') {
+                    notyf.success({message: mensaje});
                 } else {
-                    notyf.error({
-                        message: event.detail.mensaje,
-                        duration: 5000,
-                        position: {
-                            x: 'center',
-                            y: 'top',
-                        },
-                        dismissible: true
-                    });
+                    notyf.error({message: mensaje});
                 }
-            })
+            }
+
+            // Listener para eventos de notificación
+            window.addEventListener('toast-basico', event => {
+                mostrarNotificacion(event.detail.type, event.detail.mensaje);
+            });
 
             window.addEventListener('modal', event => {
                 $(event.detail.modal).modal(event.detail.action)
             })
-        })
+        });
     </script>
 </body>
 

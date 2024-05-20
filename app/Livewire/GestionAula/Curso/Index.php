@@ -11,6 +11,7 @@ use Livewire\Component;
 
 class Index extends Component
 {
+    public $usuario;
     public $cursos;
     public $favorito;
     public $numero_progreso = array();
@@ -31,8 +32,28 @@ class Index extends Component
 
     public function curso_detalle($id)
     {
-        session(['id_gestion_aula_usuario' => $id]);
-        return redirect()->route('cursos.detalle');
+        $docente  = GestionAulaUsuario::with('usuario.persona')
+            ->where('id_gestion_aula', $id)
+            ->whereHas('rol', function ($query) {
+                $query->where('nombre_rol', 'DOCENTE');
+            })
+            ->first();
+        if($docente) {
+            if(session('tipo_vista') === 'alumno') {
+                $id_url = encriptar($docente->id_gestion_aula_usuario);
+                return redirect()->route('cursos.detalle', ['id' => $id_url]);
+            } else {
+                $id_url = encriptar($docente->id_gestion_aula_usuario);
+                return redirect()->route('carga-academica.detalle', ['id' => $id_url]);
+            }
+        } else {
+
+            $this->dispatch(
+                'toast-basico',
+                mensaje: 'No se puede acceder al curso, no tiene docente asignado',
+                type: 'error'
+            );
+        }
     }
 
     public function calcular_progreso()
@@ -147,12 +168,17 @@ class Index extends Component
                     $query->where('nombre_rol', 'DOCENTE');
                 })
                 ->first();
-            $this->foto_docente[$curso->id_gestion_aula] = $docente->usuario->mostrar_foto ?? '/media/avatar-none.webp';
-        }
+                if($docente) {
+                    $this->foto_docente[$curso->id_gestion_aula] = $docente->usuario->mostrarFoto('alumno');
+                }else{
+                    $this->foto_docente[$curso->id_gestion_aula] = '/media/avatar-none.webp';
+                }
+            }
     }
 
     public function mount()
     {
+        $this->usuario = auth()->user();
         $this->mostrar_cursos();
         $this->calcular_progreso();
         $this->mostrar_foto_docente();

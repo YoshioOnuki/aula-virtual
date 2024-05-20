@@ -42,7 +42,7 @@ class Autoridad extends Model
 
     public function getMostrarFotoAttribute()
     {
-        return $this->foto_autoridad ?? 'https://ui-avatars.com/api/?name=' . $this->solo_primeros_nombres . '&size=64&&color=e8f6f8&background=17a2b8&bold=true';
+        return $this->foto_autoridad ?? 'https://ui-avatars.com/api/?name=' . $this->solo_primeros_nombres . '&size=64&&color='. config('settings.color_lt_autoridades') .'&background='. config('settings.color_autoridades') .'&bold=true';
     }
 
     public $timestamps = false;

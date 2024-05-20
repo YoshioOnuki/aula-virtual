@@ -148,7 +148,7 @@
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown">
                         <div class="avatar avatar-sm d-none d-lg-block">
-                            <img src="{{ asset($usuario->mostrar_foto ?? 'media/avatar-none.webp') }}"
+                            <img src="{{ asset($usuario->mostrarFoto('usuario') ?? 'media/avatar-none.webp') }}"
                                 alt="avatar">
                         </div>
                         <div class="d-none d-xl-block ps-2">

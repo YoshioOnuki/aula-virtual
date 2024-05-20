@@ -34,6 +34,11 @@ class Persona extends Model
         return $nombres[0] . ' ' . $this->apellido_paterno_persona;
     }
 
+    public function getNombreCompletoAttribute()
+    {
+        return $this->nombres_persona . ' ' . $this->apellido_paterno_persona . ' ' . $this->apellido_materno_persona;
+    }
+
     public function getFotoAttribute()
     {
         return $this->usuario->first()->foto_usuario ?? '';
