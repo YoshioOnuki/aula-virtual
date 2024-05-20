@@ -151,7 +151,7 @@
     --tblr-tertiary-bg: #f6f8fb;
     --tblr-tertiary-bg-rgb: 246, 248, 251;
     --tblr-link-color: #0ca678;
-    --tblr-link-color-rgb: 32, 107, 196;
+    --tblr-link-color-rgb: 12, 166, 120;
     --tblr-link-decoration: none;
     --tblr-link-hover-color: #1a569d;
     --tblr-link-hover-color-rgb: 26, 86, 157;
@@ -18056,7 +18056,7 @@ body[data-bs-theme="dark"] .hide-theme-dark {
     --tblr-bg-surface-dark: #151f2c;
     --tblr-bg-surface-secondary: #1b293a;
     --tblr-bg-surface-tertiary: #151f2c;
-    --tblr-link-color: #307fdd;
+    --tblr-link-color: #0ca678;
     --tblr-link-hover-color: #206bc4;
     --tblr-active-bg: #1b293a;
     --tblr-disabled-color: var(--tblr-gray-700);
@@ -25608,4 +25608,22 @@ img {
 
 .custom-card:hover {
     transform: scale(1.03);
+}
+
+
+.card-cover-custom {
+    position: relative;
+    padding: 1rem 1.5rem;
+}
+.card-cover-custom:before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    content: "";
+}
+.card-cover-custom:first-child,
+.card-cover-custom:first-child:before {
+    border-radius: 4px 4px 0 0;
 }

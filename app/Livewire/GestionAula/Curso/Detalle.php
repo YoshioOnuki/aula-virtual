@@ -18,14 +18,18 @@ class Detalle extends Component
         $this->id_gestion_aula_usuario = desencriptar($id);
         $gest_aula_usua = GestionAulaUsuario::find($this->id_gestion_aula_usuario);
         $this->curso = $gest_aula_usua->gestionAula->curso;
-
         $gestion_aula = $gest_aula_usua->gestionAula;
-        $this->docente = GestionAulaUsuario::with('usuario.persona')
-                ->where('id_gestion_aula', $gestion_aula->id_gestion_aula)
-                ->whereHas('rol', function ($query) {
-                    $query->where('nombre_rol', 'DOCENTE');
-                })
-                ->first();
+
+        $this->docente = GestionAulaUsuario::with(['usuario.persona'])
+            ->join('rol', 'gestion_aula_usuario.id_rol', '=', 'rol.id_rol')  // Join explícito con la tabla 'rol'
+            ->where('id_gestion_aula', $gestion_aula->id_gestion_aula)
+            ->where(function($query) {
+                $query->where('rol.nombre_rol', 'DOCENTE')
+                    ->orWhere('rol.nombre_rol', 'DOCENTE INVITADO');
+            })
+            ->orderBy('rol.nombre_rol', 'asc')
+            ->get();
+
     }
 
     

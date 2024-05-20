@@ -33,8 +33,7 @@ class Usuario extends Authenticatable
         return $this->hasMany(UsuarioRol::class, 'id_usuario');
     }
 
-    public function rol()
-    {
+    public function roles() {
         return $this->belongsToMany(Rol::class, 'usuario_rol', 'id_usuario', 'id_rol');
     }
     
@@ -46,12 +45,17 @@ class Usuario extends Authenticatable
     // Validar que rol es, mandando como parametro el nombre del rol
     public function esRol($nombreRol)
     {
-        foreach ($this->rol as $rol) {
+        foreach ($this->roles as $rol) {
             if ($rol->nombre_rol == $nombreRol) {
                 return true;
             }
         }
         return false;
+    }
+
+    public function getRolUsuaAttribute()
+    {
+        return $this->roles->first()->nombre_rol;
     }
 
     public function MostrarFoto($tipo)
@@ -84,7 +88,7 @@ class Usuario extends Authenticatable
     public function mostrarRol()
     {
         $roles = '';
-        foreach ($this->rol as $rol) {
+        foreach ($this->roles as $rol) {
             $roles .= $rol->nombre_rol . ', ';
         }
         return substr($roles, 0, -2);
