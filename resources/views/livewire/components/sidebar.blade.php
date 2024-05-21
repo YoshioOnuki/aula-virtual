@@ -20,7 +20,7 @@
             <div class="nav-item dropdown">
                 <a style="cursor: pointer;" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown"
                     aria-label="Open user menu">
-                    <img src="{{ asset($usuario->mostrarFoto('usuario') ?? 'media/avatar-none.webp') }}" alt="avatar"
+                    <img src="{{ asset($usuario->mostrarFoto('usuario') ?? '/media/avatar-none.webp') }}" alt="avatar"
                         class="avatar avatar-sm">
                     <div class="d-none d-xl-block ps-2">
                         {{ $nombre }}
@@ -35,7 +35,7 @@
         </div>
         <div class="collapse navbar-collapse w-100" id="sidebar-menu">
             <div class="d-flex justify-content-center mt-3 flex-column align-items-center">
-                <img src="{{ asset($usuario->mostrarFoto('usuario') ?? 'media/avatar-none.webp') }}" alt="avatar"
+                <img src="{{ asset($usuario->mostrarFoto('usuario') ?? '/media/avatar-none.webp') }}" alt="avatar"
                     class="avatar avatar-lg ms-3">
                 <span class="fw-bold fs-3 mt-3 text-center ms-3 hide-theme-dark">
                     {{ $nombre }}
