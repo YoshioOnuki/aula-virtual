@@ -22,6 +22,7 @@ class Curso extends Model
         'estado_curso',
         'id_ciclo',
         'id_programa',
+        'id_plan_estudio'
     ];
 
     public function ciclo()
@@ -32,6 +33,11 @@ class Curso extends Model
     public function programa()
     {
         return $this->belongsTo(Programa::class, 'id_programa');
+    }
+
+    public function planEstudio()
+    {
+        return $this->belongsTo(PlanEstudio::class, 'id_plan_estudio');
     }
 
     public function gestionAula()

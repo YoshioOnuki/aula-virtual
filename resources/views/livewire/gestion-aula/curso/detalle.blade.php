@@ -38,6 +38,7 @@
             <div class="row g-3">
                 <div class="col-lg-4">
                     <div class="row g-3">
+
                         @forelse ($docente as $item)
                             <div class="col-12">
                                 <a class="card card-link card-stacked">
@@ -77,6 +78,66 @@
                                 </div>
                             </div>
                         @endforelse
+
+                        <div class="col-12">
+                            <div class="card card-stacked animate__animated animate__fadeIn animate__faster">
+                                <div
+                                    class="card-header {{ session('tipo_vista') === 'alumno' ? 'bg-teal-lt' : 'bg-yellow-lt' }}">
+                                    <h3 class="card-title fw-semibold">
+                                        Información del Curso
+                                    </h3>
+                                </div>
+                                <div class="card-body row g-3 mb-0" x-data="{ mostrar: false }">
+                                    <div class="d-flex flex-column gap-2">
+                                        <div class="row g-3">
+                                            <div class="col-12">
+                                                <strong>Programa de {{ $curso->programa->tipoPrograma->nombre_tipo_programa }}:</strong> {{ $curso->programa->nombre_programa }}
+                                            </div>
+                                            @if($curso->programa->mencion_programa)
+                                                <div class="col-12">
+                                                    <strong>Mención:</strong> {{ $curso->programa->mencion->nombre_mencion }}
+                                                </div>
+                                            @endif
+                                            <div class="col-12">
+                                                <strong>Código del Curso:</strong> {{ $curso->codigo_curso }}
+                                            </div>
+                                            <div class="col-12">
+                                                <strong>Nombre del Curso:</strong> {{ $curso->nombre_curso }}
+                                            </div>
+                                            <div class="col-4">
+                                                <strong>Ciclo:</strong> {{ numero_a_romano($curso->ciclo->numero_ciclo) }}
+                                            </div>
+                                            <div class="col-4">
+                                                <strong>Créditos:</strong> {{ $curso->creditos_curso }}
+                                            </div>
+                                            <div class="col-4">
+                                                <strong>Horas:</strong> {{ $curso->horas_lectivas_curso }}
+                                            </div>
+                                            <div class="col-12">
+                                                <strong>Plan de Estudio:</strong> {{ $curso->planEstudio->nombre_plan_estudio }}
+                                            </div>
+                                            <div class="col-12">
+                                                <a class="btn btn-primary w-100 mt-3 
+                                                    {{ $gestion_aula_usuario->gestionAula->linkClase->isEmpty() ? 'disabled' : '' }}"
+                                                    style="cursor: pointer;" wire:click="mostrar_link_clase">
+                                                    Link de Clase
+                                                </a>
+                                                @if($gestion_aula_usuario->gestionAula->linkClase->isEmpty())
+                                                    <div class="alert alert-azure bg-azure-lt mt-2 fw-bold animate__animated animate__fadeIn animate__faster">
+                                                        @if(session('tipo_vista') == 'docente')
+                                                            Por favor, cargue el link de la clase para que esté disponible para los estudiantes.
+                                                        @else
+                                                            Link de la clase pendiente. Consulte con el docente.
+                                                        @endif
+                                                    </div>                                                 
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -85,7 +146,7 @@
                         @if(session('tipo_vista') == 'alumno')
                             <div class="col-12">
                                 <div class="card card-stacked animate__animated animate__fadeIn animate__faster mb-3">
-                                    <div class="card-header" style="background: #e7f6f2;">
+                                    <div class="card-header bg-teal-lt">
                                         <span class="text-teal me-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -98,10 +159,10 @@
                                                 <path d="M9 11l4 0" />
                                             </svg>
                                         </span>
-                                        <h3 class="card-title text-teal fw-bold fs-2">Orientaciones Generales</h3>
+                                        <h3 class="card-title fw-semibold">Orientaciones Generales</h3>
                                     </div>
                                     <div class="card-body px-5">
-                                        <span style="text-align: justify;" class="fs-3">
+                                        <span style="text-align: justify;" class="">
                                             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laborum beatae commodi
                                             ullam harum! Mollitia impedit provident accusantium libero nam non officiis id
                                             vel voluptatibus ipsum dolorum ducimus reprehenderit, asperiores laboriosam!
@@ -165,7 +226,7 @@
                                     <div class="row g-3">
                                         <div class="col-6 col-md-2 col-lg-4 col-xl-3">
                                             <span class="hide-theme-dark">
-                                                <div class="">
+                                                <div class="" wire:click='mostrar_silabus({{ $id_gestion_aula_usuario }})'>
                                                     <div class="image-button {{ session('tipo_vista') == 'alumno' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-libro-info.webp" alt="Info"
                                                             style="width: 80px; height: 80px;">
@@ -313,6 +374,57 @@
                                                 </div>
                                             </span>
                                         </div>
+
+                                        @if(session('tipo_vista') == 'docente')
+                                            <div class="col-6 col-md-2 col-lg-4 col-xl-3">
+                                                <span class="hide-theme-dark">
+                                                    <div class="">
+                                                        <div class="image-button image-button-docente">
+                                                            <img src="/media/icons/icon-link-hipervinculo.webp" alt="Info"
+                                                                style="width: 80px; height: 80px;">
+                                                            <div class="text-content text-center mt-3 fw-semibold fs-3">
+                                                                Subir Link de Clases
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                                <span class="hide-theme-light">
+                                                    <div class="dark-mode">
+                                                        <div class="image-button image-button-docente">
+                                                            <img src="/media/icons/icon-link-hipervinculo.webp" alt="Info"
+                                                                style="width: 80px; height: 80px;">
+                                                            <div class="text-content text-center mt-3 fw-semibold fs-3">
+                                                                Subir Link de Clases
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                            </div>
+                                            <div class="col-6 col-md-2 col-lg-4 col-xl-3">
+                                                <span class="hide-theme-dark">
+                                                    <div class="">
+                                                        <div class="image-button image-button-docente">
+                                                            <img src="/media/icons/icon-orien-presentacion2.webp" alt="Info"
+                                                                style="width: 80px; height: 80px;">
+                                                            <div class="text-content text-center mt-3 fw-semibold fs-3">
+                                                                Orientaciones Generales
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                                <span class="hide-theme-light">
+                                                    <div class="dark-mode">
+                                                        <div class="image-button image-button-docente">
+                                                            <img src="/media/icons/icon-orien-presentacion2.webp" alt="Info"
+                                                                style="width: 80px; height: 80px;">
+                                                            <div class="text-content text-center mt-3 fw-semibold fs-3">
+                                                                Orientaciones Generales
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                            </div>
+                                        @endif
 
                                     </div>
                                 </div>

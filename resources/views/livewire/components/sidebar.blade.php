@@ -128,13 +128,127 @@
                                         style="cursor: pointer;" wire:click="mostrar_usuarios">
                                         Usuarios
                                     </a>
+                                    <a class="dropdown-item {{ request()->routeIs('registro-alumnos') ? 'active fw-medium' : '' }}"
+                                        style="cursor: pointer;" wire:click="mostrar_registro_alumnos">
+                                        Registrar Alumnos
+                                    </a>
                                     <a class="dropdown-item {{ request()->routeIs('proceso') ? 'active fw-medium' : '' }}"
                                         style="cursor: pointer;" wire:click="mostrar_proceso">
+                                        Autoridades
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <hr class="ms-lg-3 mt-3 mb-3 hide-theme-dark">
+                    <hr class="ms-lg-3 mt-3 mb-3 hide-theme-light text-white">
+
+                    <li
+                        class="nav-item {{ request()->routeIs('usuarios*') || request()->routeIs('proceso*') || request()->routeIs('registro-alumnos*') ? 'active' : '' }} dropdown">
+                        <a class="nav-link dropdown-toggle" href="#navbar-layout" data-bs-toggle="dropdown"
+                            data-bs-auto-close="false" role="button" aria-expanded="true">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-topology-star-ring-3">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M10 19a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z" />
+                                    <path d="M18 5a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z" />
+                                    <path d="M10 5a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z" />
+                                    <path d="M6 12a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z" />
+                                    <path d="M18 19a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z" />
+                                    <path d="M14 12a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z" />
+                                    <path d="M22 12a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z" />
+                                    <path d="M6 12h4" />
+                                    <path d="M14 12h4" />
+                                    <path d="M15 7l-2 3" />
+                                    <path d="M9 7l2 3" />
+                                    <path d="M11 14l-2 3" />
+                                    <path d="M13 14l2 3" />
+                                    <path d="M10 5h4" />
+                                    <path d="M10 19h4" />
+                                    <path d="M17 17l2 -3" />
+                                    <path d="M19 10l-2 -3" />
+                                    <path d="M7 7l-2 3" />
+                                    <path d="M5 14l2 3" />
+                                </svg>
+                            </span>
+                            <span class="nav-link-title">
+                                Estructura Académica
+                            </span>
+                        </a>
+                        <div
+                            class="dropdown-menu {{ request()->routeIs('usuarios*') || request()->routeIs('proceso*') || request()->routeIs('registro-alumnos*') ? 'show' : '' }}">
+                            <div class="dropdown-menu-columns">
+                                <div class="dropdown-menu-column">
+                                    <a class="dropdown-item {{ request()->routeIs('usuarios') ? 'active fw-medium' : '' }}"
+                                        style="cursor: pointer;" wire:click="mostrar_usuarios">
+                                        Nivel Académico
+                                    </a>
+                                    <a class="dropdown-item {{ request()->routeIs('proceso') ? 'active fw-medium' : '' }}"
+                                        style="cursor: pointer;" wire:click="mostrar_proceso">
+                                        Tipo de Programa
+                                    </a>
+                                    <a class="dropdown-item {{ request()->routeIs('registro-alumnos') ? 'active fw-medium' : '' }}"
+                                        style="cursor: pointer;" wire:click="mostrar_registro_alumnos">
+                                        Facultad
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li
+                        class="nav-item {{ request()->routeIs('usuarios*') || request()->routeIs('proceso*') || request()->routeIs('registro-alumnos*') ? 'active' : '' }} dropdown">
+                        <a class="nav-link dropdown-toggle" href="#navbar-layout" data-bs-toggle="dropdown"
+                            data-bs-auto-close="false" role="button" aria-expanded="true">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-books">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path
+                                        d="M5 4m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" />
+                                    <path
+                                        d="M9 4m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" />
+                                    <path d="M5 8h4" />
+                                    <path d="M9 16h4" />
+                                    <path
+                                        d="M13.803 4.56l2.184 -.53c.562 -.135 1.133 .19 1.282 .732l3.695 13.418a1.02 1.02 0 0 1 -.634 1.219l-.133 .041l-2.184 .53c-.562 .135 -1.133 -.19 -1.282 -.732l-3.695 -13.418a1.02 1.02 0 0 1 .634 -1.219l.133 -.041z" />
+                                    <path d="M14 9l4 -1" />
+                                    <path d="M16 16l3.923 -.98" />
+                                </svg>
+                            </span>
+                            <span class="nav-link-title">
+                                Gestión del curso
+                            </span>
+                        </a>
+                        <div
+                            class="dropdown-menu {{ request()->routeIs('usuarios*') || request()->routeIs('proceso*') || request()->routeIs('registro-alumnos*') ? 'show' : '' }}">
+                            <div class="dropdown-menu-columns">
+                                <div class="dropdown-menu-column">
+                                    <a class="dropdown-item {{ request()->routeIs('usuarios') ? 'active fw-medium' : '' }}"
+                                        style="cursor: pointer;" wire:click="mostrar_usuarios">
+                                        Programa
+                                    </a>
+                                    <a class="dropdown-item {{ request()->routeIs('proceso') ? 'active fw-medium' : '' }}"
+                                        style="cursor: pointer;" wire:click="mostrar_proceso">
+                                        Plan de estudios
+                                    </a>
+                                    <a class="dropdown-item {{ request()->routeIs('registro-alumnos') ? 'active fw-medium' : '' }}"
+                                        style="cursor: pointer;" wire:click="mostrar_registro_alumnos">
+                                        Ciclo
+                                    </a>
+                                    <a class="dropdown-item {{ request()->routeIs('registro-alumnos') ? 'active fw-medium' : '' }}"
+                                        style="cursor: pointer;" wire:click="mostrar_registro_alumnos">
                                         Proceso
                                     </a>
                                     <a class="dropdown-item {{ request()->routeIs('registro-alumnos') ? 'active fw-medium' : '' }}"
                                         style="cursor: pointer;" wire:click="mostrar_registro_alumnos">
-                                        Registrar Alumnos
+                                        Curso
                                     </a>
                                 </div>
                             </div>
@@ -288,7 +402,7 @@
 
             </ul>
             <div class="mt-2 mb-4 mb-lg-0 w-full ps-3">
-                <button type="button" class="btn btn-danger w-100 mt-2 mb-lg-5" wire:click="logout">
+                <button type="button" class="btn btn-outline-red w-100 mt-2 mb-lg-5" wire:click="logout">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-bar-to-left"
                         width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
                         fill="none" stroke-linecap="round" stroke-linejoin="round">

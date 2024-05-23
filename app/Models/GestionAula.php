@@ -52,7 +52,7 @@ class GestionAula extends Model
         return $this->hasMany(Foro::class, 'id_gestion_aula');
     }
 
-    public function link_clase()
+    public function linkClase()
     {
         return $this->hasMany(LinkClase::class, 'id_gestion_aula');
     }

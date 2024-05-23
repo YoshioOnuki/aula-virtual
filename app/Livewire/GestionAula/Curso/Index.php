@@ -21,6 +21,7 @@ class Index extends Component
 
     public function curso_favorito($id)
     {
+        usleep(500000);
         $gest_aula_usua = GestionAulaUsuario::find($id);
         if ($gest_aula_usua->favorito_gestion_aula_usuario == 0) {
             $gest_aula_usua->favorito_gestion_aula_usuario = 1;

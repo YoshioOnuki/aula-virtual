@@ -150,8 +150,8 @@
     --tblr-tertiary-color-rgb: 24, 36, 51;
     --tblr-tertiary-bg: #f6f8fb;
     --tblr-tertiary-bg-rgb: 246, 248, 251;
-    --tblr-link-color: #0ca678;
-    --tblr-link-color-rgb: 12, 166, 120;
+    --tblr-link-color: #206bc4;
+    --tblr-link-color-rgb: 32, 107, 196;
     --tblr-link-decoration: none;
     --tblr-link-hover-color: #1a569d;
     --tblr-link-hover-color-rgb: 26, 86, 157;
@@ -16270,7 +16270,7 @@ body {
 .navbar {
     --tblr-navbar-bg: var(--tblr-bg-surface);
     --tblr-navbar-border-width: var(--tblr-border-width);
-    --tblr-navbar-active-border-color: var(--tblr-teal);
+    --tblr-navbar-active-border-color: var(--tblr-primary);
     --tblr-navbar-active-bg: rgba(0, 0, 0, 0.06);
     --tblr-navbar-color: var(--tblr-body-color);
     --tblr-navbar-border-color: var(--tblr-border-color);
@@ -18056,7 +18056,7 @@ body[data-bs-theme="dark"] .hide-theme-dark {
     --tblr-bg-surface-dark: #151f2c;
     --tblr-bg-surface-secondary: #1b293a;
     --tblr-bg-surface-tertiary: #151f2c;
-    --tblr-link-color: #0ca678;
+    --tblr-link-color: #206bc4;
     --tblr-link-hover-color: #206bc4;
     --tblr-active-bg: #1b293a;
     --tblr-disabled-color: var(--tblr-gray-700);
@@ -25687,7 +25687,12 @@ img {
 }
 
 
-.dark-mode .image-button:hover {
+.dark-mode .image-button-alumno:hover {
     background-color: #006644; 
+    box-shadow: 0 8px 16px rgba(255,255,255,0.3); 
+}
+.dark-mode .image-button-docente:hover {
+    /* background-color: #37474F;  */
+    background-color: #654321; 
     box-shadow: 0 8px 16px rgba(255,255,255,0.3); 
 }
