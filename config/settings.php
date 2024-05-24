@@ -7,8 +7,15 @@ return [
     'color_lt_autoridades' => 'fef0e6',
     'color_alumnos' => '0ca678',
     'color_lt_alumnos' => 'e7f6f2',
-    'color_docentes' => 'f59f00',
-    'color_lt_docentes' => 'fef5e6',
+    'color_docente' => 'f76707',
+    'color_lt_docente' => 'fef0e6',
+
+    'bg-usuario' => 'cyan',
+    'bg-usuario-lt' => 'cyan-lt',
+    'bg-alumno' => 'teal',
+    'bg-alumno-lt' => 'teal-lt',
+    'bg-docente' => 'orange',
+    'bg-docente-lt' => 'orange-lt',
 
     'fondo_curso_default' => '/media/fondo-cursos/fondo-infor.webp',
     'fondo_detalle_doncente' => '/assets/static/photos/businesswoman-working-at-her-laptop-2.jpg',

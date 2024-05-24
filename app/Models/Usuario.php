@@ -71,8 +71,8 @@ class Usuario extends Authenticatable
 
         if($tipo === 'docente')
         {
-            $color = config('settings.color_docentes');
-            $color_lt = config('settings.color_lt_docentes');
+            $color = config('settings.color_docente');
+            $color_lt = config('settings.color_lt_docente');
         }
 
         if($tipo === 'alumno')
@@ -92,6 +92,11 @@ class Usuario extends Authenticatable
             $roles .= $rol->nombre_rol . ', ';
         }
         return substr($roles, 0, -2);
+    }
+
+    public function mostrarRolCollection()
+    {
+        
     }
 
     public function getNombreCompletoAttribute()

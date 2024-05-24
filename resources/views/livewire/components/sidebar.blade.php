@@ -195,6 +195,10 @@
                                         style="cursor: pointer;" wire:click="mostrar_registro_alumnos">
                                         Facultad
                                     </a>
+                                    <a class="dropdown-item {{ request()->routeIs('usuarios') ? 'active fw-medium' : '' }}"
+                                        style="cursor: pointer;" wire:click="mostrar_usuarios">
+                                        Programa
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -230,10 +234,6 @@
                             class="dropdown-menu {{ request()->routeIs('usuarios*') || request()->routeIs('proceso*') || request()->routeIs('registro-alumnos*') ? 'show' : '' }}">
                             <div class="dropdown-menu-columns">
                                 <div class="dropdown-menu-column">
-                                    <a class="dropdown-item {{ request()->routeIs('usuarios') ? 'active fw-medium' : '' }}"
-                                        style="cursor: pointer;" wire:click="mostrar_usuarios">
-                                        Programa
-                                    </a>
                                     <a class="dropdown-item {{ request()->routeIs('proceso') ? 'active fw-medium' : '' }}"
                                         style="cursor: pointer;" wire:click="mostrar_proceso">
                                         Plan de estudios

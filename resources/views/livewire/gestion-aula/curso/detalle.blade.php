@@ -61,7 +61,7 @@
                                         </div>
                                         <div class="mt-2">
                                             <span
-                                                class="badge {{ session('tipo_vista') == 'alumno' ? 'bg-teal-lt' : 'bg-yellow-lt' }}">
+                                                class="badge {{ session('tipo_vista') == 'alumno' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
                                                 {{ $item->rol->nombre_rol }}
                                             </span>
                                         </div>
@@ -82,12 +82,12 @@
                         <div class="col-12">
                             <div class="card card-stacked animate__animated animate__fadeIn animate__faster">
                                 <div
-                                    class="card-header {{ session('tipo_vista') === 'alumno' ? 'bg-teal-lt' : 'bg-yellow-lt' }}">
+                                    class="card-header {{ session('tipo_vista') === 'alumno' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
                                     <h3 class="card-title fw-semibold">
                                         Información del Curso
                                     </h3>
                                 </div>
-                                <div class="card-body row g-3 mb-0" x-data="{ mostrar: false }">
+                                <div class="card-body row g-3 mb-0">
                                     <div class="d-flex flex-column gap-2">
                                         <div class="row g-3">
                                             <div class="col-12">
@@ -190,7 +190,7 @@
                             <div class="card card-md card-stacked animate__animated animate__fadeIn animate__faster">
                                 <div class="card-stamp card-stamp-lg">
                                     @if (session('tipo_vista') == 'docente')
-                                        <div class="card-stamp-icon bg-yellow">
+                                        <div class="card-stamp-icon bg-orange">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"

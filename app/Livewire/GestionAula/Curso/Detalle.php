@@ -16,6 +16,14 @@ class Detalle extends Component
 
     public function mount($id)
     {
+        if(request()->routeIs('cursos*'))
+        {
+            session(['tipo_vista' => 'alumno']);
+        }elseif(request()->routeIs('carga-academica*'))
+        {
+            session(['tipo_vista' => 'docente']);
+        }
+        
         $this->id_gestion_aula_usuario = desencriptar($id);
         
         $this->gestion_aula_usuario = GestionAulaUsuario::with([

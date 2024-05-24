@@ -34,9 +34,6 @@
             </div>
         </div>
     </div>
-    {{-- @if (session('modo') === 'create' || session('modo') === 'edit')
-                <div wire:init="mostrar_toast"></div>
-            @endif --}}
     <div class="page-body">
         <div class="container-xl">
             <div class="card card-md card-stacked animate__animated animate__fadeIn animate__faster">
@@ -60,7 +57,7 @@
                             </svg>
                         </div>
                     @elseif(session('tipo_vista') === 'docente')
-                        <div class="card-stamp-icon bg-yellow">
+                        <div class="card-stamp-icon bg-orange">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round"

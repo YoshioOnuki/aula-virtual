@@ -179,6 +179,14 @@ class Index extends Component
 
     public function mount()
     {
+        if(request()->routeIs('cursos*'))
+        {
+            session(['tipo_vista' => 'alumno']);
+        }elseif(request()->routeIs('carga-academica*'))
+        {
+            session(['tipo_vista' => 'docente']);
+        }
+
         $this->usuario = auth()->user();
         $this->mostrar_cursos();
         $this->calcular_progreso();

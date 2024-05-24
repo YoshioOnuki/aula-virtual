@@ -2,19 +2,32 @@
 
 namespace App\Livewire\GestionAula\Silabus;
 
-use App\Models\Curso;
 use App\Models\GestionAulaUsuario;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class Index extends Component
 {
+    use WithFileUploads;
 
     public $id_gestion_aula_usuario;
     public $gestion_aula_usuario;
     public $curso;
 
+    #[Validate('required|file|mimes:pdf|max:2048')]
+    public $silabus;
+
     public function mount($id)
     {
+        if(request()->routeIs('cursos*'))
+        {
+            session(['tipo_vista' => 'alumno']);
+        }elseif(request()->routeIs('carga-academica*'))
+        {
+            session(['tipo_vista' => 'docente']);
+        }
+
         $this->id_gestion_aula_usuario = desencriptar($id);
 
         $this->gestion_aula_usuario = GestionAulaUsuario::with([
@@ -43,8 +56,13 @@ class Index extends Component
             $this->curso = $this->gestion_aula_usuario->gestionAula->curso;
         }
 
-        // dd($this->curso);
-        
+    }
+
+    public function guardar_silabus()
+    {
+        dd($this->silabus);
+        $this->validate();
+
     }
 
     public function render()
