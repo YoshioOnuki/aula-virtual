@@ -28,7 +28,31 @@
                     </h2>
                 </div>
                 <div class="col-auto ms-auto d-print-none">
-
+                    <div class="btn-list">
+                        @if (session('tipo_vista') === 'alumno')
+                        <a href="{{ route('cursos')}}" class="btn btn-secondary d-none d-md-inline-block">
+                        @else
+                        <a href="{{ route('carga-academica') }}" class="btn btn-secondary d-none d-md-inline-block">
+                        @endif
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M15 6l-6 6l6 6" />
+                            </svg>
+                            Regresar
+                        </a>
+                        <a href="" class="btn btn-secondary d-md-none btn-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M15 6l-6 6l6 6" />
+                            </svg>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

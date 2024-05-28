@@ -3,29 +3,45 @@
 namespace App\Livewire\Configuracion\Usuario;
 
 use App\Models\Usuario;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
+#[Layout('components.layouts.app')]
 class Index extends Component
 {
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
     
     #[Url('mostrar')]
-    public $mostrar_paginacion;
+    public $mostrar_paginate = 10;
 
-    public $usuarios;
+    #[Url('buscar')]
+    public $search = '';
 
-    public $search;
+    public $titulo_modal = 'Estado de Usuario';
+    public $boton_modal = 'Habilitar';
 
+
+    public function abrir_modal()
+    {
+        $this->dispatch(
+            'modal',
+            modal: '#modal-estado-usuario',
+            action: 'show'
+        );
+
+    }
 
     public function render()
     {
-        $this->usuarios = Usuario::all();
-        // where('estado_usuario', 1)
-        //     ->paginate($this->mostrar_paginacion);
+        $usuarios = Usuario::search($this->search)
+            ->orderBy('id_usuario', 'desc')
+            ->paginate($this->mostrar_paginate);
 
-        return view('livewire.configuracion.usuario.index');
+        return view('livewire.configuracion.usuario.index',[
+            'usuarios' => $usuarios,
+        ]);
     }
 }

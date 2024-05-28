@@ -109,6 +109,22 @@ class Usuario extends Authenticatable
         return $this->persona->solo_primeros_nombres;
     }
 
+    public function scopeSearch($query, $search) {
+        if ($search == null) {
+            return $query;
+        }
+
+        return $query->where(function($query) use ($search) {
+            $query->where('correo_usuario', 'LIKE', '%' . $search . '%')
+                ->orWhereHas('persona', function ($subQuery) use ($search) {
+                    $subQuery->where('nombres_persona', 'LIKE', '%' . $search . '%')
+                        ->orWhere('apellido_paterno_persona', 'LIKE', '%' . $search . '%')
+                        ->orWhere('apellido_materno_persona', 'LIKE', '%' . $search . '%')
+                        ->orWhere('documento_persona', 'LIKE', '%' . $search . '%');
+                });
+        });
+    }
+
     protected static function boot()
     {
         parent::boot();
