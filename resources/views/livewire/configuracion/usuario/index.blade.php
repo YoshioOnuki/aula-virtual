@@ -267,7 +267,7 @@
                                         <div>
                                             <h4 class="alert-title">¡Alerta!</h4>
                                             <div class="text-secondary">
-                                                Estás 
+                                                Estás
                                             </div>
                                         </div>
                                     </div>
@@ -277,7 +277,7 @@
                                 sadas
                             </div>
                             <div class="col-lg-12">
-                                
+
                         </div>
                     </div>
                     <div class="modal-footer">
