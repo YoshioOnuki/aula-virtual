@@ -60,8 +60,8 @@ class Index extends Component
 
     public function guardar_silabus()
     {
-        dd($this->silabus);
         $this->validate();
+        dd($this->silabus);
 
     }
 

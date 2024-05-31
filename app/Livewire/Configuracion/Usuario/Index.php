@@ -13,7 +13,7 @@ class Index extends Component
 {
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
-    
+
     #[Url('mostrar')]
     public $mostrar_paginate = 10;
 
@@ -21,7 +21,7 @@ class Index extends Component
     public $search = '';
 
     public $titulo_modal = 'Estado de Usuario';
-    public $boton_modal = 'Habilitar';
+    public $accion_estado = 'Habilitar';
 
 
     public function abrir_modal()
@@ -31,6 +31,7 @@ class Index extends Component
             modal: '#modal-estado-usuario',
             action: 'show'
         );
+
 
     }
 

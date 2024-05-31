@@ -39,17 +39,12 @@
                                 <div class="text-secondary row">
                                     <div class="col-lg-7 col-9">
                                         <div class="d-inline-block">
-                                            <input type="text" class="form-control"
-                                                wire:model.live.debounce.500ms="search" aria-label="Search invoice"
-                                                placeholder="Buscar">
+                                            <input type="text" class="form-control" wire:model.live.debounce.500ms="search" aria-label="Search invoice" placeholder="Buscar">
                                         </div>
                                     </div>
                                     <div class="col-lg-5 col-3 d-flex justify-content-end">
                                         <a href="" class="btn btn-primary d-none d-md-inline-block">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
-                                                height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                stroke="currentColor" fill="none" stroke-linecap="round"
-                                                stroke-linejoin="round">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                                 <path d="M12 5l0 14" />
                                                 <path d="M5 12l14 0" />
@@ -57,10 +52,7 @@
                                             Crear usuario
                                         </a>
                                         <a href="" class="btn btn-primary d-md-none btn-icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
-                                                height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                stroke="currentColor" fill="none" stroke-linecap="round"
-                                                stroke-linejoin="round">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                                 <path d="M12 5l0 14" />
                                                 <path d="M5 12l14 0" />
@@ -84,115 +76,110 @@
                                 </thead>
                                 <tbody>
                                     @php
-                                        $i = 1;
+                                    $i = 1;
                                     @endphp
                                     @forelse ($usuarios as $item)
-                                        <tr>
-                                            <td>
-                                                <span class="text-secondary">{{ $i++ }}</span>
-                                            </td>
-                                            <td>
-                                                <div class="d-flex py-1 align-items-center">
-                                                    <img src="{{ asset($item->mostrarFoto('alumno')) }}" alt="avatar"
-                                                        class="avatar me-2">
-                                                    <div class="flex-fill">
-                                                        <div class="font-weight-medium">{{ $item->nombre_completo }}
-                                                        </div>
-                                                        <div class="text-secondary"><a href="#"
-                                                                class="text-reset">{{ $item->persona->documento_persona }}</a>
-                                                        </div>
+                                    <tr>
+                                        <td>
+                                            <span class="text-secondary">{{ $i++ }}</span>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex py-1 align-items-center">
+                                                <img src="{{ asset($item->mostrarFoto('alumno')) }}" alt="avatar" class="avatar me-2">
+                                                <div class="flex-fill">
+                                                    <div class="font-weight-medium">{{ $item->nombre_completo }}
+                                                    </div>
+                                                    <div class="text-secondary"><a href="#" class="text-reset">{{ $item->persona->documento_persona }}</a>
                                                     </div>
                                                 </div>
-                                            </td>
-                                            <td>
-                                                {{ $item->correo_usuario }}
-                                            </td>
-                                            <td>
-                                                {{ $item->mostrarRol() }}
-                                            </td>
-                                            <td>
-                                                @if ($item->estado_usuario == 1)
-                                                    <a style="cursor: pointer;" wire:click="abrir_modal">
-                                                        <span class="badge bg-teal-lt status-teal px-3 py-2 fs-4">
-                                                            <span class="status-dot status-dot-animated me-2"></span>
-                                                            Activo
-                                                        </span>
-                                                    </a>
-                                                @else
-                                                    <a style="cursor: pointer;">
-                                                        <span class="badge bg-red-lt status-red px-3 py-2 fs-4">
-                                                            <span class="status-dot status-dot-animated me-2"></span>
-                                                            Inactivo
-                                                        </span>
-                                                    </a>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <div class="btn-list flex-nowrap">
-                                                    <div class="dropdown">
-                                                        <button class="btn dropdown-toggle align-text-top"
-                                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                                            Acciones
-                                                        </button>
-                                                        <div class="dropdown-menu dropdown-menu-end">
-                                                            <a class="dropdown-item" style="cursor: pointer;">
-                                                                Ver
-                                                            </a>
-                                                            <a class="dropdown-item" style="cursor: pointer;">
-                                                                Editar
-                                                            </a>
-                                                        </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{ $item->correo_usuario }}
+                                        </td>
+                                        <td>
+                                            {{ $item->mostrarRol() }}
+                                        </td>
+                                        <td>
+                                            @if ($item->estado_usuario == 1)
+                                            <a style="cursor: pointer;" wire:click="abrir_modal">
+                                                <span class="badge bg-teal-lt status-teal px-3 py-2 fs-4">
+                                                    <span class="status-dot status-dot-animated me-2"></span>
+                                                    Activo
+                                                </span>
+                                            </a>
+                                            @else
+                                            <a style="cursor: pointer;">
+                                                <span class="badge bg-red-lt status-red px-3 py-2 fs-4">
+                                                    <span class="status-dot status-dot-animated me-2"></span>
+                                                    Inactivo
+                                                </span>
+                                            </a>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <div class="btn-list flex-nowrap">
+                                                <div class="dropdown">
+                                                    <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        Acciones
+                                                    </button>
+                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                        <a class="dropdown-item" style="cursor: pointer;">
+                                                            Ver
+                                                        </a>
+                                                        <a class="dropdown-item" style="cursor: pointer;">
+                                                            Editar
+                                                        </a>
                                                     </div>
                                                 </div>
-                                            </td>
-                                        </tr>
+                                            </div>
+                                        </td>
+                                    </tr>
                                     @empty
-                                        @if ($usuarios->count() == 0 && $search != '')
-                                            <tr>
-                                                <td colspan="9">
-                                                    <div class="text-center"
-                                                        style="padding-bottom: 2rem; padding-top: 2rem;">
-                                                        <span class="text-secondary">
-                                                            No se encontraron resultados para
-                                                            "<strong>{{ $search }}</strong>"
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @else
-                                            <tr>
-                                                <td colspan="9">
-                                                    <div class="text-center"
-                                                        style="padding-bottom: 2rem; padding-top: 2rem;">
-                                                        <span class="text-secondary">
-                                                            No hay usuarios registrados
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @endif
+                                    @if ($usuarios->count() == 0 && $search != '')
+                                    <tr>
+                                        <td colspan="9">
+                                            <div class="text-center" style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                <span class="text-secondary">
+                                                    No se encontraron resultados para
+                                                    "<strong>{{ $search }}</strong>"
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @else
+                                    <tr>
+                                        <td colspan="9">
+                                            <div class="text-center" style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                <span class="text-secondary">
+                                                    No hay usuarios registrados
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endif
                                     @endforelse
                                 </tbody>
                             </table>
                         </div>
                         <div class="card-footer {{ $usuarios->hasPages() ? 'py-0' : '' }}">
                             @if ($usuarios->hasPages())
-                                <div class="d-flex justify-content-between">
-                                    <div class="d-flex align-items-center text-secondary">
-                                        Mostrando {{ $usuarios->firstItem() }} - {{ $usuarios->lastItem() }} de
-                                        {{ $usuarios->total() }} registros
-                                    </div>
-                                    <div class="mt-3">
-                                        {{ $usuarios->links() }}
-                                    </div>
+                            <div class="d-flex justify-content-between">
+                                <div class="d-flex align-items-center text-secondary">
+                                    Mostrando {{ $usuarios->firstItem() }} - {{ $usuarios->lastItem() }} de
+                                    {{ $usuarios->total() }} registros
                                 </div>
+                                <div class="mt-3">
+                                    {{ $usuarios->links() }}
+                                </div>
+                            </div>
                             @else
-                                <div class="d-flex justify-content-between">
-                                    <div class="d-flex align-items-center text-secondary">
-                                        Mostrando {{ $usuarios->firstItem() }} - {{ $usuarios->lastItem() }} de
-                                        {{ $usuarios->total() }} registros
-                                    </div>
+                            <div class="d-flex justify-content-between">
+                                <div class="d-flex align-items-center text-secondary">
+                                    Mostrando {{ $usuarios->firstItem() }} - {{ $usuarios->lastItem() }} de
+                                    {{ $usuarios->total() }} registros
                                 </div>
+                            </div>
                             @endif
                         </div>
                     </div>
@@ -209,88 +196,68 @@
                     <h5 class="modal-title">
                         {{ $titulo_modal }}
                     </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                        wire:click="limpiar_modal"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" wire:click="limpiar_modal"></button>
                 </div>
                 <form autocomplete="off" wire:submit="cambiar_estado">
-                    <div class="modal-body">
+                    <div class="modal-body px-6">
                         <div class="row g-3">
                             <div class="col-lg-12 mt-2 text-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24" fill="currentColor"
-                                    class="icon icon-tabler icons-tabler-filled icon-tabler-lock">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#d63939" class="icon icon-tabler icons-tabler-filled icon-tabler-lock svg-extra-large my-6">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path
-                                        d="M12 2a5 5 0 0 1 5 5v3a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-10a3 3 0 0 1 -3 -3v-6a3 3 0 0 1 3 -3v-3a5 5 0 0 1 5 -5m0 12a2 2 0 0 0 -1.995 1.85l-.005 .15a2 2 0 1 0 2 -2m0 -10a3 3 0 0 0 -3 3v3h6v-3a3 3 0 0 0 -3 -3" />
+                                    <path d="M12 2a5 5 0 0 1 5 5v3a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-10a3 3 0 0 1 -3 -3v-6a3 3 0 0 1 3 -3v-3a5 5 0 0 1 5 -5m0 12a2 2 0 0 0 -1.995 1.85l-.005 .15a2 2 0 1 0 2 -2m0 -10a3 3 0 0 0 -3 3v3h6v-3a3 3 0 0 0 -3 -3" />
                                 </svg>
                             </div>
+                            <div class="col-lg-12 mt-2 text-center">
+                                <h4 class="text-center fs-3">
+                                    ¿Estas seguro?
+                                </h4>
+                            </div>
                             <div class="col-lg-12">
-                                <div class="alert alert-warning" role="alert">
+                                <div class="alert alert-yellow bg-yellow-lt hover-shadow-sm" role="alert">
                                     <div class="d-flex">
-                                        <div>
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon"
-                                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                stroke="currentColor" fill="none" stroke-linecap="round"
-                                                stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                <path d="M12 9v4"></path>
-                                                <path
-                                                    d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z">
-                                                </path>
-                                                <path d="M12 16h.01"></path>
+                                        <div class="me-3">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#f59f00" class="icon icon-tabler icons-tabler-filled icon-tabler-bell-ringing">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M17.451 2.344a1 1 0 0 1 1.41 -.099a12.05 12.05 0 0 1 3.048 4.064a1 1 0 1 1 -1.818 .836a10.05 10.05 0 0 0 -2.54 -3.39a1 1 0 0 1 -.1 -1.41z" />
+                                                <path d="M5.136 2.245a1 1 0 0 1 1.312 1.51a10.05 10.05 0 0 0 -2.54 3.39a1 1 0 1 1 -1.817 -.835a12.05 12.05 0 0 1 3.045 -4.065z" />
+                                                <path d="M14.235 19c.865 0 1.322 1.024 .745 1.668a3.992 3.992 0 0 1 -2.98 1.332a3.992 3.992 0 0 1 -2.98 -1.332c-.552 -.616 -.158 -1.579 .634 -1.661l.11 -.006h4.471z" />
+                                                <path d="M12 2c1.358 0 2.506 .903 2.875 2.141l.046 .171l.008 .043a8.013 8.013 0 0 1 4.024 6.069l.028 .287l.019 .289v2.931l.021 .136a3 3 0 0 0 1.143 1.847l.167 .117l.162 .099c.86 .487 .56 1.766 -.377 1.864l-.116 .006h-16c-1.028 0 -1.387 -1.364 -.493 -1.87a3 3 0 0 0 1.472 -2.063l.021 -.143l.001 -2.97a8 8 0 0 1 3.821 -6.454l.248 -.146l.01 -.043a3.003 3.003 0 0 1 2.562 -2.29l.182 -.017l.176 -.004z" />
                                             </svg>
                                         </div>
                                         <div>
-                                            <h4 class="alert-title">This is a custom alert box!</h4>
-                                            <div class="text-secondary">
-                                                <strong>Sorry!</strong> There was a
-                                                problem with your request.
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="alert alert-yellow hover-shadow-sm" role="alert">
-                                    <div class="d-flex">
-                                        <div>
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon"
-                                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                stroke="currentColor" fill="none" stroke-linecap="round"
-                                                stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                <path d="M12 9v4"></path>
-                                                <path
-                                                    d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z">
-                                                </path>
-                                                <path d="M12 16h.01"></path>
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <h4 class="alert-title">¡Alerta!</h4>
-                                            <div class="text-secondary">
-                                                Estás
+                                            <h4 class="alert-title text-dark">¡Alerta!</h4>
+                                            <div class="text-dark">
+                                                Estás a punto de <strong>{{ $accion_estado }}</strong> el acceso de este usuario.
+                                                Esto restringirá su acceso al sistema.
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-lg-12">
-                                sadas
+                                <ul style="list-style-type: none;">
+                                    <li class="mb-2"><strong>Persona:</strong> asdasdasdasd</li>
+                                    <li class="mb-2"><strong>Usuario:</strong> asdasd</li>
+                                    <li class=""><strong>Rol:</strong> asdasd</li>
+                                </ul>
                             </div>
-                            <div class="col-lg-12">
-
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal"
-                            wire:click="limpiar_modal">
+                        <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="limpiar_modal">
                             Cancelar
                         </a>
-                        <button type="submit" class="btn btn-primary ms-auto">
-                            {{ $boton_modal }}
+                        <button type="submit" class="btn btn-red ms-auto">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#ffffff" class="icon icon-tabler icons-tabler-filled icon-tabler-lock">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M12 2a5 5 0 0 1 5 5v3a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-10a3 3 0 0 1 -3 -3v-6a3 3 0 0 1 3 -3v-3a5 5 0 0 1 5 -5m0 12a2 2 0 0 0 -1.995 1.85l-.005 .15a2 2 0 1 0 2 -2m0 -10a3 3 0 0 0 -3 3v3h6v-3a3 3 0 0 0 -3 -3" />
+                            </svg>
+                            {{ $accion_estado }}
                         </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+
 </div>

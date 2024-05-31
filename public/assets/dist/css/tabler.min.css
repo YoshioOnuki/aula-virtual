@@ -25674,11 +25674,20 @@ img {
 
 
 .dark-mode .image-button-alumno:hover {
-    background-color: #006644; 
-    box-shadow: 0 8px 16px rgba(255,255,255,0.3); 
+    background-color: #006644;
+    box-shadow: 0 8px 16px rgba(255,255,255,0.3);
 }
 .dark-mode .image-button-docente:hover {
     /* background-color: #37474F;  */
-    background-color: #70461E;  
-    box-shadow: 0 8px 16px rgba(255,255,255,0.3); 
+    background-color: #70461E;
+    box-shadow: 0 8px 16px rgba(255,255,255,0.3);
+}
+
+
+.svg-large {
+    transform: scale(2);
+}
+
+.svg-extra-large {
+    transform: scale(6);
 }
