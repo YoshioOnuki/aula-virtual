@@ -26,7 +26,7 @@ class Login extends Component
         $usuario = Usuario::where('correo_usuario', $this->correo)->first();
         if($usuario && Hash::check($this->contrasenia, $usuario->contrasenia_usuario)){
             auth()->login($usuario, false);
-            return redirect()->route('inicio');
+            return redirect()->intended(route('inicio'));
         }
         $this->addError('correo', 'Estas credenciales son incorrectas.');
         $this->addError('contrasenia', 'Estas credenciales son incorrectas.');
