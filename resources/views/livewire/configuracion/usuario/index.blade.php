@@ -102,14 +102,14 @@
                                         </td>
                                         <td>
                                             @if ($item->estado_usuario == 1)
-                                            <a style="cursor: pointer;" wire:click="abrir_modal">
+                                            <a wire:click="abrir_modal_estado({{ $item->id_usuario }}, 0)" class="text-decoration-none cursor-pointer">
                                                 <span class="badge bg-teal-lt status-teal px-3 py-2 fs-4">
                                                     <span class="status-dot status-dot-animated me-2"></span>
                                                     Activo
                                                 </span>
                                             </a>
-                                            @else
-                                            <a style="cursor: pointer;">
+                                            @elseif ($item->estado_usuario == 0)
+                                            <a wire:click="abrir_modal_estado({{ $item->id_usuario }}, 1)" class="text-decoration-none cursor-pointer">
                                                 <span class="badge bg-red-lt status-red px-3 py-2 fs-4">
                                                     <span class="status-dot status-dot-animated me-2"></span>
                                                     Inactivo
@@ -202,10 +202,19 @@
                     <div class="modal-body px-6">
                         <div class="row g-3">
                             <div class="col-lg-12 mt-2 text-center">
+                                @if($modo === 1)
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0ca678" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-lock-open svg-extra-large my-6">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M5 11m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z" />
+                                    <path d="M12 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                    <path d="M8 11v-5a4 4 0 0 1 8 0" />
+                                </svg>
+                                @else
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#d63939" class="icon icon-tabler icons-tabler-filled icon-tabler-lock svg-extra-large my-6">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                     <path d="M12 2a5 5 0 0 1 5 5v3a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-10a3 3 0 0 1 -3 -3v-6a3 3 0 0 1 3 -3v-3a5 5 0 0 1 5 -5m0 12a2 2 0 0 0 -1.995 1.85l-.005 .15a2 2 0 1 0 2 -2m0 -10a3 3 0 0 0 -3 3v3h6v-3a3 3 0 0 0 -3 -3" />
                                 </svg>
+                                @endif
                             </div>
                             <div class="col-lg-12 mt-2 text-center">
                                 <h4 class="text-center fs-3">
@@ -228,7 +237,7 @@
                                             <h4 class="alert-title text-dark">¡Alerta!</h4>
                                             <div class="text-dark">
                                                 Estás a punto de <strong>{{ $accion_estado }}</strong> el acceso de este usuario.
-                                                Esto restringirá su acceso al sistema.
+                                                Esto {{ $modo === 1 ? 'permitirá' : 'restringirá' }} su acceso al sistema.
                                             </div>
                                         </div>
                                     </div>
@@ -236,9 +245,18 @@
                             </div>
                             <div class="col-lg-12">
                                 <ul style="list-style-type: none;">
-                                    <li class="mb-2"><strong>Persona:</strong> asdasdasdasd</li>
-                                    <li class="mb-2"><strong>Usuario:</strong> asdasd</li>
-                                    <li class=""><strong>Rol:</strong> asdasd</li>
+                                    <li class="mb-2">
+                                        <strong>Persona:</strong>
+                                        <span class="text-secondary">{{ $nombres_persona }}</span>
+                                    </li>
+                                    <li class="mb-2">
+                                        <strong>Usuario:</strong>
+                                        <span class="text-secondary">{{ $correo_usuario }}</span>
+                                    </li>
+                                    <li class="">
+                                        <strong>Rol:</strong>
+                                        <span class="text-secondary">{{ $rol_usuario }}</span>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -247,11 +265,20 @@
                         <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="limpiar_modal">
                             Cancelar
                         </a>
-                        <button type="submit" class="btn btn-red ms-auto">
+                        <button type="submit" class="btn btn-{{ $modo === 1 ? 'teal' : 'red' }} ms-auto">
+                            @if($modo === 1)
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-lock-open">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M5 11m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z" />
+                                <path d="M12 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                <path d="M8 11v-5a4 4 0 0 1 8 0" />
+                            </svg>
+                            @else
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#ffffff" class="icon icon-tabler icons-tabler-filled icon-tabler-lock">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                 <path d="M12 2a5 5 0 0 1 5 5v3a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-10a3 3 0 0 1 -3 -3v-6a3 3 0 0 1 3 -3v-3a5 5 0 0 1 5 -5m0 12a2 2 0 0 0 -1.995 1.85l-.005 .15a2 2 0 1 0 2 -2m0 -10a3 3 0 0 0 -3 3v3h6v-3a3 3 0 0 0 -3 -3" />
                             </svg>
+                            @endif
                             {{ $accion_estado }}
                         </button>
                     </div>

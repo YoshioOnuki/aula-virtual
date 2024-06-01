@@ -36,7 +36,7 @@ class Usuario extends Authenticatable
     public function roles() {
         return $this->belongsToMany(Rol::class, 'usuario_rol', 'id_usuario', 'id_rol');
     }
-    
+
 
     public function gestionAulaUsuario(){
         return $this->hasMany(GestionAulaUsuario::class, 'id_usuario');
@@ -96,12 +96,12 @@ class Usuario extends Authenticatable
 
     public function mostrarRolCollection()
     {
-        
+
     }
 
     public function getNombreCompletoAttribute()
     {
-        return $this->persona->nombre_completo;
+        return $this->persona?->nombre_completo;
     }
 
     public function getSoloPrimerosNombresAttribute()
