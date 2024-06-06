@@ -92,10 +92,29 @@ class Index extends Component
         } catch (\Exception $e) {
             DB::rollBack();
 
-            dd($e->getMessage());
+            $this->dispatch(
+                'toast-basico',
+                mensaje: 'Ocurrió un error al actualizar el estado del usuario'.$e->getMessage(),
+                type: 'error'
+            );
         }
 
+    }
 
+    public function limpiar_modal()
+    {
+        $this->nombres_persona = '';
+        $this->correo_usuario = '';
+        $this->rol_usuario = '';
+        $this->modo = 1;
+        $this->titulo_modal = 'Estado de Usuario';
+        $this->accion_estado = 'Habilitar';
+
+        $this->dispatch(
+            'modal',
+            modal: '#modal-estado-usuario',
+            action: 'hide'
+        );
     }
 
     public function mount()
@@ -105,6 +124,7 @@ class Index extends Component
         $this->modo = 1;
 
     }
+
 
     public function render()
     {

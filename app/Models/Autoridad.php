@@ -40,6 +40,27 @@ class Autoridad extends Model
         return $nombres[0] . ' ' . $nombres[1];
     }
 
+    public function scopeSearch($query, $search)
+    {
+        return $query->where('nombre_autoridad', 'LIKE', '%' . $search . '%')
+            ->orWhereHas('facultad', function ($query) use ($search) {
+                $query->where('nombre_facultad', 'LIKE', '%' . $search . '%');
+            })
+            ->orWhereHas('cargo', function ($query) use ($search) {
+                $query->where('nombre_cargo', 'LIKE', '%' . $search . '%');
+            });
+    }
+
+    public function scopeActivo($query)
+    {
+        return $query->where('estado_autoridad', 1);
+    }
+
+    public function scopeInactivo($query)
+    {
+        return $query->where('estado_autoridad', 0);
+    }
+
     public function getMostrarFotoAttribute()
     {
         return $this->foto_autoridad ?? 'https://ui-avatars.com/api/?name=' . $this->solo_primeros_nombres . '&size=64&&color='. config('settings.color_lt_autoridades') .'&background='. config('settings.color_autoridades') .'&bold=true';
