@@ -25,6 +25,8 @@ class Sidebar extends Component
         return redirect()->route('inicio');
     }
 
+    /* =============== SEGURIDAD Y CONFIGURACION =============== */
+
     public function mostrar_perfil()
     {
         //Limpiar la sesión
@@ -39,19 +41,77 @@ class Sidebar extends Component
         return redirect()->route('usuarios');
     }
 
-    public function mostrar_proceso()
-    {
-        //Limpiar la sesión
-        session()->forget('tipo_vista');
-        return redirect()->route('proceso');
-    }
-
     public function mostrar_registro_alumnos()
     {
         // Guardar en la sesión el tipo de vista
         session(['tipo_vista' => 'alumno']);
         return redirect()->route('registro-alumnos');
     }
+
+
+    /* =============== ESTRUCTURA ACADEMICA =============== */
+
+    public function mostrar_nivel_academico()
+    {
+        //Limpiar la sesión
+        session()->forget('tipo_vista');
+        return redirect()->route('estructura-academica.nivel-academico');
+    }
+
+    public function mostrar_tipo_programa()
+    {
+        //Limpiar la sesión
+        session()->forget('tipo_vista');
+        return redirect()->route('estructura-academica.tipo-programa');
+    }
+
+    public function mostrar_facultad()
+    {
+        //Limpiar la sesión
+        session()->forget('tipo_vista');
+        return redirect()->route('estructura-academica.facultad');
+    }
+
+    public function mostrar_programa()
+    {
+        //Limpiar la sesión
+        session()->forget('tipo_vista');
+        return redirect()->route('estructura-academica.programa');
+    }
+
+
+    /* =============== GESTION DEL CURSO =============== */
+
+    public function mostrar_plan_estudio()
+    {
+        //Limpiar la sesión
+        session()->forget('tipo_vista');
+        return redirect()->route('gestion-curso.plan-estudio');
+    }
+
+    public function mostrar_ciclo()
+    {
+        //Limpiar la sesión
+        session()->forget('tipo_vista');
+        return redirect()->route('gestion-curso.ciclo');
+    }
+
+    public function mostrar_proceso()
+    {
+        //Limpiar la sesión
+        session()->forget('tipo_vista');
+        return redirect()->route('gestion-curso.proceso');
+    }
+
+    public function mostrar_curso()
+    {
+        //Limpiar la sesión
+        session()->forget('tipo_vista');
+        return redirect()->route('gestion-curso.curso');
+    }
+
+
+    /* =============== GESTION ACADEMICA =============== */
 
     public function mostrar_cursos()
     {
@@ -67,12 +127,8 @@ class Sidebar extends Component
         return redirect()->route('carga-academica');
     }
 
-    public function mostrar_plan_estudio()
-    {
-        //Limpiar la sesión
-        session()->forget('tipo_vista');
-        return redirect()->route('plan-estudio');
-    }
+
+    /* =============== EXTRAS =============== */
 
     public function mostrar_manuales()
     {
@@ -80,6 +136,15 @@ class Sidebar extends Component
         session()->forget('tipo_vista');
         return redirect()->route('manuales');
     }
+
+    public function mostrar_autoridades()
+    {
+        //Limpiar la sesión
+        session()->forget('tipo_vista');
+        return redirect()->route('autoridades');
+    }
+
+
 
     public function mount()
     {

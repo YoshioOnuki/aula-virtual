@@ -102,7 +102,7 @@
 
                 @if ($usuario->esRol('ADMINISTRADOR'))
                     <li
-                        class="nav-item {{ request()->routeIs('usuarios*') || request()->routeIs('proceso*') || request()->routeIs('registro-alumnos*') ? 'active' : '' }} dropdown">
+                        class="nav-item {{ request()->routeIs('usuarios*') || request()->routeIs('proceso*') || request()->routeIs('registro-alumnos*') || request()->routeIs('autoridades*') ? 'active' : '' }} dropdown">
                         <a class="nav-link dropdown-toggle" href="#navbar-layout" data-bs-toggle="dropdown"
                             data-bs-auto-close="false" role="button" aria-expanded="true">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -121,7 +121,7 @@
                             </span>
                         </a>
                         <div
-                            class="dropdown-menu {{ request()->routeIs('usuarios*') || request()->routeIs('proceso*') || request()->routeIs('registro-alumnos*') ? 'show' : '' }}">
+                            class="dropdown-menu {{ request()->routeIs('usuarios*') || request()->routeIs('proceso*') || request()->routeIs('registro-alumnos*') || request()->routeIs('autoridades*') ? 'show' : '' }}">
                             <div class="dropdown-menu-columns">
                                 <div class="dropdown-menu-column">
                                     <a class="dropdown-item {{ request()->routeIs('usuarios') ? 'active fw-medium' : '' }}"
@@ -132,8 +132,8 @@
                                         style="cursor: pointer;" wire:click="mostrar_registro_alumnos">
                                         Registrar Alumnos
                                     </a>
-                                    <a class="dropdown-item {{ request()->routeIs('proceso') ? 'active fw-medium' : '' }}"
-                                        style="cursor: pointer;" wire:click="mostrar_proceso">
+                                    <a class="dropdown-item {{ request()->routeIs('autoridades') ? 'active fw-medium' : '' }}"
+                                        style="cursor: pointer;" wire:click="mostrar_autoridades">
                                         Autoridades
                                     </a>
                                 </div>
@@ -145,7 +145,7 @@
                     <hr class="ms-lg-3 mt-3 mb-3 hide-theme-light text-white">
 
                     <li
-                        class="nav-item {{ request()->routeIs('usuarios*') || request()->routeIs('proceso*') || request()->routeIs('registro-alumnos*') ? 'active' : '' }} dropdown">
+                        class="nav-item {{ request()->routeIs('estructura-academica*') ? 'active' : '' }} dropdown">
                         <a class="nav-link dropdown-toggle" href="#navbar-layout" data-bs-toggle="dropdown"
                             data-bs-auto-close="false" role="button" aria-expanded="true">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -180,23 +180,23 @@
                             </span>
                         </a>
                         <div
-                            class="dropdown-menu {{ request()->routeIs('usuarios*') || request()->routeIs('proceso*') || request()->routeIs('registro-alumnos*') ? 'show' : '' }}">
+                            class="dropdown-menu {{ request()->routeIs('estructura-academica*') ? 'show' : '' }}">
                             <div class="dropdown-menu-columns">
                                 <div class="dropdown-menu-column">
-                                    <a class="dropdown-item {{ request()->routeIs('usuarios') ? 'active fw-medium' : '' }}"
-                                        style="cursor: pointer;" wire:click="mostrar_usuarios">
+                                    <a class="dropdown-item {{ request()->routeIs('estructura-academica.nivel-academico') ? 'active fw-medium' : '' }}"
+                                        style="cursor: pointer;" wire:click="mostrar_nivel_academico">
                                         Nivel Académico
                                     </a>
-                                    <a class="dropdown-item {{ request()->routeIs('proceso') ? 'active fw-medium' : '' }}"
-                                        style="cursor: pointer;" wire:click="mostrar_proceso">
+                                    <a class="dropdown-item {{ request()->routeIs('estructura-academica.tipo-programa') ? 'active fw-medium' : '' }}"
+                                        style="cursor: pointer;" wire:click="mostrar_tipo_programa">
                                         Tipo de Programa
                                     </a>
-                                    <a class="dropdown-item {{ request()->routeIs('registro-alumnos') ? 'active fw-medium' : '' }}"
-                                        style="cursor: pointer;" wire:click="mostrar_registro_alumnos">
+                                    <a class="dropdown-item {{ request()->routeIs('estructura-academica.facultad') ? 'active fw-medium' : '' }}"
+                                        style="cursor: pointer;" wire:click="mostrar_facultad">
                                         Facultad
                                     </a>
-                                    <a class="dropdown-item {{ request()->routeIs('usuarios') ? 'active fw-medium' : '' }}"
-                                        style="cursor: pointer;" wire:click="mostrar_usuarios">
+                                    <a class="dropdown-item {{ request()->routeIs('estructura-academica.programa') ? 'active fw-medium' : '' }}"
+                                        style="cursor: pointer;" wire:click="mostrar_programa">
                                         Programa
                                     </a>
                                 </div>
@@ -205,7 +205,7 @@
                     </li>
 
                     <li
-                        class="nav-item {{ request()->routeIs('usuarios*') || request()->routeIs('proceso*') || request()->routeIs('registro-alumnos*') ? 'active' : '' }} dropdown">
+                        class="nav-item {{ request()->routeIs('gestion-curso*') ? 'active' : '' }} dropdown">
                         <a class="nav-link dropdown-toggle" href="#navbar-layout" data-bs-toggle="dropdown"
                             data-bs-auto-close="false" role="button" aria-expanded="true">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -231,23 +231,23 @@
                             </span>
                         </a>
                         <div
-                            class="dropdown-menu {{ request()->routeIs('usuarios*') || request()->routeIs('proceso*') || request()->routeIs('registro-alumnos*') ? 'show' : '' }}">
+                            class="dropdown-menu {{ request()->routeIs('gestion-curso.*') ? 'show' : '' }}">
                             <div class="dropdown-menu-columns">
                                 <div class="dropdown-menu-column">
-                                    <a class="dropdown-item {{ request()->routeIs('proceso') ? 'active fw-medium' : '' }}"
-                                        style="cursor: pointer;" wire:click="mostrar_proceso">
+                                    <a class="dropdown-item {{ request()->routeIs('gestion-curso.plan-estudio') ? 'active fw-medium' : '' }}"
+                                        style="cursor: pointer;" wire:click="mostrar_plan_estudio">
                                         Plan de estudios
                                     </a>
-                                    <a class="dropdown-item {{ request()->routeIs('registro-alumnos') ? 'active fw-medium' : '' }}"
-                                        style="cursor: pointer;" wire:click="mostrar_registro_alumnos">
+                                    <a class="dropdown-item {{ request()->routeIs('gestion-curso.ciclo') ? 'active fw-medium' : '' }}"
+                                        style="cursor: pointer;" wire:click="mostrar_ciclo">
                                         Ciclo
                                     </a>
-                                    <a class="dropdown-item {{ request()->routeIs('registro-alumnos') ? 'active fw-medium' : '' }}"
-                                        style="cursor: pointer;" wire:click="mostrar_registro_alumnos">
+                                    <a class="dropdown-item {{ request()->routeIs('gestion-curso.proceso') ? 'active fw-medium' : '' }}"
+                                        style="cursor: pointer;" wire:click="mostrar_proceso">
                                         Proceso
                                     </a>
-                                    <a class="dropdown-item {{ request()->routeIs('registro-alumnos') ? 'active fw-medium' : '' }}"
-                                        style="cursor: pointer;" wire:click="mostrar_registro_alumnos">
+                                    <a class="dropdown-item {{ request()->routeIs('gestion-curso.curso') ? 'active fw-medium' : '' }}"
+                                        style="cursor: pointer;" wire:click="mostrar_curso">
                                         Curso
                                     </a>
                                 </div>

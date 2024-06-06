@@ -1,7 +1,7 @@
 <?php
 
+use App\Livewire\Configuracion\Autoridades\Index as AutoridadesIndex;
 use App\Livewire\Configuracion\Perfil\Index as PerfilIndex;
-use App\Livewire\Configuracion\Proceso\Index as ProcesoIndex;
 use App\Livewire\Configuracion\Usuario\Index as UsuarioIndex;
 use App\Livewire\GestionAula\Curso\Detalle as CursoDetalle;
 use App\Livewire\GestionAula\Curso\Index as CursoIndex;
@@ -30,34 +30,74 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/usuarios', UsuarioIndex::class)
         ->name('usuarios');
-    
-    Route::get('/proceso', ProcesoIndex::class)
-        ->name('proceso');
 
     Route::get('/registro-alumnos', UsuarioIndex::class)
         ->name('registro-alumnos');
 
+    // Autoridades
+    Route::get('/autoridades', AutoridadesIndex::class)
+        ->name('autoridades');
+
+
+    /* =============== ESTRUCTURA ACADEMICA =============== */
+    // Grupo de ruta para el profijo estructura academica
+    Route::prefix('estructura-academica')->group(function () {
+        // Nivel academico
+        Route::get('/nivel-academico', HomeIndex::class)
+            ->name('estructura-academica.nivel-academico');
+        // Tipo programa
+        Route::get('/tipo-programa', HomeIndex::class)
+            ->name('estructura-academica.tipo-programa');
+        // Facultad
+        Route::get('/facultad', HomeIndex::class)
+            ->name('estructura-academica.facultad');
+        // Programa
+        Route::get('/programa', HomeIndex::class)
+            ->name('estructura-academica.programa');
+    });
+
+
+    /* =============== GESTION DEL CURSO =============== */
+    // Grupo de ruta para el profijo gestion del curso
+    Route::prefix('gestion-curso')->group(function () {
+        // Plan de estudio
+        Route::get('/plan-estudio', PlanEstudioIndex::class)
+            ->name('gestion-curso.plan-estudio');
+        // Ciclo
+        Route::get('/ciclo', HomeIndex::class)
+            ->name('gestion-curso.ciclo');
+        // Proceso
+        Route::get('/proceso', PerfilIndex::class)
+            ->name('gestion-curso.proceso');
+        // Curso
+        Route::get('/curso', CursoIndex::class)
+            ->name('gestion-curso.curso');
+    });
+
 
     /* =============== GESTION DEL AULA =============== */
-    // Alumno
-    Route::get('/cursos', CursoIndex::class)
-        ->name('cursos');
+    // Grupo de ruta para el profijo gestion del aula
+    Route::prefix('gestion-aula')->group(function () {
+        // Alumno
+        Route::get('/cursos', CursoIndex::class)
+            ->name('cursos');
+        // Curso detalle
+        Route::get('/cursos/detalle/{id}', CursoDetalle::class)
+            ->name('cursos.detalle');
+        // Silabus
+        Route::get('/cursos/detalle/{id}/silabus', SilabusIndex::class)
+            ->name('cursos.detalle.silabus');
 
-    Route::get('/cursos/detalle/{id}', CursoDetalle::class)
-        ->name('cursos.detalle');
-
-    Route::get('/cursos/detalle/{id}/silabus', SilabusIndex::class)
-        ->name('cursos.detalle.silabus');
-
-    // Docente
-    Route::get('/carga-academica', CursoIndex::class)
-        ->name('carga-academica');
-
-    Route::get('/carga-academica/detalle/{id}', CursoDetalle::class)
-        ->name('carga-academica.detalle');
-
-    Route::get('/carga-academica/detalle/{id}/silabus', SilabusIndex::class)
-        ->name('carga-academica.detalle.silabus');
+        // Docente
+        Route::get('/carga-academica', CursoIndex::class)
+            ->name('carga-academica');
+        // Cargo academico detalle
+        Route::get('/carga-academica/detalle/{id}', CursoDetalle::class)
+            ->name('carga-academica.detalle');
+        // Silabus
+        Route::get('/carga-academica/detalle/{id}/silabus', SilabusIndex::class)
+            ->name('carga-academica.detalle.silabus');
+    });
 
 
     /* =============== EXTRAS =============== */
