@@ -125,6 +125,18 @@ class Usuario extends Authenticatable
         });
     }
 
+    public function scopeActivo($query) {
+        return $query->where('estado_usuario', 1);
+    }
+
+    public function scopeInactivo($query) {
+        return $query->where('estado_usuario', 0);
+    }
+
+    public function scopeCorreo($query, $correo) {
+        return $query->where('correo_usuario', $correo);
+    }
+
     protected static function boot()
     {
         parent::boot();
