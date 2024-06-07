@@ -256,7 +256,7 @@
                     </li>
                 @endif
 
-                @if ($usuario->esRol('ALUMNO') || $usuario->esRol('DOCENTE'))
+                @if ($usuario->esRol('ALUMNO') || $usuario->esRol('DOCENTE') || $usuario->esRol('DOCENTE INVITADO'))
                     <hr class="ms-lg-3 mt-3 mb-3 hide-theme-dark">
                     <hr class="ms-lg-3 mt-3 mb-3 hide-theme-light text-white">
 
@@ -292,7 +292,7 @@
                         </li>
                     @endif
 
-                    @if ($usuario->esRol('DOCENTE'))
+                    @if ($usuario->esRol('DOCENTE') || $usuario->esRol('DOCENTE INVITADO'))
                         <li class="nav-item {{ request()->routeIs('carga-academica*') ? 'active' : '' }}">
                             <a class="nav-link" style="cursor: pointer;" wire:click="mostrar_carga_academica">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block">

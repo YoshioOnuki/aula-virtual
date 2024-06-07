@@ -23,9 +23,9 @@ class Detalle extends Component
         {
             session(['tipo_vista' => 'docente']);
         }
-        
+
         $this->id_gestion_aula_usuario = desencriptar($id);
-        
+
         $this->gestion_aula_usuario = GestionAulaUsuario::with([
             'gestionAula' => function ($query) {
                 $query->with([
@@ -54,7 +54,7 @@ class Detalle extends Component
         $gestion_aula = $this->gestion_aula_usuario->gestionAula;
 
         $this->docente = GestionAulaUsuario::with(['usuario.persona'])
-            ->join('rol', 'gestion_aula_usuario.id_rol', '=', 'rol.id_rol') 
+            ->join('rol', 'gestion_aula_usuario.id_rol', '=', 'rol.id_rol')
             ->where('id_gestion_aula', $gestion_aula->id_gestion_aula)
             ->where(function($query) {
                 $query->where('rol.nombre_rol', 'DOCENTE')
@@ -76,7 +76,6 @@ class Detalle extends Component
 
     public function mostrar_link_clase()
     {
-        
         if($this->gestion_aula_usuario->gestionAula->linkClase->isEmpty())
         {
             $this->dispatch(
@@ -87,11 +86,61 @@ class Detalle extends Component
         }else{
             //redirigir a un enlace externo
             return redirect()->away($this->gestion_aula_usuario->gestionAula->linkClase->nombre_link_clase);
-            
+
         }
     }
 
-    
+    public function mostrar_lecturas($id)
+    {
+        $id_url = encriptar($id);
+        if(session('tipo_vista') === 'alumno'){
+            return redirect()->route('cursos.detalle.lectura', ['id' => $id_url]);
+        }else{
+            return redirect()->route('carga-academica.detalle.lectura', ['id' => $id_url]);
+        }
+    }
+
+    public function mostrar_foro($id)
+    {
+        $id_url = encriptar($id);
+        if(session('tipo_vista') === 'alumno'){
+            return redirect()->route('cursos.detalle.foro', ['id' => $id_url]);
+        }else{
+            return redirect()->route('carga-academica.detalle.foro', ['id' => $id_url]);
+        }
+    }
+
+    public function mostrar_asistencia($id)
+    {
+        $id_url = encriptar($id);
+        if(session('tipo_vista') === 'alumno'){
+            return redirect()->route('cursos.detalle.asistencia', ['id' => $id_url]);
+        }else{
+            return redirect()->route('carga-academica.detalle.asistencia', ['id' => $id_url]);
+        }
+    }
+
+    public function mostrar_trabajo_academico($id)
+    {
+        $id_url = encriptar($id);
+        if(session('tipo_vista') === 'alumno'){
+            return redirect()->route('cursos.detalle.trabajo-academico', ['id' => $id_url]);
+        }else{
+            return redirect()->route('carga-academica.detalle.trabajo-academico', ['id' => $id_url]);
+        }
+    }
+
+    public function mostrar_webgrafia($id)
+    {
+        $id_url = encriptar($id);
+        if(session('tipo_vista') === 'alumno'){
+            return redirect()->route('cursos.detalle.webgrafia', ['id' => $id_url]);
+        }else{
+            return redirect()->route('carga-academica.detalle.webgrafia', ['id' => $id_url]);
+        }
+    }
+
+
     public function render()
     {
         return view('livewire.gestion-aula.curso.detalle');
