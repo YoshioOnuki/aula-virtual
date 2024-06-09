@@ -93,7 +93,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/cursos/detalle/{id}/silabus', SilabusIndex::class)
             ->name('cursos.detalle.silabus');
         // Lectura
-        Route::get('/cursos/detalle/{id}/lectura', SilabusIndex::class)
+        Route::get('/cursos/detalle/{id}/lectura', LecturasIndex::class)
             ->name('cursos.detalle.lectura');
         // Foro
         Route::get('/cursos/detalle/{id}/foro', ForoIndex::class)
@@ -115,7 +115,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/carga-academica/detalle/{id}', CursoDetalle::class)
             ->name('carga-academica.detalle');
         // Silabus
-        Route::get('/carga-academica/detalle/{id}/silabus', LecturasIndex::class)
+        Route::get('/carga-academica/detalle/{id}/silabus', SilabusIndex::class)
             ->name('carga-academica.detalle.silabus');
         // Lectura
         Route::get('/carga-academica/detalle/{id}/lectura', LecturasIndex::class)

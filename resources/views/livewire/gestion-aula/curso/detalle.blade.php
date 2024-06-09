@@ -60,116 +60,12 @@
     <div class="page-body">
         <div class="container-xl">
             <div class="row g-3">
-                <div class="col-lg-4">
-                    <div class="row g-3">
-
-                        @forelse ($docente as $item)
-                            <div class="col-12">
-                                <a class="card card-link card-stacked">
-                                    <div class="card-cover card-cover-blurred text-center"
-                                        style="background-image: url({{ session('tipo_vista') == 'docente' ? config('settings.fondo_detalle_doncente') : config('settings.fondo_detalle_alumno') }})">
-                                        @if (session('tipo_vista') == 'docente')
-                                            <img src="{{ asset($item->usuario->mostrarFoto('docente')) }}"
-                                                alt="avatar" class="avatar avatar-xl avatar-thumb rounded">
-                                        @else
-                                            <img src="{{ asset($item->usuario->mostrarFoto('alumno')) }}" alt="avatar"
-                                                class="avatar avatar-xl avatar-thumb rounded">
-                                        @endif
-                                    </div>
-                                    <div class="card-body text-center">
-                                        <div class="card-title mb-1">
-                                            {{ $item->usuario->nombre_completo }}
-                                        </div>
-                                        <div class="text-muted">
-                                            {{ $item->usuario->persona->correo_persona }}
-                                        </div>
-                                        <div class="mt-2">
-                                            <span
-                                                class="badge {{ session('tipo_vista') == 'alumno' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
-                                                {{ $item->rol->nombre_rol }}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        @empty
-                            <div class="col-12">
-                                <div class="card card-stacked animate__animated animate__fadeIn animate__faster">
-                                    <div
-                                        class="card-body d-flex flex-column align-items-center text-center text-muted fw-bold">
-                                        Sin docente asignado
-                                    </div>
-                                </div>
-                            </div>
-                        @endforelse
-
-                        <div class="col-12">
-                            <div class="card card-stacked animate__animated animate__fadeIn animate__faster">
-                                <div
-                                    class="card-header {{ session('tipo_vista') === 'alumno' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
-                                    <h3 class="card-title fw-semibold">
-                                        Información del Curso
-                                    </h3>
-                                </div>
-                                <div class="card-body row g-3 mb-0">
-                                    <div class="d-flex flex-column gap-2">
-                                        <div class="row g-3">
-                                            <div class="col-12">
-                                                <strong>Programa de {{ $curso->programa->tipoPrograma->nombre_tipo_programa }}:</strong> {{ $curso->programa->nombre_programa }}
-                                            </div>
-                                            @if($curso->programa->mencion_programa)
-                                                <div class="col-12">
-                                                    <strong>Mención:</strong> {{ $curso->programa->mencion->nombre_mencion }}
-                                                </div>
-                                            @endif
-                                            <div class="col-12">
-                                                <strong>Código del Curso:</strong> {{ $curso->codigo_curso }}
-                                            </div>
-                                            <div class="col-12">
-                                                <strong>Nombre del Curso:</strong> {{ $curso->nombre_curso }}
-                                            </div>
-                                            <div class="col-4">
-                                                <strong>Ciclo:</strong> {{ numero_a_romano($curso->ciclo->numero_ciclo) }}
-                                            </div>
-                                            <div class="col-4">
-                                                <strong>Créditos:</strong> {{ $curso->creditos_curso }}
-                                            </div>
-                                            <div class="col-4">
-                                                <strong>Horas:</strong> {{ $curso->horas_lectivas_curso }}
-                                            </div>
-                                            <div class="col-12">
-                                                <strong>Plan de Estudio:</strong> {{ $curso->planEstudio->nombre_plan_estudio }}
-                                            </div>
-                                            <div class="col-12">
-                                                <a class="btn btn-primary w-100 mt-3 
-                                                    {{ $gestion_aula_usuario->gestionAula->linkClase->isEmpty() ? 'disabled' : '' }}"
-                                                    style="cursor: pointer;" wire:click="mostrar_link_clase">
-                                                    Link de Clase
-                                                </a>
-                                                @if($gestion_aula_usuario->gestionAula->linkClase->isEmpty())
-                                                    <div class="alert alert-azure bg-azure-lt mt-2 fw-bold animate__animated animate__fadeIn animate__faster">
-                                                        @if(session('tipo_vista') == 'docente')
-                                                            Por favor, cargue el link de la clase para que esté disponible para los estudiantes.
-                                                        @else
-                                                            Link de la clase pendiente. Consulte con el docente.
-                                                        @endif
-                                                    </div>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
 
                 <div class="col-lg-8">
                     <div class="row g-3">
                         @if(session('tipo_vista') == 'alumno')
                             <div class="col-12">
-                                <div class="card card-stacked animate__animated animate__fadeIn animate__faster mb-3">
+                                <div class="card card-stacked animate__animated animate__fadeIn animate__faster">
                                     <div class="card-header bg-teal-lt">
                                         <span class="text-teal me-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -193,17 +89,6 @@
                                             Totam quisquam voluptatibus perspiciatis id consequuntur consequatur, deserunt
                                             consectetur ea animi nemo porro quos! Eaque natus aliquam impedit molestiae illo
                                             tempore consequatur labore, quos voluptatem quia officiis eligendi facilis
-                                            error!
-                                            Voluptatum ipsa ipsam laborum rem, dolor cupiditate? Illo excepturi blanditiis
-                                            voluptates harum minus cum ullam, soluta quisquam architecto est sunt rem, earum
-                                            perspiciatis, laborum quae dolores consequatur consectetur corporis magni.
-                                            Sapiente eligendi harum deserunt ducimus deleniti explicabo, doloribus
-                                            repellendus dolorem fugit est illo voluptas fugiat recusandae expedita saepe
-                                            magni culpa. Fugiat pariatur, id blanditiis quasi est ab harum quae numquam.
-                                            Atque quae eum animi. Saepe ut, adipisci perferendis impedit exercitationem
-                                            reprehenderit libero similique. Et cupiditate consequuntur perspiciatis quo
-                                            quaerat unde. Hic quam voluptate accusamus labore voluptatum. Eveniet eaque
-                                            obcaecati rem.
                                         </span>
                                     </div>
                                 </div>
@@ -457,6 +342,112 @@
 
                     </div>
                 </div>
+
+                <div class="col-lg-4">
+                    <div class="row g-3">
+
+                        @forelse ($docente as $item)
+                            <div class="col-12">
+                                <a class="card card-link card-stacked">
+                                    <div class="card-cover card-cover-blurred text-center"
+                                        style="background-image: url({{ session('tipo_vista') == 'docente' ? config('settings.fondo_detalle_doncente') : config('settings.fondo_detalle_alumno') }})">
+                                        @if (session('tipo_vista') == 'docente')
+                                            <img src="{{ asset($item->usuario->mostrarFoto('docente')) }}"
+                                                alt="avatar" class="avatar avatar-xl avatar-thumb rounded">
+                                        @else
+                                            <img src="{{ asset($item->usuario->mostrarFoto('alumno')) }}" alt="avatar"
+                                                class="avatar avatar-xl avatar-thumb rounded">
+                                        @endif
+                                    </div>
+                                    <div class="card-body text-center">
+                                        <div class="card-title mb-1">
+                                            {{ $item->usuario->nombre_completo }}
+                                        </div>
+                                        <div class="text-muted">
+                                            {{ $item->usuario->persona->correo_persona }}
+                                        </div>
+                                        <div class="mt-2">
+                                            <span
+                                                class="badge {{ session('tipo_vista') == 'alumno' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
+                                                {{ $item->rol->nombre_rol }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        @empty
+                            <div class="col-12">
+                                <div class="card card-stacked animate__animated animate__fadeIn animate__faster">
+                                    <div
+                                        class="card-body d-flex flex-column align-items-center text-center text-muted fw-bold">
+                                        Sin docente asignado
+                                    </div>
+                                </div>
+                            </div>
+                        @endforelse
+
+                        <div class="col-12">
+                            <div class="card card-stacked animate__animated animate__fadeIn animate__faster">
+                                <div
+                                    class="card-header {{ session('tipo_vista') === 'alumno' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
+                                    <h3 class="card-title fw-semibold">
+                                        Información del Curso
+                                    </h3>
+                                </div>
+                                <div class="card-body row g-3 mb-0">
+                                    <div class="d-flex flex-column gap-2">
+                                        <div class="row g-3">
+                                            <div class="col-12">
+                                                <strong>Programa de {{ $curso->programa->tipoPrograma->nombre_tipo_programa }}:</strong> {{ $curso->programa->nombre_programa }}
+                                            </div>
+                                            @if($curso->programa->mencion_programa)
+                                                <div class="col-12">
+                                                    <strong>Mención:</strong> {{ $curso->programa->mencion->nombre_mencion }}
+                                                </div>
+                                            @endif
+                                            <div class="col-12">
+                                                <strong>Código del Curso:</strong> {{ $curso->codigo_curso }}
+                                            </div>
+                                            <div class="col-12">
+                                                <strong>Nombre del Curso:</strong> {{ $curso->nombre_curso }}
+                                            </div>
+                                            <div class="col-4">
+                                                <strong>Ciclo:</strong> {{ numero_a_romano($curso->ciclo->numero_ciclo) }}
+                                            </div>
+                                            <div class="col-4">
+                                                <strong>Créditos:</strong> {{ $curso->creditos_curso }}
+                                            </div>
+                                            <div class="col-4">
+                                                <strong>Horas:</strong> {{ $curso->horas_lectivas_curso }}
+                                            </div>
+                                            <div class="col-12">
+                                                <strong>Plan de Estudio:</strong> {{ $curso->planEstudio->nombre_plan_estudio }}
+                                            </div>
+                                            <div class="col-12">
+                                                <a class="btn btn-primary w-100 mt-3 
+                                                    {{ $gestion_aula_usuario->gestionAula->linkClase->isEmpty() ? 'disabled' : '' }}"
+                                                    style="cursor: pointer;" wire:click="mostrar_link_clase">
+                                                    Link de Clase
+                                                </a>
+                                                @if($gestion_aula_usuario->gestionAula->linkClase->isEmpty())
+                                                    <div class="alert alert-azure bg-azure-lt mt-2 fw-bold animate__animated animate__fadeIn animate__faster">
+                                                        @if(session('tipo_vista') == 'docente')
+                                                            Por favor, cargue el link de la clase para que esté disponible para los estudiantes.
+                                                        @else
+                                                            Link de la clase pendiente. Consulte con el docente.
+                                                        @endif
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
