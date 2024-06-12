@@ -48,6 +48,13 @@ class Sidebar extends Component
         return redirect()->route('registro-alumnos');
     }
 
+    public function mostrar_autoridades()
+    {
+        //Limpiar la sesión
+        session()->forget('tipo_vista');
+        return redirect()->route('autoridades');
+    }
+
 
     /* =============== ESTRUCTURA ACADEMICA =============== */
 
@@ -130,18 +137,18 @@ class Sidebar extends Component
 
     /* =============== EXTRAS =============== */
 
+    public function mostrar_calificaciones()
+    {
+        //Limpiar la sesión
+        session()->forget('tipo_vista');
+        return redirect()->route('calificaciones');
+    }
+
     public function mostrar_manuales()
     {
         //Limpiar la sesión
         session()->forget('tipo_vista');
         return redirect()->route('manuales');
-    }
-
-    public function mostrar_autoridades()
-    {
-        //Limpiar la sesión
-        session()->forget('tipo_vista');
-        return redirect()->route('autoridades');
     }
 
 

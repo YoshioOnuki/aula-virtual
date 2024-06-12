@@ -6,18 +6,27 @@
                     <div class="page-pretitle">
                         <ol class="breadcrumb breadcrumb-arrows" aria-label="breadcrumbs">
                             <li class="breadcrumb-item"><a href="{{ route('inicio') }}">Inicio</a></li>
+
                             @if (session('tipo_vista') === 'alumno')
-                                <li class="breadcrumb-item"><a href="{{ route('cursos') }}">Mis Cursos</a></li>
+                                <li class="breadcrumb-item">
+                                    <a href="{{ route('cursos') }}">Mis Cursos</a>
+                                </li>
                             @else
-                                <li class="breadcrumb-item"><a href="{{ route('carga-academica') }}">Carga Académica</a>
+                                <li class="breadcrumb-item">
+                                    <a href="{{ route('carga-academica') }}">Carga Académica</a>
                                 </li>
                             @endif
 
                             @if (session('tipo_vista') === 'alumno')
-                                <li class="breadcrumb-item"><a href="{{ route('cursos.detalle', encriptar($id_gestion_aula_usuario)) }}">Detalle</a></li>
+                                <li class="breadcrumb-item">
+                                    <a href="{{ route('cursos.detalle', encriptar($id_gestion_aula_usuario)) }}">Detalle</a>
+                                </li>
                             @else
-                                <li class="breadcrumb-item"><a href="{{ route('carga-academica.detalle', encriptar($id_gestion_aula_usuario)) }}">Detalle</a></li>
+                                <li class="breadcrumb-item">
+                                    <a href="{{ route('carga-academica.detalle', encriptar($id_gestion_aula_usuario)) }}">Detalle</a>
+                                </li>
                             @endif
+
                             <li class="breadcrumb-item active" aria-current="page">
                                 <a href="#">
                                     Silabus
@@ -114,7 +123,7 @@
                         </div>
                         <div class="card-body row g-3 mb-0">
                             <div class="d-flex flex-column gap-2">
-                                <div class="row g-4">
+                                <div class="row g-3">
                                     <div class="col-12">
                                         <div class="row g-2">
                                             <div class="col-12">

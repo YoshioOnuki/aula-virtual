@@ -25,17 +25,25 @@ Route::get('/login', Login::class)
 
 Route::middleware(['auth'])->group(function () {
 
+    // Dashboard
+    Route::get('/dashboard', HomeIndex::class)
+        ->name('dashboard');
+
+    // Inicio
     Route::get('/inicio', HomeIndex::class)
         ->name('inicio');
 
 
     /* =============== SEGURIDAD Y CONFIGURACION =============== */
+    // Perfil
     Route::get('/perfil', PerfilIndex::class)
         ->name('perfil');
 
+    // Usuarios
     Route::get('/usuarios', UsuarioIndex::class)
         ->name('usuarios');
 
+    // Registro de alumnos
     Route::get('/registro-alumnos', UsuarioIndex::class)
         ->name('registro-alumnos');
 
@@ -136,10 +144,17 @@ Route::middleware(['auth'])->group(function () {
 
 
     /* =============== EXTRAS =============== */
+    // Calificaciones
+    Route::get('/calificaciones', HomeIndex::class)
+        ->name('calificaciones');
+
+    // Plan de estudio
+    Route::get('/plan-estudio', PlanEstudioIndex::class)
+        ->name('plan-estudio');
+
+    // Manuales
     Route::get('/manuales', ManualesIndex::class)
         ->name('manuales');
 
-    Route::get('/plan-estudio', PlanEstudioIndex::class)
-        ->name('plan-estudio');
 
 });

@@ -22,6 +22,9 @@ class Index extends Component
     public $progreso = array();
     public $foto_docente = array();
 
+    public $cargando = true;
+    public $cantidad_cursos = 1;
+
 
     public function calcular_progreso()
     {
@@ -182,12 +185,28 @@ class Index extends Component
         }
     }
 
-    public function mount()
+    public function load_cursos()
     {
-        $this->usuario = Usuario::find(auth()->id());
+
         $this->mostrar_cursos();
         $this->calcular_progreso();
         $this->mostrar_foto_docente();
+
+        $this->cargando = false;
+    }
+
+    public function calcular_cantidad_curso()
+    {
+            $this->cantidad_cursos = GestionAulaUsuario::where('id_usuario', auth()->user()->id_usuario)
+                ->where('estado_gestion_aula_usuario', 1)
+                ->count();
+    }
+
+    public function mount()
+    {
+        $this->usuario = Usuario::find(auth()->id());
+
+        $this->calcular_cantidad_curso();
     }
 
     public function render()

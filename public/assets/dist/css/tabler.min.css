@@ -25684,10 +25684,35 @@ img {
 }
 
 
-.svg-large {
+
+.svg-small {
+    transform: scale(1.3);
+}
+
+.svg-medium {
+    transform: scale(1.5);
+}
+
+    .svg-large {
     transform: scale(2);
 }
 
 .svg-extra-large {
     transform: scale(6);
+}
+
+.icon-rotate-custom {
+    transition: transform 0.25s ease-in-out;
+}
+
+.icon-rotate-custom:hover {
+    transform: rotate(90deg);
+}
+
+.btn-outline-secondary svg {
+    color: #616876;
+}
+
+.btn-outline-secondary:hover svg {
+    color: #ffffff;
 }

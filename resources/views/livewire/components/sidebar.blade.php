@@ -54,11 +54,11 @@
                 <hr class="ms-lg-3 mt-2 mb-3 hide-theme-dark">
                 <hr class="ms-lg-3 mt-2 mb-3 hide-theme-light text-white">
 
-                <li class="nav-item {{ request()->routeIs('inicio') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('inicio') }}">
+                <li class="nav-item {{ request()->routeIs('inicio*') ? 'active' : '' }}">
+                    <a class="nav-link {{ request()->routeIs('inicio*') ? 'text-primary fw-medium' : '' }}" href="{{ route('inicio') }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                viewBox="0 0 24 24" stroke-width="2" stroke="{{ request()->routeIs('inicio*') ? '#206bc4' : 'currentColor' }}" fill="none"
                                 stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                 <path d="M5 12l-2 0l9 -9l9 9l-2 0" />
@@ -76,10 +76,10 @@
                 </li>
 
                 <li class="nav-item {{ request()->routeIs('perfil*') ? 'active' : '' }}">
-                    <a class="nav-link" style="cursor: pointer;" wire:click="mostrar_perfil">
+                    <a class="nav-link {{ request()->routeIs('perfil*') ? 'text-primary fw-medium' : '' }}" style="cursor: pointer;" wire:click="mostrar_perfil">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon " width="24" height="24"
-                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                viewBox="0 0 24 24" stroke-width="2" stroke="{{ request()->routeIs('perfil*') ? '#206bc4' : 'currentColor' }}" fill="none"
                                 stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                 <path
@@ -103,11 +103,11 @@
                 @if ($usuario->esRol('ADMINISTRADOR'))
                     <li
                         class="nav-item {{ request()->routeIs('usuarios*') || request()->routeIs('proceso*') || request()->routeIs('registro-alumnos*') || request()->routeIs('autoridades*') ? 'active' : '' }} dropdown">
-                        <a class="nav-link dropdown-toggle" href="#navbar-layout" data-bs-toggle="dropdown"
+                        <a class="nav-link dropdown-toggle {{ request()->routeIs('usuarios*') || request()->routeIs('proceso*') || request()->routeIs('registro-alumnos*') || request()->routeIs('autoridades*') ? 'text-primary fw-medium' : '' }}" href="#navbar-layout" data-bs-toggle="dropdown"
                             data-bs-auto-close="false" role="button" aria-expanded="true">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="{{ request()->routeIs('usuarios*') || request()->routeIs('proceso*') || request()->routeIs('registro-alumnos*') || request()->routeIs('autoridades*') ? '#206bc4' : 'currentColor' }}" fill="none"
                                     stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                     <path
@@ -146,11 +146,11 @@
 
                     <li
                         class="nav-item {{ request()->routeIs('estructura-academica*') ? 'active' : '' }} dropdown">
-                        <a class="nav-link dropdown-toggle" href="#navbar-layout" data-bs-toggle="dropdown"
+                        <a class="nav-link dropdown-toggle {{ request()->routeIs('estructura-academica*') ? 'text-primary fw-medium' : '' }}" href="#navbar-layout" data-bs-toggle="dropdown"
                             data-bs-auto-close="false" role="button" aria-expanded="true">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    viewBox="0 0 24 24" fill="none" stroke="{{ request()->routeIs('estructura-academica*') ? '#206bc4' : 'currentColor' }}" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round"
                                     class="icon icon-tabler icons-tabler-outline icon-tabler-topology-star-ring-3">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -206,11 +206,11 @@
 
                     <li
                         class="nav-item {{ request()->routeIs('gestion-curso*') ? 'active' : '' }} dropdown">
-                        <a class="nav-link dropdown-toggle" href="#navbar-layout" data-bs-toggle="dropdown"
+                        <a class="nav-link dropdown-toggle {{ request()->routeIs('gestion-curso*') ? 'text-primary fw-medium' : '' }}" href="#navbar-layout" data-bs-toggle="dropdown"
                             data-bs-auto-close="false" role="button" aria-expanded="true">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    viewBox="0 0 24 24" fill="none" stroke="{{ request()->routeIs('gestion-curso*') ? '#206bc4' : 'currentColor' }}" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round"
                                     class="icon icon-tabler icons-tabler-outline icon-tabler-books">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -263,10 +263,10 @@
 
                     @if ($usuario->esRol('ALUMNO'))
                         <li class="nav-item {{ request()->routeIs('cursos*') ? 'active' : '' }}">
-                            <a class="nav-link" style="cursor: pointer;" wire:click="mostrar_cursos">
+                            <a class="nav-link {{ request()->routeIs('cursos*') ? 'text-primary fw-medium' : '' }}" style="cursor: pointer;" wire:click="mostrar_cursos">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        viewBox="0 0 24 24" fill="none" stroke="{{ request()->routeIs('cursos*') ? '#206bc4' : 'currentColor' }}" stroke-width="2"
                                         stroke-linecap="round" stroke-linejoin="round"
                                         class="icon icon-tabler icons-tabler-outline icon-tabler-books">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -294,10 +294,10 @@
 
                     @if ($usuario->esRol('DOCENTE') || $usuario->esRol('DOCENTE INVITADO'))
                         <li class="nav-item {{ request()->routeIs('carga-academica*') ? 'active' : '' }}">
-                            <a class="nav-link" style="cursor: pointer;" wire:click="mostrar_carga_academica">
+                            <a class="nav-link {{ request()->routeIs('carga-academica*') ? 'text-primary fw-medium' : '' }}" style="cursor: pointer;" wire:click="mostrar_carga_academica">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        viewBox="0 0 24 24" fill="none" stroke="{{ request()->routeIs('carga-academica*') ? '#206bc4' : 'currentColor' }}" stroke-width="2"
                                         stroke-linecap="round" stroke-linejoin="round"
                                         class="icon icon-tabler icons-tabler-outline icon-tabler-chalkboard">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -322,11 +322,11 @@
                 <hr class="ms-lg-3 mt-3 mb-3 hide-theme-light text-white">
 
                 @if ($usuario->esRol('ALUMNO'))
-                    <li class="nav-item {{ request()->routeIs('plan-estudio*') ? 'active' : '' }}">
-                        <a class="nav-link" style="cursor: pointer;" wire:click="mostrar_plan_estudio">
+                    <li class="nav-item {{ request()->routeIs('calificaciones*') ? 'active' : '' }}">
+                        <a class="nav-link {{ request()->routeIs('calificaciones*') ? 'text-primary fw-medium' : '' }}" style="cursor: pointer;" wire:click="mostrar_calificaciones">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    viewBox="0 0 24 24" fill="none" stroke="{{ request()->routeIs('calificaciones*') ? '#206bc4' : 'currentColor' }}" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round"
                                     class="icon icon-tabler icons-tabler-outline icon-tabler-checklist">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -346,10 +346,10 @@
                     </li>
 
                     <li class="nav-item {{ request()->routeIs('plan-estudio*') ? 'active' : '' }}">
-                        <a class="nav-link" style="cursor: pointer;" wire:click="mostrar_plan_estudio">
+                        <a class="nav-link {{ request()->routeIs('plan-estudio*') ? 'text-primary fw-medium' : '' }}" style="cursor: pointer;" wire:click="mostrar_plan_estudio">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    viewBox="0 0 24 24" fill="none" stroke="{{ request()->routeIs('plan-estudio*') ? '#206bc4' : 'currentColor' }}" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round"
                                     class="icon icon-tabler icons-tabler-outline icon-tabler-list-details">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -374,10 +374,10 @@
                 @endif
 
                 <li class="nav-item {{ request()->routeIs('manuales*') ? 'active' : '' }}">
-                    <a class="nav-link" style="cursor: pointer;" wire:click="mostrar_manuales">
+                    <a class="nav-link {{ request()->routeIs('manuales*') ? 'text-primary fw-medium' : '' }}" style="cursor: pointer;" wire:click="mostrar_manuales">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24" fill="none" stroke="{{ request()->routeIs('manuales*') ? '#206bc4' : 'currentColor' }}" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round"
                                 class="icon icon-tabler icons-tabler-outline icon-tabler-file-text">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />

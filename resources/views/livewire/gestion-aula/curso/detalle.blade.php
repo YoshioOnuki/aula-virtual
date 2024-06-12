@@ -387,7 +387,7 @@
                         @endforelse
 
                         <div class="col-12">
-                            <div class="card card-stacked animate__animated animate__fadeIn animate__faster">
+                            <div class="card card-link card-stacked animate__animated animate__fadeIn animate__faster">
                                 <div
                                     class="card-header {{ session('tipo_vista') === 'alumno' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
                                     <h3 class="card-title fw-semibold">
@@ -398,33 +398,99 @@
                                     <div class="d-flex flex-column gap-2">
                                         <div class="row g-3">
                                             <div class="col-12">
-                                                <strong>Programa de {{ $curso->programa->tipoPrograma->nombre_tipo_programa }}:</strong> {{ $curso->programa->nombre_programa }}
-                                            </div>
-                                            @if($curso->programa->mencion_programa)
-                                                <div class="col-12">
-                                                    <strong>Mención:</strong> {{ $curso->programa->mencion->nombre_mencion }}
+                                                <div class="row g-2">
+                                                    <div class="col-12">
+                                                        <strong>Programa de
+                                                            {{ $curso->programa->tipoPrograma->nombre_tipo_programa }}
+                                                        </strong>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        {{ $curso->programa->nombre_programa }}
+                                                    </div>
                                                 </div>
+                                            </div>
+
+                                            @if ($curso->programa->mencion_programa)
+                                            <div class="col-12">
+                                                <div class="row g-2">
+                                                    <div class="col-12">
+                                                        <strong>Mención:</strong>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        {{ $curso->programa->mencion->nombre_mencion }}
+                                                    </div>
+                                                </div>
+                                            </div>
                                             @endif
+
                                             <div class="col-12">
-                                                <strong>Código del Curso:</strong> {{ $curso->codigo_curso }}
+                                                <div class="row g-2">
+                                                    <div class="col-12">
+                                                        <strong>Código del Curso</strong>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        {{ $curso->codigo_curso }}
+                                                    </div>
+                                                </div>
                                             </div>
+
                                             <div class="col-12">
-                                                <strong>Nombre del Curso:</strong> {{ $curso->nombre_curso }}
+                                                <div class="row g-2">
+                                                    <div class="col-12">
+                                                        <strong>Nombre del Curso</strong>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        {{ $curso->nombre_curso }}
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="col-4">
-                                                <strong>Ciclo:</strong> {{ numero_a_romano($curso->ciclo->numero_ciclo) }}
+
+                                            <div class="col-4 d-flex justify-content-start">
+                                                <div class="row g-2">
+                                                    <div class="col-12 d-flex justify-content-center">
+                                                        <strong>Ciclo</strong>
+                                                    </div>
+                                                    <div class="col-12 d-flex justify-content-center">
+                                                        {{ numero_a_romano($curso->ciclo->numero_ciclo) }}
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="col-4">
-                                                <strong>Créditos:</strong> {{ $curso->creditos_curso }}
+
+                                            <div class="col-4 d-flex justify-content-center">
+                                                <div class="row">
+                                                    <div class="col-12 d-flex justify-content-center">
+                                                        <strong>Créditos</strong>
+                                                    </div>
+                                                    <div class="col-12 d-flex justify-content-center">
+                                                        {{ $curso->creditos_curso }}
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="col-4">
-                                                <strong>Horas:</strong> {{ $curso->horas_lectivas_curso }}
+
+                                            <div class="col-4 d-flex justify-content-end">
+                                                <div class="row">
+                                                    <div class="col-12 d-flex justify-content-center">
+                                                        <strong>Horas</strong>
+                                                    </div>
+                                                    <div class="col-12 d-flex justify-content-center">
+                                                        {{ $curso->horas_lectivas_curso }}
+                                                    </div>
+                                                </div>
                                             </div>
+
                                             <div class="col-12">
-                                                <strong>Plan de Estudio:</strong> {{ $curso->planEstudio->nombre_plan_estudio }}
+                                                <div class="row g-2">
+                                                    <div class="col-12">
+                                                        <strong>Plan de Estudio</strong>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        {{ $curso->planEstudio->nombre_plan_estudio }}
+                                                    </div>
+                                                </div>
                                             </div>
+
                                             <div class="col-12">
-                                                <a class="btn btn-primary w-100 mt-3 
+                                                <a class="btn btn-primary w-100 mt-1
                                                     {{ $gestion_aula_usuario->gestionAula->linkClase->isEmpty() ? 'disabled' : '' }}"
                                                     style="cursor: pointer;" wire:click="mostrar_link_clase">
                                                     Link de Clase
@@ -440,6 +506,7 @@
                                                 @endif
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>

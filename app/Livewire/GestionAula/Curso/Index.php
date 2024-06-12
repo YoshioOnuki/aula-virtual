@@ -19,6 +19,9 @@ class Index extends Component
     public $progreso = array();
     public $foto_docente = array();
 
+    public $cargando = true;
+    public $cantidad_cursos = 1;
+
     public function curso_favorito($id)
     {
         usleep(500000);
@@ -91,7 +94,7 @@ class Index extends Component
             if ($curso->gestionAula->foro->count() > 0) {
                 $foros = $curso->gestionAula->foro->count();
                 $foros_realizados = 0;
-                
+
                 $foros_realizados = ForoRespuesta::Join('foro', 'foro.id_foro', '=', 'foro_respuesta.id_foro')
                     ->where('foro_respuesta.id_gestion_aula_usuario', $curso->id_gestion_aula_usuario)
                     ->count();
@@ -121,8 +124,9 @@ class Index extends Component
 
     public function mostrar_cursos()
     {
-        if(session('tipo_vista') === 'alumno') 
+        if(session('tipo_vista') === 'alumno')
         {
+
             $cursos = GestionAulaUsuario::with(['gestionAula.curso', 'rol'])
                 ->where('id_usuario', auth()->user()->id_usuario)
                 ->where('estado_gestion_aula_usuario', 1)
@@ -139,7 +143,9 @@ class Index extends Component
                 ->sortBy('gestionAula.curso.nombre_curso');
 
             $this->cursos = $favoritos->concat($noFavoritos);
+
         } else {
+
             $cursos = GestionAulaUsuario::with(['gestionAula.curso', 'rol'])
                 ->where('id_usuario', auth()->user()->id_usuario)
                 ->where('estado_gestion_aula_usuario', 1)
@@ -156,6 +162,7 @@ class Index extends Component
                 ->sortBy('gestionAula.curso.nombre_curso');
 
             $this->cursos = $favoritos->concat($noFavoritos);
+
         }
     }
 
@@ -177,6 +184,41 @@ class Index extends Component
             }
     }
 
+    public function load_cursos()
+    {
+
+        $this->mostrar_cursos();
+        $this->calcular_progreso();
+        $this->mostrar_foto_docente();
+        $this->cargando = false;
+    }
+
+    public function calcular_cantidad_curso()
+    {
+        if(session('tipo_vista') === 'alumno')
+        {
+            $this->cantidad_cursos = GestionAulaUsuario::with('rol')
+                ->where('id_usuario', auth()->user()->id_usuario)
+                ->where('estado_gestion_aula_usuario', 1)
+                ->whereHas('rol', function ($query) {
+                    $query->where('nombre_rol', 'ALUMNO');
+                })
+                ->count();
+
+
+        } elseif(session('tipo_vista') === 'docente') {
+            $this->cantidad_cursos = GestionAulaUsuario::with('rol')
+                ->where('id_usuario', auth()->user()->id_usuario)
+                ->where('estado_gestion_aula_usuario', 1)
+                ->whereHas('rol', function ($query) {
+                    $query->where('nombre_rol', 'DOCENTE');
+                })
+                ->count();
+        }
+        $this->cantidad_cursos === 0 ? $this->cantidad_cursos = 1 : $this->cantidad_cursos;
+    }
+
+
     public function mount()
     {
         if(request()->routeIs('cursos*'))
@@ -188,9 +230,8 @@ class Index extends Component
         }
 
         $this->usuario = auth()->user();
-        $this->mostrar_cursos();
-        $this->calcular_progreso();
-        $this->mostrar_foto_docente();
+
+        $this->calcular_cantidad_curso();
 
     }
 
