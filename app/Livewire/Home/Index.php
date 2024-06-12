@@ -187,7 +187,7 @@ class Index extends Component
 
     public function load_cursos()
     {
-
+        usleep(100000);
         $this->mostrar_cursos();
         $this->calcular_progreso();
         $this->mostrar_foto_docente();
