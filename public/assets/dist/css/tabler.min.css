@@ -25642,7 +25642,7 @@ img {
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
     transform: translate(0px);
-    overflow: hidden;
+    /* overflow: hidden; */
     max-width: 150px;
 }
 

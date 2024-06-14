@@ -249,8 +249,8 @@
                     @if($cargando_datos_curso)
                         <div class="card card-stacked placeholder-glow animate__animated animate__fadeIn animate__faster">
                             <div class="card-header {{ session('tipo_vista') === 'alumno' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
-                                <span class="placeholder col-5 bg-{{ session('tipo_vista') === 'alumno' ? 'bg-teal-lt' : 'bg-orange-lt' }}"
-                                style="height: 1.5rem; width: 170.56px;"></span>
+                                <div class="placeholder col-5 {{ session('tipo_vista') === 'alumno' ? 'bg-teal' : 'bg-orange' }}"
+                                style="height: 1.5rem; width: 170.56px;"></div>
                             </div>
                             <div class="card-body row g-3 mb-0">
                                 <div class="d-flex flex-column gap-2">

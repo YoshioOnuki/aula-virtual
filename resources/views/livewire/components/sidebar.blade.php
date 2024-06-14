@@ -12,9 +12,10 @@
                     class="rounded hide-theme-light">
                 <span class="text-uppercase 
                 " style="font-weight: 800; font-size: 1.2rem;">
-                    AULA VIRTUAL
+                    POSGRADO
                 </span>
             </a>
+            <span class="badge bg-blue-lt fs-6">v1.0</span>
         </h1>
         <div class="navbar-nav flex-row d-lg-none">
             <div class="nav-item dropdown">

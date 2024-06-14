@@ -74,10 +74,10 @@
 
                 <div class="col-lg-8">
                     <div class="card card-stacked animate__animated animate__fadeIn animate__faster">
-                        <div class="card-body" style="{{ $gestion_aula_usuario->silabu ? '' : 'height: 750px' }}">
+                        <div class="card-body" style="{{ $gestion_aula_usuario->silabu ? '' : 'height: 675px' }}">
                             @if ($gestion_aula_usuario->silabus)
                                 <embed src="{{ asset('files/silabus.pdf') }}" class="rounded" type="application/pdf"
-                                    width="100%" height="750px" />
+                                    width="100%" height="675px" />
                             @else
                                 <div class="alert alert-yellow bg-white-lt hover-shadow-sm" role="alert">
                                     <div class="d-flex">

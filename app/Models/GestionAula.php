@@ -54,17 +54,17 @@ class GestionAula extends Model
 
     public function linkClase()
     {
-        return $this->hasMany(LinkClase::class, 'id_gestion_aula');
+        return $this->hasOne(LinkClase::class, 'id_gestion_aula');
     }
 
     public function presentacion()
     {
-        return $this->hasMany(Presentacion::class, 'id_gestion_aula');
+        return $this->hasOne(Presentacion::class, 'id_gestion_aula');
     }
 
     public function silabus()
     {
-        return $this->hasMany(Silabus::class, 'id_gestion_aula');
+        return $this->hasOne(Silabus::class, 'id_gestion_aula');
     }
 
     public function webgrafia()

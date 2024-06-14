@@ -21,7 +21,7 @@ class Silabus extends Model
 
     public function gestionAula()
     {
-        return $this->belongsTo(GestionAula::class, 'id_gestion_aula');
+        return $this->hasOne(GestionAula::class, 'id_gestion_aula');
     }
 
     protected static function boot()

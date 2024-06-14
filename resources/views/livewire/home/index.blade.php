@@ -9,7 +9,7 @@
                         </ol>
                     </div>
                     <h2 class="page-title text-uppercase">
-                        Bienvenido
+                        Aula Virtual
                     </h2>
                 </div>
             </div>
