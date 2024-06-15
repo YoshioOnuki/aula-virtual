@@ -3,6 +3,7 @@
 namespace App\Livewire\GestionAula\Silabus;
 
 use App\Models\GestionAulaUsuario;
+use App\Models\Usuario;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -10,6 +11,8 @@ use Livewire\WithFileUploads;
 class Index extends Component
 {
     use WithFileUploads;
+
+    public $usuario;
 
     public $id_gestion_aula_usuario;
     public $curso;
@@ -112,6 +115,8 @@ class Index extends Component
         }
 
         $this->id_gestion_aula_usuario = desencriptar($id);
+
+        $this->usuario = Usuario::find(auth()->id());
 
     }
 

@@ -126,12 +126,13 @@ class Index extends Component
 
         $this->cursos = $favoritos->concat($noFavoritos);
 
+
         // Cargo academico
         $carga_academica = GestionAulaUsuario::with(['gestionAula.curso', 'rol'])
             ->where('id_usuario', auth()->user()->id_usuario)
             ->where('estado_gestion_aula_usuario', 1)
             ->whereHas('rol', function ($query) {
-                $query->where('nombre_rol', 'DOCENTE');
+                $query->whereIn('nombre_rol', ['DOCENTE', 'DOCENTE INVITADO']);
             })
             ->orderBy('favorito_gestion_aula_usuario', 'desc')
             ->get();
@@ -143,6 +144,7 @@ class Index extends Component
             ->sortBy('gestionAula.curso.nombre_curso');
 
         $this->carga_academica = $favoritos->concat($noFavoritos);
+
     }
 
     public function curso_detalle($id)

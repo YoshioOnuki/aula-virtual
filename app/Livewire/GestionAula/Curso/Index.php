@@ -126,7 +126,6 @@ class Index extends Component
     {
         if(session('tipo_vista') === 'alumno')
         {
-
             $cursos = GestionAulaUsuario::with(['gestionAula.curso', 'rol'])
                 ->where('id_usuario', auth()->user()->id_usuario)
                 ->where('estado_gestion_aula_usuario', 1)
@@ -145,15 +144,14 @@ class Index extends Component
             $this->cursos = $favoritos->concat($noFavoritos);
 
         } else {
-
-            $cursos = GestionAulaUsuario::with(['gestionAula.curso', 'rol'])
-                ->where('id_usuario', auth()->user()->id_usuario)
-                ->where('estado_gestion_aula_usuario', 1)
-                ->whereHas('rol', function ($query) {
-                    $query->where('nombre_rol', 'DOCENTE');
-                })
-                ->orderBy('favorito_gestion_aula_usuario', 'desc')
-                ->get();
+                $cursos = GestionAulaUsuario::with(['gestionAula.curso', 'rol'])
+                    ->where('id_usuario', auth()->user()->id_usuario)
+                    ->where('estado_gestion_aula_usuario', 1)
+                    ->whereHas('rol', function ($query) {
+                        $query->whereIn('nombre_rol', ['DOCENTE', 'DOCENTE INVITADO']);
+                    })
+                    ->orderBy('favorito_gestion_aula_usuario', 'desc')
+                    ->get();
 
             $favoritos = $cursos->where('favorito_gestion_aula_usuario', 1)
                 ->sortBy('gestionAula.curso.nombre_curso');

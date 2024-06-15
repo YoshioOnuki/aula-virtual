@@ -102,12 +102,12 @@
                                             <div>
                                                 <h4 class="alert-title">El sílabus no está disponible en este momento.</h4>
                                                 <div class="text-secondary">
-                                                    @if (session('tipo_vista') === 'alumno')
-                                                        Por favor, verifica más tarde o contacta con el docente para más
-                                                        información.
-                                                    @else
+                                                    @if ($usuario->esRol('DOCENTE'))
                                                         Por favor, sube el sílabus del curso para que los alumnos puedan
                                                         acceder a él.
+                                                    @else
+                                                        Por favor, verifica más tarde o contacta con el docente asignado para más
+                                                        información.
                                                     @endif
                                                 </div>
                                             </div>
@@ -320,7 +320,7 @@
                                             </div>
                                         </div>
 
-                                        @if (session('tipo_vista') === 'docente')
+                                        @if (session('tipo_vista') === 'docente' && $usuario->esRol('DOCENTE'))
                                             <hr class="mt-5 mb-2 hide-theme-dark">
                                             <hr class="mt-5 mb-2 hide-theme-light text-white">
 

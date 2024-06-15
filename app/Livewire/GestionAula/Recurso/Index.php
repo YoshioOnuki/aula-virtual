@@ -3,10 +3,14 @@
 namespace App\Livewire\GestionAula\Recurso;
 
 use App\Models\GestionAulaUsuario;
+use App\Models\Recurso;
+use App\Models\Usuario;
 use Livewire\Component;
 
 class Index extends Component
 {
+    public $usuario;
+
     public $id_gestion_aula_usuario;
     public $gestion_aula_usuario;
     public $curso;
@@ -18,6 +22,12 @@ class Index extends Component
     public $cargando_datos_curso = true;
     public $cantidad_recursos = 1;
 
+    public $modo = 1; // Modo 1 = Agregar / 0 = Editar
+    public $titulo_modal = 'Estado de Usuario';
+    public $accion_estado = 'Agregar';
+    public $nombre_recurso;
+    public $archivo_recurso;
+
     public function cambiar_estado_recurso()
     {
         if($this->estado_recurso === 0)
@@ -28,6 +38,57 @@ class Index extends Component
         }
     }
 
+    public function cerrar_modal()
+    {
+        $this->limpiar_modal();
+        $this->dispatch(
+            'modal',
+            modal: '#modal-recursos',
+            action: 'hide'
+        );
+    }
+
+    public function limpiar_modal()
+    {
+        $this->modo = 1;
+        $this->titulo_modal = 'Estado de Usuario';
+        $this->accion_estado = 'Agregar';
+        $this->nombre_recurso = '';
+    }
+
+    // public function abrir_modal_recurso_editar(Recurso $recurso)
+    public function abrir_modal_recurso_editar($recurso)
+    {
+        $this->limpiar_modal();
+
+        $this->modo = 0;
+        $this->titulo_modal = 'Editar Recurso';
+        $this->accion_estado = 'Editar';
+
+        $this->nombre_recurso = 'asdasdas';
+
+        $this->dispatch(
+            'modal',
+            modal: '#modal-recursos',
+            action: 'show'
+        );
+    }
+
+    public function abrir_modal_recurso_agregar()
+    {
+        $this->limpiar_modal();
+
+        $this->modo = 1;
+        $this->titulo_modal = 'Agregar Recurso';
+        $this->accion_estado = 'Agregar';
+
+        $this->dispatch(
+            'modal',
+            modal: '#modal-recursos',
+            action: 'show'
+        );
+
+    }
 
     public function mostrar_datos_curso()
     {
@@ -138,6 +199,9 @@ class Index extends Component
         $this->id_gestion_aula_usuario = desencriptar($id);
 
         $this->calcular_cantidad_recursos();
+
+        $this->usuario = Usuario::find(auth()->id());
+
     }
 
     public function render()
