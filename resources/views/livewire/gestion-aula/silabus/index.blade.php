@@ -81,10 +81,10 @@
                                 </div>
                             @else
                                 @if ($silabus_pdf)
-                                    <embed src="{{ asset('files/silabus.pdf') }}" class="rounded" type="application/pdf"
+                                    <embed src="{{ asset('files/silabus.pdf') }}" class="rounded animate__animated animate__fadeIn animate__faster" type="application/pdf"
                                         width="100%" height="675px" />
                                 @else
-                                    <div class="alert alert-yellow bg-white-lt hover-shadow-sm" role="alert">
+                                    <div class="alert alert-yellow bg-white-lt hover-shadow-sm animate__animated animate__fadeIn animate__faster" role="alert">
                                         <div class="d-flex">
                                             <div>
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon"
@@ -121,7 +121,7 @@
 
                 <div class="col-4" wire:init="load_datos_curso_llamar">
                     @if($cargando_datos_curso)
-                        <div class="card card-stacked placeholder-glow animate__animated animate__fadeIn animate__faster">
+                        <div class="card card-stacked placeholder-glow">
                             <div class="card-header {{ session('tipo_vista') === 'alumno' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
                                 <div class="placeholder col-5 {{ session('tipo_vista') === 'alumno' ? 'bg-teal' : 'bg-orange' }}"
                                 style="height: 1.5rem; width: 170.56px;"></div>

@@ -161,13 +161,13 @@ class Detalle extends Component
         }
     }
 
-    public function mostrar_lecturas($id)
+    public function mostrar_recursos($id)
     {
         $id_url = encriptar($id);
         if(session('tipo_vista') === 'alumno'){
-            return redirect()->route('cursos.detalle.lectura', ['id' => $id_url]);
+            return redirect()->route('cursos.detalle.recursos', ['id' => $id_url]);
         }else{
-            return redirect()->route('carga-academica.detalle.lectura', ['id' => $id_url]);
+            return redirect()->route('carga-academica.detalle.recursos', ['id' => $id_url]);
         }
     }
 

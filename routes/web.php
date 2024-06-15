@@ -7,9 +7,9 @@ use App\Livewire\GestionAula\Asistencia\Index as AsistenciaIndex;
 use App\Livewire\GestionAula\Curso\Detalle as CursoDetalle;
 use App\Livewire\GestionAula\Curso\Index as CursoIndex;
 use App\Livewire\GestionAula\Foro\Index as ForoIndex;
-use App\Livewire\GestionAula\Lecturas\Index as LecturasIndex;
 use App\Livewire\GestionAula\Manuales\Index as ManualesIndex;
 use App\Livewire\GestionAula\PlanEstudio\Index as PlanEstudioIndex;
+use App\Livewire\GestionAula\Recurso\Index as RecursoIndex;
 use App\Livewire\GestionAula\Silabus\Index as SilabusIndex;
 use App\Livewire\GestionAula\TrabajoAcademico\Index as TrabajoAcademicoIndex;
 use App\Livewire\GestionAula\Webgrafia\Index as WebgrafiaIndex;
@@ -101,8 +101,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/cursos/detalle/{id}/silabus', SilabusIndex::class)
             ->name('cursos.detalle.silabus');
         // Lectura
-        Route::get('/cursos/detalle/{id}/lectura', LecturasIndex::class)
-            ->name('cursos.detalle.lectura');
+        Route::get('/cursos/detalle/{id}/recursos', RecursoIndex::class)
+            ->name('cursos.detalle.recursos');
         // Foro
         Route::get('/cursos/detalle/{id}/foro', ForoIndex::class)
             ->name('cursos.detalle.foro');
@@ -126,8 +126,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/carga-academica/detalle/{id}/silabus', SilabusIndex::class)
             ->name('carga-academica.detalle.silabus');
         // Lectura
-        Route::get('/carga-academica/detalle/{id}/lectura', LecturasIndex::class)
-            ->name('carga-academica.detalle.lectura');
+        Route::get('/carga-academica/detalle/{id}/recursos', RecursoIndex::class)
+            ->name('carga-academica.detalle.recursos');
         // Foro
         Route::get('/carga-academica/detalle/{id}/foro', ForoIndex::class)
             ->name('carga-academica.detalle.foro');

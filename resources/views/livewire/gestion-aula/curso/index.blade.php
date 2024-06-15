@@ -77,7 +77,7 @@
                         @if ($cargando)
                             @for($i = 0; $i < $cantidad_cursos; $i++)
                                 <div class="col-sm-4 col-lg-4 col-xl-3 p-xl-2 p-lg-1 p-2" wire:init="load_cursos">
-                                    <div class="card placeholder-glow">
+                                    <div class="card placeholder-glow ">
                                         <div class="ratio ratio-16x9 card-img-top placeholder"></div>
                                         <div class="card-avatar avatar avatar-smm rounded-circle">
                                             <div class="avatar avatar-rounded placeholder"></div>

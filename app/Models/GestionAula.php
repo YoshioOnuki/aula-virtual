@@ -42,9 +42,9 @@ class GestionAula extends Model
         return $this->hasMany(GestionAulaUsuario::class, 'id_gestion_aula');
     }
 
-    public function lectura()
+    public function recurso()
     {
-        return $this->hasMany(Lectura::class, 'id_gestion_aula');
+        return $this->hasMany(Recurso::class, 'id_gestion_aula');
     }
 
     public function foro()
