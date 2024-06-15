@@ -213,10 +213,6 @@
                                             </div>
                                         </div>
 
-                                        {{-- <div class="col-12">
-                                            <a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-12 mt-1 mb-2" aria-hidden="true" style="height: 36px;"></a>
-                                        </div> --}}
-
                                     </div>
                                 </div>
                             </div>

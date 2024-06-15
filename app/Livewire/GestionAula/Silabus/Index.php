@@ -78,14 +78,12 @@ class Index extends Component
     /* =============== HACER EL LLAMADO DE LA CARGA DE DATOS PARA CAMBIAR EL ESTADO DEL PLACEHOLDER =============== */
     public function load_datos_curso()
     {
-        // usleep(1000000);
         $this->mostrar_datos_curso();
         $this->cargando_datos_curso = false;
     }
 
     public function load_silabus()
     {
-        // usleep(300000);
         $this->mostrar_silabus();
         $this->cargando_silabus = false;
     }

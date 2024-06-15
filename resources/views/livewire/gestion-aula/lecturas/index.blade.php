@@ -96,7 +96,7 @@
                             @endif
                         </div>
                         <div class="card-body">
-                            <div class="row row-cards d-flex justify-content-start" wire:init="load_lecturas">
+                            <div class="row row-cards d-flex justify-content-start" wire:init="load_lecturas_llamar">
                                 @if($cargando_lectuas)
                                     @for($i = 0; $i < $cantidad_lecturas; $i++)
                                         <div class="col-12">
@@ -245,7 +245,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-4" wire:init="load_datos_curso">
+                <div class="col-lg-4" wire:init="load_datos_curso_llamar">
                     @if($cargando_datos_curso)
                         <div class="card card-stacked placeholder-glow animate__animated animate__fadeIn animate__faster">
                             <div class="card-header {{ session('tipo_vista') === 'alumno' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
@@ -465,3 +465,21 @@
         </div>
     </div>
 </div>
+
+{{-- /* =============== FUNCIONES PARA PRUEBAS DE CARGAS - SIMULACION DE CARGAS =============== */ --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        window.addEventListener('load_lecturas_evento', () => {
+            setTimeout(() => {
+                @this.call('load_lecturas')
+            }, 1000);
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+    window.addEventListener('load_datos_curso_evento', () => {
+        setTimeout(() => {
+            @this.call('load_datos_curso')
+        }, 500);
+    });
+});
+</script>

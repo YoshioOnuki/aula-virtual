@@ -86,14 +86,12 @@ class Index extends Component
 
     public function load_lecturas()
     {
-        // usleep(100000);
         $this->mostrar_lecturas();
         $this->cargando_lectuas = false;
     }
 
     public function load_datos_curso()
     {
-        usleep(300000);
         $this->mostrar_datos_curso();
         $this->cargando_datos_curso = false;
     }
@@ -113,6 +111,18 @@ class Index extends Component
         $this->cantidad_lecturas = $this->gestion_aula_usuario->gestionAula->lectura->count();
 
         $this->cantidad_lecturas === 0 ? $this->cantidad_lecturas = 1 : $this->cantidad_lecturas;
+    }
+
+
+    /* =============== FUNCIONES PARA PRUEBAS DE CARGAS - SIMULACION DE CARGAS =============== */
+    public function load_lecturas_llamar()
+    {
+        $this->dispatch('load_lecturas_evento');
+    }
+
+    public function load_datos_curso_llamar()
+    {
+        $this->dispatch('load_datos_curso_evento');
     }
 
     public function mount($id)
