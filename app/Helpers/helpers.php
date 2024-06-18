@@ -6,7 +6,7 @@ const METHOD="AES-256-CBC";
 const SECRET_KEY='$AULA@2024';
 const SECRET_IV='150324';
 
-if (!function_exists('format_fecha_horas')) 
+if (!function_exists('format_fecha_horas'))
 {
     function format_fecha_horas($fecha)
     {
@@ -14,7 +14,7 @@ if (!function_exists('format_fecha_horas'))
     }
 }
 
-if (!function_exists('format_fecha')) 
+if (!function_exists('format_fecha'))
 {
     function format_fecha($fecha)
     {
@@ -22,7 +22,39 @@ if (!function_exists('format_fecha'))
     }
 }
 
-if (!function_exists('format_mes')) 
+if(!function_exists('format_hora'))
+{
+    function format_hora($hora)
+    {
+        return date('h:i A', strtotime($hora));
+    }
+}
+
+if (!function_exists('format_dia_semana'))
+{
+    function format_dia_semana($fecha)
+    {
+        $dia = date('w', strtotime($fecha));
+        switch ($dia) {
+            case 0:
+                return 'Domingo';
+            case 1:
+                return 'Lunes';
+            case 2:
+                return 'Martes';
+            case 3:
+                return 'Miércoles';
+            case 4:
+                return 'Jueves';
+            case 5:
+                return 'Viernes';
+            case 6:
+                return 'Sábado';
+        }
+    }
+}
+
+if (!function_exists('format_mes'))
 {
     function format_mes($mes)
     {
@@ -58,7 +90,7 @@ if (!function_exists('format_mes'))
 }
 
 // Funcion para retornar el color de acuerdo al porcentaje conseguido para el proceso
-if (!function_exists('color_porcentaje')) 
+if (!function_exists('color_porcentaje'))
 {
     function color_porcentaje($porcentaje)
     {
@@ -74,7 +106,7 @@ if (!function_exists('color_porcentaje'))
     }
 }
 
-if (!function_exists('numero_a_romano')) 
+if (!function_exists('numero_a_romano'))
 {
     function numero_a_romano($numero)
     {
@@ -89,20 +121,20 @@ if (!function_exists('numero_a_romano'))
             1 => 'I'
         ];
         $returnValue = '';
-        
+
         foreach ($map as $value => $roman) {
             while ($numero >= $value) {
                 $returnValue .= $roman;
                 $numero -= $value;
             }
         }
-        
+
         return $returnValue;
     }
 }
 
 // Funcion para limpiar cadenas
-if (!function_exists('limpiar_cadena')) 
+if (!function_exists('limpiar_cadena'))
 {
     function limpiar_cadena($cadena)
     {
@@ -144,7 +176,7 @@ if (!function_exists('limpiar_cadena'))
 }
 
 // Funcion para encriptar
-if (!function_exists('encriptar')) 
+if (!function_exists('encriptar'))
 {
     function encriptar($string)
     {
@@ -159,7 +191,7 @@ if (!function_exists('encriptar'))
 }
 
 // Funcion para desencriptar
-if (!function_exists('desencriptar')) 
+if (!function_exists('desencriptar'))
 {
     function desencriptar($string)
     {

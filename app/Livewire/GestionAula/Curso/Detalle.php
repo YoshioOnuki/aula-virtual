@@ -4,8 +4,10 @@ namespace App\Livewire\GestionAula\Curso;
 
 use App\Models\GestionAulaUsuario;
 use App\Models\Usuario;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
+#[Layout('components.layouts.app')]
 class Detalle extends Component
 {
 

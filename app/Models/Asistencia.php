@@ -32,6 +32,25 @@ class Asistencia extends Model
         return $this->belongsTo(GestionAula::class, 'id_gestion_aula');
     }
 
+    public function scopeSearch($query, $search) {
+        if ($search == null) {
+            return $query;
+        }
+
+        return $query->where(function($query) use ($search) {
+            $query->where('nombre_asistencia', 'like', '%'.$search.'%')
+                ->orWhere('fecha_asistencia', 'like', '%'.$search.'%')
+                ->orWhere('hora_inicio_asistencia', 'like', '%'.$search.'%')
+                ->orWhere('hora_fin_asistencia', 'like', '%'.$search.'%')
+                ->orWhereHas('asisntenciaAlumno', function($query) use ($search) {
+                    $query->whereHas('estadoAsistencia', function($query) use ($search) {
+                        $query->where('nombre_estado_asistencia', 'like', '%'.$search.'%');
+                    });
+                });
+        });
+    }
+
+
     protected static function boot()
     {
         parent::boot();

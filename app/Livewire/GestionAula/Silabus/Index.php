@@ -4,10 +4,12 @@ namespace App\Livewire\GestionAula\Silabus;
 
 use App\Models\GestionAulaUsuario;
 use App\Models\Usuario;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
+#[Layout('components.layouts.app')]
 class Index extends Component
 {
     use WithFileUploads;

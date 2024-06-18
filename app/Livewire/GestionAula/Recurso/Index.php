@@ -5,8 +5,10 @@ namespace App\Livewire\GestionAula\Recurso;
 use App\Models\GestionAulaUsuario;
 use App\Models\Recurso;
 use App\Models\Usuario;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
+#[Layout('components.layouts.app')]
 class Index extends Component
 {
     public $usuario;
@@ -65,7 +67,7 @@ class Index extends Component
         $this->titulo_modal = 'Editar Recurso';
         $this->accion_estado = 'Editar';
 
-        $this->nombre_recurso = 'asdasdas';
+        $this->nombre_recurso = 'Nombre de recursos';
 
         $this->dispatch(
             'modal',

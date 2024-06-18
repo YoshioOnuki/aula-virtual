@@ -8,8 +8,10 @@ use App\Models\ForoRespuesta;
 use App\Models\GestionAulaUsuario;
 use App\Models\TrabajoAcademico;
 use App\Models\Usuario;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
+#[Layout('components.layouts.app')]
 class Index extends Component
 {
     public $usuario;
