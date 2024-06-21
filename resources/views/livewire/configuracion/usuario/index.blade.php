@@ -29,6 +29,8 @@
                                     Mostrar
                                     <div class="mx-2 d-inline-block">
                                         <select wire:model.live="mostrar_paginate" class="form-select">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
                                             <option value="5">5</option>
                                             <option value="10">10</option>
                                             <option value="20">20</option>

@@ -26,38 +26,70 @@ class Index extends Component
     public $id_gestion_aula_usuario;
     public $gestion_aula_usuario;
 
-    public $asistencias;
+    public  $asistencias;
     public $cargando = true;
 
+    public $total_registros;
+    public $mostrando_inicio;
+    public $mostrando_fin;
+    public $hay_mas_paginas;
+
+
+    public function updatedMostrarPaginate($value)
+    {
+        $this->mostrar_asistencias();
+    }
 
     public function mostrar_asistencias()
     {
-        $this->gestion_aula_usuario = GestionAulaUsuario::with([
-            'gestionAula' => function ($query) {
-                $query->with([
-                    'asistencia' => function ($query) {
-                        $query->with([
-                            'asistenciaAlumno' => function ($query) {
-                                $query->with([
-                                    'estadoAsistencia' => function ($query) {
-                                        $query->select('id_estado_asistencia', 'nombre_estado_asistencia');
-                                    }
-                                ])->select('id_asistencia_alumno', 'id_estado_asistencia', 'id_asistencia', 'id_gestion_aula_usuario');
-                            }
-                        ])->search($this->search)
-                        ->orderBy('fecha_asistencia', 'desc')
-                        ->orderBy('hora_inicio_asistencia', 'desc')
-                        ->paginate($this->mostrar_paginate);
-                    }
-                ])->select('id_gestion_aula', 'grupo_gestion_aula', 'id_curso');
-            }
-        ])->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)->first();
 
-        // dd($this->id_gestion_aula_usuario);
-        // dd($this->gestion_aula_usuario->gestionAula->asistencia);
+        if(session('tipo_vista') === 'alumno')
+        {
+            $this->gestion_aula_usuario = GestionAulaUsuario::with([
+                'gestionAula' => function ($query) {
+                    $query->with([
+                        'asistencia' => function ($query) {
+                            $query->with([
+                                'asistenciaAlumno' => function ($query) {
+                                    $query->with([
+                                        'estadoAsistencia' => function ($query) {
+                                            $query->select('id_estado_asistencia', 'nombre_estado_asistencia');
+                                        }
+                                    ])->select('id_asistencia_alumno', 'id_estado_asistencia', 'id_asistencia', 'id_gestion_aula_usuario');
+                                }
+                            ])->search($this->search)
+                                ->orderBy('fecha_asistencia', 'desc')
+                                ->orderBy('hora_inicio_asistencia', 'desc');
+                        }
+                    ])->select('id_gestion_aula', 'grupo_gestion_aula', 'id_curso');
+                }
+            ])->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)->first();
+
+        }elseif(session('tipo_vista') === 'docente')
+        {
+            $this->gestion_aula_usuario = GestionAulaUsuario::with([
+                'gestionAula' => function ($query) {
+                    $query->with([
+                        'asistencia' => function ($query) {
+                            $query->search($this->search)
+                                ->orderBy('fecha_asistencia', 'desc')
+                                ->orderBy('hora_inicio_asistencia', 'desc');
+                        }
+                    ])->select('id_gestion_aula', 'grupo_gestion_aula', 'id_curso');
+                }
+            ])->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)->first();
+
+        }
+
+        if (!$this->gestion_aula_usuario || !$this->gestion_aula_usuario->gestionAula || !$this->gestion_aula_usuario->gestionAula->asistencia) {
+            $this->asistencias = collect();
+            return;
+        }
+
         $this->asistencias = $this->gestion_aula_usuario->gestionAula->asistencia;
 
     }
+
 
     public function load_asistencias()
     {
@@ -90,13 +122,9 @@ class Index extends Component
 
     public function render()
     {
-        // $asistencias = Asistencia::search($this->search)
-        //     ->orderBy('fecha_asistencia', 'desc')
-        //     ->orderBy('hora_inicio_asistencia', 'desc')
-        //     ->paginate($this->mostrar_paginate);
 
         return view('livewire.gestion-aula.asistencia.index', [
-            // 'asistencias' => $asistencias
+            'asistencias' => Collect(),
         ]);
     }
 }

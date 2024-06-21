@@ -81,23 +81,42 @@
                 <div class="col-12">
                     <div class="card animate__animated animate__fadeIn animate__faster">
                         <div class="card-body border-bottom py-3">
-                            <div class="d-flex">
+                            <div class="d-flex align-items-center justify-content-between">
                                 <div class="text-secondary">
-                                    Mostrar
+                                    {{-- Mostrar
                                     <div class="mx-2 d-inline-block">
-                                        <select wire:model.live="mostrar_paginate" class="form-select form-select-sm">
+                                        <select wire:model.live="mostrar_paginate" class="form-select">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
                                             <option value="5">5</option>
                                             <option value="10">10</option>
                                             <option value="20">20</option>
                                         </select>
                                     </div>
-                                    entradas
+                                    entradas --}}
                                 </div>
-                                <div class="ms-auto text-secondary">
-                                    Buscar:
-                                    <div class="ms-2 d-inline-block">
-                                        <input type="text" class="form-control form-control-sm"
-                                            wire:model.live.debounce.500ms="search" aria-label="Search invoice">
+                                <div class="text-secondary row">
+                                    <div class="col-lg-7 col-9">
+                                        <div class="d-inline-block">
+                                            <input type="text" class="form-control" wire:model.live.debounce.500ms="search" aria-label="Search invoice" placeholder="Buscar">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5 col-3 d-flex justify-content-end">
+                                        <a href="" class="btn btn-primary d-none d-md-inline-block">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M12 5l0 14" />
+                                                <path d="M5 12l14 0" />
+                                            </svg>
+                                            Crear usuario
+                                        </a>
+                                        <a href="" class="btn btn-primary d-md-none btn-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M12 5l0 14" />
+                                                <path d="M5 12l14 0" />
+                                            </svg>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -109,24 +128,28 @@
                                         <th class="col-2">Fecha</th>
                                         <th class="col-2">Hora</th>
                                         <th>Descripción</th>
-                                        <th class="col-2">Estado</th>
-                                        <th class="col-2">Asistencia</th>
+                                        @if (session('tipo_vista') === 'alumno')
+                                            <th class="col-2">Estado</th>
+                                            <th class="col-2">Asistencia</th>
+                                        @elseif (session('tipo_vista') === 'docente' && ($usuario->esRol('DOCENTE') || $usuario->esRol('DOCENTE INVITADO')))
+                                            <th class="col-2">Acciones</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody wire:init="load_asistencias_llamar">
+                                {{-- <tbody> --}}
                                     @if($cargando)
                                         <tr>
                                             <td colspan="5">
                                                 <div class="text-center py-2">
                                                     <span class="text-secondary">
-                                                        {{-- Cargando datos... --}}
                                                         <div class="spinner-border text-primary ms-3"></div>
                                                     </span>
                                                 </div>
                                             </td>
                                         </tr>
                                     @else
-                                        @forelse ($asistencias as $item)
+                                        @forelse($asistencias as $item)
                                             <tr>
                                                 <td>
                                                     {{ format_fecha($item->fecha_asistencia) }} ({{ format_dia_semana($item->fecha_asistencia) }})
@@ -137,21 +160,42 @@
                                                 <td>
                                                     {{ $item->nombre_asistencia }}
                                                 </td>
-                                                <td>
-                                                    {{-- @if ($item->asistencia_estado == 1) --}}
-                                                        <span class="status status-primary px-3 py-2">
-                                                            Presente
-                                                        </span>
-                                                    {{-- @else
-                                                        <span class="status status-red px-3 py-2">
-                                                            <span class="status-dot status-dot-animated"></span>
-                                                            Inactivo
-                                                        </span>
-                                                    @endif --}}
-                                                </td>
-                                                <td>
-                                                    Hecho
-                                                </td>
+                                                @if (session('tipo_vista') === 'alumno')
+                                                    <td>
+                                                        {{-- @if ($item->asistencia_estado == 1) --}}
+                                                            <span class="status status-primary px-3 py-2">
+                                                                Presente
+                                                            </span>
+                                                        {{-- @else
+                                                            <span class="status status-red px-3 py-2">
+                                                                <span class="status-dot status-dot-animated"></span>
+                                                                Inactivo
+                                                            </span>
+                                                        @endif --}}
+                                                    </td>
+                                                    <td>
+                                                        Hecho
+                                                    </td>
+                                                @elseif (session('tipo_vista') === 'docente' && ($usuario->esRol('DOCENTE') || $usuario->esRol('DOCENTE INVITADO')))
+                                                    <td>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm9">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                                stroke-width="2" stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                                                <path stroke="none"
+                                                                    d="M0 0h24v24H0z"
+                                                                    fill="none" />
+                                                                <path
+                                                                    d="M7 12l5 5l10 -10" />
+                                                                <path
+                                                                    d="M2 12l5 5m5 -5l5 -5" />
+                                                            </svg>
+                                                            Marcar Asistencia
+                                                        </button>
+                                                    </td>
+                                                @endif
                                             </tr>
                                         @empty
                                             @if ($asistencias->count() == 0 && $search != '')
@@ -183,27 +227,29 @@
                                 </tbody>
                             </table>
                         </div>
-                        {{-- <div class="card-footer {{ $personas->hasPages() ? 'py-0' : '' }}">
-                            @if ($personas->hasPages())
-                                <div class="d-flex justify-content-between">
-                                    <div class="d-flex align-items-center text-secondary">
-                                        Mostrando {{ $personas->firstItem() }} - {{ $personas->lastItem() }} de
-                                        {{ $personas->total() }} registros
-                                    </div>
-                                    <div class="mt-3">
-                                        {{ $personas->links() }}
-                                    </div>
+
+                        {{-- <div class="card-footer {{ $asistencias->hasPages() ? 'py-0' : '' }}">
+                            @if ($asistencias->hasPages())
+                            <div class="d-flex justify-content-between">
+                                <div class="d-flex align-items-center text-secondary">
+                                    Mostrando {{ $asistencias->firstItem() }} - {{ $asistencias->lastItem() }} de
+                                    {{ $asistencias->total() }} registros
                                 </div>
+                                <div class="mt-3">
+                                    {{ $asistencias->links() }}
+                                </div>
+                            </div>
                             @else
-                                <div class="d-flex justify-content-between">
-                                    <div class="d-flex align-items-center text-secondary">
-                                        Mostrando {{ $personas->firstItem() }} - {{ $personas->lastItem() }} de
-                                        {{ $personas->total() }} registros
-                                    </div>
+                            <div class="d-flex justify-content-between">
+                                <div class="d-flex align-items-center text-secondary">
+                                    Mostrando {{ $asistencias->firstItem() }} - {{ $asistencias->lastItem() }} de
+                                    {{ $asistencias->total() }} registros
                                 </div>
+                            </div>
                             @endif
                         </div> --}}
                     </div>
+
                 </div>
             </div>
         </div>
