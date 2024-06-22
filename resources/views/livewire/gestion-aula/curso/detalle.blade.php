@@ -342,8 +342,6 @@
                                                             <div class="text-content text-center mt-3 fw-semibold fs-3">
                                                                 Orientaciones Generales
                                                             </div>
-                                                            {{-- <span class="badge bg-primary badge-notification badge-blink"
-                                                                style="width: 10px; height: 10px;"></span> --}}
                                                             @if(!$orientaciones_generales)
                                                                 <span class="badge bg-yellow badge-notification badge-blink badge-pill">!</span>
                                                             @endif
@@ -361,6 +359,31 @@
                                                             @if(!$orientaciones_generales)
                                                                 <span class="badge bg-yellow badge-notification badge-blink badge-pill">!</span>
                                                             @endif
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                            </div>
+
+                                            <div class="col-6 col-md-2 col-lg-4 col-xl-3" wire:init="load_orientaciones">
+                                                <span class="hide-theme-dark">
+                                                    <div class="">
+                                                        <div class="image-button image-button-docente" style="z-index: 1;">
+                                                            <img src="/media/icons/icon-registro.webp" alt="Info"
+                                                                style="width: 80px; height: 80px;">
+                                                            <div class="text-content text-center mt-3 fw-semibold fs-3">
+                                                                Estudiantes
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                                <span class="hide-theme-light">
+                                                    <div class="dark-mode">
+                                                        <div class="image-button image-button-docente">
+                                                            <img src="/media/icons/icon-registro.webp" alt="Info"
+                                                                style="width: 80px; height: 80px;">
+                                                            <div class="text-content text-center mt-3 fw-semibold fs-3">
+                                                                Estudiantes
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </span>

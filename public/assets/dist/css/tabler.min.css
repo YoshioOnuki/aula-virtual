@@ -25630,7 +25630,18 @@ img {
 
 
 
-
+.image-button .text-content {
+    text-align: center;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-height: 1.2;
+    height: 2.4em;
+    white-space: normal;
+}
 
 .image-button {
     border-radius: 5px;
@@ -25642,8 +25653,8 @@ img {
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
     transform: translate(0px);
-    /* overflow: hidden; */
     max-width: 150px;
+    height: 170px;
 }
 
 .image-button-alumno {
