@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Collection;
-
 const METHOD="AES-256-CBC";
 const SECRET_KEY='$AULA@2024';
 const SECRET_IV='150324';
@@ -86,6 +84,22 @@ if (!function_exists('format_mes'))
             case 0:
                 return 'Todos los meses';
         }
+    }
+}
+
+// Funcion para verificar si la hora actual está entre la hora de inicio y fin en la fecha actual
+if (!function_exists('verificar_hora_actual'))
+{
+    function verificar_hora_actual($hora_inicio, $hora_fin, $fecha)
+    {
+        $hora_actual = date('H:i:s');
+        $fecha_actual = date('Y-m-d');
+        if ($fecha_actual == $fecha) {
+            if ($hora_actual >= $hora_inicio && $hora_actual < $hora_fin) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 

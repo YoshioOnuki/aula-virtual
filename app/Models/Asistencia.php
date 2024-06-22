@@ -42,7 +42,7 @@ class Asistencia extends Model
                 ->orWhere('fecha_asistencia', 'like', '%'.$search.'%')
                 ->orWhere('hora_inicio_asistencia', 'like', '%'.$search.'%')
                 ->orWhere('hora_fin_asistencia', 'like', '%'.$search.'%')
-                ->orWhereHas('asisntenciaAlumno', function($query) use ($search) {
+                ->orWhereHas('asistenciaAlumno', function($query) use ($search) {
                     $query->whereHas('estadoAsistencia', function($query) use ($search) {
                         $query->where('nombre_estado_asistencia', 'like', '%'.$search.'%');
                     });
