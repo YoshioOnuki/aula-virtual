@@ -152,7 +152,7 @@
                                     <div class="row g-3">
                                         <div class="col-6 col-md-2 col-lg-4 col-xl-3">
                                             <span class="hide-theme-dark">
-                                                <div class="" wire:click='mostrar_silabus({{ $id_gestion_aula_usuario }})'>
+                                                <div class="" wire:click="mostrar_silabus({{ $id_gestion_aula_usuario }})">
                                                     <div class="image-button {{ session('tipo_vista') == 'alumno' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-libro-info.webp" alt="Info"
                                                             style="width: 80px; height: 80px;">
@@ -163,7 +163,7 @@
                                                 </div>
                                             </span>
                                             <span class="hide-theme-light">
-                                                <div class="dark-mode" wire:click='mostrar_silabus({{ $id_gestion_aula_usuario }})'>
+                                                <div class="dark-mode" wire:click="mostrar_silabus({{ $id_gestion_aula_usuario }})">
                                                     <div class="image-button {{ session('tipo_vista') == 'alumno' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-libro-info.webp" alt="Info"
                                                             style="width: 80px; height: 80px;">
@@ -177,7 +177,7 @@
 
                                         <div class="col-6 col-md-2 col-lg-4 col-xl-3">
                                             <span class="hide-theme-dark">
-                                                <div class="" wire:click='mostrar_recursos({{ $id_gestion_aula_usuario }})'>
+                                                <div class="" wire:click="mostrar_recursos({{ $id_gestion_aula_usuario }})">
                                                     <div class="image-button {{ session('tipo_vista') == 'alumno' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-carpeta.webp" alt="Info"
                                                             style="width: 80px; height: 80px;">
@@ -188,7 +188,7 @@
                                                 </div>
                                             </span>
                                             <span class="hide-theme-light">
-                                                <div class="dark-mode" wire:click='mostrar_recursos({{ $id_gestion_aula_usuario }})'>
+                                                <div class="dark-mode" wire:click="mostrar_recursos({{ $id_gestion_aula_usuario }})">
                                                     <div class="image-button {{ session('tipo_vista') == 'alumno' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-carpeta.webp" alt="Info"
                                                             style="width: 80px; height: 80px;">
@@ -202,7 +202,7 @@
 
                                         <div class="col-6 col-md-2 col-lg-4 col-xl-3">
                                             <span class="hide-theme-dark">
-                                                <div class="" wire:click='mostrar_foro({{ $id_gestion_aula_usuario }})'>
+                                                <div class="" wire:click="mostrar_foro({{ $id_gestion_aula_usuario }})">
                                                     <div class="image-button {{ session('tipo_vista') == 'alumno' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-foro-discusion.webp"
                                                             alt="Info" style="width: 80px; height: 80px;">
@@ -213,7 +213,7 @@
                                                 </div>
                                             </span>
                                             <span class="hide-theme-light">
-                                                <div class="dark-mode" wire:click='mostrar_foro({{ $id_gestion_aula_usuario }})'>
+                                                <div class="dark-mode" wire:click="mostrar_foro({{ $id_gestion_aula_usuario }})">
                                                     <div class="image-button {{ session('tipo_vista') == 'alumno' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-foro-discusion.webp"
                                                             alt="Info" style="width: 80px; height: 80px;">
@@ -228,7 +228,7 @@
 
                                         <div class="col-6 col-md-2 col-lg-4 col-xl-3">
                                             <span class="hide-theme-dark">
-                                                <div class="" wire:click='mostrar_asistencia({{ $id_gestion_aula_usuario }})'>
+                                                <div class="" wire:click="mostrar_asistencia({{ $id_gestion_aula_usuario }})">
                                                     <div class="image-button {{ session('tipo_vista') == 'alumno' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-matricula.webp" alt="Info"
                                                             style="width: 80px; height: 80px;">
@@ -239,7 +239,7 @@
                                                 </div>
                                             </span>
                                             <span class="hide-theme-light">
-                                                <div class="dark-mode" wire:click='mostrar_asistencia({{ $id_gestion_aula_usuario }})'>
+                                                <div class="dark-mode" wire:click="mostrar_asistencia({{ $id_gestion_aula_usuario }})">
                                                     <div class="image-button {{ session('tipo_vista') == 'alumno' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-matricula.webp" alt="Info"
                                                             style="width: 80px; height: 80px;">
@@ -253,7 +253,7 @@
 
                                         <div class="col-6 col-md-2 col-lg-4 col-xl-3">
                                             <span class="hide-theme-dark">
-                                                <div class="" wire:click='mostrar_trabajo_academico({{ $id_gestion_aula_usuario }})'>
+                                                <div class="" wire:click="mostrar_trabajo_academico({{ $id_gestion_aula_usuario }})">
                                                     <div class="image-button {{ session('tipo_vista') == 'alumno' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-curso-por-internet.webp"
                                                             alt="Info" style="width: 80px; height: 80px;">
@@ -264,7 +264,7 @@
                                                 </div>
                                             </span>
                                             <span class="hide-theme-light">
-                                                <div class="dark-mode" wire:click='mostrar_trabajo_academico({{ $id_gestion_aula_usuario }})'>
+                                                <div class="dark-mode" wire:click="mostrar_trabajo_academico({{ $id_gestion_aula_usuario }})">
                                                     <div class="image-button {{ session('tipo_vista') == 'alumno' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-curso-por-internet.webp"
                                                             alt="Info" style="width: 80px; height: 80px;">
@@ -278,7 +278,7 @@
 
                                         <div class="col-6 col-md-2 col-lg-4 col-xl-3">
                                             <span class="hide-theme-dark">
-                                                <div class="" wire:click='mostrar_webgrafia({{ $id_gestion_aula_usuario }})'>
+                                                <div class="" wire:click="mostrar_webgrafia({{ $id_gestion_aula_usuario }})">
                                                     <div class="image-button {{ session('tipo_vista') == 'alumno' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-ubicacion-ip.webp" alt="Info"
                                                             style="width: 80px; height: 80px;">
@@ -289,7 +289,7 @@
                                                 </div>
                                             </span>
                                             <span class="hide-theme-light">
-                                                <div class="dark-mode" wire:click='mostrar_webgrafia({{ $id_gestion_aula_usuario }})'>
+                                                <div class="dark-mode" wire:click="mostrar_webgrafia({{ $id_gestion_aula_usuario }})">
                                                     <div class="image-button {{ session('tipo_vista') == 'alumno' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-ubicacion-ip.webp" alt="Info"
                                                             style="width: 80px; height: 80px;">
@@ -364,25 +364,25 @@
                                                 </span>
                                             </div>
 
-                                            <div class="col-6 col-md-2 col-lg-4 col-xl-3" wire:init="load_orientaciones">
+                                            <div class="col-6 col-md-2 col-lg-4 col-xl-3">
                                                 <span class="hide-theme-dark">
-                                                    <div class="">
+                                                    <div class="" wire:click="mostrar_alumnos({{ $id_gestion_aula_usuario }})">
                                                         <div class="image-button image-button-docente" style="z-index: 1;">
                                                             <img src="/media/icons/icon-registro.webp" alt="Info"
                                                                 style="width: 80px; height: 80px;">
                                                             <div class="text-content text-center mt-3 fw-semibold fs-3">
-                                                                Estudiantes
+                                                                Alumnos
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </span>
                                                 <span class="hide-theme-light">
-                                                    <div class="dark-mode">
+                                                    <div class="dark-mode" wire:click="mostrar_alumnos({{ $id_gestion_aula_usuario }})">
                                                         <div class="image-button image-button-docente">
                                                             <img src="/media/icons/icon-registro.webp" alt="Info"
                                                                 style="width: 80px; height: 80px;">
                                                             <div class="text-content text-center mt-3 fw-semibold fs-3">
-                                                                Estudiantes
+                                                                Alumnos
                                                             </div>
                                                         </div>
                                                     </div>

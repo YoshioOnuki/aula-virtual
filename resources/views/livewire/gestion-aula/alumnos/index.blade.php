@@ -34,13 +34,13 @@
 
                             <li class="breadcrumb-item active" aria-current="page">
                                 <a href="#">
-                                    Asistencia
+                                    Alumnos
                                 </a>
                             </li>
                         </ol>
                     </div>
                     <h2 class="page-title text-uppercase">
-                        Asistencia
+                        Alumnos
                     </h2>
                 </div>
                 <div class="col-auto ms-auto d-print-none">
@@ -118,7 +118,7 @@
                                                 <path d="M12 5l0 14" />
                                                 <path d="M5 12l14 0" />
                                             </svg>
-                                            Crear Asistencia
+                                            Agregar Alumno
                                         </a>
                                         <a href="" class="btn btn-primary d-md-none btn-icon">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
@@ -139,17 +139,91 @@
                         <table class="table card-table table-vcenter text-nowrap table-striped">
                             <thead>
                                 <tr>
-                                    <th class="col-2">Fecha</th>
-                                    <th class="col-2">Hora</th>
-                                    <th>Descripción</th>
-                                    @if (session('tipo_vista') === 'alumno')
-                                        <th class="col-2 text-center">Estado</th>
-                                    @endif
-                                    <th class="col-2 text-center">Acciones</th>
+                                    <th class="col-1">Código</th>
+                                    <th>Alumno</th>
+                                    <th>Usuario</th>
+                                    <th>Última conexión</th>
+                                    <th class="col-2">Estado</th>
+                                    <th class="col-1">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($asistencias as $item)
+                                @forelse ($alumnos as $item)
+                                    <tr>
+                                        <td>
+                                            {{ $item->usuario->persona->codigo_alumno_persona }}
+                                        </td>
+                                        <td>
+                                            {{ $item->usuario->nombre_completo }}
+                                        </td>
+                                        <td>
+                                            {{ $item->usuario->correo_usuario }}
+                                        </td>
+                                        <td>
+                                            {{ ultima_conexion('2024-06-23 12:18:17') }}
+                                        </td>
+                                        <td>
+                                            @if ($item->estado_gestion_aula_usuario === 1)
+                                                <a wire:click="abrir_modal_estado({{ $item->id_usuario }}, 0)" class="text-decoration-none cursor-pointer">
+                                                    <span class="badge bg-teal-lt status-teal px-3 py-2 fs-4">
+                                                        <span class="status-dot status-dot-animated me-2"></span>
+                                                        Matriculado
+                                                    </span>
+                                                </a>
+                                            @else
+                                                <a wire:click="abrir_modal_estado({{ $item->id_usuario }}, 1)" class="text-decoration-none cursor-pointer">
+                                                    <span class="badge bg-red-lt status-red px-3 py-2 fs-4">
+                                                        <span class="status-dot status-dot-animated me-2"></span>
+                                                        Retirado
+                                                    </span>
+                                                </a>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <div class="btn-list flex-nowrap">
+                                                <div class="dropdown">
+                                                    <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        Acciones
+                                                    </button>
+                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                        <a class="dropdown-item" style="cursor: pointer;">
+                                                            Ver
+                                                        </a>
+                                                        <a class="dropdown-item" style="cursor: pointer;">
+                                                            Editar
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    @if ($alumnos->count() == 0 && $search != '')
+                                        <tr>
+                                            <td colspan="4">
+                                                <div class="text-center"
+                                                    style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                    <span class="text-secondary">
+                                                        No se encontraron resultados para
+                                                        "<strong>{{ $search }}</strong>"
+                                                    </span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @else
+                                        <tr>
+                                            <td colspan="4">
+                                                <div class="text-center"
+                                                    style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                    <span class="text-secondary">
+                                                        No hay alumnos matriculados
+                                                    </span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                @endforelse
+                                {{-- @forelse($asistencias as $item)
                                     <tr>
                                         <td>
                                             {{ format_fecha($item->fecha_asistencia) }}
@@ -258,27 +332,27 @@
                                             </td>
                                         </tr>
                                     @endif
-                                @endforelse
+                                @endforelse --}}
                             </tbody>
                         </table>
                     </div>
 
-                    <div class="card-footer {{ $asistencias->hasPages() ? 'py-0' : '' }}">
-                        @if ($asistencias->hasPages())
+                    <div class="card-footer {{ $alumnos->hasPages() ? 'py-0' : '' }}">
+                        @if ($alumnos->hasPages())
                             <div class="d-flex justify-content-between">
                                 <div class="d-flex align-items-center text-secondary">
-                                    Mostrando {{ $asistencias->firstItem() }} - {{ $asistencias->lastItem() }} de
-                                    {{ $asistencias->total() }} registros
+                                    Mostrando {{ $alumnos->firstItem() }} - {{ $alumnos->lastItem() }} de
+                                    {{ $alumnos->total() }} registros
                                 </div>
                                 <div class="mt-3">
-                                    {{ $asistencias->links() }}
+                                    {{ $alumnos->links() }}
                                 </div>
                             </div>
                         @else
                             <div class="d-flex justify-content-between">
                                 <div class="d-flex align-items-center text-secondary">
-                                    Mostrando {{ $asistencias->firstItem() }} - {{ $asistencias->lastItem() }} de
-                                    {{ $asistencias->total() }} registros
+                                    Mostrando {{ $alumnos->firstItem() }} - {{ $alumnos->lastItem() }} de
+                                    {{ $alumnos->total() }} registros
                                 </div>
                             </div>
                         @endif
@@ -291,73 +365,6 @@
 </div>
 
 
-{{-- <div wire:ignore.self class="modal" id="modal-recursos" tabindex="-1">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">
-                    {{ $titulo_modal }}
-                </h5>
-                <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal" aria-label="Close" wire:click="cerrar_modal"></button>
-            </div>
-            <form autocomplete="off" wire:submit="guardar_recurso">
-                <div class="modal-body">
-                    <div class="row g-3">
-                        <div class="col-lg-12">
-                            <label for="correo_electronico" class="form-label required">
-                                Nombre del Recurso
-                            </label>
-                            <input type="text" name="nombre_recurso" class="form-control @error('nombre_recurso') is-invalid @enderror" id="nombre_recurso" wire:model.live="nombre_recurso" placeholder="Ingrese su correo electrónico" />
-                            @error('nombre_recurso')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-                        <div class="col-lg-12">
-                            <label for="archivo" class="form-label required">
-                                Archivo
-                            </label>
-                            <input type="file" class="form-control @error('archivo') is-invalid @enderror" id="archivo" wire:model.live="archivo" />
-                            @error('archivo')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
 
-                <div class="modal-footer">
-                    <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="cerrar_modal">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-ban">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                            <path d="M5.7 5.7l12.6 12.6" />
-                        </svg>
-                        Cancelar
-                    </a>
-                    <button type="submit" class="btn btn-primary ms-auto">
-                        @if ($modo === 1)
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M12 5l0 14" />
-                                <path d="M5 12l14 0" />
-                            </svg>
-                        @else
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                <path d="M16 5l3 3" />
-                            </svg>
-                        @endif
-                        {{ $accion_estado }}
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div> --}}
 
 </div>

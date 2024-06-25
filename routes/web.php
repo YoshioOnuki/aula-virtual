@@ -3,6 +3,7 @@
 use App\Livewire\Configuracion\Autoridades\Index as AutoridadesIndex;
 use App\Livewire\Configuracion\Perfil\Index as PerfilIndex;
 use App\Livewire\Configuracion\Usuario\Index as UsuarioIndex;
+use App\Livewire\GestionAula\Alumnos\Index as AlumnoIndex;
 use App\Livewire\GestionAula\Asistencia\Index as AsistenciaIndex;
 use App\Livewire\GestionAula\Curso\Detalle as CursoDetalle;
 use App\Livewire\GestionAula\Curso\Index as CursoIndex;
@@ -140,6 +141,9 @@ Route::middleware(['auth'])->group(function () {
         // Webgrafía
         Route::get('/carga-academica/detalle/{id}/webgrafia', WebgrafiaIndex::class)
             ->name('carga-academica.detalle.webgrafia');
+        // Alumnos
+        Route::get('/carga-academica/detalle/{id}/alumnos', AlumnoIndex::class)
+            ->name('carga-academica.detalle.alumnos');
     });
 
 

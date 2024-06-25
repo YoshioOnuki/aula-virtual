@@ -63,7 +63,7 @@
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <table class="table card-table table-vcenter text-nowrap table-striped  datatable">
+                            <table class="table card-table table-vcenter text-nowrap table-striped">
                                 <thead>
                                     <tr>
                                         <th class="w-1">No.</th>

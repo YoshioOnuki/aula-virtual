@@ -213,6 +213,12 @@ class Detalle extends Component
         }
     }
 
+    public function mostrar_alumnos($id)
+    {
+        $id_url = encriptar($id);
+        return redirect()->route('carga-academica.detalle.alumnos', ['id' => $id_url]);
+    }
+
 
     public function mount($id)
     {

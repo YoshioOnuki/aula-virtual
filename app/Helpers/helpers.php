@@ -87,6 +87,23 @@ if (!function_exists('format_mes'))
     }
 }
 
+// Función para obtener la última vez que se conectó un usuario
+if (!function_exists('ultima_conexion'))
+{
+    function ultima_conexion($fecha)
+    {
+        $fecha_actual = date('Y-m-d');
+        $hora_actual = date('H:i:s');
+        $fecha_ultima_conexion = date('Y-m-d', strtotime($fecha));
+        $hora_ultima_conexion = date('H:i:s', strtotime($fecha));
+        if ($fecha_actual == $fecha_ultima_conexion) {
+            return 'Hoy a las ' . date('h:i A', strtotime($hora_ultima_conexion));
+        } else {
+            return 'El ' . date('d/m/Y', strtotime($fecha_ultima_conexion)) . ' a las ' . date('h:i A', strtotime($hora_ultima_conexion));
+        }
+    }
+}
+
 // Funcion para verificar si la hora actual está entre la hora de inicio y fin en la fecha actual
 if (!function_exists('verificar_hora_actual'))
 {
