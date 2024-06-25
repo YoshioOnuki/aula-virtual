@@ -4,6 +4,7 @@ namespace App\Livewire\GestionAula\Alumnos;
 
 use App\Models\GestionAulaUsuario;
 use App\Models\Usuario;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -23,6 +24,102 @@ class Index extends Component
     public $id_gestion_aula_usuario;
     public $id_gestion_aula;
 
+    public $modo = 1; // Modo 1 = Habilitar / 0 = Retirar
+    public $titulo_modal = 'Estado de Alumno';
+    public $accion_estado = 'Habilitar';
+    public $id_gestion_aula_usuario_alumno;
+    public $codigo_alumno;
+    public $nombres_alumno;
+    public $correo_usuario;
+
+
+    public function abrir_modal_estado(GestionAulaUsuario $gestion_aula_usuario, $modo)
+    {
+        $this->id_gestion_aula_usuario_alumno = $gestion_aula_usuario->id_gestion_aula_usuario;
+        $this->codigo_alumno = $gestion_aula_usuario->usuario->persona->codigo_alumno_persona;
+        $this->nombres_alumno = $gestion_aula_usuario->usuario->nombre_completo;
+        $this->correo_usuario = $gestion_aula_usuario->usuario->correo_usuario;
+        $this->titulo_modal = 'Estado de Alumno';
+
+        if ($modo === 1) {
+            $this->modo = 1;
+            $this->accion_estado = 'Habilitar';
+        } elseif ($modo === 0) {
+            $this->modo = 0;
+            $this->accion_estado = 'Retirar';
+        }
+
+        $this->dispatch(
+            'modal',
+            modal: '#modal-estado-alumnos',
+            action: 'show'
+        );
+
+    }
+
+    public function cambiar_estado()
+    {
+        //Transacción para el manejo de datos
+        try {
+            DB::beginTransaction();
+
+            $gestion_aula_usuario = GestionAulaUsuario::find($this->id_gestion_aula_usuario_alumno);
+            $gestion_aula_usuario->estado_gestion_aula_usuario = $this->modo;
+            $gestion_aula_usuario->save();
+            // dd($gestion_aula_usuario->estado_gestion_aula_usuario, $gestion_aula_usuario->usuario->nombre_completo);
+
+            //Reiniciar variables
+            $this->id_gestion_aula_usuario_alumno = '';
+            $this->codigo_alumno = '';
+            $this->nombres_alumno = '';
+            $this->correo_usuario = '';
+            $this->modo = 1;
+            $this->titulo_modal = 'Estado de Alumno';
+            $this->accion_estado = 'Habilitar';
+
+            //Cerrar modal
+            $this->dispatch(
+                'modal',
+                modal: '#modal-estado-alumnos',
+                action: 'hide'
+            );
+
+            $this->dispatch(
+                'toast-basico',
+                mensaje: 'Estado de alumno actualizado correctamente',
+                type: 'success'
+            );
+
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            $this->dispatch(
+                'toast-basico',
+                mensaje: 'Ocurrió un error al actualizar el estado del alummno'.$e->getMessage(),
+                type: 'error'
+            );
+        }
+
+    }
+
+    public function limpiar_modal()
+    {
+        $this->id_alumno = '';
+        $this->codigo_alumno = '';
+        $this->nombres_alumno = '';
+        $this->correo_usuario = '';
+        $this->modo = 1;
+        $this->titulo_modal = 'Estado de Alumno';
+        $this->accion_estado = 'Habilitar';
+
+        $this->dispatch(
+            'modal',
+            modal: '#modal-estado-alumnos',
+            action: 'hide'
+        );
+    }
 
     public function mount($id)
     {
