@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\AlumnosDocentes\Index as AlumnosDocentesIndex;
 use App\Livewire\Configuracion\Autoridades\Index as AutoridadesIndex;
 use App\Livewire\Configuracion\Perfil\Index as PerfilIndex;
 use App\Livewire\Configuracion\Usuario\Index as UsuarioIndex;
@@ -51,6 +52,73 @@ Route::middleware(['auth'])->group(function () {
     // Autoridades
     Route::get('/autoridades', AutoridadesIndex::class)
         ->name('autoridades');
+
+
+    /* =============== BUSQUEDA DE ALUMNOS Y DOCENTES =============== */
+    // Busqueda de alumnos
+    Route::get('/alumnos', AlumnosDocentesIndex::class)
+        ->name('alumnos');
+    //
+    Route::prefix('alumnos')->group(function () {
+        //------ Alumno ------//
+        Route::get('/cursos', CursoIndex::class)
+            ->name('alumnos.cursos');
+        // Curso detalle
+        Route::get('/cursos/detalle/{id}', CursoDetalle::class)
+            ->name('alumnos.cursos.detalle');
+        // Silabus
+        Route::get('/cursos/detalle/{id}/silabus', SilabusIndex::class)
+            ->name('alumnos.cursos.detalle.silabus');
+        // Lectura
+        Route::get('/cursos/detalle/{id}/recursos', RecursoIndex::class)
+            ->name('alumnos.cursos.detalle.recursos');
+        // Foro
+        Route::get('/cursos/detalle/{id}/foro', ForoIndex::class)
+            ->name('alumnos.cursos.detalle.foro');
+        // Asistencia
+        Route::get('/cursos/detalle/{id}/asistencia', AsistenciaIndex::class)
+            ->name('alumnos.cursos.detalle.asistencia');
+        // Trabajos academicos
+        Route::get('/cursos/detalle/{id}/trabajo-academico', TrabajoAcademicoIndex::class)
+            ->name('alumnos.cursos.detalle.trabajo-academico');
+        // Webgrafía
+        Route::get('/cursos/detalle/{id}/webgrafia', WebgrafiaIndex::class)
+            ->name('alumnos.cursos.detalle.webgrafia');
+    });
+
+    // Busqueda de docentes
+    Route::get('/docentes', AlumnosDocentesIndex::class)
+        ->name('docentes');
+    //
+    Route::prefix('docentes')->group(function () {
+        //------ Docente ------//
+        Route::get('/carga-academica', CursoIndex::class)
+            ->name('docentes.carga-academica');
+        // Cargo academico detalle
+        Route::get('/carga-academica/detalle/{id}', CursoDetalle::class)
+            ->name('docentes.carga-academica.detalle');
+        // Silabus
+        Route::get('/carga-academica/detalle/{id}/silabus', SilabusIndex::class)
+            ->name('docentes.carga-academica.detalle.silabus');
+        // Lectura
+        Route::get('/carga-academica/detalle/{id}/recursos', RecursoIndex::class)
+            ->name('docentes.carga-academica.detalle.recursos');
+        // Foro
+        Route::get('/carga-academica/detalle/{id}/foro', ForoIndex::class)
+            ->name('docentes.carga-academica.detalle.foro');
+        // Asistencia
+        Route::get('/carga-academica/detalle/{id}/asistencia', AsistenciaIndex::class)
+            ->name('docentes.carga-academica.detalle.asistencia');
+        // Trabajos academicos
+        Route::get('/carga-academica/detalle/{id}/trabajo-academico', TrabajoAcademicoIndex::class)
+            ->name('docentes.carga-academica.detalle.trabajo-academico');
+        // Webgrafía
+        Route::get('/carga-academica/detalle/{id}/webgrafia', WebgrafiaIndex::class)
+            ->name('docentes.carga-academica.detalle.webgrafia');
+        // Alumnos
+        Route::get('/carga-academica/detalle/{id}/alumnos', AlumnoIndex::class)
+            ->name('docentes.carga-academica.detalle.alumnos');
+    });
 
 
     /* =============== ESTRUCTURA ACADEMICA =============== */

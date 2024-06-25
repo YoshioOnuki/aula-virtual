@@ -4,31 +4,44 @@
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <div class="page-pretitle">
-                        <ol class="breadcrumb breadcrumb-arrows
-                        " aria-label="breadcrumbs">
+                        <ol class="breadcrumb breadcrumb-arrows" aria-label="breadcrumbs">
                             <li class="breadcrumb-item">
                                 <a href="{{ route('inicio') }}">Inicio</a>
                             </li>
 
                             @if (session('tipo_vista') === 'alumno')
                                 <li class="breadcrumb-item">
-                                    <a href="{{ route('cursos') }}">Mis Cursos</a>
+                                    @if($this->modo_admin)
+                                        <a href="{{ route('docentes.cursos', encriptar($id_gestion_aula_usuario)) }}">Mis Cursos</a>
+                                    @else
+                                        <a href="{{ route('cursos') }}">Mis Cursos</a>
+                                    @endif
                                 </li>
                             @else
                                 <li class="breadcrumb-item">
-                                    <a href="{{ route('carga-academica') }}">Carga Académica</a>
+                                    @if($this->modo_admin)
+                                        <a href="{{ route('docentes.carga-academica', encriptar($id_gestion_aula_usuario)) }}">Carga Académica</a>
+                                    @else
+                                        <a href="{{ route('carga-academica') }}">Carga Académica</a>
+                                    @endif
                                 </li>
                             @endif
 
                             @if (session('tipo_vista') === 'alumno')
                                 <li class="breadcrumb-item">
-                                    <a
-                                        href="{{ route('cursos.detalle', encriptar($id_gestion_aula_usuario)) }}">Detalle</a>
+                                    @if($this->modo_admin)
+                                        <a href="{{ route('alumnos.cursos.detalle', encriptar($id_gestion_aula_usuario)) }}">Detalle</a>
+                                    @else
+                                        <a href="{{ route('cursos.detalle', encriptar($id_gestion_aula_usuario)) }}">Detalle</a>
+                                    @endif
                                 </li>
                             @else
                                 <li class="breadcrumb-item">
-                                    <a
-                                        href="{{ route('carga-academica.detalle', encriptar($id_gestion_aula_usuario)) }}">Detalle</a>
+                                    @if($this->modo_admin)
+                                        <a href="{{ route('docentes.carga-academica.detalle', encriptar($id_gestion_aula_usuario)) }}">Detalle</a>
+                                    @else
+                                        <a href="{{ route('carga-academica.detalle', encriptar($id_gestion_aula_usuario)) }}">Detalle</a>
+                                    @endif
                                 </li>
                             @endif
 
@@ -46,11 +59,21 @@
                 <div class="col-auto ms-auto d-print-none">
                     <div class="btn-list">
                         @if (session('tipo_vista') === 'alumno')
-                            <a href="{{ route('cursos.detalle', encriptar($id_gestion_aula_usuario)) }}"
+                            @if($this->modo_admin)
+                                <a href="{{ route('alumnos.cursos.detalle', encriptar($id_gestion_aula_usuario)) }}"
+                                class="btn btn-secondary d-none d-md-inline-block">
+                            @else
+                                <a href="{{ route('cursos.detalle', encriptar($id_gestion_aula_usuario)) }}"
+                                class="btn btn-secondary d-none d-md-inline-block">
+                            @endif
+                        @else
+                            @if($this->modo_admin)
+                                <a href="{{ route('docentes.carga-academica.detalle', encriptar($id_gestion_aula_usuario)) }}"
                                 class="btn btn-secondary d-none d-md-inline-block">
                             @else
                                 <a href="{{ route('carga-academica.detalle', encriptar($id_gestion_aula_usuario)) }}"
                                     class="btn btn-secondary d-none d-md-inline-block">
+                            @endif
                         @endif
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -61,7 +84,24 @@
                         </svg>
                         Regresar
                         </a>
-                        <a href="" class="btn btn-secondary d-md-none btn-icon">
+
+                        @if (session('tipo_vista') === 'alumno')
+                            @if($this->modo_admin)
+                                <a href="{{ route('alumnos.cursos.detalle', encriptar($id_gestion_aula_usuario)) }}"
+                                class="btn btn-secondary d-md-none btn-icon">
+                            @else
+                                <a href="{{ route('cursos.detalle', encriptar($id_gestion_aula_usuario)) }}"
+                                class="btn btn-secondary d-md-none btn-icon">
+                            @endif
+                        @else
+                            @if($this->modo_admin)
+                                <a href="{{ route('docentes.carga-academica.detalle', encriptar($id_gestion_aula_usuario)) }}"
+                                class="btn btn-secondary d-md-none btn-icon">
+                            @else
+                                <a href="{{ route('carga-academica.detalle', encriptar($id_gestion_aula_usuario)) }}"
+                                class="btn btn-secondary d-md-none btn-icon">
+                            @endif
+                        @endif
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round"
@@ -77,6 +117,33 @@
     </div>
     <div class="page-body">
         <div class="container-xl">
+
+            @if($modo_admin)
+                <div class="card card-stacked animate__animated animate__fadeIn animate__faster mb-3">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            @if (session('tipo_vista') === 'alumno')
+                                <img src="{{ asset($usuario->mostrarFoto('alumno')) }}"
+                                        alt="avatar" class="avatar avatar-lg avatar-thumb rounded">
+                            @elseif(session('tipo_vista') === 'docente')
+                                <img src="{{ asset($usuario->mostrarFoto('docente')) }}"
+                                        alt="avatar" class="avatar avatar-lg avatar-thumb rounded">
+                            @endif
+                        </div>
+                        <div class="card-title mb-1">
+                            {{ $usuario->nombre_completo }}
+                        </div>
+                        <div class="text-secondary">
+                            {{ $usuario->correo_usuario }}
+                        </div>
+                    </div>
+                    <div class="progress card-progress">
+                        <div class="progress-bar bg-{{ session('tipo_vista') === 'alumno' ? 'teal' : 'orange' }}" style="width: 100%" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             <div class="row g-3">
                 <div class="col-12">
                     <div class="card animate__animated animate__fadeIn animate__faster">
@@ -98,266 +165,205 @@
                                 <div class="text-secondary row">
                                     @if ($usuario->esRol('DOCENTE') && session('tipo_vista') === 'docente')
                                         <div class="col-lg-7 col-9">
-                                        @else
-                                            <div class="col-lg-12 col-9">
-                                    @endif
-                                    <div class="d-inline-block">
-                                        <input type="text" class="form-control"
-                                            wire:model.live.debounce.500ms="search" aria-label="Search invoice"
-                                            placeholder="Buscar">
-                                    </div>
-                                </div>
-                                @if ($usuario->esRol('DOCENTE') && session('tipo_vista') === 'docente')
-                                    <div class="col-lg-5 col-3 d-flex justify-content-end">
-                                        <a href="" class="btn btn-primary d-none d-md-inline-block">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
-                                                height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                stroke="currentColor" fill="none" stroke-linecap="round"
-                                                stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path d="M12 5l0 14" />
-                                                <path d="M5 12l14 0" />
-                                            </svg>
-                                            Crear Asistencia
-                                        </a>
-                                        <a href="" class="btn btn-primary d-md-none btn-icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
-                                                height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                stroke="currentColor" fill="none" stroke-linecap="round"
-                                                stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path d="M12 5l0 14" />
-                                                <path d="M5 12l14 0" />
-                                            </svg>
-                                        </a>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table card-table table-vcenter text-nowrap table-striped">
-                            <thead>
-                                <tr>
-                                    <th class="col-2">Fecha</th>
-                                    <th class="col-2">Hora</th>
-                                    <th>Descripción</th>
-                                    @if (session('tipo_vista') === 'alumno')
-                                        <th class="col-2 text-center">Estado</th>
-                                    @endif
-                                    <th class="col-2 text-center">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($asistencias as $item)
-                                    <tr>
-                                        <td>
-                                            {{ format_fecha($item->fecha_asistencia) }}
-                                            ({{ format_dia_semana($item->fecha_asistencia) }})
-                                        </td>
-                                        <td>
-                                            {{ format_hora($item->hora_inicio_asistencia) }} -
-                                            {{ format_hora($item->hora_fin_asistencia) }}
-                                        </td>
-                                        <td>
-                                            {{ $item->nombre_asistencia }}
-                                        </td>
-                                        @if (session('tipo_vista') === 'alumno')
-                                            <td class="text-center">
-                                                @if (!$item->asistenciaAlumno->isEmpty())
-                                                    <span class="status status-teal px-3 py-2">
-                                                        Presente
-                                                    </span>
-                                                @else
-                                                    ?
-                                                @endif
-                                            </td>
-                                            <td class="text-center">
-                                                @if ($item->asistenciaAlumno->isEmpty())
-                                                    <button type="button"
-                                                        class="btn btn-outline-primary btn-sm
-                                                            {{ verificar_hora_actual($item->hora_inicio_asistencia, $item->hora_fin_asistencia, $item->fecha_asistencia) ? '' : 'disabled' }}">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                            height="24" viewBox="0 0 24 24" fill="none"
-                                                            stroke="currentColor" stroke-width="2"
-                                                            stroke-linecap="round" stroke-linejoin="round"
-                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-checks">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                            <path d="M7 12l5 5l10 -10" />
-                                                            <path d="M2 12l5 5m5 -5l5 -5" />
-                                                        </svg>
-                                                        Enviar Asistencia
-                                                    </button>
-                                                @else
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                        height="24" viewBox="0 0 24 24" fill="none"
-                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-checks text-success">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                        <path d="M7 12l5 5l10 -10" />
-                                                        <path d="M2 12l5 5m5 -5l5 -5" />
-                                                    </svg>
-                                                @endif
-                                            </td>
-                                        @elseif (session('tipo_vista') === 'docente' && ($usuario->esRol('DOCENTE') || $usuario->esRol('DOCENTE INVITADO')))
-                                            <td>
-                                                @if (verificar_hora_actual($item->hora_inicio_asistencia, $item->hora_fin_asistencia, $item->fecha_asistencia))
-                                                    <button type="button" class="btn btn-outline-primary btn-sm">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                            height="24" viewBox="0 0 24 24" fill="none"
-                                                            stroke="currentColor" stroke-width="2"
-                                                            stroke-linecap="round" stroke-linejoin="round"
-                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-edit me-1">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                            <path d="M7 12l5 5l10 -10" />
-                                                            <path d="M2 12l5 5m5 -5l5 -5" />
-                                                        </svg>
-                                                        Marcar Asistencias
-                                                    </button>
-                                                @else
-                                                    <button type="button" class="btn btn-outline-teal btn-sm">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                            height="24" viewBox="0 0 24 24" fill="none"
-                                                            stroke="currentColor" stroke-width="2"
-                                                            stroke-linecap="round" stroke-linejoin="round"
-                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-eye me-1">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                            <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-                                                            <path
-                                                                d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
-                                                        </svg>
-                                                        Ver Asistencias
-                                                    </button>
-                                                @endif
-                                            </td>
-                                        @endif
-                                    </tr>
-                                @empty
-                                    @if ($asistencias->count() == 0 && $search != '')
-                                        <tr>
-                                            <td colspan="4">
-                                                <div class="text-center"
-                                                    style="padding-bottom: 2rem; padding-top: 2rem;">
-                                                    <span class="text-secondary">
-                                                        No se encontraron resultados para
-                                                        "<strong>{{ $search }}</strong>"
-                                                    </span>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                            <div class="d-inline-block">
+                                                <input type="text" class="form-control"
+                                                    wire:model.live.debounce.500ms="search" aria-label="Search invoice"
+                                                    placeholder="Buscar">
+                                            </div>
+                                        </div>
                                     @else
-                                        <tr>
-                                            <td colspan="4">
-                                                <div class="text-center"
-                                                    style="padding-bottom: 2rem; padding-top: 2rem;">
-                                                    <span class="text-secondary">
-                                                        No hay asistencias registradas
-                                                    </span>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                        <div class="col-lg-12 col-9">
+                                            <div class="d-inline-block">
+                                                <input type="text" class="form-control"
+                                                    wire:model.live.debounce.500ms="search" aria-label="Search invoice"
+                                                    placeholder="Buscar">
+                                            </div>
+                                        </div>
                                     @endif
-                                @endforelse
-                            </tbody>
-                        </table>
+
+                                    @if ($usuario->esRol('DOCENTE') && session('tipo_vista') === 'docente')
+                                        <div class="col-lg-5 col-3 d-flex justify-content-end">
+                                            <a href="" class="btn btn-primary d-none d-md-inline-block">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                                                    height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                    stroke="currentColor" fill="none" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                    <path d="M12 5l0 14" />
+                                                    <path d="M5 12l14 0" />
+                                                </svg>
+                                                Crear Asistencia
+                                            </a>
+                                            <a href="" class="btn btn-primary d-md-none btn-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                                                    height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                    stroke="currentColor" fill="none" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                    <path d="M12 5l0 14" />
+                                                    <path d="M5 12l14 0" />
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table card-table table-vcenter text-nowrap table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="col-2">Fecha</th>
+                                        <th class="col-2">Hora</th>
+                                        <th>Descripción</th>
+                                        @if (session('tipo_vista') === 'alumno')
+                                            <th class="col-2 text-center">Estado</th>
+                                        @endif
+                                        <th class="col-2 text-center">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($asistencias as $item)
+                                        <tr>
+                                            <td>
+                                                {{ format_fecha($item->fecha_asistencia) }}
+                                                ({{ format_dia_semana($item->fecha_asistencia) }})
+                                            </td>
+                                            <td>
+                                                {{ format_hora($item->hora_inicio_asistencia) }} -
+                                                {{ format_hora($item->hora_fin_asistencia) }}
+                                            </td>
+                                            <td>
+                                                {{ $item->nombre_asistencia }}
+                                            </td>
+                                            @if (session('tipo_vista') === 'alumno')
+                                                <td class="text-center">
+                                                    @if (!$item->asistenciaAlumno->isEmpty())
+                                                        <span class="status status-teal px-3 py-2">
+                                                            Presente
+                                                        </span>
+                                                    @else
+                                                        ?
+                                                    @endif
+                                                </td>
+                                                <td class="text-center">
+                                                    @if ($item->asistenciaAlumno->isEmpty())
+                                                        <button type="button"
+                                                            class="btn btn-outline-primary btn-sm
+                                                            {{ verificar_hora_actual($item->hora_inicio_asistencia, $item->hora_fin_asistencia, $item->fecha_asistencia) ? '' : 'disabled' }}">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round"
+                                                                class="icon icon-tabler icons-tabler-outline icon-tabler-checks">
+                                                                <path stroke="none" d="M0 0h24v24H0z"
+                                                                    fill="none" />
+                                                                <path d="M7 12l5 5l10 -10" />
+                                                                <path d="M2 12l5 5m5 -5l5 -5" />
+                                                            </svg>
+                                                            Enviar Asistencia
+                                                        </button>
+                                                    @else
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                            height="24" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="2"
+                                                            stroke-linecap="round" stroke-linejoin="round"
+                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-checks text-success">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                            <path d="M7 12l5 5l10 -10" />
+                                                            <path d="M2 12l5 5m5 -5l5 -5" />
+                                                        </svg>
+                                                    @endif
+                                                </td>
+                                            @elseif (session('tipo_vista') === 'docente' && ($usuario->esRol('DOCENTE') || $usuario->esRol('DOCENTE INVITADO')))
+                                                <td>
+                                                    @if (verificar_hora_actual($item->hora_inicio_asistencia, $item->hora_fin_asistencia, $item->fecha_asistencia))
+                                                        <button type="button" class="btn btn-outline-primary btn-sm">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round"
+                                                                class="icon icon-tabler icons-tabler-outline icon-tabler-edit me-1">
+                                                                <path stroke="none" d="M0 0h24v24H0z"
+                                                                    fill="none" />
+                                                                <path d="M7 12l5 5l10 -10" />
+                                                                <path d="M2 12l5 5m5 -5l5 -5" />
+                                                            </svg>
+                                                            Marcar Asistencias
+                                                        </button>
+                                                    @else
+                                                        <button type="button" class="btn btn-outline-teal btn-sm">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round"
+                                                                class="icon icon-tabler icons-tabler-outline icon-tabler-eye me-1">
+                                                                <path stroke="none" d="M0 0h24v24H0z"
+                                                                    fill="none" />
+                                                                <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                                                                <path
+                                                                    d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+                                                            </svg>
+                                                            Ver Asistencias
+                                                        </button>
+                                                    @endif
+                                                </td>
+                                            @endif
+                                        </tr>
+                                    @empty
+                                        @if ($asistencias->count() == 0 && $search != '')
+                                            <tr>
+                                                <td colspan="4">
+                                                    <div class="text-center"
+                                                        style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                        <span class="text-secondary">
+                                                            No se encontraron resultados para
+                                                            "<strong>{{ $search }}</strong>"
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @else
+                                            <tr>
+                                                <td colspan="4">
+                                                    <div class="text-center"
+                                                        style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                        <span class="text-secondary">
+                                                            No hay asistencias registradas
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endif
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="card-footer {{ $asistencias->hasPages() ? 'py-0' : '' }}">
+                            @if ($asistencias->hasPages())
+                                <div class="d-flex justify-content-between">
+                                    <div class="d-flex align-items-center text-secondary">
+                                        Mostrando {{ $asistencias->firstItem() }} - {{ $asistencias->lastItem() }} de
+                                        {{ $asistencias->total() }} registros
+                                    </div>
+                                    <div class="mt-3">
+                                        {{ $asistencias->links() }}
+                                    </div>
+                                </div>
+                            @else
+                                <div class="d-flex justify-content-between">
+                                    <div class="d-flex align-items-center text-secondary">
+                                        Mostrando {{ $asistencias->firstItem() }} - {{ $asistencias->lastItem() }} de
+                                        {{ $asistencias->total() }} registros
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
                     </div>
 
-                    <div class="card-footer {{ $asistencias->hasPages() ? 'py-0' : '' }}">
-                        @if ($asistencias->hasPages())
-                            <div class="d-flex justify-content-between">
-                                <div class="d-flex align-items-center text-secondary">
-                                    Mostrando {{ $asistencias->firstItem() }} - {{ $asistencias->lastItem() }} de
-                                    {{ $asistencias->total() }} registros
-                                </div>
-                                <div class="mt-3">
-                                    {{ $asistencias->links() }}
-                                </div>
-                            </div>
-                        @else
-                            <div class="d-flex justify-content-between">
-                                <div class="d-flex align-items-center text-secondary">
-                                    Mostrando {{ $asistencias->firstItem() }} - {{ $asistencias->lastItem() }} de
-                                    {{ $asistencias->total() }} registros
-                                </div>
-                            </div>
-                        @endif
-                    </div>
                 </div>
-
             </div>
         </div>
     </div>
-</div>
-
-
-{{-- <div wire:ignore.self class="modal" id="modal-recursos" tabindex="-1">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">
-                    {{ $titulo_modal }}
-                </h5>
-                <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal" aria-label="Close" wire:click="cerrar_modal"></button>
-            </div>
-            <form autocomplete="off" wire:submit="guardar_recurso">
-                <div class="modal-body">
-                    <div class="row g-3">
-                        <div class="col-lg-12">
-                            <label for="correo_electronico" class="form-label required">
-                                Nombre del Recurso
-                            </label>
-                            <input type="text" name="nombre_recurso" class="form-control @error('nombre_recurso') is-invalid @enderror" id="nombre_recurso" wire:model.live="nombre_recurso" placeholder="Ingrese su correo electrónico" />
-                            @error('nombre_recurso')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-                        <div class="col-lg-12">
-                            <label for="archivo" class="form-label required">
-                                Archivo
-                            </label>
-                            <input type="file" class="form-control @error('archivo') is-invalid @enderror" id="archivo" wire:model.live="archivo" />
-                            @error('archivo')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="cerrar_modal">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-ban">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                            <path d="M5.7 5.7l12.6 12.6" />
-                        </svg>
-                        Cancelar
-                    </a>
-                    <button type="submit" class="btn btn-primary ms-auto">
-                        @if ($modo === 1)
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M12 5l0 14" />
-                                <path d="M5 12l14 0" />
-                            </svg>
-                        @else
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                <path d="M16 5l3 3" />
-                            </svg>
-                        @endif
-                        {{ $accion_estado }}
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div> --}}
-
 </div>

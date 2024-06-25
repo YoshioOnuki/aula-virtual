@@ -26,6 +26,9 @@ class Login extends Component
         $usuario = Usuario::activo()->correo($this->correo)->first();
         if($usuario && Hash::check($this->contrasenia, $usuario->contrasenia_usuario)){
             auth()->login($usuario, false);
+            $usuario->ultima_accion_usuario = now();
+            $usuario->id_accion_usuario = 1;
+            $usuario->save();
             return redirect()->intended(route('inicio'));
         }
         $this->addError('correo', 'Estas credenciales son incorrectas.');

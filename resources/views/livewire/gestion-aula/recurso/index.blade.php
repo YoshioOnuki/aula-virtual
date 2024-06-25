@@ -12,23 +12,37 @@
 
                             @if (session('tipo_vista') === 'alumno')
                                 <li class="breadcrumb-item">
-                                    <a href="{{ route('cursos') }}">Mis Cursos</a>
+                                    @if($this->modo_admin)
+                                        <a href="{{ route('docentes.cursos', encriptar($id_gestion_aula_usuario)) }}">Mis Cursos</a>
+                                    @else
+                                        <a href="{{ route('cursos') }}">Mis Cursos</a>
+                                    @endif
                                 </li>
                             @else
                                 <li class="breadcrumb-item">
-                                    <a href="{{ route('carga-academica') }}">Carga Académica</a>
+                                    @if($this->modo_admin)
+                                        <a href="{{ route('docentes.carga-academica', encriptar($id_gestion_aula_usuario)) }}">Carga Académica</a>
+                                    @else
+                                        <a href="{{ route('carga-academica') }}">Carga Académica</a>
+                                    @endif
                                 </li>
                             @endif
 
                             @if (session('tipo_vista') === 'alumno')
                                 <li class="breadcrumb-item">
-                                    <a
-                                        href="{{ route('cursos.detalle', encriptar($id_gestion_aula_usuario)) }}">Detalle</a>
+                                    @if($this->modo_admin)
+                                        <a href="{{ route('alumnos.cursos.detalle', encriptar($id_gestion_aula_usuario)) }}">Detalle</a>
+                                    @else
+                                        <a href="{{ route('cursos.detalle', encriptar($id_gestion_aula_usuario)) }}">Detalle</a>
+                                    @endif
                                 </li>
                             @else
                                 <li class="breadcrumb-item">
-                                    <a
-                                        href="{{ route('carga-academica.detalle', encriptar($id_gestion_aula_usuario)) }}">Detalle</a>
+                                    @if($this->modo_admin)
+                                        <a href="{{ route('docentes.carga-academica.detalle', encriptar($id_gestion_aula_usuario)) }}">Detalle</a>
+                                    @else
+                                        <a href="{{ route('carga-academica.detalle', encriptar($id_gestion_aula_usuario)) }}">Detalle</a>
+                                    @endif
                                 </li>
                             @endif
 
@@ -46,11 +60,21 @@
                 <div class="col-auto ms-auto d-print-none">
                     <div class="btn-list">
                         @if (session('tipo_vista') === 'alumno')
-                            <a href="{{ route('cursos.detalle', encriptar($id_gestion_aula_usuario)) }}"
+                            @if($this->modo_admin)
+                                <a href="{{ route('alumnos.cursos.detalle', encriptar($id_gestion_aula_usuario)) }}"
+                                class="btn btn-secondary d-none d-md-inline-block">
+                            @else
+                                <a href="{{ route('cursos.detalle', encriptar($id_gestion_aula_usuario)) }}"
+                                class="btn btn-secondary d-none d-md-inline-block">
+                            @endif
+                        @else
+                            @if($this->modo_admin)
+                                <a href="{{ route('docentes.carga-academica.detalle', encriptar($id_gestion_aula_usuario)) }}"
                                 class="btn btn-secondary d-none d-md-inline-block">
                             @else
                                 <a href="{{ route('carga-academica.detalle', encriptar($id_gestion_aula_usuario)) }}"
                                     class="btn btn-secondary d-none d-md-inline-block">
+                            @endif
                         @endif
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -61,7 +85,24 @@
                         </svg>
                         Regresar
                         </a>
-                        <a href="" class="btn btn-secondary d-md-none btn-icon">
+
+                        @if (session('tipo_vista') === 'alumno')
+                            @if($this->modo_admin)
+                                <a href="{{ route('alumnos.cursos.detalle', encriptar($id_gestion_aula_usuario)) }}"
+                                class="btn btn-secondary d-md-none btn-icon">
+                            @else
+                                <a href="{{ route('cursos.detalle', encriptar($id_gestion_aula_usuario)) }}"
+                                class="btn btn-secondary d-md-none btn-icon">
+                            @endif
+                        @else
+                            @if($this->modo_admin)
+                                <a href="{{ route('docentes.carga-academica.detalle', encriptar($id_gestion_aula_usuario)) }}"
+                                class="btn btn-secondary d-md-none btn-icon">
+                            @else
+                                <a href="{{ route('carga-academica.detalle', encriptar($id_gestion_aula_usuario)) }}"
+                                class="btn btn-secondary d-md-none btn-icon">
+                            @endif
+                        @endif
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round"
@@ -78,6 +119,33 @@
 
     <div class="page-body">
         <div class="container-xl">
+
+            @if($modo_admin)
+                <div class="card card-stacked animate__animated animate__fadeIn animate__faster mb-3">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            @if (session('tipo_vista') === 'alumno')
+                                <img src="{{ asset($usuario->mostrarFoto('alumno')) }}"
+                                        alt="avatar" class="avatar avatar-lg avatar-thumb rounded">
+                            @elseif(session('tipo_vista') === 'docente')
+                                <img src="{{ asset($usuario->mostrarFoto('docente')) }}"
+                                        alt="avatar" class="avatar avatar-lg avatar-thumb rounded">
+                            @endif
+                        </div>
+                        <div class="card-title mb-1">
+                            {{ $usuario->nombre_completo }}
+                        </div>
+                        <div class="text-secondary">
+                            {{ $usuario->correo_usuario }}
+                        </div>
+                    </div>
+                    <div class="progress card-progress">
+                        <div class="progress-bar bg-{{ session('tipo_vista') === 'alumno' ? 'teal' : 'orange' }}" style="width: 100%" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             <div class="row g-3">
                 <div class="col-lg-8">
                     <div class="card card-md card-stacked animate__animated animate__fadeIn animate__faster">

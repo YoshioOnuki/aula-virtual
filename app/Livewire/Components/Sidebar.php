@@ -56,6 +56,22 @@ class Sidebar extends Component
     }
 
 
+    /* =============== BUSQUEDA DE ALUMNOS Y DOCENTES =============== */
+    public function mostrar_alumnos()
+    {
+        // Guardar en la sesión el tipo de vista
+        session(['tipo_vista' => 'alumno']);
+        return redirect()->route('alumnos');
+    }
+
+    public function mostrar_docentes()
+    {
+        // Guardar en la sesión el tipo de vista
+        session(['tipo_vista' => 'docente']);
+        return redirect()->route('docentes');
+    }
+
+
     /* =============== ESTRUCTURA ACADEMICA =============== */
 
     public function mostrar_nivel_academico()

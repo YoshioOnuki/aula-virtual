@@ -26,6 +26,8 @@ class Index extends Component
 
     public $id_gestion_aula_usuario;
 
+    public $modo_admin = false;
+
 
     public function updatingMostrarPaginate()
     {
@@ -45,7 +47,18 @@ class Index extends Component
 
         $this->id_gestion_aula_usuario = desencriptar($id);
 
-        $this->usuario = Usuario::find(auth()->id());
+        if(request()->routeIs('alumnos*') || request()->routeIs('docentes*'))
+        {
+            if(session('id_usuario') !== null)
+            {
+                $this->usuario = Usuario::find(desencriptar(session('id_usuario')));
+                $this->modo_admin = true;
+            }else{
+                request()->routeIs('alumnos*') ? redirect()->route('alumnos') : redirect()->route('docentes');
+            }
+        }else{
+            $this->usuario = Usuario::find(auth()->id());
+        }
 
     }
 

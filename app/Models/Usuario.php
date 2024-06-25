@@ -21,6 +21,9 @@ class Usuario extends Authenticatable
         'foto_usuario',
         'estado_usuario',
         'id_persona',
+        'ultima_accion_usuario',
+        'id_accion_usuario',
+        'accion_usuario',
     ];
 
     public function persona()
@@ -37,6 +40,10 @@ class Usuario extends Authenticatable
         return $this->belongsToMany(Rol::class, 'usuario_rol', 'id_usuario', 'id_rol');
     }
 
+    public function accionUsuario()
+    {
+        return $this->belongsTo(AccionUsuario::class, 'id_accion_usuario');
+    }
 
     public function gestionAulaUsuario(){
         return $this->hasMany(GestionAulaUsuario::class, 'id_usuario');
@@ -93,7 +100,9 @@ class Usuario extends Authenticatable
             $color_lt = 'eceffd';
         }
 
-        return $this->foto_usuario ?? 'https://ui-avatars.com/api/?name=' . $this->persona->solo_primeros_nombres . '&size=64&&color='. $color_lt .'&background='. $color .'&bold=true';
+        $nombres = $this->persona ? $this->persona->solo_primeros_nombres : 'Sin Nombres';
+
+        return $this->foto_usuario ?? 'https://ui-avatars.com/api/?name=' . $nombres . '&size=64&&color='. $color_lt .'&background='. $color .'&bold=true';
     }
 
     //Mostrar el rol, si tiene mas de un rol, concatenar
@@ -133,6 +142,23 @@ class Usuario extends Authenticatable
                         ->orWhere('apellido_paterno_persona', 'LIKE', '%' . $search . '%')
                         ->orWhere('apellido_materno_persona', 'LIKE', '%' . $search . '%')
                         ->orWhere('documento_persona', 'LIKE', '%' . $search . '%');
+                });
+        });
+    }
+
+    public function scopeSearchAlumno($query, $search) {
+        if ($search == null) {
+            return $query;
+        }
+
+        return $query->where(function($query) use ($search) {
+            $query->where('correo_usuario', 'LIKE', '%' . $search . '%')
+                ->orWhereHas('persona', function ($subQuery) use ($search) {
+                    $subQuery->where('nombres_persona', 'LIKE', '%' . $search . '%')
+                        ->orWhere('apellido_paterno_persona', 'LIKE', '%' . $search . '%')
+                        ->orWhere('apellido_materno_persona', 'LIKE', '%' . $search . '%')
+                        ->orWhere('documento_persona', 'LIKE', '%' . $search . '%')
+                        ->orWhere('codigo_alumno_persona', 'LIKE', '%' . $search . '%');
                 });
         });
     }

@@ -72,7 +72,7 @@
                         <span class="nav-link-title hide-theme-dark">
                             Inicio
                         </span>
-                        <span class="nav-link-title hide-theme-light text-white">
+                        <span class="nav-link-title hide-theme-light">
                             Inicio
                         </span>
                     </a>
@@ -99,7 +99,7 @@
                         <span class="nav-link-title hide-theme-dark">
                             Perfil
                         </span>
-                        <span class="nav-link-title hide-theme-light text-white">
+                        <span class="nav-link-title hide-theme-light">
                             Perfil
                         </span>
                     </a>
@@ -152,15 +152,15 @@
                     <hr class="ms-lg-3 mt-3 mb-3 hide-theme-dark">
                     <hr class="ms-lg-3 mt-3 mb-3 hide-theme-light text-white">
 
-                    <li class="nav-item {{ request()->routeIs('perfil*') ? 'active' : '' }}">
-                        <a class="nav-link {{ request()->routeIs('perfil*') ? 'text-primary fw-medium' : '' }}"
-                            style="cursor: pointer;" wire:click="mostrar_perfil">
+                    <li class="nav-item {{ request()->routeIs('alumnos*') ? 'active' : '' }}">
+                        <a class="nav-link {{ request()->routeIs('alumnos*') ? 'text-primary fw-medium' : '' }}"
+                            style="cursor: pointer;" wire:click="mostrar_alumnos">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round"
                                     class="icon icon-tabler icons-tabler-outline icon-tabler-school
-                                    {{ request()->routeIs('perfil*') ? 'text-primary' : '' }}">
+                                    {{ request()->routeIs('alumnos*') ? 'text-primary' : '' }}">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                     <path d="M22 9l-10 -4l-10 4l10 4l10 -4v6" />
                                     <path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4" />
@@ -169,21 +169,21 @@
                             <span class="nav-link-title hide-theme-dark">
                                 Alumnos
                             </span>
-                            <span class="nav-link-title hide-theme-light text-white">
+                            <span class="nav-link-title hide-theme-light">
                                 Alumnos
                             </span>
                         </a>
                     </li>
 
-                    <li class="nav-item {{ request()->routeIs('perfil*') ? 'active' : '' }}">
-                        <a class="nav-link {{ request()->routeIs('perfil*') ? 'text-primary fw-medium' : '' }}"
-                            style="cursor: pointer;" wire:click="mostrar_perfil">
+                    <li class="nav-item {{ request()->routeIs('docentes*') ? 'active' : '' }}">
+                        <a class="nav-link {{ request()->routeIs('docentes*') ? 'text-primary fw-medium' : '' }}"
+                            style="cursor: pointer;" wire:click="mostrar_docentes">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round"
                                     class="icon icon-tabler icons-tabler-outline icon-tabler-chalkboard
-                                    {{ request()->routeIs('perfil*') ? 'text-primary' : '' }}">
+                                    {{ request()->routeIs('docentes*') ? 'text-primary' : '' }}">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                     <path
                                         d="M8 19h-3a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v11a1 1 0 0 1 -1 1" />
@@ -194,11 +194,14 @@
                             <span class="nav-link-title hide-theme-dark">
                                 Docentes
                             </span>
-                            <span class="nav-link-title hide-theme-light text-white">
+                            <span class="nav-link-title hide-theme-light">
                                 Docentes
                             </span>
                         </a>
                     </li>
+
+                    <hr class="ms-lg-3 mt-3 mb-3 hide-theme-dark">
+                    <hr class="ms-lg-3 mt-3 mb-3 hide-theme-light text-white">
 
                     <li class="nav-item {{ request()->routeIs('estructura-academica*') ? 'active' : '' }} dropdown">
                         <a class="nav-link dropdown-toggle {{ request()->routeIs('estructura-academica*') ? 'text-primary fw-medium' : '' }}"
@@ -343,7 +346,7 @@
                                 <span class="nav-link-title hide-theme-dark">
                                     Mis cursos
                                 </span>
-                                <span class="nav-link-title hide-theme-light text-white">
+                                <span class="nav-link-title hide-theme-light">
                                     Mis cursos
                                 </span>
                             </a>
@@ -370,7 +373,7 @@
                                 <span class="nav-link-title hide-theme-dark">
                                     Carga académica
                                 </span>
-                                <span class="nav-link-title hide-theme-light text-white">
+                                <span class="nav-link-title hide-theme-light">
                                     Carga académica
                                 </span>
                             </a>
@@ -401,7 +404,7 @@
                             <span class="nav-link-title hide-theme-dark">
                                 Calificaciones
                             </span>
-                            <span class="nav-link-title hide-theme-light text-white">
+                            <span class="nav-link-title hide-theme-light">
                                 Calificaciones
                             </span>
                         </a>
@@ -430,7 +433,7 @@
                             <span class="nav-link-title hide-theme-dark">
                                 Plan de estudios
                             </span>
-                            <span class="nav-link-title hide-theme-light text-white">
+                            <span class="nav-link-title hide-theme-light">
                                 Plan de estudios
                             </span>
                         </a>
@@ -457,7 +460,7 @@
                         <span class="nav-link-title hide-theme-dark">
                             Manuales
                         </span>
-                        <span class="nav-link-title hide-theme-light text-white">
+                        <span class="nav-link-title hide-theme-light">
                             Manuales
                         </span>
                     </a>

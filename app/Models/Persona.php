@@ -25,7 +25,7 @@ class Persona extends Model
 
     public function usuario()
     {
-        return $this->hasMany(Usuario::class, 'id_persona');
+        return $this->hasOne(Usuario::class, 'id_persona');
     }
 
     public function getSoloPrimerosNombresAttribute()
@@ -42,6 +42,18 @@ class Persona extends Model
     public function getFotoAttribute()
     {
         return $this->usuario->first()->foto_usuario ?? '';
+    }
+
+    public function scopeSearch($query, $search) {
+        if ($search == null) {
+            return $query;
+        }
+
+        return $query->where('nombres_persona', 'LIKE', "%$search%")
+            ->orWhere('apellido_paterno_persona', 'LIKE', "%$search%")
+            ->orWhere('apellido_materno_persona', 'LIKE', "%$search%")
+            ->orWhere('codigo_alumno_persona', 'LIKE', "%$search%")
+            ->orWhere('correo_persona', 'LIKE', "%$search%");
     }
 
     protected static function boot()

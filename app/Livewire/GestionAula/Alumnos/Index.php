@@ -32,6 +32,8 @@ class Index extends Component
     public $nombres_alumno;
     public $correo_usuario;
 
+    public $modo_admin = false;
+
 
     public function abrir_modal_estado(GestionAulaUsuario $gestion_aula_usuario, $modo)
     {
@@ -134,7 +136,18 @@ class Index extends Component
         $this->id_gestion_aula_usuario = desencriptar($id);
         $this->id_gestion_aula = GestionAulaUsuario::find($this->id_gestion_aula_usuario)->id_gestion_aula;
 
-        $this->usuario = Usuario::find(auth()->id());
+        if(request()->routeIs('alumnos*') || request()->routeIs('docentes*'))
+        {
+            if(session('id_usuario') !== null)
+            {
+                $this->usuario = Usuario::find(desencriptar(session('id_usuario')));
+                $this->modo_admin = true;
+            }else{
+                request()->routeIs('alumnos*') ? redirect()->route('alumnos') : redirect()->route('docentes');
+            }
+        }else{
+            $this->usuario = Usuario::find(auth()->id());
+        }
 
     }
 
@@ -157,7 +170,6 @@ class Index extends Component
             })
             ->searchUsuario($this->search)
             ->paginate($this->mostrar_paginate);
-        // dd($alumnos);
 
         return view('livewire.gestion-aula.alumnos.index', [
             'alumnos' => $alumnos

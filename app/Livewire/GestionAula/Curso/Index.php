@@ -7,6 +7,7 @@ use App\Models\ForoRespuesta;
 use App\Models\GestionAula;
 use App\Models\GestionAulaUsuario;
 use App\Models\TrabajoAcademico;
+use App\Models\Usuario;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -23,6 +24,8 @@ class Index extends Component
 
     public $cargando = true;
     public $cantidad_cursos = 1;
+
+    public $modo_admin = false;
 
     public function curso_favorito($id)
     {
@@ -47,10 +50,22 @@ class Index extends Component
         if($docente) {
             if(session('tipo_vista') === 'alumno') {
                 $id_url = encriptar($docente->id_gestion_aula_usuario);
-                return redirect()->route('cursos.detalle', ['id' => $id_url]);
+                if($this->modo_admin)
+                {
+                    session(['id_usuario' => encriptar($this->usuario->id_usuario)]);
+                    return redirect()->route('alumnos.cursos.detalle', ['id' => $id_url]);
+                }else{
+                    return redirect()->route('cursos.detalle', ['id' => $id_url]);
+                }
             } else {
                 $id_url = encriptar($docente->id_gestion_aula_usuario);
-                return redirect()->route('carga-academica.detalle', ['id' => $id_url]);
+                if($this->modo_admin)
+                {
+                    session(['id_usuario' => encriptar($this->usuario->id_usuario)]);
+                    return redirect()->route('docentes.carga-academica.detalle', ['id' => $id_url]);
+                }else{
+                    return redirect()->route('carga-academica.detalle', ['id' => $id_url]);
+                }
             }
         } else {
 
@@ -129,7 +144,7 @@ class Index extends Component
         if(session('tipo_vista') === 'alumno')
         {
             $cursos = GestionAulaUsuario::with(['gestionAula.curso', 'rol'])
-                ->where('id_usuario', auth()->user()->id_usuario)
+                ->where('id_usuario', $this->usuario->id_usuario)
                 ->where('estado_gestion_aula_usuario', 1)
                 ->whereHas('rol', function ($query) {
                     $query->where('nombre_rol', 'ALUMNO');
@@ -147,7 +162,7 @@ class Index extends Component
 
         } else {
                 $cursos = GestionAulaUsuario::with(['gestionAula.curso', 'rol'])
-                    ->where('id_usuario', auth()->user()->id_usuario)
+                    ->where('id_usuario', $this->usuario->id_usuario)
                     ->where('estado_gestion_aula_usuario', 1)
                     ->whereHas('rol', function ($query) {
                         $query->whereIn('nombre_rol', ['DOCENTE', 'DOCENTE INVITADO']);
@@ -198,7 +213,7 @@ class Index extends Component
         if(session('tipo_vista') === 'alumno')
         {
             $this->cantidad_cursos = GestionAulaUsuario::with('rol')
-                ->where('id_usuario', auth()->user()->id_usuario)
+                ->where('id_usuario', $this->usuario->id_usuario)
                 ->where('estado_gestion_aula_usuario', 1)
                 ->whereHas('rol', function ($query) {
                     $query->where('nombre_rol', 'ALUMNO');
@@ -208,7 +223,7 @@ class Index extends Component
 
         } elseif(session('tipo_vista') === 'docente') {
             $this->cantidad_cursos = GestionAulaUsuario::with('rol')
-                ->where('id_usuario', auth()->user()->id_usuario)
+                ->where('id_usuario', $this->usuario->id_usuario)
                 ->where('estado_gestion_aula_usuario', 1)
                 ->whereHas('rol', function ($query) {
                     $query->where('nombre_rol', 'DOCENTE');
@@ -229,7 +244,19 @@ class Index extends Component
             session(['tipo_vista' => 'docente']);
         }
 
-        $this->usuario = auth()->user();
+        if(request()->routeIs('alumnos*') || request()->routeIs('docentes*'))
+        {
+            if(session('id_usuario') !== null)
+            {
+                $this->usuario = Usuario::find(desencriptar(session('id_usuario')));
+                $this->modo_admin = true;
+            }else{
+                request()->routeIs('alumnos*') ? redirect()->route('alumnos') : redirect()->route('docentes');
+            }
+        }else{
+            $this->usuario = auth()->user();
+        }
+
 
         $this->calcular_cantidad_curso();
 
