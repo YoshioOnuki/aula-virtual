@@ -57,6 +57,16 @@ class GestionAulaUsuario extends Model
         return $this->hasMany(ComentarioTrabajoAcademico::class, 'id_gestion_aula_usuario');
     }
 
+    // Usar el search del scope de usuario
+    public function scopeSearchUsuario($query, $search)
+    {
+        if ($search) {
+            return $query->whereHas('usuario', function ($query) use ($search) {
+                $query->search($search);
+            });
+        }
+    }
+
     protected static function boot()
     {
         parent::boot();

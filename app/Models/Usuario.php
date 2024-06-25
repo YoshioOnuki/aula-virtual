@@ -81,6 +81,18 @@ class Usuario extends Authenticatable
             $color_lt = config('settings.color_lt_alumnos');
         }
 
+        if($tipo === 'azure')
+        {
+            $color = '4299e1';
+            $color_lt = 'ecf5fc';
+        }
+
+        if($tipo === 'indigo')
+        {
+            $color = '4263eb';
+            $color_lt = 'eceffd';
+        }
+
         return $this->foto_usuario ?? 'https://ui-avatars.com/api/?name=' . $this->persona->solo_primeros_nombres . '&size=64&&color='. $color_lt .'&background='. $color .'&bold=true';
     }
 

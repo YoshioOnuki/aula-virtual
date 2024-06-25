@@ -144,17 +144,25 @@
                                     <th>Usuario</th>
                                     <th>Última conexión</th>
                                     <th class="col-2">Estado</th>
-                                    <th class="col-1">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse ($alumnos as $item)
-                                    <tr>
+                                    <tr class="{{ $item->estado_gestion_aula_usuario === 0 ? 'bg-red text-white fw-bold' : '' }}">
                                         <td>
                                             {{ $item->usuario->persona->codigo_alumno_persona }}
                                         </td>
                                         <td>
-                                            {{ $item->usuario->nombre_completo }}
+                                            <div class="d-flex py-1 align-items-center">
+                                                <img src="{{ asset($item->usuario->mostrarFoto('azure')) }}" alt="avatar" class="avatar me-2">
+                                                <div class="flex-fill">
+                                                    <div class="font-weight-medium">{{ $item->usuario->nombre_completo }}
+                                                    </div>
+                                                    <div class=" 
+                                                    {{ $item->estado_gestion_aula_usuario === 0 ? 'text-white' : 'text-secondary' }}"><a href="#" class="text-reset">{{ $item->usuario->persona->documento_persona }}</a>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </td>
                                         <td>
                                             {{ $item->usuario->correo_usuario }}
@@ -178,23 +186,6 @@
                                                     </span>
                                                 </a>
                                             @endif
-                                        </td>
-                                        <td>
-                                            <div class="btn-list flex-nowrap">
-                                                <div class="dropdown">
-                                                    <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        Acciones
-                                                    </button>
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        <a class="dropdown-item" style="cursor: pointer;">
-                                                            Ver
-                                                        </a>
-                                                        <a class="dropdown-item" style="cursor: pointer;">
-                                                            Editar
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </td>
                                     </tr>
                                 @empty

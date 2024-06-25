@@ -106,7 +106,7 @@ class Index extends Component
 
     public function limpiar_modal()
     {
-        $this->id_alumno = '';
+        $this->id_gestion_aula_usuario_alumno = '';
         $this->codigo_alumno = '';
         $this->nombres_alumno = '';
         $this->correo_usuario = '';
@@ -155,6 +155,7 @@ class Index extends Component
             ->whereHas('rol', function ($query) {
                 $query->where('nombre_rol', 'ALUMNO');
             })
+            ->searchUsuario($this->search)
             ->paginate($this->mostrar_paginate);
         // dd($alumnos);
 
