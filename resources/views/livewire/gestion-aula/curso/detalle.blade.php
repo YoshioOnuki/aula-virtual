@@ -13,7 +13,7 @@
                             @if (session('tipo_vista') === 'alumno')
                                 <li class="breadcrumb-item">
                                     @if($this->modo_admin)
-                                        <a href="{{ route('docentes.cursos', encriptar($id_gestion_aula_usuario)) }}">Mis Cursos</a>
+                                        <a href="{{ route('alumnos.cursos', encriptar($id_gestion_aula_usuario)) }}">Mis Cursos</a>
                                     @else
                                         <a href="{{ route('cursos') }}">Mis Cursos</a>
                                     @endif
@@ -81,29 +81,7 @@
         <div class="container-xl">
 
             @if($modo_admin)
-                <div class="card card-stacked animate__animated animate__fadeIn animate__faster mb-3">
-                    <div class="card-body text-center">
-                        <div class="mb-3">
-                            @if (session('tipo_vista') === 'alumno')
-                                <img src="{{ asset($usuario->mostrarFoto('alumno')) }}"
-                                        alt="avatar" class="avatar avatar-lg avatar-thumb rounded">
-                            @elseif(session('tipo_vista') === 'docente')
-                                <img src="{{ asset($usuario->mostrarFoto('docente')) }}"
-                                        alt="avatar" class="avatar avatar-lg avatar-thumb rounded">
-                            @endif
-                        </div>
-                        <div class="card-title mb-1">
-                            {{ $usuario->nombre_completo }}
-                        </div>
-                        <div class="text-secondary">
-                            {{ $usuario->correo_usuario }}
-                        </div>
-                    </div>
-                    <div class="progress card-progress">
-                        <div class="progress-bar bg-{{ session('tipo_vista') === 'alumno' ? 'teal' : 'orange' }}" style="width: 100%" role="progressbar" aria-valuemin="0" aria-valuemax="100">
-                        </div>
-                    </div>
-                </div>
+                @livewire('components.info-alumnos-docentes', ['usuario' => $usuario])
             @endif
 
             <div class="row g-3">
@@ -113,7 +91,7 @@
                         @if(session('tipo_vista') == 'alumno')
                             <div class="col-12" wire:init="load_orientaciones">
                                 @if($cargando_orientaciones)
-                                    <div class="card card-stacked placeholder-glow">
+                                    <div class="card card-stacked placeholder-glow animate__animated animate__fadeIn animate__faster">
                                         <div class="card-header bg-teal-lt">
                                             <div class="placeholder col-5 bg-teal" style="height: 1.5rem; width: 217.16px;"></div>
                                         </div>
@@ -126,7 +104,7 @@
                                         </div>
                                     </div>
                                 @else
-                                    <div class="card card-stacked animate__animated animate__fadeIn animate__faster">
+                                    <div class="card card-stacked">
                                         <div class="card-header bg-teal-lt">
                                             <span class="text-teal me-2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -446,299 +424,11 @@
                 </div>
 
                 <div class="col-lg-4">
-                    <div class="row g-3" wire:init="load_datos_docente">
-                        @if($cargando_docente)
-                            <div class="col-12">
-                                <a class="card card-link card-stacked placeholder-glow">
-                                    <div class="card-cover card-cover-blurred text-center">
-                                        <div class="avatar avatar-xl placeholder {{ session('tipo_vista') == 'alumno' ? 'bg-teal' : 'bg-orange' }}"></div>
-                                    </div>
-                                    <div class="card-body text-center">
-                                        <div class="card-title mb-1">
-                                            <div class="placeholder col-6" style="height: 19.5px"></div>
-                                        </div>
-                                        <div class="placeholder bg-secondary col-5" style="height: 17px;"></div>
-                                        <div class="mt-2">
-                                            <div class="placeholder {{ session('tipo_vista') == 'alumno' ? 'bg-teal' : 'bg-orange' }} col-3" style="height: 17px;"></div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        @else
-                            @forelse ($docente as $item)
-                                <div class="col-12">
-                                    <a class="card card-link card-stacked animate__animated animate__fadeIn animate__faster">
-                                        <div class="card-cover card-cover-blurred text-center"
-                                            style="background-image: url({{ session('tipo_vista') == 'docente' ? config('settings.fondo_detalle_doncente') : config('settings.fondo_detalle_alumno') }})">
-                                            @if (session('tipo_vista') == 'docente')
-                                                <img src="{{ asset($item->usuario->mostrarFoto('docente')) }}"
-                                                    alt="avatar" class="avatar avatar-xl avatar-thumb rounded">
-                                            @else
-                                                <img src="{{ asset($item->usuario->mostrarFoto('alumno')) }}" alt="avatar"
-                                                    class="avatar avatar-xl avatar-thumb rounded">
-                                            @endif
-                                        </div>
-                                        <div class="card-body text-center">
-                                            <div class="card-title mb-1">
-                                                <span>
-                                                    {{ $item->usuario->nombre_completo }}
-                                                </span>
-                                            </div>
-                                            <div class="text-muted">
-                                                <span>
-                                                    {{ $item->usuario->persona->correo_persona }}
-                                                </span>
-                                            </div>
-                                            <div class="mt-2">
-                                                <span
-                                                    class="badge {{ session('tipo_vista') == 'alumno' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
-                                                    {{ $item->rol->nombre_rol }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            @empty
-                                <div class="col-12">
-                                    <div class="card card-stacked animate__animated animate__fadeIn animate__faster">
-                                        <div
-                                            class="card-body d-flex flex-column align-items-center text-center text-muted fw-bold">
-                                            Sin docente asignado
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforelse
-                        @endif
-                    </div>
 
-                    <div class="mt-3" wire:init="load_datos_curso">
-                        @if($cargando_datos_curso)
-                            <div class="card card-stacked placeholder-glow">
-                                <div class="card-header {{ session('tipo_vista') === 'alumno' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
-                                    <div class="placeholder col-5 {{ session('tipo_vista') === 'alumno' ? 'bg-teal' : 'bg-orange' }}"
-                                    style="height: 1.5rem; width: 170.56px;"></div>
-                                </div>
-                                <div class="card-body row g-3 mb-0">
-                                    <div class="d-flex flex-column gap-2">
-                                        <div class="row g-3">
-                                            <div class="col-12">
-                                                <div class="row g-2">
-                                                    <div class="col-12">
-                                                        <div class="placeholder" style="height: 17px; width: 148.94px;"></div>
-                                                        <div class="col-12"></div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="placeholder bg-secondary" style="height: 17px; width: 148.94px;"></div>
-                                                        <div class="col-12"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                    @livewire('components.info-docente', ['id_gestion_aula_usuario' => $id_gestion_aula_usuario])
 
-                                            <div class="col-12">
-                                                <div class="row g-2">
-                                                    <div class="col-12">
-                                                        <div class="placeholder" style="height: 17px; width: 117.06px;"></div>
-                                                        <div class="col-12"></div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="placeholder bg-secondary" style="height: 17px; width: 43.3px;"></div>
-                                                        <div class="col-12"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                    @livewire('components.datos-curso', ['id_gestion_aula_usuario' => $id_gestion_aula_usuario])
 
-                                            <div class="col-12">
-                                                <div class="row g-2">
-                                                    <div class="col-12">
-                                                        <div class="placeholder" style="height: 17px; width: 122.21px;"></div>
-                                                        <div class="col-12"></div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="placeholder col-12 bg-secondary" style="height: 17px;"></div>
-                                                        <div class="col-12"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-4 d-flex justify-content-start">
-                                                <div class="row g-2">
-                                                    <div class="col-12 d-flex justify-content-center">
-                                                        <div class="placeholder" style="height: 17px; width: 34.20px;"></div>
-                                                    </div>
-                                                    <div class="col-12 d-flex justify-content-center">
-                                                        <div class="placeholder bg-secondary" style="height: 17px; width: 15px;"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-4 d-flex justify-content-center">
-                                                <div class="row">
-                                                    <div class="col-12 d-flex justify-content-center">
-                                                        <div class="placeholder" style="height: 17px; width: 57.86px;"></div>
-                                                    </div>
-                                                    <div class="col-12 d-flex justify-content-center">
-                                                        <div class="placeholder bg-secondary" style="height: 17px; width: 15px;"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-4 d-flex justify-content-end">
-                                                <div class="row">
-                                                    <div class="col-12 d-flex justify-content-center">
-                                                        <div class="placeholder" style="height: 17px; width: 40.07px;"></div>
-                                                    </div>
-                                                    <div class="col-12 d-flex justify-content-center">
-                                                        <div class="placeholder bg-secondary" style="height: 17px; width: 15px;"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-12">
-                                                <div class="row g-2">
-                                                    <div class="col-12">
-                                                        <div class="placeholder" style="height: 17px; width: 104.33px;"></div>
-                                                        <div class="col-12"></div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="placeholder bg-secondary" style="height: 17px; width: 64.44px;"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-12">
-                                                <a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-12 mt-1 mb-2" aria-hidden="true" style="height: 36px;"></a>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @else
-                            <div class="card card-link card-stacked animate__animated animate__fadeIn animate__faster">
-                                <div
-                                    class="card-header {{ session('tipo_vista') === 'alumno' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
-                                    <h3 class="card-title fw-semibold">
-                                        Información del Curso
-                                    </h3>
-                                </div>
-                                <div class="card-body row g-3 mb-0">
-                                    <div class="d-flex flex-column gap-2">
-                                        <div class="row g-3">
-                                            <div class="col-12">
-                                                <div class="row g-2">
-                                                    <div class="col-12">
-                                                        <strong>Programa de
-                                                            {{ $curso->programa->tipoPrograma->nombre_tipo_programa }}
-                                                        </strong>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        {{ $curso->programa->nombre_programa }}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            @if ($curso->programa->mencion_programa)
-                                            <div class="col-12">
-                                                <div class="row g-2">
-                                                    <div class="col-12">
-                                                        <strong>Mención:</strong>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        {{ $curso->programa->mencion->nombre_mencion }}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            @endif
-
-                                            <div class="col-12">
-                                                <div class="row g-2">
-                                                    <div class="col-12">
-                                                        <strong>Código del Curso</strong>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        {{ $curso->codigo_curso }}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-12">
-                                                <div class="row g-2">
-                                                    <div class="col-12">
-                                                        <strong>Nombre del Curso</strong>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        {{ $curso->nombre_curso }}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-4 d-flex justify-content-start">
-                                                <div class="row g-2">
-                                                    <div class="col-12 d-flex justify-content-center">
-                                                        <strong>Ciclo</strong>
-                                                    </div>
-                                                    <div class="col-12 d-flex justify-content-center">
-                                                        {{ numero_a_romano($curso->ciclo->numero_ciclo) }}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-4 d-flex justify-content-center">
-                                                <div class="row">
-                                                    <div class="col-12 d-flex justify-content-center">
-                                                        <strong>Créditos</strong>
-                                                    </div>
-                                                    <div class="col-12 d-flex justify-content-center">
-                                                        {{ $curso->creditos_curso }}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-4 d-flex justify-content-end">
-                                                <div class="row">
-                                                    <div class="col-12 d-flex justify-content-center">
-                                                        <strong>Horas</strong>
-                                                    </div>
-                                                    <div class="col-12 d-flex justify-content-center">
-                                                        {{ $curso->horas_lectivas_curso }}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-12">
-                                                <div class="row g-2">
-                                                    <div class="col-12">
-                                                        <strong>Plan de Estudio</strong>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        {{ $curso->planEstudio->nombre_plan_estudio }}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-12">
-                                                <a class="btn btn-primary w-100 mt-1
-                                                    {{ !$gestion_aula_usuario->gestionAula->linkClase ? 'disabled' : '' }}"
-                                                    style="cursor: pointer;" wire:click="mostrar_link_clase">
-                                                    Link de Clase
-                                                </a>
-                                                @if(!$gestion_aula_usuario->gestionAula->linkClase)
-                                                    <div class="alert alert-azure bg-azure-lt mt-2 fw-bold animate__animated animate__fadeIn animate__faster">
-                                                        @if(session('tipo_vista') == 'docente')
-                                                            Por favor, cargue el link de la clase para que esté disponible para los estudiantes.
-                                                        @else
-                                                            Link de la clase pendiente. Consulte con el docente.
-                                                        @endif
-                                                    </div>
-                                                @endif
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-                    </div>
                 </div>
 
             </div>
