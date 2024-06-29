@@ -43,6 +43,12 @@ class Index extends Component
         }elseif(request()->routeIs('carga-academica*'))
         {
             session(['tipo_vista' => 'docente']);
+        }elseif(request()->routeIs('alumnos*'))
+        {
+            session(['tipo_vista' => 'alumno']);
+        }elseif(request()->routeIs('docentes*'))
+        {
+            session(['tipo_vista' => 'docente']);
         }
 
         $this->id_gestion_aula_usuario = desencriptar($id);

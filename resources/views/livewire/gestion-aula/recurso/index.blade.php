@@ -183,10 +183,10 @@
                                                     </div>
                                                     <div class=" d-flex justify-content-end">
                                                         <a href="#" tabindex="-1"
-                                                            class="btn btn-teal disabled placeholder col-sm-3 col-lg-4 col-xl-2 d-none d-md-inline-block"
+                                                            class="btn btn-primary disabled placeholder col-sm-3 col-lg-4 col-xl-2 d-none d-md-inline-block"
                                                             aria-hidden="true"></a>
                                                         <a href="#" tabindex="-1"
-                                                            class="btn btn-teal disabled placeholder col-1 d-md-none btn-icon"
+                                                            class="btn btn-primary disabled placeholder col-1 d-md-none btn-icon"
                                                             aria-hidden="true"></a>
                                                     </div>
                                                 </div>
@@ -239,7 +239,7 @@
                                                                 @endif
                                                             </div>
                                                             <div>
-                                                                <button class="btn btn-teal d-none d-md-inline-block" wire:click="descargar_recurso({{ $item->id_recurso }})">
+                                                                <button class="btn btn-primary d-none d-md-inline-block" wire:click="descargar_recurso({{ $item->id_recurso }})">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                         height="24" viewBox="0 0 24 24" fill="none"
                                                                         stroke="currentColor" stroke-width="2"
@@ -254,7 +254,7 @@
                                                                     </svg>
                                                                     Descargar
                                                                 </button>
-                                                                <button class="btn btn-teal d-md-none btn-icon" wire:click="descargar_recurso({{ $item->id_recurso }})">
+                                                                <button class="btn btn-primary d-md-none btn-icon" wire:click="descargar_recurso({{ $item->id_recurso }})">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                         height="24" viewBox="0 0 24 24" fill="none"
                                                                         stroke="currentColor" stroke-width="2"
@@ -428,7 +428,7 @@
                                     Nombre del Recurso
                                 </label>
                                 <input type="text" name="nombre_recurso"
-                                    class="form-control @error('nombre_recurso') is-invalid @enderror"
+                                    class="form-control @error('nombre_recurso') is-invalid @elseif(strlen($nombre_recurso) > 0) is-valid @enderror"
                                     id="nombre_recurso" wire:model.live="nombre_recurso"
                                     placeholder="Ingrese su correo electrónico" />
                                 @error('nombre_recurso')
