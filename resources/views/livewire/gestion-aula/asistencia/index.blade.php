@@ -141,7 +141,7 @@
                                     entradas
                                 </div>
                                 <div class="text-secondary row">
-                                    @if ($usuario->esRol('DOCENTE') && session('tipo_vista') === 'docente')
+                                    @if ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario) && session('tipo_vista') === 'docente')
                                         <div class="col-lg-7 col-9">
                                             <div class="d-inline-block">
                                                 <input type="text" class="form-control"
@@ -159,7 +159,7 @@
                                         </div>
                                     @endif
 
-                                    @if ($usuario->esRol('DOCENTE') && session('tipo_vista') === 'docente')
+                                    @if ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario) && session('tipo_vista') === 'docente')
                                         <div class="col-lg-5 col-3 d-flex justify-content-end">
                                             <a href="" class="btn btn-primary d-none d-md-inline-block">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
@@ -253,7 +253,7 @@
                                                         </svg>
                                                     @endif
                                                 </td>
-                                            @elseif (session('tipo_vista') === 'docente' && ($usuario->esRol('DOCENTE') || $usuario->esRol('DOCENTE INVITADO')))
+                                            @elseif (session('tipo_vista') === 'docente' && ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario) || $usuario->esRolGestionAula('DOCENTE INVITADO', $id_gestion_aula_usuario)))
                                                 <td>
                                                     @if (verificar_hora_actual($item->hora_inicio_asistencia, $item->hora_fin_asistencia, $item->fecha_asistencia))
                                                         <button type="button" class="btn btn-outline-primary btn-sm">

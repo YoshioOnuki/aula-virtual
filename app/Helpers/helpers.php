@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\GestionAulaUsuario;
+
 const METHOD="AES-256-CBC";
 const SECRET_KEY='$AULA@2024';
 const SECRET_IV='150324';
@@ -281,5 +283,114 @@ if (!function_exists('asignar_permiso_rutas'))
             }
         }
         return $path;
+    }
+}
+
+// Funcion para obtener la ruta base para un archivo
+if (!function_exists('obtener_ruta_base'))
+{
+    function obtener_ruta_base($id_gestion_aula_usuario)
+    {
+        $curso = GestionAulaUsuario::with([
+            'gestionAula' => function ($query) {
+                $query->with([
+                    'curso' => function ($query) {
+                        $query->with([
+                            'programa' => function ($query) {
+                                $query->with([
+                                    'tipoPrograma' => function ($query) {
+                                        $query->with([
+                                            'nivelAcademico' => function ($query) {
+                                                $query->select('id_nivel_academico', 'nombre_nivel_academico');
+                                            }
+                                        ])->select('id_tipo_programa', 'nombre_tipo_programa', 'id_nivel_academico');
+                                    }
+                                ])->select('id_programa', 'nombre_programa', 'mencion_programa', 'id_tipo_programa');
+                            }
+                        ])
+                        ->select('id_curso', 'id_programa', 'nombre_curso');
+                    },
+                    'proceso' => function ($query) {
+                        $query->select('id_proceso', 'nombre_proceso');
+                    }
+                ])->select('id_gestion_aula', 'grupo_gestion_aula', 'id_curso', 'id_proceso');
+            }
+        ])->where('id_gestion_aula_usuario', $id_gestion_aula_usuario)->first();
+
+
+        $nombre_curso = $curso->gestionAula->curso->nombre_curso.'_'.$curso->gestionAula->grupo_gestion_aula;
+        $proceso = $curso->gestionAula->proceso->nombre_proceso;
+        if($curso->gestionAula->curso->programa->mencion_programa)
+        {
+            $nombre_programa = $curso->gestionAula->curso->programa->nombre_programa.'_'.$curso->gestionAula->curso->programa->mencion_programa;
+        }else{
+            $nombre_programa = $curso->gestionAula->curso->programa->nombre_programa;
+        }
+        $tipo_programa = $curso->gestionAula->curso->programa->tipoPrograma->nombre_tipo_programa;
+        $nivel_academico = $curso->gestionAula->curso->programa->tipoPrograma->nivelAcademico->nombre_nivel_academico;
+
+        $carpetas = [
+            $nivel_academico,
+            $tipo_programa,
+            $nombre_programa,
+            $proceso,
+            $nombre_curso
+        ];
+
+        return $carpetas;
+
+    }
+}
+
+// Funcion para obtener el tamaño de un archivo en formato legible
+if (!function_exists('formato_tamano_archivo')) {
+    function formato_tamano_archivo($bytes)
+    {
+        $unidad = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB'];
+        if ($bytes == 0) return '0 bytes';
+        $i = floor(log($bytes, 1024));
+        $calculatedSize = $bytes / pow(1024, $i);
+        return round($calculatedSize, 2) . ' ' . $unidad[$i];
+    }
+}
+
+// Funcion para obtener la ruta del icono de archivo segun la extension
+if (!function_exists('obtener_icono_archivo')) {
+    function obtener_icono_archivo($ruta)
+    {
+        $extension = pathinfo($ruta, PATHINFO_EXTENSION);
+        $extension = strtolower($extension);
+        switch ($extension) {
+            case 'doc':
+            case 'docx':
+                return '/media/icons/icon-archivo-doc.webp';
+            case 'pdf':
+                return '/media/icons/icon-archivo-pdf.webp';
+            case 'jpg':
+            case 'jpeg':
+                return '/media/icons/icon-archivo-jpg.webp';
+            case 'png':
+                return '/media/icons/icon-archivo-png.webp';
+            case 'ppt':
+            case 'pptx':
+                return '/media/icons/icon-archivo-ppt.webp';
+            case 'xls':
+            case 'xlsx':
+                return '/media/icons/icon-archivo-xls.webp';
+            case 'txt':
+                return '/media/icons/icon-archivo-txt.webp';
+            default:
+                return '/media/icons/icon-archivo-generico.webp';
+        }
+    }
+}
+
+// Funcion para obtener la extension de un archivo
+if (!function_exists('obtener_extension_archivo')) {
+    function obtener_extension_archivo($ruta)
+    {
+        $extension = pathinfo($ruta, PATHINFO_EXTENSION);
+        $extension = strtolower($extension);
+        return $extension;
     }
 }

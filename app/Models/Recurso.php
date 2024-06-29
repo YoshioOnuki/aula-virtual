@@ -17,7 +17,6 @@ class Recurso extends Model
         'id_recurso',
         'nombre_recurso',
         'archivo_recurso',
-        'estado_recurso',
         'id_gestion_aula',
     ];
 

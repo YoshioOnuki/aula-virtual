@@ -124,13 +124,14 @@
 
                 <div class="col-lg-8">
                     <div class="card card-stacked animate__animated animate__fadeIn animate__faster" wire:init="load_silabus_llamar">
-                        <div class="card-body p-0" style="{{ $silabus_pdf ? '' : 'height: 625px' }}">
+                        <div class="card-body p-0" style="{{ $silabus_pdf && file_exists($silabus_pdf->archivo_silabus) ? '' : 'height: 625px' }}">
                             @if($cargando_silabus)
                                 <div class="d-flex justify-content-center align-items-center w-100 h-100">
                                     <div class="spinner-border text-primary"></div>
                                 </div>
                             @else
-                                @if ($silabus_pdf)
+
+                                @if ($silabus_pdf && file_exists($silabus_pdf->archivo_silabus))
                                     <embed src="{{ asset($silabus_pdf->archivo_silabus) }}" class="rounded animate__animated animate__fadeIn animate__faster" type="application/pdf"
                                         width="100%" height="625px" />
                                 @else
@@ -152,7 +153,7 @@
                                             <div>
                                                 <h4 class="alert-title">El sílabus no está disponible en este momento.</h4>
                                                 <div class="text-secondary">
-                                                    @if ($usuario->esRol('DOCENTE'))
+                                                    @if ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario))
                                                         Por favor, sube el sílabus del curso para que los alumnos puedan
                                                         acceder a él.
                                                     @else
@@ -370,7 +371,7 @@
                                             </div>
                                         </div>
 
-                                        @if (session('tipo_vista') === 'docente' && $usuario->esRol('DOCENTE'))
+                                        @if (session('tipo_vista') === 'docente' && $usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario))
                                             <hr class="mt-5 mb-2 hide-theme-dark">
                                             <hr class="mt-5 mb-2 hide-theme-light text-white">
 

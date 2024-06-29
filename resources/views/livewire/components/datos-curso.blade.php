@@ -92,9 +92,11 @@
                             </div>
                         </div>
 
-                        <div class="col-12">
-                            <a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-12 mt-1 mb-2" aria-hidden="true" style="height: 36px;"></a>
-                        </div>
+                        @if($datos)
+                            <div class="col-12">
+                                <a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-12 mt-1 mb-2" aria-hidden="true" style="height: 36px;"></a>
+                            </div>
+                        @endif
 
                     </div>
                 </div>
@@ -203,22 +205,24 @@
                             </div>
                         </div>
 
-                        <div class="col-12">
-                            <a class="btn btn-primary w-100 mt-1
-                                {{ !$gestion_aula_usuario->gestionAula->linkClase ? 'disabled' : '' }}"
-                                style="cursor: pointer;" wire:click="mostrar_link_clase">
-                                Link de Clase
-                            </a>
-                            @if(!$gestion_aula_usuario->gestionAula->linkClase)
-                                <div class="alert alert-azure bg-azure-lt mt-2 fw-bold animate__animated animate__fadeIn animate__faster">
-                                    @if(session('tipo_vista') == 'docente')
-                                        Por favor, cargue el link de la clase para que esté disponible para los estudiantes.
-                                    @else
-                                        Link de la clase pendiente. Consulte con el docente.
-                                    @endif
-                                </div>
-                            @endif
-                        </div>
+                        @if($datos)
+                            <div class="col-12">
+                                <a class="btn btn-primary w-100 mt-1
+                                    {{ !$gestion_aula_usuario->gestionAula->linkClase ? 'disabled' : '' }}"
+                                    style="cursor: pointer;" wire:click="mostrar_link_clase">
+                                    Link de Clase
+                                </a>
+                                @if(!$gestion_aula_usuario->gestionAula->linkClase)
+                                    <div class="alert alert-azure bg-azure-lt mt-2 fw-bold animate__animated animate__fadeIn animate__faster">
+                                        @if(session('tipo_vista') == 'docente')
+                                            Por favor, cargue el link de la clase para que esté disponible para los estudiantes.
+                                        @else
+                                            Link de la clase pendiente. Consulte con el docente.
+                                        @endif
+                                    </div>
+                                @endif
+                            </div>
+                        @endif
                     </div>
 
                 </div>

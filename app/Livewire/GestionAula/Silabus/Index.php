@@ -21,7 +21,7 @@ class Index extends Component
     public $curso;
     public $silabus_pdf;
 
-    #[Validate('required|file|mimes:pdf|max:2048')]
+    #[Validate('required|file|mimes:pdf|max:4096')]
     public $silabus;
 
     public $cargando_datos_curso = true;
@@ -31,9 +31,11 @@ class Index extends Component
 
     public function subir_silabus()
     {
+        $carpetas = obtener_ruta_base($this->id_gestion_aula_usuario);
+
         $archivo = $this->silabus;
         $nombre_silabus = $this->silabus_pdf->archivo_silabus ?? null;
-        $carpetas = ['silabus'];
+        array_push($carpetas, 'silabus');
         $extencion_archivo = 'pdf';
         $nombre_bd = subir_archivo($archivo, $nombre_silabus, $carpetas, $extencion_archivo);
 
@@ -71,17 +73,13 @@ class Index extends Component
 
         } catch (\Exception $e) {
             DB::rollBack();
-
+            dd($e);
             $this->dispatch(
                 'toast-basico',
                 mensaje: 'Ha ocurrido un error al guardar el silabus: '.$e->getMessage(),
                 type: 'error'
             );
         }
-
-
-
-
 
     }
 
@@ -129,6 +127,8 @@ class Index extends Component
         if ($gestion_aula_usuario) {
             $this->silabus_pdf = $gestion_aula_usuario->gestionAula->silabus;
         }
+
+
     }
 
 

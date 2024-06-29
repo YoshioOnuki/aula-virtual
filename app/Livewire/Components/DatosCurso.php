@@ -16,7 +16,7 @@ class DatosCurso extends Component
 
     public $cargando_datos_curso = true;
 
-
+    public $datos = false;
 
     public function load_datos_curso()
     {
@@ -74,6 +74,14 @@ class DatosCurso extends Component
     public function mount($id_gestion_aula_usuario)
     {
         $this->id_gestion_aula_usuario = $id_gestion_aula_usuario;
+
+        if(request()->routeIs('cursos.detalle') ||
+            request()->routeIs('carga-academica.detalle') ||
+            request()->routeIs('alumnos.cursos.detalle') ||
+            request()->routeIs('docentes.carga-academica.detalle'))
+        {
+            $this->datos = true;
+        }
     }
 
 

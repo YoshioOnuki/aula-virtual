@@ -2,23 +2,27 @@
 
 namespace App\Livewire\GestionAula\Recurso;
 
+use App\Models\AlumnoRecurso;
 use App\Models\GestionAulaUsuario;
 use App\Models\Recurso;
 use App\Models\Usuario;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 #[Layout('components.layouts.app')]
 class Index extends Component
 {
+    use WithFileUploads;
+
     public $usuario;
 
     public $id_gestion_aula_usuario;
     public $gestion_aula_usuario;
     public $curso;
     public $recursos;
-
-    public $estado_recurso = 0; // 0 => Hecho, 1 => Pendiente
 
     public $cargando_recursos = true;
     public $cargando_datos_curso = true;
@@ -27,21 +31,14 @@ class Index extends Component
     public $modo = 1; // Modo 1 = Agregar / 0 = Editar
     public $titulo_modal = 'Estado de Usuario';
     public $accion_estado = 'Agregar';
+    #[Validate('required')]
     public $nombre_recurso;
+    #[Validate('required|file|mimes:pdf,xls,xlsx,doc,docx,ppt,pptx|max:4096')]
     public $archivo_recurso;
+    public $editar_recurso;
 
     public $modo_admin = false;
 
-
-    public function cambiar_estado_recurso()
-    {
-        if($this->estado_recurso === 0)
-        {
-            $this->estado_recurso = 1;
-        }else{
-            $this->estado_recurso = 0;
-        }
-    }
 
     public function cerrar_modal()
     {
@@ -59,10 +56,12 @@ class Index extends Component
         $this->titulo_modal = 'Estado de Usuario';
         $this->accion_estado = 'Agregar';
         $this->nombre_recurso = '';
+        $this->editar_recurso = null;
+        $this->reset('archivo_recurso');
     }
 
     // public function abrir_modal_recurso_editar(Recurso $recurso)
-    public function abrir_modal_recurso_editar($recurso)
+    public function abrir_modal_recurso_editar(Recurso $recurso)
     {
         $this->limpiar_modal();
 
@@ -70,7 +69,8 @@ class Index extends Component
         $this->titulo_modal = 'Editar Recurso';
         $this->accion_estado = 'Editar';
 
-        $this->nombre_recurso = 'Nombre de recursos';
+        $this->editar_recurso = Recurso::find($recurso->id_recurso);
+        $this->nombre_recurso = $this->editar_recurso->nombre_recurso;
 
         $this->dispatch(
             'modal',
@@ -95,30 +95,80 @@ class Index extends Component
 
     }
 
-    public function mostrar_datos_curso()
+    public function subir_archivo_recurso()
     {
-        $gestion_aula_usuario = GestionAulaUsuario::with([
-            'gestionAula' => function ($query) {
-                $query->with([
-                    'curso' => function ($query) {
-                        $query->with([
-                            'ciclo',
-                            'planEstudio',
-                            'programa' => function ($query) {
-                                $query->with([
-                                    'facultad',
-                                    'tipoPrograma'
-                                ])->select('id_programa', 'nombre_programa', 'mencion_programa', 'id_tipo_programa', 'id_facultad');
-                            }
-                        ])->select('id_curso', 'codigo_curso', 'nombre_curso', 'creditos_curso', 'horas_lectivas_curso', 'id_programa', 'id_plan_estudio', 'id_ciclo');
-                    }
-                ])->select('id_gestion_aula', 'grupo_gestion_aula', 'id_curso');
-            }
-        ])->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)->first();
+        $carpetas = obtener_ruta_base($this->id_gestion_aula_usuario);
 
-        if ($gestion_aula_usuario) {
-            $this->curso = $gestion_aula_usuario->gestionAula->curso;
+        $archivo = $this->archivo_recurso;
+        $nombre_archivo_recurso = $this->editar_recurso->archivo_recurso ?? null;
+        array_push($carpetas, 'recursos');
+        $extension_archivo = strtolower($archivo->getClientOriginalExtension());
+
+        $extensiones_permitidas = ['pdf', 'xls', 'xlsx', 'doc', 'docx', 'ppt', 'pptx'];
+
+        if (in_array($extension_archivo, $extensiones_permitidas)) {
+            $extencion_archivo = $extension_archivo;
+        } else {
+            $this->reset('archivo_recurso');
+            $this->dispatch(
+                'toast-basico',
+                mensaje: 'Ha ocurrido un error al subir el archivo: La extensión del archivo no es válida.
+                Revise que el archivo sea de tipo PDF, XLS, XLSX, DOC, DOCX, PPT o PPTX',
+                type: 'error'
+            );
+            return null;
         }
+
+        $nombre_bd = subir_archivo($archivo, $nombre_archivo_recurso, $carpetas, $extencion_archivo);
+
+        return $nombre_bd;
+    }
+
+    public function guardar_recurso()
+    {
+        $this->validate();
+
+        DB::beginTransaction();
+
+        try {
+
+            $nombre_bd = $this->subir_archivo_recurso();
+
+            if($this->modo === 1)
+            {
+                $recurso = new Recurso();
+                $recurso->nombre_recurso = $this->nombre_recurso;
+                $recurso->archivo_recurso = $nombre_bd;
+                $recurso->id_gestion_aula = $this->gestion_aula_usuario->gestionAula->id_gestion_aula;
+                $recurso->save();
+            }else{
+                $recurso = Recurso::find($this->editar_recurso->id_recurso);
+                $recurso->nombre_recurso = $this->nombre_recurso;
+                $recurso->archivo_recurso = $nombre_bd;
+                $recurso->save();
+            }
+
+            DB::commit();
+
+            $this->cerrar_modal();
+            $this->load_recursos();
+
+            $this->dispatch(
+                'toast-basico',
+                mensaje: 'El recurso se ha guardado correctamente',
+                type: 'success'
+            );
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            dd($e);
+            $this->dispatch(
+                'toast-basico',
+                mensaje: 'Ha ocurrido un error al guardar el recurso: '.$e->getMessage(),
+                type: 'error'
+            );
+        }
+
     }
 
     public function mostrar_recursos()
@@ -139,7 +189,7 @@ class Index extends Component
                         ])->select('id_curso', 'codigo_curso', 'nombre_curso', 'creditos_curso', 'horas_lectivas_curso', 'id_programa', 'id_plan_estudio', 'id_ciclo');
                     },
                     'recurso' => function ($query) {
-                        $query->select('id_recurso', 'nombre_recurso', 'archivo_recurso', 'id_gestion_aula');
+                        $query->select('id_recurso', 'nombre_recurso', 'archivo_recurso', 'id_gestion_aula', 'created_at');
                     }
                 ])->select('id_gestion_aula', 'grupo_gestion_aula', 'id_curso');
             }
@@ -156,14 +206,9 @@ class Index extends Component
         $this->cargando_recursos = false;
     }
 
-    public function load_datos_curso()
-    {
-        $this->mostrar_datos_curso();
-        $this->cargando_datos_curso = false;
-    }
-
     public function calcular_cantidad_recursos()
     {
+        $id_gestion_aula = GestionAulaUsuario::find($this->id_gestion_aula_usuario)->id_gestion_aula;
         $this->gestion_aula_usuario = GestionAulaUsuario::with([
             'gestionAula' => function ($query) {
                 $query->with([
@@ -174,9 +219,15 @@ class Index extends Component
             }
         ])->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)->first();
 
-        $this->cantidad_recursos = $this->gestion_aula_usuario->gestionAula->recurso->count();
+        $this->cantidad_recursos = Recurso::where('id_gestion_aula', $id_gestion_aula)->count();
 
         $this->cantidad_recursos === 0 ? $this->cantidad_recursos = 1 : $this->cantidad_recursos;
+    }
+
+    public function descargar_recurso(Recurso $recurso)
+    {
+        $ruta = $recurso->archivo_recurso;
+        return response()->download($ruta, $recurso->nombre_recurso.'.'.pathinfo($ruta, PATHINFO_EXTENSION));
     }
 
 

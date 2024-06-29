@@ -60,6 +60,29 @@ class Usuario extends Authenticatable
         return false;
     }
 
+    // Validar que rol pertenece a la gestion de aula
+    public function esRolGestionAula($nombreRol, $idGestionAulaUsuario)
+    {
+        $idGestionAula = GestionAulaUsuario::find($idGestionAulaUsuario)->id_gestion_aula;
+        $gestionAulaUsuario = GestionAulaUsuario::with([
+            'gestionAula' => function ($query) {
+                $query->select('id_gestion_aula');
+            },
+            'rol' => function ($query) {
+                $query->select('id_rol', 'nombre_rol');
+            }
+        ])->whereHas('rol', function ($query) use ($nombreRol) {
+            $query->where('nombre_rol', $nombreRol);
+        })->where('id_usuario', $this->id_usuario)
+        ->where('id_gestion_aula', $idGestionAula)->first();
+
+        if ($gestionAulaUsuario) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function getRolUsuaAttribute()
     {
         return $this->roles->first()->nombre_rol;
