@@ -38,8 +38,8 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app'),
-            'throw' => false,
+            'root' => public_path(),
+            // 'throw' => false, // <== Descomentar en producción, para mejorar el flujo de errores (Manejar errores de manera silenciosa)
         ],
 
         's3' => [

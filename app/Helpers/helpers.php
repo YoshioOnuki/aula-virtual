@@ -233,3 +233,53 @@ if (!function_exists('desencriptar'))
     }
 
 }
+
+
+// Funcion para subir un archivo del curso
+if (!function_exists('subir_archivo'))
+{
+    function subir_archivo($archivo, $url_archiv, $carpetas, $extencion_archivo)
+    {
+        if (file_exists($url_archiv)) {
+            unlink($url_archiv);
+        }
+
+        $base_path = 'archivos/';
+
+        // Asegurar que se creen los directorios con los permisos correctos
+        $path = asignar_permiso_rutas($base_path, $carpetas);
+
+        // Nombre del archivo
+        $filename = time() . uniqid() . '.' . $extencion_archivo;
+        $nombre_db = $path . $filename;
+
+        // Guardar el archivo
+        $archivo->storeAs($path, $filename, 'public');
+
+        // Asignar todos los permisos al archivo
+        chmod($nombre_db, 0777);
+
+        return $nombre_db;
+    }
+}
+
+// Funcion para asignar permisos a los directorios
+if (!function_exists('asignar_permiso_rutas'))
+{
+    function asignar_permiso_rutas($base_path, $rutas)
+    {
+        $path = $base_path;
+        foreach ($rutas as $ruta) {
+            $path .= $ruta . '/';
+            // Asegurar que se creen los directorios con los permisos correctos
+            $parent_directory = dirname($path); // Sirve para obtener el directorio padre "archivos/"
+            if (!file_exists($parent_directory)) {
+                mkdir($parent_directory, 0777, true); // Establecer permisos en el directorio padre
+            }
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true); // 0777 establece todos los permisos para el directorio
+            }
+        }
+        return $path;
+    }
+}

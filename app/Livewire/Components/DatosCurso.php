@@ -49,8 +49,6 @@ class DatosCurso extends Component
             }
         ])->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)->first();
 
-        $this->link_clase = $this->gestion_aula_usuario->gestionAula->linkClase;
-
         if ($this->gestion_aula_usuario) {
             $this->curso = $this->gestion_aula_usuario->gestionAula->curso;
         }

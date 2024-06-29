@@ -124,17 +124,17 @@
 
                 <div class="col-lg-8">
                     <div class="card card-stacked animate__animated animate__fadeIn animate__faster" wire:init="load_silabus_llamar">
-                        <div class="card-body" style="{{ $silabus_pdf ? '' : 'height: 675px' }}">
+                        <div class="card-body p-0" style="{{ $silabus_pdf ? '' : 'height: 625px' }}">
                             @if($cargando_silabus)
                                 <div class="d-flex justify-content-center align-items-center w-100 h-100">
                                     <div class="spinner-border text-primary"></div>
                                 </div>
                             @else
                                 @if ($silabus_pdf)
-                                    <embed src="{{ asset('files/silabus.pdf') }}" class="rounded animate__animated animate__fadeIn animate__faster" type="application/pdf"
-                                        width="100%" height="675px" />
+                                    <embed src="{{ asset($silabus_pdf->archivo_silabus) }}" class="rounded animate__animated animate__fadeIn animate__faster" type="application/pdf"
+                                        width="100%" height="625px" />
                                 @else
-                                    <div class="alert alert-yellow bg-white-lt hover-shadow-sm animate__animated animate__fadeIn animate__faster" role="alert">
+                                    <div class="alert alert-yellow bg-white-lt hover-shadow-sm animate__animated animate__fadeIn animate__faster m-3" role="alert">
                                         <div class="d-flex">
                                             <div>
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon"
@@ -379,12 +379,18 @@
                                                     Subir Sílabus
                                                 </label>
                                                 <input type="file" class="form-control @error('silabus') is-invalid @enderror"
-                                                    id="silabus" wire:model.live="silabus" accept="pdf" />
+                                                    id="silabus" wire:model.live="silabus" accept=".pdf" />
                                                 @error('silabus')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}
                                                 </div>
                                                 @enderror
+                                                <small class="form-hint">
+                                                    Solo se permiten archivos en formato PDF.
+                                                </small>
+                                                <small class="form-hint">
+                                                    Máximo 4MB.
+                                                </small>
                                             </div>
                                             <div class="col-12">
                                                 <a class="btn btn-primary w-100 mt-3" style="cursor: pointer;"

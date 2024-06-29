@@ -4,6 +4,7 @@ namespace App\Livewire\GestionAula\Silabus;
 
 use App\Models\GestionAulaUsuario;
 use App\Models\Usuario;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -28,10 +29,59 @@ class Index extends Component
 
     public $modo_admin = false;
 
+    public function subir_silabus()
+    {
+        $archivo = $this->silabus;
+        $nombre_silabus = $this->silabus_pdf->archivo_silabus ?? null;
+        $carpetas = ['silabus'];
+        $extencion_archivo = 'pdf';
+        $nombre_bd = subir_archivo($archivo, $nombre_silabus, $carpetas, $extencion_archivo);
+
+        return $nombre_bd;
+    }
+
     public function guardar_silabus()
     {
         $this->validate();
-        dd($this->silabus);
+
+        DB::beginTransaction();
+
+        try {
+            $nombre_bd = $this->subir_silabus();
+
+            $gestion_aula_usuario = GestionAulaUsuario::find($this->id_gestion_aula_usuario);
+
+            if ($gestion_aula_usuario) {
+                $gestion_aula_usuario->gestionAula->silabus()->updateOrCreate(
+                    ['id_gestion_aula' => $gestion_aula_usuario->id_gestion_aula],
+                    ['archivo_silabus' => $nombre_bd]
+                );
+            }
+
+            DB::commit();
+
+            $this->dispatch(
+                'toast-basico',
+                mensaje: 'El silabus se ha guardado correctamente',
+                type: 'success'
+            );
+
+            $this->silabus_pdf = $gestion_aula_usuario->gestionAula->silabus;
+            $this->reset('silabus');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            $this->dispatch(
+                'toast-basico',
+                mensaje: 'Ha ocurrido un error al guardar el silabus: '.$e->getMessage(),
+                type: 'error'
+            );
+        }
+
+
+
+
 
     }
 
