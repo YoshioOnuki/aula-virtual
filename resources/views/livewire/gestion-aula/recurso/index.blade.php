@@ -442,7 +442,7 @@
                                     Archivo
                                 </label>
                                 <input type="file" class="form-control @error('archivo_recurso') is-invalid @enderror"
-                                    id="archivo_recurso" wire:model.live="archivo_recurso" accept=".pdf,.xls,.xlsx,.doc,.docx,.ppt,.pptx"/>
+                                    id="archivo_recurso" wire:model.live="archivo_recurso" accept=".pdf,.xls,.xlsx,.doc,.docx,.ppt,.pptx,.txt"/>
                                 @error('archivo_recurso')
                                     <div class="invalid-feedback">
                                         {{ $message }}

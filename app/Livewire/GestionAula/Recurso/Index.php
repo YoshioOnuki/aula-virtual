@@ -33,7 +33,7 @@ class Index extends Component
     public $accion_estado = 'Agregar';
     #[Validate('required')]
     public $nombre_recurso;
-    #[Validate('required|file|mimes:pdf,xls,xlsx,doc,docx,ppt,pptx|max:4096')]
+    #[Validate('required|file|mimes:pdf,xls,xlsx,doc,docx,ppt,pptx,txt|max:4096')]
     public $archivo_recurso;
     public $editar_recurso;
 
@@ -104,18 +104,11 @@ class Index extends Component
         array_push($carpetas, 'recursos');
         $extension_archivo = strtolower($archivo->getClientOriginalExtension());
 
-        $extensiones_permitidas = ['pdf', 'xls', 'xlsx', 'doc', 'docx', 'ppt', 'pptx'];
+        $extensiones_permitidas = ['pdf', 'xls', 'xlsx', 'doc', 'docx', 'ppt', 'pptx', 'txt'];
 
         if (in_array($extension_archivo, $extensiones_permitidas)) {
             $extencion_archivo = $extension_archivo;
         } else {
-            $this->reset('archivo_recurso');
-            $this->dispatch(
-                'toast-basico',
-                mensaje: 'Ha ocurrido un error al subir el archivo: La extensión del archivo no es válida.
-                Revise que el archivo sea de tipo PDF, XLS, XLSX, DOC, DOCX, PPT o PPTX',
-                type: 'error'
-            );
             return null;
         }
 
@@ -161,10 +154,10 @@ class Index extends Component
 
         } catch (\Exception $e) {
             DB::rollBack();
-            dd($e);
+            // dd($e);
             $this->dispatch(
                 'toast-basico',
-                mensaje: 'Ha ocurrido un error al guardar el recurso: '.$e->getMessage(),
+                mensaje: 'Ha ocurrido un error al guardar el recurso',
                 type: 'error'
             );
         }

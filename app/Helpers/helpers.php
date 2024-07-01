@@ -4,7 +4,7 @@ use App\Models\GestionAulaUsuario;
 
 const METHOD="AES-256-CBC";
 const SECRET_KEY='$AULA@2024';
-const SECRET_IV='150324';
+const SECRET_IV='010524';
 
 if (!function_exists('format_fecha_horas'))
 {
@@ -306,9 +306,12 @@ if (!function_exists('obtener_ruta_base'))
                                         ])->select('id_tipo_programa', 'nombre_tipo_programa', 'id_nivel_academico');
                                     }
                                 ])->select('id_programa', 'nombre_programa', 'mencion_programa', 'id_tipo_programa');
+                            },
+                            'ciclo' => function ($query) {
+                                $query->select('id_ciclo', 'nombre_ciclo');
                             }
                         ])
-                        ->select('id_curso', 'id_programa', 'nombre_curso');
+                        ->select('id_curso', 'id_programa', 'nombre_curso', 'id_ciclo');
                     },
                     'proceso' => function ($query) {
                         $query->select('id_proceso', 'nombre_proceso');
@@ -324,16 +327,18 @@ if (!function_exists('obtener_ruta_base'))
         {
             $nombre_programa = $curso->gestionAula->curso->programa->nombre_programa.'_'.$curso->gestionAula->curso->programa->mencion_programa;
         }else{
-            $nombre_programa = $curso->gestionAula->curso->programa->nombre_programa;
+            $nombre_programa = $curso->gestionAula->curso->nombre_programa;
         }
+        $ciclo = $curso->gestionAula->curso->ciclo->nombre_ciclo;
         $tipo_programa = $curso->gestionAula->curso->programa->tipoPrograma->nombre_tipo_programa;
         $nivel_academico = $curso->gestionAula->curso->programa->tipoPrograma->nivelAcademico->nombre_nivel_academico;
 
         $carpetas = [
             $nivel_academico,
+            $proceso,
             $tipo_programa,
             $nombre_programa,
-            $proceso,
+            $ciclo,
             $nombre_curso
         ];
 
