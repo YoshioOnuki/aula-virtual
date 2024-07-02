@@ -13,7 +13,7 @@
                             @if (session('tipo_vista') === 'alumno')
                                 <li class="breadcrumb-item">
                                     @if($this->modo_admin)
-                                        <a href="{{ route('alumnos.cursos', encriptar($id_gestion_aula_usuario)) }}">Mis Cursos</a>
+                                        <a href="{{ route('alumnos.cursos', $id_gestion_aula_usuario_hash) }}">Mis Cursos</a>
                                     @else
                                         <a href="{{ route('cursos') }}">Mis Cursos</a>
                                     @endif
@@ -21,7 +21,7 @@
                             @else
                                 <li class="breadcrumb-item">
                                     @if($this->modo_admin)
-                                        <a href="{{ route('docentes.carga-academica', encriptar($id_gestion_aula_usuario)) }}">Carga Académica</a>
+                                        <a href="{{ route('docentes.carga-academica', $id_gestion_aula_usuario_hash) }}">Carga Académica</a>
                                     @else
                                         <a href="{{ route('carga-academica') }}">Carga Académica</a>
                                     @endif

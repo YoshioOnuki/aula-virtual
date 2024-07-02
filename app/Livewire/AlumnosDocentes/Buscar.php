@@ -5,6 +5,7 @@ namespace App\Livewire\AlumnosDocentes;
 use App\Models\Usuario;
 use Livewire\Attributes\Url;
 use Livewire\Component;
+use Vinkla\Hashids\Facades\Hashids;
 
 class Buscar extends Component
 {
@@ -17,7 +18,7 @@ class Buscar extends Component
 
     public function mostrar_carga_academica($id)
     {
-        $id_usuario = encriptar($id);
+        $id_usuario = Hashids::encode($id);
         session(['id_usuario' => $id_usuario]);
         return redirect()->route('docentes.carga-academica');
 
@@ -25,7 +26,7 @@ class Buscar extends Component
 
     public function mostrar_cursos($id)
     {
-        $id_usuario = encriptar($id);
+        $id_usuario = Hashids::encode($id);
         session(['id_usuario' => $id_usuario]);
         return redirect()->route('alumnos.cursos');
     }

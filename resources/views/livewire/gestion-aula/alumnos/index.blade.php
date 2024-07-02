@@ -12,7 +12,7 @@
 
                             <li class="breadcrumb-item">
                                 @if($this->modo_admin)
-                                    <a href="{{ route('docentes.carga-academica', encriptar($id_gestion_aula_usuario)) }}">Carga Académica</a>
+                                    <a href="{{ route('docentes.carga-academica', $id_gestion_aula_usuario_hash) }}">Carga Académica</a>
                                 @else
                                     <a href="{{ route('carga-academica') }}">Carga Académica</a>
                                 @endif
@@ -20,9 +20,9 @@
 
                             <li class="breadcrumb-item">
                                 @if($this->modo_admin)
-                                    <a href="{{ route('docentes.carga-academica.detalle', encriptar($id_gestion_aula_usuario)) }}">Detalle</a>
+                                    <a href="{{ route('docentes.carga-academica.detalle', $id_gestion_aula_usuario_hash) }}">Detalle</a>
                                 @else
-                                    <a href="{{ route('carga-academica.detalle', encriptar($id_gestion_aula_usuario)) }}">Detalle</a>
+                                    <a href="{{ route('carga-academica.detalle', $id_gestion_aula_usuario_hash) }}">Detalle</a>
                                 @endif
                             </li>
 
@@ -40,10 +40,10 @@
                 <div class="col-auto ms-auto d-print-none">
                     <div class="btn-list">
                         @if($this->modo_admin)
-                            <a href="{{ route('docentes.carga-academica.detalle', encriptar($id_gestion_aula_usuario)) }}"
+                            <a href="{{ route('docentes.carga-academica.detalle', $id_gestion_aula_usuario_hash) }}"
                             class="btn btn-secondary d-none d-md-inline-block">
                         @else
-                            <a href="{{ route('carga-academica.detalle', encriptar($id_gestion_aula_usuario)) }}"
+                            <a href="{{ route('carga-academica.detalle', $id_gestion_aula_usuario_hash) }}"
                                 class="btn btn-secondary d-none d-md-inline-block">
                         @endif
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -57,10 +57,10 @@
                         </a>
 
                         @if($this->modo_admin)
-                            <a href="{{ route('docentes.carga-academica.detalle', encriptar($id_gestion_aula_usuario)) }}"
+                            <a href="{{ route('docentes.carga-academica.detalle', $id_gestion_aula_usuario_hash) }}"
                             class="btn btn-secondary d-md-none btn-icon">
                         @else
-                            <a href="{{ route('carga-academica.detalle', encriptar($id_gestion_aula_usuario)) }}"
+                            <a href="{{ route('carga-academica.detalle', $id_gestion_aula_usuario_hash) }}"
                             class="btn btn-secondary d-md-none btn-icon">
                         @endif
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"

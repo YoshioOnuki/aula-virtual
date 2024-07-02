@@ -4,12 +4,12 @@ namespace App\Livewire\GestionAula\Curso;
 
 use App\Models\AsistenciaAlumno;
 use App\Models\ForoRespuesta;
-use App\Models\GestionAula;
 use App\Models\GestionAulaUsuario;
 use App\Models\TrabajoAcademico;
 use App\Models\Usuario;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Vinkla\Hashids\Facades\Hashids;
 
 #[Layout('components.layouts.app')]
 class Index extends Component
@@ -26,6 +26,7 @@ class Index extends Component
     public $cantidad_cursos = 1;
 
     public $modo_admin = false;
+
 
     public function curso_favorito($id)
     {
@@ -49,19 +50,19 @@ class Index extends Component
             ->first();
         if($docente) {
             if(session('tipo_vista') === 'alumno') {
-                $id_url = encriptar($docente->id_gestion_aula_usuario);
+                $id_url = Hashids::encode($docente->id_gestion_aula_usuario);
                 if($this->modo_admin)
                 {
-                    session(['id_usuario' => encriptar($this->usuario->id_usuario)]);
+                    session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
                     return redirect()->route('alumnos.cursos.detalle', ['id' => $id_url]);
                 }else{
                     return redirect()->route('cursos.detalle', ['id' => $id_url]);
                 }
             } else {
-                $id_url = encriptar($docente->id_gestion_aula_usuario);
+                $id_url = Hashids::encode($docente->id_gestion_aula_usuario);
                 if($this->modo_admin)
                 {
-                    session(['id_usuario' => encriptar($this->usuario->id_usuario)]);
+                    session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
                     return redirect()->route('docentes.carga-academica.detalle', ['id' => $id_url]);
                 }else{
                     return redirect()->route('carga-academica.detalle', ['id' => $id_url]);
@@ -236,6 +237,7 @@ class Index extends Component
 
     public function mount()
     {
+
         if(request()->routeIs('cursos*'))
         {
             session(['tipo_vista' => 'alumno']);
@@ -254,7 +256,8 @@ class Index extends Component
         {
             if(session('id_usuario') !== null)
             {
-                $this->usuario = Usuario::find(desencriptar(session('id_usuario')));
+                $id_usuario = Hashids::decode(session('id_usuario'));
+                $this->usuario = Usuario::find($id_usuario[0]);
                 $this->modo_admin = true;
             }else{
                 request()->routeIs('alumnos*') ? redirect()->route('alumnos') : redirect()->route('docentes');

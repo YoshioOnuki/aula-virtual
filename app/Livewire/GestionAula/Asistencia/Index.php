@@ -3,13 +3,13 @@
 namespace App\Livewire\GestionAula\Asistencia;
 
 use App\Models\Asistencia;
-use App\Models\GestionAula;
 use App\Models\GestionAulaUsuario;
 use App\Models\Usuario;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Vinkla\Hashids\Facades\Hashids;
 
 #[Layout('components.layouts.app')]
 class Index extends Component
@@ -24,6 +24,7 @@ class Index extends Component
 
     public $usuario;
 
+    public $id_gestion_aula_usuario_hash;
     public $id_gestion_aula_usuario;
 
     public $modo_admin = false;
@@ -51,13 +52,17 @@ class Index extends Component
             session(['tipo_vista' => 'docente']);
         }
 
-        $this->id_gestion_aula_usuario = desencriptar($id);
+        $this->id_gestion_aula_usuario_hash = $id;
+
+        $id_gestion_aula_usuario = Hashids::decode($id);
+        $this->id_gestion_aula_usuario = $id_gestion_aula_usuario[0];
 
         if(request()->routeIs('alumnos*') || request()->routeIs('docentes*'))
         {
             if(session('id_usuario') !== null)
             {
-                $this->usuario = Usuario::find(desencriptar(session('id_usuario')));
+                $id_usuario = Hashids::decode(session('id_usuario'));
+                $this->usuario = Usuario::find($id_usuario[0]);
                 $this->modo_admin = true;
             }else{
                 request()->routeIs('alumnos*') ? redirect()->route('alumnos') : redirect()->route('docentes');

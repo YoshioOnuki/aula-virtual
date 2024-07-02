@@ -10,6 +10,7 @@ use App\Models\TrabajoAcademico;
 use App\Models\Usuario;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Vinkla\Hashids\Facades\Hashids;
 
 #[Layout('components.layouts.app')]
 class Index extends Component
@@ -158,7 +159,7 @@ class Index extends Component
             })
             ->first();
         if($docente) {
-            $id_url = encriptar($docente->id_gestion_aula_usuario);
+            $id_url = Hashids::encode($docente->id_gestion_aula_usuario);
             return redirect()->route('cursos.detalle', ['id' => $id_url]);
         } else {
             $this->dispatch(
@@ -178,7 +179,7 @@ class Index extends Component
             })
             ->first();
         if($docente) {
-            $id_url = encriptar($docente->id_gestion_aula_usuario);
+            $id_url = Hashids::encode($docente->id_gestion_aula_usuario);
             return redirect()->route('carga-academica.detalle', ['id' => $id_url]);
         } else {
             $this->dispatch(

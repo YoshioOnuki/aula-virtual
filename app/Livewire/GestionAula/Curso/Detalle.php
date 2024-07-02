@@ -6,11 +6,13 @@ use App\Models\GestionAulaUsuario;
 use App\Models\Usuario;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Vinkla\Hashids\Facades\Hashids;
 
 #[Layout('components.layouts.app')]
 class Detalle extends Component
 {
 
+    public $id_gestion_aula_usuario_hash;
     public $id_gestion_aula_usuario;
     public $curso;
     public $gestion_aula_usuario;
@@ -103,11 +105,13 @@ class Detalle extends Component
 
     public function mostrar_silabus($id)
     {
-        $id_url = encriptar($id);
+        $id_url = Hashids::encode($id);
+        // $id_url = Hashids::encode($id);
         if(session('tipo_vista') === 'alumno'){
             if($this->modo_admin)
             {
-                session(['id_usuario' => encriptar($this->usuario->id_usuario)]);
+                session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
+                // session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
                 return redirect()->route('alumnos.cursos.detalle.silabus', ['id' => $id_url]);
             }else{
                 return redirect()->route('cursos.detalle.silabus', ['id' => $id_url]);
@@ -115,7 +119,8 @@ class Detalle extends Component
         }else{
             if($this->modo_admin)
             {
-                session(['id_usuario' => encriptar($this->usuario->id_usuario)]);
+                session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
+                // session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
                 return redirect()->route('docentes.carga-academica.detalle.silabus', ['id' => $id_url]);
             }else{
                 return redirect()->route('carga-academica.detalle.silabus', ['id' => $id_url]);
@@ -125,11 +130,12 @@ class Detalle extends Component
 
     public function mostrar_recursos($id)
     {
-        $id_url = encriptar($id);
+        $id_url = Hashids::encode($id);
+        // $id_url = Hashids::encode($id);
         if(session('tipo_vista') === 'alumno'){
             if($this->modo_admin)
             {
-                session(['id_usuario' => encriptar($this->usuario->id_usuario)]);
+                session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
                 return redirect()->route('alumnos.cursos.detalle.recursos', ['id' => $id_url]);
             }else{
                 return redirect()->route('cursos.detalle.recursos', ['id' => $id_url]);
@@ -137,7 +143,7 @@ class Detalle extends Component
         }else{
             if($this->modo_admin)
             {
-                session(['id_usuario' => encriptar($this->usuario->id_usuario)]);
+                session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
                 return redirect()->route('docentes.carga-academica.detalle.recursos', ['id' => $id_url]);
             }else{
                 return redirect()->route('carga-academica.detalle.recursos', ['id' => $id_url]);
@@ -147,11 +153,11 @@ class Detalle extends Component
 
     public function mostrar_foro($id)
     {
-        $id_url = encriptar($id);
+        $id_url = Hashids::encode($id);
         if(session('tipo_vista') === 'alumno'){
             if($this->modo_admin)
             {
-                session(['id_usuario' => encriptar($this->usuario->id_usuario)]);
+                session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
                 return redirect()->route('alumnos.cursos.detalle.foro', ['id' => $id_url]);
             }else{
                 return redirect()->route('cursos.detalle.foro', ['id' => $id_url]);
@@ -159,7 +165,7 @@ class Detalle extends Component
         }else{
             if($this->modo_admin)
             {
-                session(['id_usuario' => encriptar($this->usuario->id_usuario)]);
+                session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
                 return redirect()->route('docentes.carga-academica.detalle.foro', ['id' => $id_url]);
             }else{
                 return redirect()->route('carga-academica.detalle.foro', ['id' => $id_url]);
@@ -169,11 +175,11 @@ class Detalle extends Component
 
     public function mostrar_asistencia($id)
     {
-        $id_url = encriptar($id);
+        $id_url = Hashids::encode($id);
         if(session('tipo_vista') === 'alumno'){
             if($this->modo_admin)
             {
-                session(['id_usuario' => encriptar($this->usuario->id_usuario)]);
+                session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
                 return redirect()->route('alumnos.cursos.detalle.asistencia', ['id' => $id_url]);
             }else{
                 return redirect()->route('cursos.detalle.asistencia', ['id' => $id_url]);
@@ -181,7 +187,7 @@ class Detalle extends Component
         }else{
             if($this->modo_admin)
             {
-                session(['id_usuario' => encriptar($this->usuario->id_usuario)]);
+                session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
                 return redirect()->route('docentes.carga-academica.detalle.asistencia', ['id' => $id_url]);
             }else{
                 return redirect()->route('carga-academica.detalle.asistencia', ['id' => $id_url]);
@@ -191,11 +197,11 @@ class Detalle extends Component
 
     public function mostrar_trabajo_academico($id)
     {
-        $id_url = encriptar($id);
+        $id_url = Hashids::encode($id);
         if(session('tipo_vista') === 'alumno'){
             if($this->modo_admin)
             {
-                session(['id_usuario' => encriptar($this->usuario->id_usuario)]);
+                session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
                 return redirect()->route('alumnos.cursos.detalle.trabajo-academico', ['id' => $id_url]);
             }else{
                 return redirect()->route('cursos.detalle.trabajo-academico', ['id' => $id_url]);
@@ -203,7 +209,7 @@ class Detalle extends Component
         }else{
             if($this->modo_admin)
             {
-                session(['id_usuario' => encriptar($this->usuario->id_usuario)]);
+                session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
                 return redirect()->route('docentes.carga-academica.detalle.trabajo-academico', ['id' => $id_url]);
             }else{
                 return redirect()->route('carga-academica.detalle.trabajo-academico', ['id' => $id_url]);
@@ -213,11 +219,11 @@ class Detalle extends Component
 
     public function mostrar_webgrafia($id)
     {
-        $id_url = encriptar($id);
+        $id_url = Hashids::encode($id);
         if(session('tipo_vista') === 'alumno'){
             if($this->modo_admin)
             {
-                session(['id_usuario' => encriptar($this->usuario->id_usuario)]);
+                session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
                 return redirect()->route('alumnos.cursos.detalle.webgrafia', ['id' => $id_url]);
             }else{
                 return redirect()->route('cursos.detalle.webgrafia', ['id' => $id_url]);
@@ -225,7 +231,7 @@ class Detalle extends Component
         }else{
             if($this->modo_admin)
             {
-                session(['id_usuario' => encriptar($this->usuario->id_usuario)]);
+                session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
                 return redirect()->route('docentes.carga-academica.detalle.webgrafia', ['id' => $id_url]);
             }else{
                 return redirect()->route('carga-academica.detalle.webgrafia', ['id' => $id_url]);
@@ -235,10 +241,10 @@ class Detalle extends Component
 
     public function mostrar_alumnos($id)
     {
-        $id_url = encriptar($id);
+        $id_url = Hashids::encode($id);
         if($this->modo_admin)
         {
-            session(['id_usuario' => encriptar($this->usuario->id_usuario)]);
+            session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
             return redirect()->route('docentes.carga-academica.detalle.alumnos', ['id' => $id_url]);
         }else{
             return redirect()->route('carga-academica.detalle.alumnos', ['id' => $id_url]);
@@ -248,6 +254,7 @@ class Detalle extends Component
 
     public function mount($id)
     {
+
         if(request()->routeIs('cursos*'))
         {
             session(['tipo_vista' => 'alumno']);
@@ -262,7 +269,10 @@ class Detalle extends Component
             session(['tipo_vista' => 'docente']);
         }
 
-        $this->id_gestion_aula_usuario = desencriptar($id);
+        $this->id_gestion_aula_usuario_hash = $id;
+
+        $id_gestion_aula_usuario = Hashids::decode($id);
+        $this->id_gestion_aula_usuario = $id_gestion_aula_usuario[0];
 
         $this->mostrar_titulo_curso();
 
@@ -270,7 +280,8 @@ class Detalle extends Component
         {
             if(session('id_usuario') !== null)
             {
-                $this->usuario = Usuario::find(desencriptar(session('id_usuario')));
+                $usuario = Hashids::decode($id);
+                $this->usuario = Usuario::find($usuario[0]);
                 $this->modo_admin = true;
             }else{
                 request()->routeIs('alumnos*') ? redirect()->route('alumnos') : redirect()->route('docentes');
