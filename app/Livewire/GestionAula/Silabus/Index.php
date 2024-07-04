@@ -17,6 +17,7 @@ class Index extends Component
     use WithFileUploads;
 
     public $usuario;
+    public $id_usuario_hash;
 
     public $id_gestion_aula_usuario_hash;
     public $id_gestion_aula_usuario;
@@ -160,7 +161,7 @@ class Index extends Component
     }
 
 
-    public function mount($id)
+    public function mount($id_usuario, $id_curso)
     {
         if(request()->routeIs('cursos*'))
         {
@@ -176,23 +177,18 @@ class Index extends Component
             session(['tipo_vista' => 'docente']);
         }
 
-        $this->id_gestion_aula_usuario_hash = $id;
+        $this->id_gestion_aula_usuario_hash = $id_curso;
 
-        $id_gestion_aula_usuario = Hashids::decode($id);
+        $id_gestion_aula_usuario = Hashids::decode($id_curso);
         $this->id_gestion_aula_usuario = $id_gestion_aula_usuario[0];
+
+        $this->id_usuario_hash = $id_usuario;
+        $id_usuario = Hashids::decode($id_usuario);
+        $this->usuario = Usuario::find($id_usuario[0]);
 
         if(request()->routeIs('alumnos*') || request()->routeIs('docentes*'))
         {
-            if(session('id_usuario') !== null)
-            {
-                $id_usuario = Hashids::decode(session('id_usuario'));
-                $this->usuario = Usuario::find($id_usuario[0]);
                 $this->modo_admin = true;
-            }else{
-                request()->routeIs('alumnos*') ? redirect()->route('alumnos') : redirect()->route('docentes');
-            }
-        }else{
-            $this->usuario = Usuario::find(auth()->id());
         }
 
     }

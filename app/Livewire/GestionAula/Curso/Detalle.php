@@ -25,6 +25,7 @@ class Detalle extends Component
     public $cargando_orientaciones = true;
 
     public $usuario;
+    public $id_usuario_hash;
     public $modo_admin = false;
 
     public $link_clase;
@@ -103,156 +104,139 @@ class Detalle extends Component
     }
 
 
-    public function mostrar_silabus($id)
+    public function redireccionar_silabus($id)
     {
-        $id_url = Hashids::encode($id);
-        // $id_url = Hashids::encode($id);
+        $id_curso = Hashids::encode($id);
         if(session('tipo_vista') === 'alumno'){
             if($this->modo_admin)
             {
-                session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
-                // session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
-                return redirect()->route('alumnos.cursos.detalle.silabus', ['id' => $id_url]);
+                return redirect()->route('alumnos.cursos.detalle.silabus', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
             }else{
-                return redirect()->route('cursos.detalle.silabus', ['id' => $id_url]);
+                return redirect()->route('cursos.detalle.silabus', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
             }
         }else{
             if($this->modo_admin)
             {
-                session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
-                // session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
-                return redirect()->route('docentes.carga-academica.detalle.silabus', ['id' => $id_url]);
+                return redirect()->route('docentes.carga-academica.detalle.silabus', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
             }else{
-                return redirect()->route('carga-academica.detalle.silabus', ['id' => $id_url]);
+                return redirect()->route('carga-academica.detalle.silabus', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
             }
         }
     }
 
-    public function mostrar_recursos($id)
+    public function redireccionar_recursos($id)
     {
-        $id_url = Hashids::encode($id);
-        // $id_url = Hashids::encode($id);
+        $id_curso = Hashids::encode($id);
         if(session('tipo_vista') === 'alumno'){
             if($this->modo_admin)
             {
-                session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
-                return redirect()->route('alumnos.cursos.detalle.recursos', ['id' => $id_url]);
+                return redirect()->route('alumnos.cursos.detalle.recursos', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
             }else{
-                return redirect()->route('cursos.detalle.recursos', ['id' => $id_url]);
+                return redirect()->route('cursos.detalle.recursos', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
             }
         }else{
             if($this->modo_admin)
             {
-                session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
-                return redirect()->route('docentes.carga-academica.detalle.recursos', ['id' => $id_url]);
+                return redirect()->route('docentes.carga-academica.detalle.recursos', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
             }else{
-                return redirect()->route('carga-academica.detalle.recursos', ['id' => $id_url]);
+                return redirect()->route('carga-academica.detalle.recursos', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
             }
         }
     }
 
-    public function mostrar_foro($id)
+    public function redireccionar_foro($id)
     {
-        $id_url = Hashids::encode($id);
+        $id_curso = Hashids::encode($id);
         if(session('tipo_vista') === 'alumno'){
             if($this->modo_admin)
             {
-                session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
-                return redirect()->route('alumnos.cursos.detalle.foro', ['id' => $id_url]);
+                return redirect()->route('alumnos.cursos.detalle.foro', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
             }else{
-                return redirect()->route('cursos.detalle.foro', ['id' => $id_url]);
+                return redirect()->route('cursos.detalle.foro', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
             }
         }else{
             if($this->modo_admin)
             {
-                session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
-                return redirect()->route('docentes.carga-academica.detalle.foro', ['id' => $id_url]);
+                return redirect()->route('docentes.carga-academica.detalle.foro', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
             }else{
-                return redirect()->route('carga-academica.detalle.foro', ['id' => $id_url]);
+                return redirect()->route('carga-academica.detalle.foro', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
             }
         }
     }
 
-    public function mostrar_asistencia($id)
+    public function redireccionar_asistencia($id)
     {
-        $id_url = Hashids::encode($id);
+        $id_curso = Hashids::encode($id);
         if(session('tipo_vista') === 'alumno'){
             if($this->modo_admin)
             {
-                session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
-                return redirect()->route('alumnos.cursos.detalle.asistencia', ['id' => $id_url]);
+                return redirect()->route('alumnos.cursos.detalle.asistencia', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
             }else{
-                return redirect()->route('cursos.detalle.asistencia', ['id' => $id_url]);
+                return redirect()->route('cursos.detalle.asistencia', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
             }
         }else{
             if($this->modo_admin)
             {
-                session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
-                return redirect()->route('docentes.carga-academica.detalle.asistencia', ['id' => $id_url]);
+                return redirect()->route('docentes.carga-academica.detalle.asistencia', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
             }else{
-                return redirect()->route('carga-academica.detalle.asistencia', ['id' => $id_url]);
+                return redirect()->route('carga-academica.detalle.asistencia', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
             }
         }
     }
 
-    public function mostrar_trabajo_academico($id)
+    public function redireccionar_trabajo_academico($id)
     {
-        $id_url = Hashids::encode($id);
+        $id_curso = Hashids::encode($id);
         if(session('tipo_vista') === 'alumno'){
             if($this->modo_admin)
             {
-                session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
-                return redirect()->route('alumnos.cursos.detalle.trabajo-academico', ['id' => $id_url]);
+                return redirect()->route('alumnos.cursos.detalle.trabajo-academico', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
             }else{
-                return redirect()->route('cursos.detalle.trabajo-academico', ['id' => $id_url]);
+                return redirect()->route('cursos.detalle.trabajo-academico', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
             }
         }else{
             if($this->modo_admin)
             {
-                session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
-                return redirect()->route('docentes.carga-academica.detalle.trabajo-academico', ['id' => $id_url]);
+                return redirect()->route('docentes.carga-academica.detalle.trabajo-academico', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
             }else{
-                return redirect()->route('carga-academica.detalle.trabajo-academico', ['id' => $id_url]);
+                return redirect()->route('carga-academica.detalle.trabajo-academico', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
             }
         }
     }
 
-    public function mostrar_webgrafia($id)
+    public function redireccionar_webgrafia($id)
     {
-        $id_url = Hashids::encode($id);
+        $id_curso = Hashids::encode($id);
         if(session('tipo_vista') === 'alumno'){
             if($this->modo_admin)
             {
-                session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
-                return redirect()->route('alumnos.cursos.detalle.webgrafia', ['id' => $id_url]);
+                return redirect()->route('alumnos.cursos.detalle.webgrafia', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
             }else{
-                return redirect()->route('cursos.detalle.webgrafia', ['id' => $id_url]);
+                return redirect()->route('cursos.detalle.webgrafia', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
             }
         }else{
             if($this->modo_admin)
             {
-                session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
-                return redirect()->route('docentes.carga-academica.detalle.webgrafia', ['id' => $id_url]);
+                return redirect()->route('docentes.carga-academica.detalle.webgrafia', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
             }else{
-                return redirect()->route('carga-academica.detalle.webgrafia', ['id' => $id_url]);
+                return redirect()->route('carga-academica.detalle.webgrafia', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
             }
         }
     }
 
-    public function mostrar_alumnos($id)
+    public function redireccionar_alumnos($id)
     {
-        $id_url = Hashids::encode($id);
+        $id_curso = Hashids::encode($id);
         if($this->modo_admin)
         {
-            session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
-            return redirect()->route('docentes.carga-academica.detalle.alumnos', ['id' => $id_url]);
+            return redirect()->route('docentes.carga-academica.detalle.alumnos', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
         }else{
-            return redirect()->route('carga-academica.detalle.alumnos', ['id' => $id_url]);
+            return redirect()->route('carga-academica.detalle.alumnos', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
         }
     }
 
 
-    public function mount($id)
+    public function mount($id_usuario, $id_curso)
     {
 
         if(request()->routeIs('cursos*'))
@@ -269,25 +253,20 @@ class Detalle extends Component
             session(['tipo_vista' => 'docente']);
         }
 
-        $this->id_gestion_aula_usuario_hash = $id;
+        $this->id_gestion_aula_usuario_hash = $id_curso;
 
-        $id_gestion_aula_usuario = Hashids::decode($id);
+        $id_gestion_aula_usuario = Hashids::decode($id_curso);
         $this->id_gestion_aula_usuario = $id_gestion_aula_usuario[0];
 
         $this->mostrar_titulo_curso();
 
+        $this->id_usuario_hash = $id_usuario;
+        $usuario = Hashids::decode($id_usuario);
+        $this->usuario = Usuario::find($usuario[0]);
+
         if(request()->routeIs('alumnos*') || request()->routeIs('docentes*'))
         {
-            if(session('id_usuario') !== null)
-            {
-                $usuario = Hashids::decode($id);
-                $this->usuario = Usuario::find($usuario[0]);
-                $this->modo_admin = true;
-            }else{
-                request()->routeIs('alumnos*') ? redirect()->route('alumnos') : redirect()->route('docentes');
-            }
-        }else{
-            $this->usuario = auth()->user();
+            $this->modo_admin = true;
         }
     }
 

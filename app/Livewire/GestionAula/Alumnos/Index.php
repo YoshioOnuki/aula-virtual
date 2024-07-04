@@ -20,6 +20,7 @@ class Index extends Component
     #[Url('buscar')]
     public $search = '';
 
+    public $id_usuario_hash;
     public $usuario;
 
     public $id_gestion_aula_usuario_hash;
@@ -125,7 +126,7 @@ class Index extends Component
         );
     }
 
-    public function mount($id)
+    public function mount($id_usuario, $id_curso)
     {
         if(request()->routeIs('cursos*'))
         {
@@ -141,23 +142,19 @@ class Index extends Component
             session(['tipo_vista' => 'docente']);
         }
 
-        $this->id_gestion_aula_usuario_hash = $id;
-        $id_gestion_aula_usuario = Hashids::decode($id);
+        $this->id_gestion_aula_usuario_hash = $id_curso;
+        $id_gestion_aula_usuario = Hashids::decode($id_curso);
         $this->id_gestion_aula_usuario = $id_gestion_aula_usuario[0];
         $this->id_gestion_aula = GestionAulaUsuario::find($this->id_gestion_aula_usuario)->id_gestion_aula;
 
+
+        $this->id_usuario_hash = $id_usuario;
+        $id_usuario = Hashids::decode($id_usuario);
+        $this->usuario = Usuario::find($id_usuario[0]);
+
         if(request()->routeIs('alumnos*') || request()->routeIs('docentes*'))
         {
-            if(session('id_usuario') !== null)
-            {
-                $id_usuario = Hashids::decode(session('id_usuario'));
-                $this->usuario = Usuario::find($id_usuario[0]);
-                $this->modo_admin = true;
-            }else{
-                request()->routeIs('alumnos*') ? redirect()->route('alumnos') : redirect()->route('docentes');
-            }
-        }else{
-            $this->usuario = Usuario::find(auth()->id());
+            $this->modo_admin = true;
         }
 
     }

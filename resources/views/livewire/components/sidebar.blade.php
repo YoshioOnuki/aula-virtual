@@ -446,7 +446,7 @@
                     @if ($usuario->esRol('ALUMNO'))
                         <li class="nav-item {{ request()->routeIs('cursos*') ? 'active' : '' }}">
                             <a class="nav-link {{ request()->routeIs('cursos*') ? 'text-primary fw-medium' : '' }}"
-                                style="cursor: pointer;" wire:click="mostrar_cursos">
+                                style="cursor: pointer;" wire:click="mostrar_cursos({{ $usuario->id_usuario }})">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -510,8 +510,8 @@
                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round"
                         class="icon icon-tabler icons-tabler-outline icon-tabler-file-info
-                        {{ request()->routeIs('calificaciones*') || 
-                        request()->routeIs('plan-estudio*') || 
+                        {{ request()->routeIs('calificaciones*') ||
+                        request()->routeIs('plan-estudio*') ||
                         request()->routeIs('manuales*') ? 'text-primary' : '' }}">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                             <path d="M14 3v4a1 1 0 0 0 1 1h4" />
@@ -527,8 +527,8 @@
                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round"
                         class="icon icon-tabler icons-tabler-outline icon-tabler-file-info
-                        {{ request()->routeIs('calificaciones*') || 
-                        request()->routeIs('plan-estudio*') || 
+                        {{ request()->routeIs('calificaciones*') ||
+                        request()->routeIs('plan-estudio*') ||
                         request()->routeIs('manuales*') ? 'text-primary' : '' }}">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                             <path d="M14 3v4a1 1 0 0 0 1 1h4" />

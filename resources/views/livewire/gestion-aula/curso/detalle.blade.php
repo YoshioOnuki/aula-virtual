@@ -15,7 +15,7 @@
                                     @if($this->modo_admin)
                                         <a href="{{ route('alumnos.cursos', $id_gestion_aula_usuario_hash) }}">Mis Cursos</a>
                                     @else
-                                        <a href="{{ route('cursos') }}">Mis Cursos</a>
+                                        <a href="{{ route('cursos', $id_gestion_aula_usuario_hash) }}">Mis Cursos</a>
                                     @endif
                                 </li>
                             @else
@@ -23,7 +23,7 @@
                                     @if($this->modo_admin)
                                         <a href="{{ route('docentes.carga-academica', $id_gestion_aula_usuario_hash) }}">Carga Académica</a>
                                     @else
-                                        <a href="{{ route('carga-academica') }}">Carga Académica</a>
+                                        <a href="{{ route('carga-academica', $id_gestion_aula_usuario_hash) }}">Carga Académica</a>
                                     @endif
                                 </li>
                             @endif
@@ -43,15 +43,15 @@
                     <div class="btn-list">
                         @if (session('tipo_vista') === 'alumno')
                             @if($this->modo_admin)
-                                <a href="{{ route('alumnos.cursos')}}" class="btn btn-secondary d-none d-md-inline-block">
+                                <a href="{{ route('alumnos.cursos', $id_usuario_hash) }}" class="btn btn-secondary d-none d-md-inline-block">
                             @else
-                                <a href="{{ route('cursos')}}" class="btn btn-secondary d-none d-md-inline-block">
+                                <a href="{{ route('cursos', $id_usuario_hash) }}" class="btn btn-secondary d-none d-md-inline-block">
                             @endif
                         @else
                             @if($this->modo_admin)
-                                <a href="{{ route('docentes.carga-academica')}}" class="btn btn-secondary d-none d-md-inline-block">
+                                <a href="{{ route('docentes.carga-academica', $id_usuario_hash) }}" class="btn btn-secondary d-none d-md-inline-block">
                             @else
-                                <a href="{{ route('carga-academica') }}" class="btn btn-secondary d-none d-md-inline-block">
+                                <a href="{{ route('carga-academica', $id_usuario_hash) }}" class="btn btn-secondary d-none d-md-inline-block">
                             @endif
                         @endif
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -177,7 +177,7 @@
                                     <div class="row g-3">
                                         <div class="col-6 col-md-2 col-lg-4 col-xl-3">
                                             <span class="hide-theme-dark">
-                                                <div class="" wire:click="mostrar_silabus({{ $id_gestion_aula_usuario }})">
+                                                <div class="" wire:click="redireccionar_silabus({{ $id_gestion_aula_usuario }})">
                                                     <div class="image-button {{ session('tipo_vista') == 'alumno' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-libro-info.webp" alt="Info"
                                                             style="width: 80px; height: 80px;">
@@ -188,7 +188,7 @@
                                                 </div>
                                             </span>
                                             <span class="hide-theme-light">
-                                                <div class="dark-mode" wire:click="mostrar_silabus({{ $id_gestion_aula_usuario }})">
+                                                <div class="dark-mode" wire:click="redireccionar_silabus({{ $id_gestion_aula_usuario }})">
                                                     <div class="image-button {{ session('tipo_vista') == 'alumno' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-libro-info.webp" alt="Info"
                                                             style="width: 80px; height: 80px;">
@@ -202,7 +202,7 @@
 
                                         <div class="col-6 col-md-2 col-lg-4 col-xl-3">
                                             <span class="hide-theme-dark">
-                                                <div class="" wire:click="mostrar_recursos({{ $id_gestion_aula_usuario }})">
+                                                <div class="" wire:click="redireccionar_recursos({{ $id_gestion_aula_usuario }})">
                                                     <div class="image-button {{ session('tipo_vista') == 'alumno' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-carpeta.webp" alt="Info"
                                                             style="width: 80px; height: 80px;">
@@ -213,7 +213,7 @@
                                                 </div>
                                             </span>
                                             <span class="hide-theme-light">
-                                                <div class="dark-mode" wire:click="mostrar_recursos({{ $id_gestion_aula_usuario }})">
+                                                <div class="dark-mode" wire:click="redireccionar_recursos({{ $id_gestion_aula_usuario }})">
                                                     <div class="image-button {{ session('tipo_vista') == 'alumno' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-carpeta.webp" alt="Info"
                                                             style="width: 80px; height: 80px;">
@@ -227,7 +227,7 @@
 
                                         <div class="col-6 col-md-2 col-lg-4 col-xl-3">
                                             <span class="hide-theme-dark">
-                                                <div class="" wire:click="mostrar_foro({{ $id_gestion_aula_usuario }})">
+                                                <div class="" wire:click="redireccionar_foro({{ $id_gestion_aula_usuario }})">
                                                     <div class="image-button {{ session('tipo_vista') == 'alumno' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-foro-discusion.webp"
                                                             alt="Info" style="width: 80px; height: 80px;">
@@ -238,7 +238,7 @@
                                                 </div>
                                             </span>
                                             <span class="hide-theme-light">
-                                                <div class="dark-mode" wire:click="mostrar_foro({{ $id_gestion_aula_usuario }})">
+                                                <div class="dark-mode" wire:click="redireccionar_foro({{ $id_gestion_aula_usuario }})">
                                                     <div class="image-button {{ session('tipo_vista') == 'alumno' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-foro-discusion.webp"
                                                             alt="Info" style="width: 80px; height: 80px;">
@@ -253,7 +253,7 @@
 
                                         <div class="col-6 col-md-2 col-lg-4 col-xl-3">
                                             <span class="hide-theme-dark">
-                                                <div class="" wire:click="mostrar_asistencia({{ $id_gestion_aula_usuario }})">
+                                                <div class="" wire:click="redireccionar_asistencia({{ $id_gestion_aula_usuario }})">
                                                     <div class="image-button {{ session('tipo_vista') == 'alumno' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-matricula.webp" alt="Info"
                                                             style="width: 80px; height: 80px;">
@@ -264,7 +264,7 @@
                                                 </div>
                                             </span>
                                             <span class="hide-theme-light">
-                                                <div class="dark-mode" wire:click="mostrar_asistencia({{ $id_gestion_aula_usuario }})">
+                                                <div class="dark-mode" wire:click="redireccionar_asistencia({{ $id_gestion_aula_usuario }})">
                                                     <div class="image-button {{ session('tipo_vista') == 'alumno' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-matricula.webp" alt="Info"
                                                             style="width: 80px; height: 80px;">
@@ -278,7 +278,7 @@
 
                                         <div class="col-6 col-md-2 col-lg-4 col-xl-3">
                                             <span class="hide-theme-dark">
-                                                <div class="" wire:click="mostrar_trabajo_academico({{ $id_gestion_aula_usuario }})">
+                                                <div class="" wire:click="redireccionar_trabajo_academico({{ $id_gestion_aula_usuario }})">
                                                     <div class="image-button {{ session('tipo_vista') == 'alumno' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-curso-por-internet.webp"
                                                             alt="Info" style="width: 80px; height: 80px;">
@@ -289,7 +289,7 @@
                                                 </div>
                                             </span>
                                             <span class="hide-theme-light">
-                                                <div class="dark-mode" wire:click="mostrar_trabajo_academico({{ $id_gestion_aula_usuario }})">
+                                                <div class="dark-mode" wire:click="redireccionar_trabajo_academico({{ $id_gestion_aula_usuario }})">
                                                     <div class="image-button {{ session('tipo_vista') == 'alumno' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-curso-por-internet.webp"
                                                             alt="Info" style="width: 80px; height: 80px;">
@@ -303,7 +303,7 @@
 
                                         <div class="col-6 col-md-2 col-lg-4 col-xl-3">
                                             <span class="hide-theme-dark">
-                                                <div class="" wire:click="mostrar_webgrafia({{ $id_gestion_aula_usuario }})">
+                                                <div class="" wire:click="redireccionar_webgrafia({{ $id_gestion_aula_usuario }})">
                                                     <div class="image-button {{ session('tipo_vista') == 'alumno' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-ubicacion-ip.webp" alt="Info"
                                                             style="width: 80px; height: 80px;">
@@ -314,7 +314,7 @@
                                                 </div>
                                             </span>
                                             <span class="hide-theme-light">
-                                                <div class="dark-mode" wire:click="mostrar_webgrafia({{ $id_gestion_aula_usuario }})">
+                                                <div class="dark-mode" wire:click="redireccionar_webgrafia({{ $id_gestion_aula_usuario }})">
                                                     <div class="image-button {{ session('tipo_vista') == 'alumno' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-ubicacion-ip.webp" alt="Info"
                                                             style="width: 80px; height: 80px;">
@@ -391,7 +391,7 @@
 
                                             <div class="col-6 col-md-2 col-lg-4 col-xl-3">
                                                 <span class="hide-theme-dark">
-                                                    <div class="" wire:click="mostrar_alumnos({{ $id_gestion_aula_usuario }})">
+                                                    <div class="" wire:click="redireccionar_alumnos({{ $id_gestion_aula_usuario }})">
                                                         <div class="image-button image-button-docente" style="z-index: 1;">
                                                             <img src="/media/icons/icon-registro.webp" alt="Info"
                                                                 style="width: 80px; height: 80px;">
@@ -402,7 +402,7 @@
                                                     </div>
                                                 </span>
                                                 <span class="hide-theme-light">
-                                                    <div class="dark-mode" wire:click="mostrar_alumnos({{ $id_gestion_aula_usuario }})">
+                                                    <div class="dark-mode" wire:click="redireccionar_alumnos({{ $id_gestion_aula_usuario }})">
                                                         <div class="image-button image-button-docente">
                                                             <img src="/media/icons/icon-registro.webp" alt="Info"
                                                                 style="width: 80px; height: 80px;">

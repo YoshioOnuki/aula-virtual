@@ -2,8 +2,8 @@
 
 namespace App\Livewire\Components;
 
-use App\Models\UsuarioRol;
 use Livewire\Component;
+use Vinkla\Hashids\Facades\Hashids;
 
 class Sidebar extends Component
 {
@@ -136,18 +136,18 @@ class Sidebar extends Component
 
     /* =============== GESTION ACADEMICA =============== */
 
-    public function mostrar_cursos()
+    public function mostrar_cursos($id)
     {
-        // Guardar en la sesión el tipo de vista
+        $id_usuario = Hashids::encode($id);
         session(['tipo_vista' => 'alumno']);
-        return redirect()->route('cursos');
+        return redirect()->route('cursos', ['id_usuario' => $id_usuario]);
     }
 
-    public function mostrar_carga_academica()
+    public function mostrar_carga_academica($id)
     {
-        // Guardar en la sesión el tipo de vista
+        $id_usuario = Hashids::encode($id);
         session(['tipo_vista' => 'docente']);
-        return redirect()->route('carga-academica');
+        return redirect()->route('carga-academica', ['id_usuario' => $id_usuario]);
     }
 
 

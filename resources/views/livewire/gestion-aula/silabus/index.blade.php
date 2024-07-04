@@ -12,7 +12,7 @@
                                     @if($this->modo_admin)
                                         <a href="{{ route('alumnos.cursos', $id_gestion_aula_usuario_hash) }}">Mis Cursos</a>
                                     @else
-                                        <a href="{{ route('cursos') }}">Mis Cursos</a>
+                                        <a href="{{ route('cursos', $id_gestion_aula_usuario_hash) }}">Mis Cursos</a>
                                     @endif
                                 </li>
                             @else
@@ -20,7 +20,7 @@
                                     @if($this->modo_admin)
                                         <a href="{{ route('docentes.carga-academica', $id_gestion_aula_usuario_hash) }}">Carga Académica</a>
                                     @else
-                                        <a href="{{ route('carga-academica') }}">Carga Académica</a>
+                                        <a href="{{ route('carga-academica', $id_gestion_aula_usuario_hash) }}">Carga Académica</a>
                                     @endif
                                 </li>
                             @endif
@@ -28,17 +28,17 @@
                             @if (session('tipo_vista') === 'alumno')
                                 <li class="breadcrumb-item">
                                     @if($this->modo_admin)
-                                        <a href="{{ route('alumnos.cursos.detalle', $id_gestion_aula_usuario_hash) }}">Detalle</a>
+                                        <a href="{{ route('alumnos.cursos.detalle', ['id_usuario' => $id_usuario_hash, 'id_curso' => $id_gestion_aula_usuario_hash]) }}">Detalle</a>
                                     @else
-                                        <a href="{{ route('cursos.detalle', $id_gestion_aula_usuario_hash) }}">Detalle</a>
+                                        <a href="{{ route('cursos.detalle', ['id_usuario' => $id_usuario_hash, 'id_curso' => $id_gestion_aula_usuario_hash]) }}">Detalle</a>
                                     @endif
                                 </li>
                             @else
                                 <li class="breadcrumb-item">
                                     @if($this->modo_admin)
-                                        <a href="{{ route('docentes.carga-academica.detalle', $id_gestion_aula_usuario_hash) }}">Detalle</a>
+                                        <a href="{{ route('docentes.carga-academica.detalle', ['id_usuario' => $id_usuario_hash, 'id_curso' => $id_gestion_aula_usuario_hash]) }}">Detalle</a>
                                     @else
-                                        <a href="{{ route('carga-academica.detalle', $id_gestion_aula_usuario_hash) }}">Detalle</a>
+                                        <a href="{{ route('carga-academica.detalle', ['id_usuario' => $id_usuario_hash, 'id_curso' => $id_gestion_aula_usuario_hash]) }}">Detalle</a>
                                     @endif
                                 </li>
                             @endif
@@ -58,18 +58,18 @@
                     <div class="btn-list">
                         @if (session('tipo_vista') === 'alumno')
                             @if($this->modo_admin)
-                                <a href="{{ route('alumnos.cursos.detalle', $id_gestion_aula_usuario_hash) }}"
+                                <a href="{{ route('alumnos.cursos.detalle', ['id_usuario' => $id_usuario_hash, 'id_curso' => $id_gestion_aula_usuario_hash]) }}"
                                 class="btn btn-secondary d-none d-md-inline-block">
                             @else
-                                <a href="{{ route('cursos.detalle', $id_gestion_aula_usuario_hash) }}"
+                                <a href="{{ route('cursos.detalle', ['id_usuario' => $id_usuario_hash, 'id_curso' => $id_gestion_aula_usuario_hash]) }}"
                                 class="btn btn-secondary d-none d-md-inline-block">
                             @endif
                         @else
                             @if($this->modo_admin)
-                                <a href="{{ route('docentes.carga-academica.detalle', $id_gestion_aula_usuario_hash) }}"
+                                <a href="{{ route('docentes.carga-academica.detalle', ['id_usuario' => $id_usuario_hash, 'id_curso' => $id_gestion_aula_usuario_hash]) }}"
                                 class="btn btn-secondary d-none d-md-inline-block">
                             @else
-                                <a href="{{ route('carga-academica.detalle', $id_gestion_aula_usuario_hash) }}"
+                                <a href="{{ route('carga-academica.detalle', ['id_usuario' => $id_usuario_hash, 'id_curso' => $id_gestion_aula_usuario_hash]) }}"
                                     class="btn btn-secondary d-none d-md-inline-block">
                             @endif
                         @endif
@@ -85,18 +85,18 @@
 
                         @if (session('tipo_vista') === 'alumno')
                             @if($this->modo_admin)
-                                <a href="{{ route('alumnos.cursos.detalle', $id_gestion_aula_usuario_hash) }}"
+                                <a href="{{ route('alumnos.cursos.detalle', ['id_usuario' => $id_usuario_hash, 'id_curso' => $id_gestion_aula_usuario_hash]) }}"
                                 class="btn btn-secondary d-md-none btn-icon">
                             @else
-                                <a href="{{ route('cursos.detalle', $id_gestion_aula_usuario_hash) }}"
+                                <a href="{{ route('cursos.detalle', ['id_usuario' => $id_usuario_hash, 'id_curso' => $id_gestion_aula_usuario_hash]) }}"
                                 class="btn btn-secondary d-md-none btn-icon">
                             @endif
                         @else
                             @if($this->modo_admin)
-                                <a href="{{ route('docentes.carga-academica.detalle', $id_gestion_aula_usuario_hash) }}"
+                                <a href="{{ route('docentes.carga-academica.detalle', ['id_usuario' => $id_usuario_hash, 'id_curso' => $id_gestion_aula_usuario_hash]) }}"
                                 class="btn btn-secondary d-md-none btn-icon">
                             @else
-                                <a href="{{ route('carga-academica.detalle', $id_gestion_aula_usuario_hash) }}"
+                                <a href="{{ route('carga-academica.detalle', ['id_usuario' => $id_usuario_hash, 'id_curso' => $id_gestion_aula_usuario_hash]) }}"
                                 class="btn btn-secondary d-md-none btn-icon">
                             @endif
                         @endif

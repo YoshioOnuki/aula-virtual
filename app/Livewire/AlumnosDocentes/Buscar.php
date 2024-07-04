@@ -19,16 +19,14 @@ class Buscar extends Component
     public function mostrar_carga_academica($id)
     {
         $id_usuario = Hashids::encode($id);
-        session(['id_usuario' => $id_usuario]);
-        return redirect()->route('docentes.carga-academica');
+        return redirect()->route('docentes.carga-academica', ['id_usuario' => $id_usuario]);
 
     }
 
     public function mostrar_cursos($id)
     {
         $id_usuario = Hashids::encode($id);
-        session(['id_usuario' => $id_usuario]);
-        return redirect()->route('alumnos.cursos');
+        return redirect()->route('alumnos.cursos', ['id_usuario' => $id_usuario]);
     }
 
 
@@ -69,7 +67,6 @@ class Buscar extends Component
     public function mount($tipo_vista)
     {
         $this->tipo_vista = $tipo_vista;
-        // $this->mostrar_usuarios();
 
         if($this->search || $this->search != '')
         {
