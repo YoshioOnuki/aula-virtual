@@ -183,6 +183,13 @@
                                                     </div>
                                                     <div class=" d-flex justify-content-end">
                                                         <a href="#" tabindex="-1"
+                                                            class="btn btn-secondary disabled placeholder col-sm-2 col-lg-3 col-xl-2 d-none d-md-inline-block me-2"
+                                                            aria-hidden="true"></a>
+                                                        <a href="#" tabindex="-1"
+                                                            class="btn btn-secondary disabled placeholder col-1 d-md-none btn-icon me-2"
+                                                            aria-hidden="true"></a>
+
+                                                        <a href="#" tabindex="-1"
                                                             class="btn btn-primary disabled placeholder col-sm-3 col-lg-4 col-xl-2 d-none d-md-inline-block"
                                                             aria-hidden="true"></a>
                                                         <a href="#" tabindex="-1"
@@ -219,26 +226,43 @@
                                                                 </p>
                                                             </div>
                                                         </div>
-                                                        <div class="d-flex justify-content-between align-items-end">
+                                                        <div class="d-flex justify-content-end align-items-end mt-2">
                                                             <div>
                                                                 @if ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario))
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                        height="24" viewBox="0 0 24 24" fill="none"
-                                                                        stroke="currentColor" stroke-width="2"
-                                                                        stroke-linecap="round" stroke-linejoin="round"
-                                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-edit cursor-pointer svg-small"
-                                                                        wire:click="abrir_modal_recurso_editar({{ $item->id_recurso }})">
-                                                                        <path stroke="none" d="M0 0h24v24H0z"
-                                                                            fill="none" />
-                                                                        <path
-                                                                            d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                                                        <path
-                                                                            d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                                                        <path d="M16 5l3 3" />
-                                                                    </svg>
+                                                                    <button class="btn btn-secondary d-none d-md-inline-block me-2" wire:click="abrir_modal_recurso_editar({{ $item->id_recurso }})">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                            height="24" viewBox="0 0 24 24" fill="none"
+                                                                            stroke="currentColor" stroke-width="2"
+                                                                            stroke-linecap="round" stroke-linejoin="round"
+                                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                                                            <path stroke="none" d="M0 0h24v24H0z"
+                                                                                fill="none" />
+                                                                            <path
+                                                                                d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                                                            <path
+                                                                                d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                                                            <path d="M16 5l3 3" />
+                                                                        </svg>
+                                                                        Editar
+                                                                    </button>
+                                                                    <button class="btn btn-secondary d-md-none btn-icon me-2" wire:click="abrir_modal_recurso_editar({{ $item->id_recurso }})">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                            height="24" viewBox="0 0 24 24" fill="none"
+                                                                            stroke="currentColor" stroke-width="2"
+                                                                            stroke-linecap="round" stroke-linejoin="round"
+                                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-edit"
+                                                                            wire:click="abrir_modal_recurso_editar({{ $item->id_recurso }})">
+                                                                            <path stroke="none" d="M0 0h24v24H0z"
+                                                                                fill="none" />
+                                                                            <path
+                                                                                d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                                                            <path
+                                                                                d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                                                            <path d="M16 5l3 3" />
+                                                                        </svg>
+                                                                    </button>
                                                                 @endif
-                                                            </div>
-                                                            <div>
+
                                                                 <button class="btn btn-primary d-none d-md-inline-block" wire:click="descargar_recurso({{ $item->id_recurso }})">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                         height="24" viewBox="0 0 24 24" fill="none"
@@ -301,23 +325,41 @@
                                                                 </p>
                                                             </div>
                                                         </div>
-                                                        <div class="d-flex justify-content-between align-items-end">
+                                                        <div class="d-flex justify-content-end align-items-end mt-2">
                                                             <div>
                                                                 @if ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario))
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                        height="24" viewBox="0 0 24 24" fill="none"
-                                                                        stroke="currentColor" stroke-width="2"
-                                                                        stroke-linecap="round" stroke-linejoin="round"
-                                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-edit cursor-pointer svg-small mt-3"
-                                                                        wire:click="abrir_modal_recurso_editar({{ $item->id_recurso }})">
-                                                                        <path stroke="none" d="M0 0h24v24H0z"
-                                                                            fill="none" />
-                                                                        <path
-                                                                            d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                                                        <path
-                                                                            d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                                                        <path d="M16 5l3 3" />
-                                                                    </svg>
+                                                                    <button class="btn btn-secondary d-none d-md-inline-block me-2" wire:click="abrir_modal_recurso_editar({{ $item->id_recurso }})">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                            height="24" viewBox="0 0 24 24" fill="none"
+                                                                            stroke="currentColor" stroke-width="2"
+                                                                            stroke-linecap="round" stroke-linejoin="round"
+                                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                                                            <path stroke="none" d="M0 0h24v24H0z"
+                                                                                fill="none" />
+                                                                            <path
+                                                                                d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                                                            <path
+                                                                                d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                                                            <path d="M16 5l3 3" />
+                                                                        </svg>
+                                                                        Editar
+                                                                    </button>
+                                                                    <button class="btn btn-secondary d-md-none btn-icon me-2" wire:click="abrir_modal_recurso_editar({{ $item->id_recurso }})">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                            height="24" viewBox="0 0 24 24" fill="none"
+                                                                            stroke="currentColor" stroke-width="2"
+                                                                            stroke-linecap="round" stroke-linejoin="round"
+                                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-edit"
+                                                                            wire:click="abrir_modal_recurso_editar({{ $item->id_recurso }})">
+                                                                            <path stroke="none" d="M0 0h24v24H0z"
+                                                                                fill="none" />
+                                                                            <path
+                                                                                d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                                                            <path
+                                                                                d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                                                            <path d="M16 5l3 3" />
+                                                                        </svg>
+                                                                    </button>
                                                                 @endif
                                                             </div>
                                                         </div>
