@@ -25727,3 +25727,27 @@ img {
 .btn-outline-secondary:hover svg {
     color: #ffffff;
 }
+
+
+
+/* Ocultar contenido de asistencias en dispositivos móviles */
+@media only screen and (max-width: 767px) {
+    .asistencias {
+        display: none;
+    }
+
+    .mobile-message {
+        display: block;
+    }
+}
+
+/* Mostrar contenido de asistencias en dispositivos de escritorio */
+@media only screen and (min-width: 768px) {
+    .asistencias {
+        display: block;
+    }
+
+    .mobile-message {
+        display: none;
+    }
+}
