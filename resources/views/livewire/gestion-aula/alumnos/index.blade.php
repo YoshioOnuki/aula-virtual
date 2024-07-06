@@ -1,81 +1,10 @@
 <div>
-    <div class="page-header d-print-none animate__animated animate__fadeIn animate__faster">
-        <div class="container-xl">
-            <div class="row g-2 align-items-center">
-                <div class="col">
-                    <div class="page-pretitle">
-                        <ol class="breadcrumb breadcrumb-arrows
-                        " aria-label="breadcrumbs">
-                            <li class="breadcrumb-item">
-                                <a href="{{ route('inicio') }}">Inicio</a>
-                            </li>
 
-                            <li class="breadcrumb-item">
-                                @if($this->modo_admin)
-                                    <a href="{{ route('docentes.carga-academica', $id_gestion_aula_usuario_hash) }}">Carga Académica</a>
-                                @else
-                                    <a href="{{ route('carga-academica', $id_gestion_aula_usuario_hash) }}">Carga Académica</a>
-                                @endif
-                            </li>
-
-                            <li class="breadcrumb-item">
-                                @if($this->modo_admin)
-                                    <a href="{{ route('docentes.carga-academica.detalle', ['id_usuario' => $id_usuario_hash, 'id_curso' => $id_gestion_aula_usuario_hash]) }}">Detalle</a>
-                                @else
-                                    <a href="{{ route('carga-academica.detalle', ['id_usuario' => $id_usuario_hash, 'id_curso' => $id_gestion_aula_usuario_hash]) }}">Detalle</a>
-                                @endif
-                            </li>
-
-                            <li class="breadcrumb-item active" aria-current="page">
-                                <a href="#">
-                                    Lista de Alumnos
-                                </a>
-                            </li>
-                        </ol>
-                    </div>
-                    <h2 class="page-title text-uppercase">
-                        Lista de Alumnos
-                    </h2>
-                </div>
-                <div class="col-auto ms-auto d-print-none">
-                    <div class="btn-list">
-                        @if($this->modo_admin)
-                            <a href="{{ route('docentes.carga-academica.detalle', ['id_usuario' => $id_usuario_hash, 'id_curso' => $id_gestion_aula_usuario_hash]) }}"
-                            class="btn btn-secondary d-none d-md-inline-block">
-                        @else
-                            <a href="{{ route('carga-academica.detalle', ['id_usuario' => $id_usuario_hash, 'id_curso' => $id_gestion_aula_usuario_hash]) }}"
-                                class="btn btn-secondary d-none d-md-inline-block">
-                        @endif
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round"
-                            class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M15 6l-6 6l6 6" />
-                        </svg>
-                        Regresar
-                        </a>
-
-                        @if($this->modo_admin)
-                            <a href="{{ route('docentes.carga-academica.detalle', ['id_usuario' => $id_usuario_hash, 'id_curso' => $id_gestion_aula_usuario_hash]) }}"
-                            class="btn btn-secondary d-md-none btn-icon">
-                        @else
-                            <a href="{{ route('carga-academica.detalle', ['id_usuario' => $id_usuario_hash, 'id_curso' => $id_gestion_aula_usuario_hash]) }}"
-                            class="btn btn-secondary d-md-none btn-icon">
-                        @endif
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M15 6l-6 6l6 6" />
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    @livewire('components.page-header', [
+        'titulo' => $titulo_page_header,
+        'links_array' => $links_page_header,
+        'regresar' => $regresar_page_header
+    ])
 
     <div class="page-body">
         <div class="container-xl">

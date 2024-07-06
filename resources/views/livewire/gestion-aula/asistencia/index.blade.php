@@ -37,130 +37,13 @@
     </div>
 
     <div class="asistencias">
-        <div class="page-header d-print-none animate__animated animate__fadeIn animate__faster">
-            <div class="container-xl">
-                <div class="row g-2 align-items-center">
-                    <div class="col">
-                        <div class="page-pretitle">
-                            <ol class="breadcrumb breadcrumb-arrows" aria-label="breadcrumbs">
-                                <li class="breadcrumb-item">
-                                    <a href="{{ route('inicio') }}">Inicio</a>
-                                </li>
 
-                                @if (session('tipo_vista') === 'alumno')
-                                    <li class="breadcrumb-item">
-                                        @if($this->modo_admin)
-                                            <a href="{{ route('alumnos.cursos', $id_gestion_aula_usuario_hash) }}">Mis Cursos</a>
-                                        @else
-                                            <a href="{{ route('cursos', $id_gestion_aula_usuario_hash) }}">Mis Cursos</a>
-                                        @endif
-                                    </li>
-                                @else
-                                    <li class="breadcrumb-item">
-                                        @if($this->modo_admin)
-                                            <a href="{{ route('docentes.carga-academica', $id_gestion_aula_usuario_hash) }}">Carga Académica</a>
-                                        @else
-                                            <a href="{{ route('carga-academica', $id_gestion_aula_usuario_hash) }}">Carga Académica</a>
-                                        @endif
-                                    </li>
-                                @endif
+        @livewire('components.page-header', [
+            'titulo' => $titulo_page_header,
+            'links_array' => $links_page_header,
+            'regresar' => $regresar_page_header
+        ])
 
-                                @if (session('tipo_vista') === 'alumno')
-                                    <li class="breadcrumb-item">
-                                        @if($this->modo_admin)
-                                            <a href="{{ route('alumnos.cursos.detalle', ['id_usuario' => $id_usuario_hash, 'id_curso' => $id_gestion_aula_usuario_hash]) }}">
-                                                Detalle
-                                            </a>
-                                        @else
-                                            <a href="{{ route('cursos.detalle', ['id_usuario' => $id_usuario_hash, 'id_curso' => $id_gestion_aula_usuario_hash]) }}">
-                                                Detalle
-                                            </a>
-                                        @endif
-                                    </li>
-                                @else
-                                    <li class="breadcrumb-item">
-                                        @if($this->modo_admin)
-                                            <a href="{{ route('docentes.carga-academica.detalle', ['id_usuario' => $id_usuario_hash, 'id_curso' => $id_gestion_aula_usuario_hash]) }}">
-                                                Detalle
-                                            </a>
-                                        @else
-                                            <a href="{{ route('carga-academica.detalle', ['id_usuario' => $id_usuario_hash, 'id_curso' => $id_gestion_aula_usuario_hash]) }}">
-                                                Detalle
-                                            </a>
-                                        @endif
-                                    </li>
-                                @endif
-
-                                <li class="breadcrumb-item active" aria-current="page">
-                                    <a href="#">
-                                        Asistencia
-                                    </a>
-                                </li>
-                            </ol>
-                        </div>
-                        <h2 class="page-title text-uppercase">
-                            Asistencia
-                        </h2>
-                    </div>
-                    <div class="col-auto ms-auto d-print-none">
-                        <div class="btn-list">
-                            @if (session('tipo_vista') === 'alumno')
-                                @if($this->modo_admin)
-                                    <a href="{{ route('alumnos.cursos.detalle', ['id_usuario' => $id_usuario_hash, 'id_curso' => $id_gestion_aula_usuario_hash]) }}"
-                                    class="btn btn-secondary d-none d-md-inline-block">
-                                @else
-                                    <a href="{{ route('cursos.detalle', ['id_usuario' => $id_usuario_hash, 'id_curso' => $id_gestion_aula_usuario_hash]) }}"
-                                    class="btn btn-secondary d-none d-md-inline-block">
-                                @endif
-                            @else
-                                @if($this->modo_admin)
-                                    <a href="{{ route('docentes.carga-academica.detalle', ['id_usuario' => $id_usuario_hash, 'id_curso' => $id_gestion_aula_usuario_hash]) }}"
-                                    class="btn btn-secondary d-none d-md-inline-block">
-                                @else
-                                    <a href="{{ route('carga-academica.detalle', ['id_usuario' => $id_usuario_hash, 'id_curso' => $id_gestion_aula_usuario_hash]) }}"
-                                        class="btn btn-secondary d-none d-md-inline-block">
-                                @endif
-                            @endif
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M15 6l-6 6l6 6" />
-                            </svg>
-                            Regresar
-                            </a>
-
-                            @if (session('tipo_vista') === 'alumno')
-                                @if($this->modo_admin)
-                                    <a href="{{ route('alumnos.cursos.detalle', ['id_usuario' => $id_usuario_hash, 'id_curso' => $id_gestion_aula_usuario_hash]) }}"
-                                    class="btn btn-secondary d-md-none btn-icon">
-                                @else
-                                    <a href="{{ route('cursos.detalle', ['id_usuario' => $id_usuario_hash, 'id_curso' => $id_gestion_aula_usuario_hash]) }}"
-                                    class="btn btn-secondary d-md-none btn-icon">
-                                @endif
-                            @else
-                                @if($this->modo_admin)
-                                    <a href="{{ route('docentes.carga-academica.detalle', ['id_usuario' => $id_usuario_hash, 'id_curso' => $id_gestion_aula_usuario_hash]) }}"
-                                    class="btn btn-secondary d-md-none btn-icon">
-                                @else
-                                    <a href="{{ route('carga-academica.detalle', ['id_usuario' => $id_usuario_hash, 'id_curso' => $id_gestion_aula_usuario_hash]) }}"
-                                    class="btn btn-secondary d-md-none btn-icon">
-                                @endif
-                            @endif
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path d="M15 6l-6 6l6 6" />
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="page-body">
             <div class="container-xl">
 

@@ -27,10 +27,12 @@ class Index extends Component
     public $curso;
     public $recursos;
 
+    // Variables para la carga de datos
     public $cargando_recursos = true;
     public $cargando_datos_curso = true;
     public $cantidad_recursos = 1;
 
+    // Variables para el modal de Recursos
     public $modo = 1; // Modo 1 = Agregar / 0 = Editar
     public $titulo_modal = 'Estado de Usuario';
     public $accion_estado = 'Agregar';
@@ -40,30 +42,15 @@ class Index extends Component
     public $archivo_recurso;
     public $editar_recurso;
 
-    public $modo_admin = false;
+    public $modo_admin = false;// Modo admin, para saber si se esta en modo administrador
+
+    // Variables para page-header
+    public $titulo_page_header = 'Recursos';
+    public $links_page_header = [];
+    public $regresar_page_header;
 
 
-    public function cerrar_modal()
-    {
-        $this->limpiar_modal();
-        $this->dispatch(
-            'modal',
-            modal: '#modal-recursos',
-            action: 'hide'
-        );
-    }
-
-    public function limpiar_modal()
-    {
-        $this->modo = 1;
-        $this->titulo_modal = 'Estado de Usuario';
-        $this->accion_estado = 'Agregar';
-        $this->nombre_recurso = '';
-        $this->editar_recurso = null;
-        $this->reset('archivo_recurso');
-    }
-
-    // public function abrir_modal_recurso_editar(Recurso $recurso)
+    /* =============== FUNCIONES PARA EL MODAL DE RECURSOS - CREAR Y EDITAR =============== */
     public function abrir_modal_recurso_editar(Recurso $recurso)
     {
         $this->limpiar_modal();
@@ -167,6 +154,28 @@ class Index extends Component
 
     }
 
+    public function cerrar_modal()
+    {
+        $this->limpiar_modal();
+        $this->dispatch(
+            'modal',
+            modal: '#modal-recursos',
+            action: 'hide'
+        );
+    }
+
+    public function limpiar_modal()
+    {
+        $this->modo = 1;
+        $this->titulo_modal = 'Estado de Usuario';
+        $this->accion_estado = 'Agregar';
+        $this->nombre_recurso = '';
+        $this->editar_recurso = null;
+        $this->reset('archivo_recurso');
+    }
+
+
+    /* =============== OBTENER DATOS PARA MOSTRAR LOS RECURSOS =============== */
     public function mostrar_recursos()
     {
         $this->gestion_aula_usuario = GestionAulaUsuario::with([
@@ -227,6 +236,121 @@ class Index extends Component
     }
 
 
+    /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
+    public function obtener_datos_page_header()
+    {
+        $this->titulo_page_header = 'Recursos';
+
+        // Regresar
+        if(session('tipo_vista') === 'alumno')
+        {
+            if($this->modo_admin)
+            {
+                $this->regresar_page_header = [
+                    'route' => 'alumnos.cursos.detalle',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            }else{
+                $this->regresar_page_header = [
+                    'route' => 'cursos.detalle',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            }
+        } else {
+            if($this->modo_admin)
+            {
+                $this->regresar_page_header = [
+                    'route' => 'docentes.carga-academica.detalle',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            }else{
+                $this->regresar_page_header = [
+                    'route' => 'carga-academica.detalle',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            }
+        }
+
+        // Links --> Inicio
+        $this->links_page_header = [
+            [
+                'name' => 'Inicio',
+                'route' => 'inicio',
+                'params' => []
+            ]
+        ];
+
+        // Links --> Cursos o Carga Académica
+        if (session('tipo_vista') === 'alumno')
+        {
+            if($this->modo_admin)
+            {
+                $this->links_page_header[] = [
+                    'name' => 'Mis Cursos',
+                    'route' => 'alumnos.cursos',
+                    'params' => ['id_usuario' => $this->id_usuario_hash]
+                ];
+            }else{
+                $this->links_page_header[] = [
+                    'name' => 'Mis Cursos',
+                    'route' => 'cursos',
+                    'params' => ['id_usuario' => $this->id_usuario_hash]
+                ];
+            }
+        } else {
+            if($this->modo_admin)
+            {
+                $this->links_page_header[] = [
+                    'name' => 'Carga Académica',
+                    'route' => 'docentes.carga-academica',
+                    'params' => ['id_usuario' => $this->id_usuario_hash]
+                ];
+            }else{
+                $this->links_page_header[] = [
+                    'name' => 'Carga Académica',
+                    'route' => 'carga-academica',
+                    'params' => ['id_usuario' => $this->id_usuario_hash]
+                ];
+            }
+        }
+
+        // Links --> Detalle del curso o carga académica
+        if (session('tipo_vista') === 'alumno')
+        {
+            if($this->modo_admin)
+            {
+                $this->links_page_header[] = [
+                    'name' => 'Detalle',
+                    'route' => 'alumnos.cursos.detalle',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            }else{
+                $this->links_page_header[] = [
+                    'name' => 'Detalle',
+                    'route' => 'cursos.detalle',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            }
+        } else {
+            if($this->modo_admin)
+            {
+                $this->links_page_header[] = [
+                    'name' => 'Detalle',
+                    'route' => 'docentes.carga-academica.detalle',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            }else{
+                $this->links_page_header[] = [
+                    'name' => 'Detalle',
+                    'route' => 'carga-academica.detalle',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            }
+        }
+
+    }
+
+
     /* =============== FUNCIONES PARA PRUEBAS DE CARGAS - SIMULACION DE CARGAS =============== */
     public function load_recursos_llamar()
     {
@@ -269,6 +393,8 @@ class Index extends Component
         {
             $this->modo_admin = true;
         }
+
+        $this->obtener_datos_page_header();
 
     }
 

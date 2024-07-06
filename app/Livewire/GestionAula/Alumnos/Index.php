@@ -27,6 +27,7 @@ class Index extends Component
     public $id_gestion_aula_usuario;
     public $id_gestion_aula;
 
+    // Variables para modal
     public $modo = 1; // Modo 1 = Habilitar / 0 = Retirar
     public $titulo_modal = 'Estado de Alumno';
     public $accion_estado = 'Habilitar';
@@ -35,7 +36,12 @@ class Index extends Component
     public $nombres_alumno;
     public $correo_usuario;
 
-    public $modo_admin = false;
+    public $modo_admin = false;// Modo admin, para saber si se esta en modo administrador
+
+    // Variables para page-header
+    public $titulo_page_header = 'LISTA DE ALUMNOS';
+    public $links_page_header = [];
+    public $regresar_page_header;
 
 
     public function abrir_modal_estado(GestionAulaUsuario $gestion_aula_usuario, $modo)
@@ -126,6 +132,69 @@ class Index extends Component
         );
     }
 
+    /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
+    public function obtener_datos_page_header()
+    {
+        $this->titulo_page_header = 'LISTA DE ALUMNOS';
+
+        // Regresar
+        if($this->modo_admin)
+        {
+            $this->regresar_page_header = [
+                'route' => 'docentes.carga-academica.detalle',
+                'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+            ];
+        }else{
+            $this->regresar_page_header = [
+                'route' => 'carga-academica.detalle',
+                'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+            ];
+        }
+
+        // Links --> Inicio
+        $this->links_page_header = [
+            [
+                'name' => 'Inicio',
+                'route' => 'inicio',
+                'params' => []
+            ]
+        ];
+
+        // Links --> Cursos o Carga Académica
+        if($this->modo_admin)
+        {
+            $this->links_page_header[] = [
+                'name' => 'Carga Académica',
+                'route' => 'docentes.carga-academica',
+                'params' => ['id_usuario' => $this->id_usuario_hash]
+            ];
+        }else{
+            $this->links_page_header[] = [
+                'name' => 'Carga Académica',
+                'route' => 'carga-academica',
+                'params' => ['id_usuario' => $this->id_usuario_hash]
+            ];
+        }
+
+        // Links --> Detalle del curso o carga académica
+        if($this->modo_admin)
+        {
+            $this->links_page_header[] = [
+                'name' => 'Detalle',
+                'route' => 'docentes.carga-academica.detalle',
+                'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+            ];
+        }else{
+            $this->links_page_header[] = [
+                'name' => 'Detalle',
+                'route' => 'carga-academica.detalle',
+                'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+            ];
+        }
+
+    }
+
+
     public function mount($id_usuario, $id_curso)
     {
         if(request()->routeIs('cursos*'))
@@ -156,6 +225,8 @@ class Index extends Component
         {
             $this->modo_admin = true;
         }
+
+        $this->obtener_datos_page_header();
 
     }
 

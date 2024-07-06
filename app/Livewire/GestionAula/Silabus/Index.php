@@ -22,16 +22,24 @@ class Index extends Component
     public $id_gestion_aula_usuario_hash;
     public $id_gestion_aula_usuario;
     public $curso;
-    public $silabus_pdf;
+    public $silabus_pdf;// Variable para mostrar el silabus
 
+    // Variables para subir el silabus
     #[Validate('required|file|mimes:pdf|max:4096')]
     public $silabus;
 
+    // Variables para carga de datos
     public $cargando_datos_curso = true;
     public $cargando_silabus = true;
 
-    public $modo_admin = false;
+    public $modo_admin = false;// Modo admin, para saber si se esta en modo administrador
 
+    // Variables para page-header
+    public $titulo_page_header = 'Silabus';
+    public $links_page_header = [];
+    public $regresar_page_header;
+
+    /* =============== GUARDAR Y ACTUALIZAR SILABUS =============== */
     public function subir_silabus()
     {
         $carpetas = obtener_ruta_base($this->id_gestion_aula_usuario);
@@ -134,6 +142,119 @@ class Index extends Component
 
     }
 
+    /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
+    public function obtener_datos_page_header()
+    {
+        $this->titulo_page_header = 'Silabus';
+
+        // Regresar
+        if(session('tipo_vista') === 'alumno')
+        {
+            if($this->modo_admin)
+            {
+                $this->regresar_page_header = [
+                    'route' => 'alumnos.cursos.detalle',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            }else{
+                $this->regresar_page_header = [
+                    'route' => 'cursos.detalle',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            }
+        } else {
+            if($this->modo_admin)
+            {
+                $this->regresar_page_header = [
+                    'route' => 'docentes.carga-academica.detalle',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            }else{
+                $this->regresar_page_header = [
+                    'route' => 'carga-academica.detalle',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            }
+        }
+
+        // Links --> Inicio
+        $this->links_page_header = [
+            [
+                'name' => 'Inicio',
+                'route' => 'inicio',
+                'params' => []
+            ]
+        ];
+
+        // Links --> Cursos o Carga Académica
+        if (session('tipo_vista') === 'alumno')
+        {
+            if($this->modo_admin)
+            {
+                $this->links_page_header[] = [
+                    'name' => 'Mis Cursos',
+                    'route' => 'alumnos.cursos',
+                    'params' => ['id_usuario' => $this->id_usuario_hash]
+                ];
+            }else{
+                $this->links_page_header[] = [
+                    'name' => 'Mis Cursos',
+                    'route' => 'cursos',
+                    'params' => ['id_usuario' => $this->id_usuario_hash]
+                ];
+            }
+        } else {
+            if($this->modo_admin)
+            {
+                $this->links_page_header[] = [
+                    'name' => 'Carga Académica',
+                    'route' => 'docentes.carga-academica',
+                    'params' => ['id_usuario' => $this->id_usuario_hash]
+                ];
+            }else{
+                $this->links_page_header[] = [
+                    'name' => 'Carga Académica',
+                    'route' => 'carga-academica',
+                    'params' => ['id_usuario' => $this->id_usuario_hash]
+                ];
+            }
+        }
+
+        // Links --> Detalle del curso o carga académica
+        if (session('tipo_vista') === 'alumno')
+        {
+            if($this->modo_admin)
+            {
+                $this->links_page_header[] = [
+                    'name' => 'Detalle',
+                    'route' => 'alumnos.cursos.detalle',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            }else{
+                $this->links_page_header[] = [
+                    'name' => 'Detalle',
+                    'route' => 'cursos.detalle',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            }
+        } else {
+            if($this->modo_admin)
+            {
+                $this->links_page_header[] = [
+                    'name' => 'Detalle',
+                    'route' => 'docentes.carga-academica.detalle',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            }else{
+                $this->links_page_header[] = [
+                    'name' => 'Detalle',
+                    'route' => 'carga-academica.detalle',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            }
+        }
+
+    }
 
     /* =============== HACER EL LLAMADO DE LA CARGA DE DATOS PARA CAMBIAR EL ESTADO DEL PLACEHOLDER =============== */
     public function load_datos_curso()
@@ -190,6 +311,8 @@ class Index extends Component
         {
                 $this->modo_admin = true;
         }
+
+        $this->obtener_datos_page_header();
 
     }
 
