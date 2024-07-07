@@ -18,7 +18,7 @@ class Sidebar extends Component
         return redirect()->route('login');
     }
 
-    public function mostrar_inicio()
+    public function redirigir_inicio()
     {
         //Limpiar la sesión
         session()->forget('tipo_vista');
@@ -27,28 +27,28 @@ class Sidebar extends Component
 
     /* =============== SEGURIDAD Y CONFIGURACION =============== */
 
-    public function mostrar_perfil()
+    public function redirigir_perfil()
     {
         //Limpiar la sesión
         session()->forget('tipo_vista');
         return redirect()->route('perfil');
     }
 
-    public function mostrar_usuarios()
+    public function redirigir_usuarios()
     {
         //Limpiar la sesión
         session()->forget('tipo_vista');
         return redirect()->route('usuarios');
     }
 
-    public function mostrar_registro_alumnos()
+    public function redirigir_registro_alumnos()
     {
         // Guardar en la sesión el tipo de vista
         session(['tipo_vista' => 'alumno']);
         return redirect()->route('registro-alumnos');
     }
 
-    public function mostrar_autoridades()
+    public function redirigir_autoridades()
     {
         //Limpiar la sesión
         session()->forget('tipo_vista');
@@ -57,14 +57,14 @@ class Sidebar extends Component
 
 
     /* =============== BUSQUEDA DE ALUMNOS Y DOCENTES =============== */
-    public function mostrar_alumnos()
+    public function redirigir_alumnos()
     {
         // Guardar en la sesión el tipo de vista
         session(['tipo_vista' => 'alumno']);
         return redirect()->route('alumnos');
     }
 
-    public function mostrar_docentes()
+    public function redirigir_docentes()
     {
         // Guardar en la sesión el tipo de vista
         session(['tipo_vista' => 'docente']);
@@ -74,28 +74,28 @@ class Sidebar extends Component
 
     /* =============== ESTRUCTURA ACADEMICA =============== */
 
-    public function mostrar_nivel_academico()
+    public function redirigir_nivel_academico()
     {
         //Limpiar la sesión
         session()->forget('tipo_vista');
         return redirect()->route('estructura-academica.nivel-academico');
     }
 
-    public function mostrar_tipo_programa()
+    public function redirigir_tipo_programa()
     {
         //Limpiar la sesión
         session()->forget('tipo_vista');
         return redirect()->route('estructura-academica.tipo-programa');
     }
 
-    public function mostrar_facultad()
+    public function redirigir_facultad()
     {
         //Limpiar la sesión
         session()->forget('tipo_vista');
         return redirect()->route('estructura-academica.facultad');
     }
 
-    public function mostrar_programa()
+    public function redirigir_programa()
     {
         //Limpiar la sesión
         session()->forget('tipo_vista');
@@ -105,28 +105,28 @@ class Sidebar extends Component
 
     /* =============== GESTION DEL CURSO =============== */
 
-    public function mostrar_plan_estudio()
+    public function redirigir_plan_estudio()
     {
         //Limpiar la sesión
         session()->forget('tipo_vista');
         return redirect()->route('gestion-curso.plan-estudio');
     }
 
-    public function mostrar_ciclo()
+    public function redirigir_ciclo()
     {
         //Limpiar la sesión
         session()->forget('tipo_vista');
         return redirect()->route('gestion-curso.ciclo');
     }
 
-    public function mostrar_proceso()
+    public function redirigir_proceso()
     {
         //Limpiar la sesión
         session()->forget('tipo_vista');
         return redirect()->route('gestion-curso.proceso');
     }
 
-    public function mostrar_curso()
+    public function redirigir_curso()
     {
         //Limpiar la sesión
         session()->forget('tipo_vista');
@@ -136,14 +136,14 @@ class Sidebar extends Component
 
     /* =============== GESTION ACADEMICA =============== */
 
-    public function mostrar_cursos($id)
+    public function redirigir_cursos($id)
     {
         $id_usuario = Hashids::encode($id);
         session(['tipo_vista' => 'alumno']);
         return redirect()->route('cursos', ['id_usuario' => $id_usuario]);
     }
 
-    public function mostrar_carga_academica($id)
+    public function redirigir_carga_academica($id)
     {
         $id_usuario = Hashids::encode($id);
         session(['tipo_vista' => 'docente']);
@@ -153,14 +153,14 @@ class Sidebar extends Component
 
     /* =============== EXTRAS =============== */
 
-    public function mostrar_calificaciones()
+    public function redirigir_calificaciones()
     {
         //Limpiar la sesión
         session()->forget('tipo_vista');
         return redirect()->route('calificaciones');
     }
 
-    public function mostrar_manuales()
+    public function redirigir_manuales()
     {
         //Limpiar la sesión
         session()->forget('tipo_vista');

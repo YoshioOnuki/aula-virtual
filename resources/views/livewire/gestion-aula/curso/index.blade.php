@@ -1,66 +1,12 @@
 <div>
-    <div class="page-header d-print-none animate__animated animate__fadeIn animate__faster">
-        <div class="container-xl">
-            <div class="row g-2 align-items-center">
-                <div class="col">
-                    <div class="page-pretitle">
-                        <ol class="breadcrumb breadcrumb-arrows
-                        " aria-label="breadcrumbs">
-                            <li class="breadcrumb-item">
-                                <a href="{{ route('inicio') }}">Inicio</a>
-                            </li>
-                            <li class="breadcrumb-item active" aria-current="page">
-                                <a href="#">
-                                    @if (session('tipo_vista') === 'alumno')
-                                        Mis Cursos
-                                    @elseif(session('tipo_vista') === 'docente')
-                                        Carga Académica
-                                    @endif
-                                </a>
-                            </li>
-                        </ol>
-                    </div>
-                    <h2 class="page-title text-uppercase">
-                        @if (session('tipo_vista') === 'alumno')
-                            Mis Cursos
-                        @elseif(session('tipo_vista') === 'docente')
-                            Carga Académica
-                        @endif
-                    </h2>
-                </div>
-                <div class="col-auto ms-auto d-print-none">
-                    <div class="btn-list">
-                        @if (session('tipo_vista') === 'alumno' && $this->modo_admin)
-                            <a href="{{ route('alumnos') }}" class="btn btn-secondary d-none d-md-inline-block">
-                            @else
-                                @if ($this->modo_admin)
-                                    <a href="{{ route('docentes') }}"
-                                        class="btn btn-secondary d-none d-md-inline-block">
-                                @endif
-                        @endif
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round"
-                            class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M15 6l-6 6l6 6" />
-                        </svg>
-                        Regresar
-                        </a>
-                        <a href="" class="btn btn-secondary d-md-none btn-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M15 6l-6 6l6 6" />
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
+    @livewire('components.page-header', [
+        'titulo_pasos' => $titulo_page_header,
+        'titulo' => $titulo_page_header,
+        'links_array' => $links_page_header,
+        'regresar' => $regresar_page_header
+    ])
+
     <div class="page-body">
         <div class="container-xl">
 

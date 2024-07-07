@@ -1,20 +1,12 @@
 <div>
-    <div class="page-header d-print-none animate__animated animate__fadeIn animate__faster">
-        <div class="container-xl">
-            <div class="row g-2 align-items-center">
-                <div class="col">
-                    <div class="page-pretitle">
-                        <ol class="breadcrumb breadcrumb-arrows" aria-label="breadcrumbs">
-                            <li class="breadcrumb-item active" aria-current="page"><a href="#">Inicio</a></li>
-                        </ol>
-                    </div>
-                    <h2 class="page-title text-uppercase">
-                        Aula Virtual
-                    </h2>
-                </div>
-            </div>
-        </div>
-    </div>
+
+    @livewire('components.page-header', [
+        'titulo_pasos' => 'Inicio',
+        'titulo' => 'Aula Virtual',
+        'links_array' => [],
+        'regresar' => []
+    ])
+
     <div class="page-body">
         <div class="container-xl">
             <div class="row">

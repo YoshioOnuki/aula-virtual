@@ -24,13 +24,22 @@ class Detalle extends Component
     public $cargando = true;
     public $cargando_orientaciones = true;
 
-    public $usuario;
-    public $id_usuario_hash;
-    public $modo_admin = false;
-
     public $link_clase;
 
+    public $usuario;
+    public $id_usuario_hash;
 
+    public $modo_admin = false;// Modo admin, para saber si se esta en modo administrador
+
+    // Variables para page-header
+    public $titulo_page_header = 'Detalle';
+    public $titulo_pasos_header = 'Detalle';
+    public $links_page_header = [];
+    public $regresar_page_header;
+
+
+
+    /* =============== OBTENER DATOS PARA LA VISTA =============== */
     public function mostrar_orientaciones()
     {
         $gestion_aula_usuario = GestionAulaUsuario::with([
@@ -97,6 +106,7 @@ class Detalle extends Component
     }
 
 
+    /* =============== CARGA DE ORIENTACIONES =============== */
     public function load_orientaciones()
     {
         $this->mostrar_orientaciones();
@@ -104,6 +114,7 @@ class Detalle extends Component
     }
 
 
+    /* =============== REDIRECCIONAR A OTRAS VISTAS =============== */
     public function redireccionar_silabus($id)
     {
         $id_curso = Hashids::encode($id);
@@ -236,6 +247,87 @@ class Detalle extends Component
     }
 
 
+    /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
+    public function obtener_datos_page_header()
+    {
+        $this->titulo_pasos_header = 'Detalle';
+        $this->titulo_page_header = $this->nombre_curso . ' GRUPO ' . $this->grupo_gestion_aula;
+
+        // Regresar
+        if(session('tipo_vista') === 'alumno')
+        {
+            if($this->modo_admin)
+            {
+                $this->regresar_page_header = [
+                    'route' => 'alumnos.cursos',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso']
+                ];
+            }else{
+                $this->regresar_page_header = [
+                    'route' => 'cursos',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso']
+                ];
+            }
+        } else {
+            if($this->modo_admin)
+            {
+                $this->regresar_page_header = [
+                    'route' => 'docentes.carga-academica',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso']
+                ];
+            }else{
+                $this->regresar_page_header = [
+                    'route' => 'carga-academica',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso']
+                ];
+            }
+        }
+
+        // Links --> Inicio
+        $this->links_page_header = [
+            [
+                'name' => 'Inicio',
+                'route' => 'inicio',
+                'params' => []
+            ]
+        ];
+
+        // Links --> Cursos o Carga Académica
+        if (session('tipo_vista') === 'alumno')
+        {
+            if($this->modo_admin)
+            {
+                $this->links_page_header[] = [
+                    'name' => 'Mis Cursos',
+                    'route' => 'alumnos.cursos',
+                    'params' => ['id_usuario' => $this->id_usuario_hash]
+                ];
+            }else{
+                $this->links_page_header[] = [
+                    'name' => 'Mis Cursos',
+                    'route' => 'cursos',
+                    'params' => ['id_usuario' => $this->id_usuario_hash]
+                ];
+            }
+        } else {
+            if($this->modo_admin)
+            {
+                $this->links_page_header[] = [
+                    'name' => 'Carga Académica',
+                    'route' => 'docentes.carga-academica',
+                    'params' => ['id_usuario' => $this->id_usuario_hash]
+                ];
+            }else{
+                $this->links_page_header[] = [
+                    'name' => 'Carga Académica',
+                    'route' => 'carga-academica',
+                    'params' => ['id_usuario' => $this->id_usuario_hash]
+                ];
+            }
+        }
+
+    }
+
     public function mount($id_usuario, $id_curso)
     {
 
@@ -268,6 +360,9 @@ class Detalle extends Component
         {
             $this->modo_admin = true;
         }
+
+        $this->obtener_datos_page_header();
+
     }
 
     public function render()

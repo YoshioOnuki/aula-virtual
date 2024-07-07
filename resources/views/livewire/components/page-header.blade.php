@@ -15,7 +15,7 @@
 
                         <li class="breadcrumb-item active" aria-current="page">
                             <a href="#">
-                                {{ $titulo }}
+                                {{ $titulo_pasos }}
                             </a>
                         </li>
                     </ol>
@@ -24,6 +24,7 @@
                     {{ $titulo }}
                 </h2>
             </div>
+            @if($regresar)
             <div class="col-auto ms-auto d-print-none">
                 <div class="btn-list">
                     <a href="{{ route($regresar['route'], $regresar['params']) }}"
@@ -50,6 +51,7 @@
                     </a>
                 </div>
             </div>
+            @endif
         </div>
     </div>
 </div>

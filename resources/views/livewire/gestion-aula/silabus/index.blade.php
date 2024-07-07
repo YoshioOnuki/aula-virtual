@@ -1,6 +1,7 @@
 <div>
 
     @livewire('components.page-header', [
+        'titulo_pasos' => $titulo_page_header,
         'titulo' => $titulo_page_header,
         'links_array' => $links_page_header,
         'regresar' => $regresar_page_header

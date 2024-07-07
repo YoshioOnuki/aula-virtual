@@ -14,6 +14,7 @@ use Vinkla\Hashids\Facades\Hashids;
 #[Layout('components.layouts.app')]
 class Index extends Component
 {
+    public $id_usuario_hash;
     public $usuario;
     public $cursos;
     public $favorito;
@@ -25,7 +26,12 @@ class Index extends Component
     public $cargando = true;
     public $cantidad_cursos = 1;
 
-    public $modo_admin = false;
+    public $modo_admin = false;// Modo admin, para saber si se esta en modo administrador
+
+    // Variables para page-header
+    public $titulo_page_header;
+    public $links_page_header = [];
+    public $regresar_page_header;
 
 
     public function curso_favorito($id)
@@ -236,6 +242,46 @@ class Index extends Component
     }
 
 
+    /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
+    public function obtener_datos_page_header()
+    {
+        if(session('tipo_vista') === 'alumno')
+        {
+            $this->titulo_page_header = 'Mis Cursos';
+        } else {
+            $this->titulo_page_header = 'Carga Académica';
+        }
+
+        // Regresar
+
+        if($this->modo_admin)
+        {
+            if(session('tipo_vista') === 'alumno')
+            {
+                $this->regresar_page_header = [
+                    'route' => 'alumnos',
+                    'params' => []
+                ];
+            } else {
+                $this->regresar_page_header = [
+                    'route' => 'docentes',
+                    'params' => []
+                ];
+            }
+        }
+
+        // Links --> Inicio
+        $this->links_page_header = [
+            [
+                'name' => 'Inicio',
+                'route' => 'inicio',
+                'params' => []
+            ]
+        ];
+
+    }
+
+
     public function mount($id_usuario)
     {
         if(request()->routeIs('cursos*'))
@@ -254,14 +300,16 @@ class Index extends Component
 
         if(request()->routeIs('alumnos*') || request()->routeIs('docentes*'))
         {
-                $this->modo_admin = true;
+            $this->modo_admin = true;
         }
 
+        $this->id_usuario_hash = $id_usuario;
         $id = Hashids::decode($id_usuario);
         $this->usuario = Usuario::find($id[0]);
 
 
         $this->calcular_cantidad_curso();
+        $this->obtener_datos_page_header();
 
     }
 
