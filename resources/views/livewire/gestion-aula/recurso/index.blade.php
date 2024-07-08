@@ -11,14 +11,17 @@
         <div class="container-xl">
 
             @if($modo_admin)
-                @livewire('components.info-alumnos-docentes', ['usuario' => $usuario])
+                @livewire('components.info-alumnos-docentes', [
+                    'usuario' => $usuario,
+                    'tipo_vista' => $tipo_vista
+                ])
             @endif
 
             <div class="row g-3">
                 <div class="col-lg-8">
                     <div class="card card-md card-stacked animate__animated animate__fadeIn animate__faster">
                         <div class="card-stamp card-stamp-lg">
-                            @if (session('tipo_vista') === 'alumno')
+                            @if ($tipo_vista === 'cursos')
                                 <div class="card-stamp-icon bg-teal">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -34,7 +37,7 @@
                                         <path d="M11 13h3" />
                                     </svg>
                                 </div>
-                            @elseif(session('tipo_vista') === 'docente')
+                            @elseif($tipo_vista === 'carga-academica')
                                 <div class="card-stamp-icon bg-orange">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -283,7 +286,7 @@
 
                                         </div>
                                     @empty
-                                        @if (session('tipo_vista') === 'alumno')
+                                        @if ($tipo_vista === 'cursos')
                                             <div class="col-lg-12">
                                                 <div class="d-flex justify-content-center align-items-center">
                                                     <div class="text-muted">
@@ -295,7 +298,7 @@
                                     @endforelse
                                 @endif
 
-                                @if (session('tipo_vista') === 'docente' && $usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario))
+                                @if ($tipo_vista === 'carga-academica' && $usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario))
                                     <div class="col-lg-12">
                                         <div class="card hover-shadow-sm cursor-pointer"
                                             wire:click="abrir_modal_recurso_agregar()">
@@ -334,7 +337,10 @@
                 </div>
 
                 <div class="col-lg-4">
-                    @livewire('components.datos-curso', ['id_gestion_aula_usuario' => $id_gestion_aula_usuario])
+                    @livewire('components.datos-curso', [
+                        'id_gestion_aula_usuario' => $id_gestion_aula_usuario,
+                        'tipo_vista' => $tipo_vista
+                    ])
                 </div>
 
             </div>

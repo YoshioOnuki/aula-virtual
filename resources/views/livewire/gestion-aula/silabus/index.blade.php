@@ -11,7 +11,10 @@
         <div class="container-xl">
 
             @if($modo_admin)
-                @livewire('components.info-alumnos-docentes', ['usuario' => $usuario])
+                @livewire('components.info-alumnos-docentes', [
+                    'usuario' => $usuario,
+                    'tipo_vista' => $tipo_vista
+                ])
             @endif
 
             <div class="row g-3">
@@ -67,8 +70,8 @@
                 <div class="col-4" wire:init="load_datos_curso_llamar">
                     @if($cargando_datos_curso)
                         <div class="card card-stacked placeholder-glow">
-                            <div class="card-header {{ session('tipo_vista') === 'alumno' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
-                                <div class="placeholder col-5 {{ session('tipo_vista') === 'alumno' ? 'bg-teal' : 'bg-orange' }}"
+                            <div class="card-header {{ $tipo_vista === 'cursos' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
+                                <div class="placeholder col-5 {{ $tipo_vista === 'cursos' ? 'bg-teal' : 'bg-orange' }}"
                                 style="height: 1.5rem; width: 170.56px;"></div>
                             </div>
                             <div class="card-body row g-3 mb-0">
@@ -165,7 +168,7 @@
                     @else
                         <div class="card card-stacked animate__animated animate__fadeIn animate__faster">
                             <div
-                                class="card-header {{ session('tipo_vista') === 'alumno' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
+                                class="card-header {{ $tipo_vista === 'cursos' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
                                 <h3 class="card-title fw-semibold">
                                     Información del Curso
                                 </h3>
@@ -265,7 +268,7 @@
                                             </div>
                                         </div>
 
-                                        @if (session('tipo_vista') === 'docente' && $usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario))
+                                        @if ($tipo_vista === 'carga-academica' && $usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario))
                                             <hr class="mt-5 mb-2 hide-theme-dark">
                                             <hr class="mt-5 mb-2 hide-theme-light text-white">
 

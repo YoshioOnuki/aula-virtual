@@ -39,6 +39,8 @@ class Index extends Component
     public $links_page_header = [];
     public $regresar_page_header;
 
+    public $tipo_vista;
+
     /* =============== GUARDAR Y ACTUALIZAR SILABUS =============== */
     public function subir_silabus()
     {
@@ -148,33 +150,17 @@ class Index extends Component
         $this->titulo_page_header = 'Silabus';
 
         // Regresar
-        if(session('tipo_vista') === 'alumno')
+        if($this->tipo_vista === 'cursos')
         {
-            if($this->modo_admin)
-            {
-                $this->regresar_page_header = [
-                    'route' => 'alumnos.cursos.detalle',
-                    'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-                ];
-            }else{
-                $this->regresar_page_header = [
-                    'route' => 'cursos.detalle',
-                    'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-                ];
-            }
+            $this->regresar_page_header = [
+                'route' => 'cursos.detalle',
+                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+            ];
         } else {
-            if($this->modo_admin)
-            {
-                $this->regresar_page_header = [
-                    'route' => 'docentes.carga-academica.detalle',
-                    'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-                ];
-            }else{
-                $this->regresar_page_header = [
-                    'route' => 'carga-academica.detalle',
-                    'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-                ];
-            }
+            $this->regresar_page_header = [
+                'route' => 'carga-academica.detalle',
+                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+            ];
         }
 
         // Links --> Inicio
@@ -187,71 +173,35 @@ class Index extends Component
         ];
 
         // Links --> Cursos o Carga Académica
-        if (session('tipo_vista') === 'alumno')
+        if ($this->tipo_vista === 'cursos')
         {
-            if($this->modo_admin)
-            {
-                $this->links_page_header[] = [
-                    'name' => 'Mis Cursos',
-                    'route' => 'alumnos.cursos',
-                    'params' => ['id_usuario' => $this->id_usuario_hash]
-                ];
-            }else{
-                $this->links_page_header[] = [
-                    'name' => 'Mis Cursos',
-                    'route' => 'cursos',
-                    'params' => ['id_usuario' => $this->id_usuario_hash]
-                ];
-            }
+            $this->links_page_header[] = [
+                'name' => 'Mis Cursos',
+                'route' => 'cursos',
+                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista]
+            ];
         } else {
-            if($this->modo_admin)
-            {
-                $this->links_page_header[] = [
-                    'name' => 'Carga Académica',
-                    'route' => 'docentes.carga-academica',
-                    'params' => ['id_usuario' => $this->id_usuario_hash]
-                ];
-            }else{
-                $this->links_page_header[] = [
-                    'name' => 'Carga Académica',
-                    'route' => 'carga-academica',
-                    'params' => ['id_usuario' => $this->id_usuario_hash]
-                ];
-            }
+            $this->links_page_header[] = [
+                'name' => 'Carga Académica',
+                'route' => 'carga-academica',
+                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista]
+            ];
         }
 
         // Links --> Detalle del curso o carga académica
-        if (session('tipo_vista') === 'alumno')
+        if ($this->tipo_vista === 'cursos')
         {
-            if($this->modo_admin)
-            {
-                $this->links_page_header[] = [
-                    'name' => 'Detalle',
-                    'route' => 'alumnos.cursos.detalle',
-                    'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-                ];
-            }else{
-                $this->links_page_header[] = [
-                    'name' => 'Detalle',
-                    'route' => 'cursos.detalle',
-                    'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-                ];
-            }
+            $this->links_page_header[] = [
+                'name' => 'Detalle',
+                'route' => 'cursos.detalle',
+                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+            ];
         } else {
-            if($this->modo_admin)
-            {
-                $this->links_page_header[] = [
-                    'name' => 'Detalle',
-                    'route' => 'docentes.carga-academica.detalle',
-                    'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-                ];
-            }else{
-                $this->links_page_header[] = [
-                    'name' => 'Detalle',
-                    'route' => 'carga-academica.detalle',
-                    'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-                ];
-            }
+            $this->links_page_header[] = [
+                'name' => 'Detalle',
+                'route' => 'carga-academica.detalle',
+                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+            ];
         }
 
     }
@@ -282,22 +232,9 @@ class Index extends Component
     }
 
 
-    public function mount($id_usuario, $id_curso)
+    public function mount($id_usuario, $tipo_vista, $id_curso)
     {
-        if(request()->routeIs('cursos*'))
-        {
-            session(['tipo_vista' => 'alumno']);
-        }elseif(request()->routeIs('carga-academica*'))
-        {
-            session(['tipo_vista' => 'docente']);
-        }elseif(request()->routeIs('alumnos*'))
-        {
-            session(['tipo_vista' => 'alumno']);
-        }elseif(request()->routeIs('docentes*'))
-        {
-            session(['tipo_vista' => 'docente']);
-        }
-
+        $this->tipo_vista = $tipo_vista;
         $this->id_gestion_aula_usuario_hash = $id_curso;
 
         $id_gestion_aula_usuario = Hashids::decode($id_curso);
@@ -307,9 +244,11 @@ class Index extends Component
         $id_usuario = Hashids::decode($id_usuario);
         $this->usuario = Usuario::find($id_usuario[0]);
 
-        if(request()->routeIs('alumnos*') || request()->routeIs('docentes*'))
+        if (session('modo_admin'))
         {
-                $this->modo_admin = true;
+            $this->modo_admin = session('modo_admin');
+        }else{
+            session()->forget('modo_admin');
         }
 
         $this->obtener_datos_page_header();
