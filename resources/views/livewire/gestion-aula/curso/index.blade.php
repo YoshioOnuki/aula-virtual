@@ -11,12 +11,15 @@
         <div class="container-xl">
 
             @if ($modo_admin)
-                @livewire('components.info-alumnos-docentes', ['usuario' => $usuario])
+                @livewire('components.info-alumnos-docentes', [
+                    'usuario' => $usuario,
+                    'tipo_vista' => $tipo_vista
+                ])
             @endif
 
             <div class="card card-md card-stacked animate__animated animate__fadeIn animate__faster">
                 <div class="card-stamp card-stamp-lg">
-                    @if (session('tipo_vista') === 'alumno')
+                    @if ($tipo_vista === 'cursos')
                         <div class="card-stamp-icon bg-teal">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -34,7 +37,7 @@
                                 <path d="M16 16l3.923 -.98" />
                             </svg>
                         </div>
-                    @elseif(session('tipo_vista') === 'docente')
+                    @elseif($tipo_vista === 'carga-academica')
                         <div class="card-stamp-icon bg-orange">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -80,14 +83,14 @@
                                         class="card card-sm hover-shadow custom-card animate__animated animate__fadeIn animate__faster">
                                         <div class="img-responsive img-responsive-16x9 card-img-top"
                                             style="background-image: url('{{ $item->gestionAula->fondo_gestion_aula ?? '/media/fondo-cursos/fondo-infor.webp' }}'); cursor: pointer;"
-                                            wire:click="curso_detalle({{ $item->gestionAula->id_gestion_aula }})">
+                                            wire:click="redirigir_curso_detalle({{ $item->gestionAula->id_gestion_aula }})">
                                         </div>
 
                                         <div class="card-avatar avatar avatar-smm rounded-circle">
-                                            @if (session('tipo_vista') === 'alumno')
+                                            @if ($tipo_vista === 'cursos')
                                                 <img src="{{ $foto_docente[$item->gestionAula->id_gestion_aula] }}"
                                                     alt="avatar">
-                                            @elseif(session('tipo_vista') === 'docente')
+                                            @elseif($tipo_vista === 'carga-academica')
                                                 <img src="{{ $usuario->mostrarFoto('docente') ?? asset('/media/avatar_none.webp') }}"
                                                     alt="avatar">
                                             @endif
@@ -95,7 +98,7 @@
 
                                         <div class="card-body">
                                             <div style="cursor: pointer;"
-                                                wire:click="curso_detalle({{ $item->gestionAula->id_gestion_aula }})">
+                                                wire:click="redirigir_curso_detalle({{ $item->gestionAula->id_gestion_aula }})">
                                                 <div class="d-flex align-items-center" style="height: 75px;">
                                                     <div>
                                                         <div class="text-muted">
@@ -228,9 +231,9 @@
                                 <div class="col-lg-12">
                                     <div class="d-flex justify-content-center align-items-center">
                                         <div class="text-muted">
-                                            @if (session('tipo_vista') === 'alumno')
+                                            @if ($tipo_vista === 'cursos')
                                                 No tiene cursos asignados.
-                                            @elseif(session('tipo_vista') === 'docente')
+                                            @elseif($tipo_vista === 'carga-academica')
                                                 No tiene carga académica.
                                             @endif
                                         </div>

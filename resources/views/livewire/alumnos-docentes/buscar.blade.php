@@ -11,7 +11,7 @@
                                 <a href="{{ route('inicio') }}">Inicio</a>
                             </li>
 
-                            @if ($tipo_vista === 'alumno')
+                            @if ($tipo_vista === 'cursos')
                                 <li class="breadcrumb-item active" aria-current="page">
                                     <a href="#">
                                         Alumnos
@@ -27,7 +27,7 @@
                         </ol>
                     </div>
                     <h2 class="page-title text-uppercase">
-                        @if ($tipo_vista === 'alumno')
+                        @if ($tipo_vista === 'cursos')
                             Alumnos
                         @else
                             Docentes
@@ -65,7 +65,7 @@
                                             <ul>
                                                 <li>Nombre completo</li>
                                                 <li>Número de documento</li>
-                                                @if ($tipo_vista === 'alumno')
+                                                @if ($tipo_vista === 'cursos')
                                                     <li>Código de alumno</li>
                                                 @endif
                                                 <li>Usuario</li>
@@ -88,7 +88,7 @@
                             <table class="table card-table table-vcenter text-nowrap table-striped">
                                 <thead>
                                     <tr>
-                                        @if($tipo_vista === 'alumno')
+                                        @if($tipo_vista === 'cursos')
                                             <th class="col-1">Código</th>
                                             <th>Alumno</th>
                                         @else
@@ -102,14 +102,14 @@
                                 <tbody>
                                     @forelse ($usuarios as $item)
                                         <tr>
-                                            @if($tipo_vista === 'alumno')
+                                            @if($tipo_vista === 'cursos')
                                                 <td>
                                                     {{ $item->persona->codigo_alumno_persona ?? 'N/A'}}
                                                 </td>
                                             @endif
                                             <td>
                                                 <div class="d-flex py-1 align-items-center">
-                                                    @if($tipo_vista === 'alumno')
+                                                    @if($tipo_vista === 'cursos')
                                                         <img src="{{ asset($item->mostrarFoto('alumno')) }}" alt="avatar" class="avatar me-2">
                                                     @else
                                                         <img src="{{ asset($item->mostrarFoto('docente')) }}" alt="avatar" class="avatar me-2">
@@ -146,12 +146,12 @@
                                                             Acciones
                                                         </button>
                                                         <div class="dropdown-menu dropdown-menu-end">
-                                                            @if($tipo_vista === 'docente')
+                                                            @if($tipo_vista === 'carga-academica')
                                                                 <a class="dropdown-item" style="cursor: pointer;"
                                                                     wire:click="mostrar_carga_academica({{ $item->id_usuario }})">
                                                                     Carga académica
                                                                 </a>
-                                                            @elseif($tipo_vista === 'alumno')
+                                                            @elseif($tipo_vista === 'cursos')
                                                                 <a class="dropdown-item" style="cursor: pointer;"
                                                                     wire:click="mostrar_cursos({{ $item->id_usuario }})">
                                                                     Cursos

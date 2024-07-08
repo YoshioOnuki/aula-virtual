@@ -15,7 +15,9 @@
                     POSGRADO
                 </span>
             </a>
-            <span class="badge bg-blue-lt fs-6">v1.0</span>
+            <span class="badge bg-blue-lt fs-6">
+                {{ config('settings.version_sistema') }}
+            </span>
         </h1>
         <div class="navbar-nav flex-row d-lg-none">
             <div class="nav-item dropdown">
@@ -192,7 +194,9 @@
                             <svg xmlns="http://www.w3.org/2000/svg"
                             class="icon
                             {{ request()->routeIs('alumnos*') || 
-                            request()->routeIs('docentes*') ? 'text-primary' : '' }}"
+                            request()->routeIs('docentes*')|| 
+                            request()->routeIs('cursos*')|| 
+                            request()->routeIs('carga-academica*') ? 'text-primary' : '' }}"
                             width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                             stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -206,7 +210,9 @@
                             <svg xmlns="http://www.w3.org/2000/svg"
                             class="icon
                             {{ request()->routeIs('alumnos*') || 
-                            request()->routeIs('docentes*') ? 'text-primary' : '' }}"
+                            request()->routeIs('docentes*')|| 
+                            request()->routeIs('cursos*')|| 
+                            request()->routeIs('carga-academica*')  ? 'text-primary' : '' }}"
                             width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                             stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -218,15 +224,18 @@
 
 
 
-                    <li class="nav-item {{ request()->routeIs('alumnos*') ? 'active' : '' }}">
-                        <a class="nav-link {{ request()->routeIs('alumnos*') ? 'text-primary fw-medium' : '' }}"
+                    <li class="nav-item {{ request()->routeIs('alumnos*') || 
+                            request()->routeIs('cursos*')  ? 'active' : '' }}">
+                        <a class="nav-link {{ request()->routeIs('alumnos*') || 
+                            request()->routeIs('cursos*') ? 'text-primary fw-medium' : '' }}"
                             style="cursor: pointer;" wire:click="redirigir_alumnos">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round"
                                     class="icon icon-tabler icons-tabler-outline icon-tabler-school
-                                    {{ request()->routeIs('alumnos*') ? 'text-primary' : '' }}">
+                                    {{ request()->routeIs('alumnos*') || 
+                                    request()->routeIs('cursos*') ? 'text-primary' : '' }}">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                     <path d="M22 9l-10 -4l-10 4l10 4l10 -4v6" />
                                     <path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4" />
@@ -241,15 +250,18 @@
                         </a>
                     </li>
 
-                    <li class="nav-item {{ request()->routeIs('docentes*') ? 'active' : '' }}">
-                        <a class="nav-link {{ request()->routeIs('docentes*') ? 'text-primary fw-medium' : '' }}"
+                    <li class="nav-item {{ request()->routeIs('docentes*') || 
+                            request()->routeIs('carga-academica*') ? 'active' : '' }}">
+                        <a class="nav-link {{ request()->routeIs('docentes*') || 
+                            request()->routeIs('carga-academica*') ? 'text-primary fw-medium' : '' }}"
                             style="cursor: pointer;" wire:click="redirigir_docentes">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round"
                                     class="icon icon-tabler icons-tabler-outline icon-tabler-chalkboard
-                                    {{ request()->routeIs('docentes*') ? 'text-primary' : '' }}">
+                                    {{ request()->routeIs('docentes*') || 
+                                    request()->routeIs('carga-academica*') ? 'text-primary' : '' }}">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                     <path
                                         d="M8 19h-3a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v11a1 1 0 0 1 -1 1" />
@@ -339,19 +351,19 @@
                             <div class="dropdown-menu-columns">
                                 <div class="dropdown-menu-column">
                                     <a class="dropdown-item {{ request()->routeIs('estructura-academica.nivel-academico') ? 'active fw-medium' : '' }}"
-                                        style="cursor: pointer;" wire:click="redirigir_nivel_academico">
+                                        style="cursor: pointer;" wire:click="redirigir_estructura_nivel_academico">
                                         Nivel Académico
                                     </a>
                                     <a class="dropdown-item {{ request()->routeIs('estructura-academica.tipo-programa') ? 'active fw-medium' : '' }}"
-                                        style="cursor: pointer;" wire:click="redirigir_tipo_programa">
+                                        style="cursor: pointer;" wire:click="redirigir_estructura_tipo_programa">
                                         Tipo de Programa
                                     </a>
                                     <a class="dropdown-item {{ request()->routeIs('estructura-academica.facultad') ? 'active fw-medium' : '' }}"
-                                        style="cursor: pointer;" wire:click="redirigir_facultad">
+                                        style="cursor: pointer;" wire:click="redirigir_estructura_facultad">
                                         Facultad
                                     </a>
                                     <a class="dropdown-item {{ request()->routeIs('estructura-academica.programa') ? 'active fw-medium' : '' }}"
-                                        style="cursor: pointer;" wire:click="redirigir_programa">
+                                        style="cursor: pointer;" wire:click="redirigir_estructura_programa">
                                         Programa
                                     </a>
                                 </div>
@@ -390,19 +402,19 @@
                             <div class="dropdown-menu-columns">
                                 <div class="dropdown-menu-column">
                                     <a class="dropdown-item {{ request()->routeIs('gestion-curso.plan-estudio') ? 'active fw-medium' : '' }}"
-                                        style="cursor: pointer;" wire:click="redirigir_plan_estudio">
+                                        style="cursor: pointer;" wire:click="redirigir_gestion_plan_estudio">
                                         Plan de estudios
                                     </a>
                                     <a class="dropdown-item {{ request()->routeIs('gestion-curso.ciclo') ? 'active fw-medium' : '' }}"
-                                        style="cursor: pointer;" wire:click="redirigir_ciclo">
+                                        style="cursor: pointer;" wire:click="redirigir_gestion_ciclo">
                                         Ciclo
                                     </a>
                                     <a class="dropdown-item {{ request()->routeIs('gestion-curso.proceso') ? 'active fw-medium' : '' }}"
-                                        style="cursor: pointer;" wire:click="redirigir_proceso">
+                                        style="cursor: pointer;" wire:click="redirigir_gestion_proceso">
                                         Proceso
                                     </a>
                                     <a class="dropdown-item {{ request()->routeIs('gestion-curso.curso') ? 'active fw-medium' : '' }}"
-                                        style="cursor: pointer;" wire:click="redirigir_curso">
+                                        style="cursor: pointer;" wire:click="redirigir_gestion_curso">
                                         Curso
                                     </a>
                                 </div>

@@ -20,4 +20,6 @@ return [
     'fondo_curso_default' => '/media/fondo-cursos/fondo-infor.webp',
     'fondo_detalle_doncente' => '/assets/static/photos/businesswoman-working-at-her-laptop-2.jpg',
     'fondo_detalle_alumno' => '/assets/static/photos/colorful-exotic-flowers-and-greenery.jpg',
+
+    'version_sistema' => 'BETA',
 ];

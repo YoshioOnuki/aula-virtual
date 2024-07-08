@@ -27,6 +27,7 @@ class Index extends Component
     public $cantidad_cursos = 1;
 
     public $modo_admin = false;// Modo admin, para saber si se esta en modo administrador
+    public $tipo_vista; // Tipo de vista, para saber si es alumno o docente
 
     // Variables para page-header
     public $titulo_page_header;
@@ -46,7 +47,7 @@ class Index extends Component
         $gest_aula_usua->save();
     }
 
-    public function curso_detalle($id)
+    public function redirigir_curso_detalle($id)
     {
         $docente  = GestionAulaUsuario::with('usuario.persona')
             ->where('id_gestion_aula', $id)
@@ -55,25 +56,19 @@ class Index extends Component
             })
             ->first();
         if($docente) {
-            $id_url = Hashids::encode($docente->id_gestion_aula_usuario);
+            $id_curso = Hashids::encode($docente->id_gestion_aula_usuario);
             $id_usuario = Hashids::encode($this->usuario->id_usuario);
-            // dd($id_usuario, $docente->id_gestion_aula_usuario, $id_url, $this->usuario->id_usuario);
-            if(session('tipo_vista') === 'alumno') {
-                if($this->modo_admin)
-                {
-                    session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
-                    return redirect()->route('alumnos.cursos.detalle', ['id_usuario' => $id_usuario, 'id_curso' => $id_url]);
-                }else{
-                    return redirect()->route('cursos.detalle', ['id_usuario' => $id_usuario, 'id_curso' => $id_url]);
-                }
+
+            if(session('modo_admin'))
+            {
+                $this->modo_admin = session('modo_admin');
+            }
+
+            if($this->tipo_vista === 'cursos')
+            {
+                return redirect()->route('cursos.detalle', ['id_usuario' => $id_usuario, 'tipo_vista' => 'cursos', 'id_curso' => $id_curso]);
             } else {
-                if($this->modo_admin)
-                {
-                    session(['id_usuario' => Hashids::encode($this->usuario->id_usuario)]);
-                    return redirect()->route('docentes.carga-academica.detalle', ['id_usuario' => $id_usuario, 'id_curso' => $id_url]);
-                }else{
-                    return redirect()->route('carga-academica.detalle', ['id_usuario' => $id_usuario, 'id_curso' => $id_url]);
-                }
+                return redirect()->route('carga-academica.detalle', ['id_usuario' => $id_usuario, 'tipo_vista' => 'carga-academica', 'id_curso' => $id_curso]);
             }
         } else {
 
@@ -149,7 +144,7 @@ class Index extends Component
 
     public function mostrar_cursos()
     {
-        if(session('tipo_vista') === 'alumno')
+        if($this->tipo_vista === 'cursos')
         {
             $cursos = GestionAulaUsuario::with(['gestionAula.curso', 'rol'])
                 ->where('id_usuario', $this->usuario->id_usuario)
@@ -218,7 +213,7 @@ class Index extends Component
 
     public function calcular_cantidad_curso()
     {
-        if(session('tipo_vista') === 'alumno')
+        if($this->tipo_vista === 'cursos')
         {
             $this->cantidad_cursos = GestionAulaUsuario::with('rol')
                 ->where('id_usuario', $this->usuario->id_usuario)
@@ -229,7 +224,7 @@ class Index extends Component
                 ->count();
 
 
-        } elseif(session('tipo_vista') === 'docente') {
+        } elseif($this->tipo_vista === 'carga-academica') {
             $this->cantidad_cursos = GestionAulaUsuario::with('rol')
                 ->where('id_usuario', $this->usuario->id_usuario)
                 ->where('estado_gestion_aula_usuario', 1)
@@ -245,7 +240,7 @@ class Index extends Component
     /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
     public function obtener_datos_page_header()
     {
-        if(session('tipo_vista') === 'alumno')
+        if($this->tipo_vista === 'cursos')
         {
             $this->titulo_page_header = 'Mis Cursos';
         } else {
@@ -256,7 +251,7 @@ class Index extends Component
 
         if($this->modo_admin)
         {
-            if(session('tipo_vista') === 'alumno')
+            if($this->tipo_vista === 'cursos')
             {
                 $this->regresar_page_header = [
                     'route' => 'alumnos',
@@ -282,26 +277,12 @@ class Index extends Component
     }
 
 
-    public function mount($id_usuario)
+    public function mount($id_usuario, $tipo_vista)
     {
-        if(request()->routeIs('cursos*'))
-        {
-            session(['tipo_vista' => 'alumno']);
-        }elseif(request()->routeIs('carga-academica*'))
-        {
-            session(['tipo_vista' => 'docente']);
-        }elseif(request()->routeIs('alumnos*'))
-        {
-            session(['tipo_vista' => 'alumno']);
-        }elseif(request()->routeIs('docentes*'))
-        {
-            session(['tipo_vista' => 'docente']);
-        }
+        $this->tipo_vista = $tipo_vista;
+        // dd($this->tipo_vista);
 
-        if(request()->routeIs('alumnos*') || request()->routeIs('docentes*'))
-        {
-            $this->modo_admin = true;
-        }
+        $this->modo_admin = session('modo_admin') ? true : false;
 
         $this->id_usuario_hash = $id_usuario;
         $id = Hashids::decode($id_usuario);

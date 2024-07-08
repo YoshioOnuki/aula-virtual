@@ -11,7 +11,10 @@
         <div class="container-xl">
 
             @if($modo_admin)
-                @livewire('components.info-alumnos-docentes', ['usuario' => $usuario])
+                @livewire('components.info-alumnos-docentes', [
+                    'usuario' => $usuario,
+                    'tipo_vista' => $tipo_vista
+                ])
             @endif
 
             <div class="row g-3">

@@ -13,6 +13,8 @@ class InfoDocente extends Component
 
     public $cargando_docente = true;
 
+    public $tipo_vista; // Para saber que tipo de vista se está mostrando
+
 
     public function load_datos_docente()
     {
@@ -42,8 +44,9 @@ class InfoDocente extends Component
     }
 
 
-    public function mount($id_gestion_aula_usuario)
+    public function mount($id_gestion_aula_usuario, $tipo_vista)
     {
+        $this->tipo_vista = $tipo_vista;
         $this->id_gestion_aula_usuario = $id_gestion_aula_usuario;
     }
 

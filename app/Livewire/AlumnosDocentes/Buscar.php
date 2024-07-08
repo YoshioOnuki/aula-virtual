@@ -18,15 +18,16 @@ class Buscar extends Component
 
     public function mostrar_carga_academica($id)
     {
+        session(['modo_admin' => true]);
         $id_usuario = Hashids::encode($id);
-        return redirect()->route('docentes.carga-academica', ['id_usuario' => $id_usuario]);
-
+        return redirect()->route('carga-academica', ['id_usuario' => $id_usuario, 'tipo_vista' => $this->tipo_vista]);
     }
 
     public function mostrar_cursos($id)
     {
+        session(['modo_admin' => true]);
         $id_usuario = Hashids::encode($id);
-        return redirect()->route('alumnos.cursos', ['id_usuario' => $id_usuario]);
+        return redirect()->route('cursos', ['id_usuario' => $id_usuario, 'tipo_vista' => $this->tipo_vista]);
     }
 
 
@@ -35,13 +36,13 @@ class Buscar extends Component
         $this->usuarios = Usuario::with('persona', 'roles', 'accionUsuario')
             ->where('estado_usuario', 1)
             ->whereHas('roles', function($query){
-                if($this->tipo_vista == 'alumno'){
+                if($this->tipo_vista == 'cursos'){
                     $query->where('nombre_rol', 'ALUMNO');
                 }else{
                     $query->whereIn('nombre_rol', ['DOCENTE', 'DOCENTE INVITADO']);
                 }
             })->where(function($query) {
-                if($this->tipo_vista === 'alumno')
+                if($this->tipo_vista === 'cursos')
                 {
                     $query->searchAlumno($this->search);
                 }else{

@@ -13,18 +13,12 @@ class Index extends Component
 
     public function mount()
     {
-        if(request()->routeIs('cursos*'))
+        if(request()->routeIs('alumnos*'))
         {
-            $this->tipo_vista = 'alumno';
-        }elseif(request()->routeIs('carga-academica*'))
-        {
-            $this->tipo_vista = 'docente';
-        }elseif(request()->routeIs('alumnos*'))
-        {
-            $this->tipo_vista = 'alumno';
+            $this->tipo_vista = 'cursos';
         }elseif(request()->routeIs('docentes*'))
         {
-            $this->tipo_vista = 'docente';
+            $this->tipo_vista = 'carga-academica';
         }
 
     }

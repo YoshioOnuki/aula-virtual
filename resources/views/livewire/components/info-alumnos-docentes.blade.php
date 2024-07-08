@@ -1,7 +1,7 @@
 <div>
     <div class="card card-stacked animate__animated animate__fadeIn animate__faster mb-3">
         <div class="progress card-progress h-2">
-            <div class="progress-bar bg-{{ session('tipo_vista') === 'alumno' ? 'teal-lt' : 'orange-lt' }}"
+            <div class="progress-bar bg-{{ $tipo_vista === 'cursos' ? 'teal-lt' : 'orange-lt' }}"
                 style="width: 100%" role="progressbar" aria-valuemin="0" aria-valuemax="100">
             </div>
         </div>
@@ -9,10 +9,10 @@
         <div class="card-body">
             <div class="row g-2 align-items-center">
                 <div class="col-auto">
-                    @if (session('tipo_vista') === 'alumno')
+                    @if ($tipo_vista === 'cursos')
                         <img src="{{ asset($usuario->mostrarFoto('alumno')) }}" alt="avatar"
                             class="avatar avatar-md avatar-thumb rounded">
-                    @elseif(session('tipo_vista') === 'docente')
+                    @elseif($tipo_vista === 'carga-academica')
                         <img src="{{ asset($usuario->mostrarFoto('docente')) }}" alt="avatar"
                             class="avatar avatar-md avatar-thumb rounded">
                     @endif

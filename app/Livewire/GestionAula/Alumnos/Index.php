@@ -43,6 +43,8 @@ class Index extends Component
     public $links_page_header = [];
     public $regresar_page_header;
 
+    public $tipo_vista;
+
 
     public function abrir_modal_estado(GestionAulaUsuario $gestion_aula_usuario, $modo)
     {
@@ -138,18 +140,10 @@ class Index extends Component
         $this->titulo_page_header = 'LISTA DE ALUMNOS';
 
         // Regresar
-        if($this->modo_admin)
-        {
-            $this->regresar_page_header = [
-                'route' => 'docentes.carga-academica.detalle',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-            ];
-        }else{
-            $this->regresar_page_header = [
-                'route' => 'carga-academica.detalle',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-            ];
-        }
+        $this->regresar_page_header = [
+            'route' => 'carga-academica.detalle',
+            'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+        ];
 
         // Links --> Inicio
         $this->links_page_header = [
@@ -161,55 +155,25 @@ class Index extends Component
         ];
 
         // Links --> Cursos o Carga Académica
-        if($this->modo_admin)
-        {
-            $this->links_page_header[] = [
-                'name' => 'Carga Académica',
-                'route' => 'docentes.carga-academica',
-                'params' => ['id_usuario' => $this->id_usuario_hash]
-            ];
-        }else{
-            $this->links_page_header[] = [
-                'name' => 'Carga Académica',
-                'route' => 'carga-academica',
-                'params' => ['id_usuario' => $this->id_usuario_hash]
-            ];
-        }
+        $this->links_page_header[] = [
+            'name' => 'Carga Académica',
+            'route' => 'carga-academica',
+            'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista]
+        ];
 
         // Links --> Detalle del curso o carga académica
-        if($this->modo_admin)
-        {
-            $this->links_page_header[] = [
-                'name' => 'Detalle',
-                'route' => 'docentes.carga-academica.detalle',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-            ];
-        }else{
-            $this->links_page_header[] = [
-                'name' => 'Detalle',
-                'route' => 'carga-academica.detalle',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-            ];
-        }
+        $this->links_page_header[] = [
+            'name' => 'Detalle',
+            'route' => 'carga-academica.detalle',
+            'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+        ];
 
     }
 
 
-    public function mount($id_usuario, $id_curso)
+    public function mount($id_usuario, $tipo_vista, $id_curso)
     {
-        if(request()->routeIs('cursos*'))
-        {
-            session(['tipo_vista' => 'alumno']);
-        }elseif(request()->routeIs('carga-academica*'))
-        {
-            session(['tipo_vista' => 'docente']);
-        }elseif(request()->routeIs('alumnos*'))
-        {
-            session(['tipo_vista' => 'alumno']);
-        }elseif(request()->routeIs('docentes*'))
-        {
-            session(['tipo_vista' => 'docente']);
-        }
+        $this->tipo_vista = $tipo_vista;
 
         $this->id_gestion_aula_usuario_hash = $id_curso;
         $id_gestion_aula_usuario = Hashids::decode($id_curso);
@@ -221,9 +185,11 @@ class Index extends Component
         $id_usuario = Hashids::decode($id_usuario);
         $this->usuario = Usuario::find($id_usuario[0]);
 
-        if(request()->routeIs('alumnos*') || request()->routeIs('docentes*'))
+        if (session('modo_admin'))
         {
-            $this->modo_admin = true;
+            $this->modo_admin = session('modo_admin');
+        }else{
+            session()->forget('modo_admin');
         }
 
         $this->obtener_datos_page_header();

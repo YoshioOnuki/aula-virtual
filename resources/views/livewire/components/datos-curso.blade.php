@@ -1,8 +1,8 @@
 <div class="mt-3" wire:init="load_datos_curso">
     @if($cargando_datos_curso)
         <div class="card card-stacked placeholder-glow animate__animated animate__fadeIn animate__faster">
-            <div class="card-header {{ session('tipo_vista') === 'alumno' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
-                <div class="placeholder col-5 {{ session('tipo_vista') === 'alumno' ? 'bg-teal' : 'bg-orange' }}"
+            <div class="card-header {{ $tipo_vista === 'cursos' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
+                <div class="placeholder col-5 {{ $tipo_vista === 'cursos' ? 'bg-teal' : 'bg-orange' }}"
                 style="height: 1.5rem; width: 170.56px;"></div>
             </div>
             <div class="card-body row g-3 mb-0">
@@ -105,7 +105,7 @@
     @else
         <div class="card card-link card-stacked">
             <div
-                class="card-header {{ session('tipo_vista') === 'alumno' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
+                class="card-header {{ $tipo_vista === 'cursos' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
                 <h3 class="card-title fw-semibold">
                     Información del Curso
                 </h3>
@@ -214,7 +214,7 @@
                                 </a>
                                 @if(!$gestion_aula_usuario->gestionAula->linkClase)
                                     <div class="alert alert-azure bg-azure-lt mt-2 fw-bold animate__animated animate__fadeIn animate__faster">
-                                        @if(session('tipo_vista') == 'docente')
+                                        @if($tipo_vista === 'carga-academica')
                                             Por favor, cargue el link de la clase para que esté disponible para los estudiantes.
                                         @else
                                             Link de la clase pendiente. Consulte con el docente.

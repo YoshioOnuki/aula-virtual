@@ -3,7 +3,7 @@
         <div class="col-12">
             <a class="card card-link card-stacked placeholder-glow animate__animated animate__fadeIn animate__faster">
                 <div class="card-cover card-cover-blurred text-center">
-                    <div class="avatar avatar-xl placeholder {{ session('tipo_vista') == 'alumno' ? 'bg-teal' : 'bg-orange' }}"></div>
+                    <div class="avatar avatar-xl placeholder {{ $tipo_vista === 'cursos' ? 'bg-teal' : 'bg-orange' }}"></div>
                 </div>
                 <div class="card-body text-center">
                     <div class="card-title mb-1">
@@ -11,7 +11,7 @@
                     </div>
                     <div class="placeholder bg-secondary col-5" style="height: 17px;"></div>
                     <div class="mt-2">
-                        <div class="placeholder {{ session('tipo_vista') == 'alumno' ? 'bg-teal' : 'bg-orange' }} col-3" style="height: 17px;"></div>
+                        <div class="placeholder {{ $tipo_vista === 'cursos' ? 'bg-teal' : 'bg-orange' }} col-3" style="height: 17px;"></div>
                     </div>
                 </div>
             </a>
@@ -21,8 +21,8 @@
             <div class="col-12">
                 <a class="card card-link card-stacked">
                     <div class="card-cover card-cover-blurred text-center"
-                        style="background-image: url({{ session('tipo_vista') == 'docente' ? config('settings.fondo_detalle_doncente') : config('settings.fondo_detalle_alumno') }})">
-                        @if (session('tipo_vista') == 'docente')
+                        style="background-image: url({{ $tipo_vista === 'carga-academica' ? config('settings.fondo_detalle_doncente') : config('settings.fondo_detalle_alumno') }})">
+                        @if ($tipo_vista === 'carga-academica')
                             <img src="{{ asset($item->usuario->mostrarFoto('docente')) }}"
                                 alt="avatar" class="avatar avatar-xl avatar-thumb rounded">
                         @else
@@ -43,7 +43,7 @@
                         </div>
                         <div class="mt-2">
                             <span
-                                class="badge {{ session('tipo_vista') == 'alumno' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
+                                class="badge {{ $tipo_vista === 'cursos' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
                                 {{ $item->rol->nombre_rol }}
                             </span>
                         </div>

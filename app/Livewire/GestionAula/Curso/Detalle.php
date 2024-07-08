@@ -30,6 +30,7 @@ class Detalle extends Component
     public $id_usuario_hash;
 
     public $modo_admin = false;// Modo admin, para saber si se esta en modo administrador
+    public $tipo_vista; // Tipo de vista, si es alumno o docente
 
     // Variables para page-header
     public $titulo_page_header = 'Detalle';
@@ -118,120 +119,100 @@ class Detalle extends Component
     public function redireccionar_silabus($id)
     {
         $id_curso = Hashids::encode($id);
-        if(session('tipo_vista') === 'alumno'){
-            if($this->modo_admin)
-            {
-                return redirect()->route('alumnos.cursos.detalle.silabus', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
-            }else{
-                return redirect()->route('cursos.detalle.silabus', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
-            }
+        if($this->modo_admin)
+        {
+            session(['modo_admin' => true]);
         }else{
-            if($this->modo_admin)
-            {
-                return redirect()->route('docentes.carga-academica.detalle.silabus', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
-            }else{
-                return redirect()->route('carga-academica.detalle.silabus', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
-            }
+            session()->forget('modo_admin');
+        }
+        if($this->tipo_vista === 'cursos'){
+            return redirect()->route('cursos.detalle.silabus', ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => 'cursos', 'id_curso' => $id_curso]);
+        }else{
+            return redirect()->route('carga-academica.detalle.silabus', ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => 'carga-academica', 'id_curso' => $id_curso]);
         }
     }
 
     public function redireccionar_recursos($id)
     {
         $id_curso = Hashids::encode($id);
-        if(session('tipo_vista') === 'alumno'){
-            if($this->modo_admin)
-            {
-                return redirect()->route('alumnos.cursos.detalle.recursos', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
-            }else{
-                return redirect()->route('cursos.detalle.recursos', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
-            }
+        if($this->modo_admin)
+        {
+            session(['modo_admin' => true]);
         }else{
-            if($this->modo_admin)
-            {
-                return redirect()->route('docentes.carga-academica.detalle.recursos', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
-            }else{
-                return redirect()->route('carga-academica.detalle.recursos', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
-            }
+            session()->forget('modo_admin');
+        }
+        if($this->tipo_vista === 'cursos'){
+            return redirect()->route('cursos.detalle.recursos', ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => 'cursos', 'id_curso' => $id_curso]);
+        }else{
+            return redirect()->route('carga-academica.detalle.recursos', ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => 'carga-academica', 'id_curso' => $id_curso]);
         }
     }
 
     public function redireccionar_foro($id)
     {
         $id_curso = Hashids::encode($id);
-        if(session('tipo_vista') === 'alumno'){
-            if($this->modo_admin)
-            {
-                return redirect()->route('alumnos.cursos.detalle.foro', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
-            }else{
-                return redirect()->route('cursos.detalle.foro', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
-            }
+        if($this->modo_admin)
+        {
+            session(['modo_admin' => true]);
         }else{
-            if($this->modo_admin)
-            {
-                return redirect()->route('docentes.carga-academica.detalle.foro', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
-            }else{
-                return redirect()->route('carga-academica.detalle.foro', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
-            }
+            session()->forget('modo_admin');
+        }
+
+        if($this->tipo_vista === 'cursos'){
+            return redirect()->route('cursos.detalle.foro', ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => 'cursos', 'id_curso' => $id_curso]);
+        }else{
+            return redirect()->route('carga-academica.detalle.foro', ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => 'carga-academica', 'id_curso' => $id_curso]);
         }
     }
 
     public function redireccionar_asistencia($id)
     {
         $id_curso = Hashids::encode($id);
-        if(session('tipo_vista') === 'alumno'){
-            if($this->modo_admin)
-            {
-                return redirect()->route('alumnos.cursos.detalle.asistencia', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
-            }else{
-                return redirect()->route('cursos.detalle.asistencia', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
-            }
+        if($this->modo_admin)
+        {
+            session(['modo_admin' => true]);
         }else{
-            if($this->modo_admin)
-            {
-                return redirect()->route('docentes.carga-academica.detalle.asistencia', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
-            }else{
-                return redirect()->route('carga-academica.detalle.asistencia', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
-            }
+            session()->forget('modo_admin');
+        }
+
+        if($this->tipo_vista === 'cursos'){
+            return redirect()->route('cursos.detalle.asistencia', ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => 'cursos', 'id_curso' => $id_curso]);
+        }else{
+            return redirect()->route('carga-academica.detalle.asistencia', ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => 'carga-academica', 'id_curso' => $id_curso]);
         }
     }
 
     public function redireccionar_trabajo_academico($id)
     {
         $id_curso = Hashids::encode($id);
-        if(session('tipo_vista') === 'alumno'){
-            if($this->modo_admin)
-            {
-                return redirect()->route('alumnos.cursos.detalle.trabajo-academico', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
-            }else{
-                return redirect()->route('cursos.detalle.trabajo-academico', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
-            }
+        if($this->modo_admin)
+        {
+            session(['modo_admin' => true]);
         }else{
-            if($this->modo_admin)
-            {
-                return redirect()->route('docentes.carga-academica.detalle.trabajo-academico', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
-            }else{
-                return redirect()->route('carga-academica.detalle.trabajo-academico', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
-            }
+            session()->forget('modo_admin');
+        }
+
+        if($this->tipo_vista === 'cursos'){
+            return redirect()->route('cursos.detalle.trabajo-academico', ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => 'cursos', 'id_curso' => $id_curso]);
+        }else{
+            return redirect()->route('carga-academica.detalle.trabajo-academico', ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => 'carga-academica', 'id_curso' => $id_curso]);
         }
     }
 
     public function redireccionar_webgrafia($id)
     {
         $id_curso = Hashids::encode($id);
-        if(session('tipo_vista') === 'alumno'){
-            if($this->modo_admin)
-            {
-                return redirect()->route('alumnos.cursos.detalle.webgrafia', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
-            }else{
-                return redirect()->route('cursos.detalle.webgrafia', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
-            }
+        if($this->modo_admin)
+        {
+            session(['modo_admin' => true]);
         }else{
-            if($this->modo_admin)
-            {
-                return redirect()->route('docentes.carga-academica.detalle.webgrafia', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
-            }else{
-                return redirect()->route('carga-academica.detalle.webgrafia', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
-            }
+            session()->forget('modo_admin');
+        }
+
+        if($this->tipo_vista === 'cursos'){
+            return redirect()->route('cursos.detalle.webgrafia', ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => 'cursos', 'id_curso' => $id_curso]);
+        }else{
+            return redirect()->route('carga-academica.detalle.webgrafia', ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => 'carga-academica', 'id_curso' => $id_curso]);
         }
     }
 
@@ -240,10 +221,12 @@ class Detalle extends Component
         $id_curso = Hashids::encode($id);
         if($this->modo_admin)
         {
-            return redirect()->route('docentes.carga-academica.detalle.alumnos', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
+            session(['modo_admin' => true]);
         }else{
-            return redirect()->route('carga-academica.detalle.alumnos', ['id_usuario' => $this->id_usuario_hash, 'id_curso' => $id_curso]);
+            session()->forget('modo_admin');
         }
+
+        return redirect()->route('carga-academica.detalle.alumnos', ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => 'carga-academica', 'id_curso' => $id_curso]);
     }
 
 
@@ -253,34 +236,25 @@ class Detalle extends Component
         $this->titulo_pasos_header = 'Detalle';
         $this->titulo_page_header = $this->nombre_curso . ' GRUPO ' . $this->grupo_gestion_aula;
 
-        // Regresar
-        if(session('tipo_vista') === 'alumno')
+        if($this->modo_admin)
         {
-            if($this->modo_admin)
-            {
-                $this->regresar_page_header = [
-                    'route' => 'alumnos.cursos',
-                    'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso']
-                ];
-            }else{
-                $this->regresar_page_header = [
-                    'route' => 'cursos',
-                    'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso']
-                ];
-            }
+            session(['modo_admin' => true]);
+        }else{
+            session()->forget('modo_admin');
+        }
+
+        // Regresar
+        if($this->tipo_vista === 'cursos')
+        {
+            $this->regresar_page_header = [
+                'route' => 'cursos',
+                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => 'cursos']
+            ];
         } else {
-            if($this->modo_admin)
-            {
-                $this->regresar_page_header = [
-                    'route' => 'docentes.carga-academica',
-                    'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso']
-                ];
-            }else{
-                $this->regresar_page_header = [
-                    'route' => 'carga-academica',
-                    'params' => ['id_usuario' => $this->id_usuario_hash, 'id_curso']
-                ];
-            }
+            $this->regresar_page_header = [
+                'route' => 'carga-academica',
+                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => 'carga-academica']
+            ];
         }
 
         // Links --> Inicio
@@ -293,57 +267,26 @@ class Detalle extends Component
         ];
 
         // Links --> Cursos o Carga Académica
-        if (session('tipo_vista') === 'alumno')
+        if ($this->tipo_vista === 'cursos')
         {
-            if($this->modo_admin)
-            {
-                $this->links_page_header[] = [
-                    'name' => 'Mis Cursos',
-                    'route' => 'alumnos.cursos',
-                    'params' => ['id_usuario' => $this->id_usuario_hash]
-                ];
-            }else{
-                $this->links_page_header[] = [
-                    'name' => 'Mis Cursos',
-                    'route' => 'cursos',
-                    'params' => ['id_usuario' => $this->id_usuario_hash]
-                ];
-            }
+            $this->links_page_header[] = [
+                'name' => 'Mis Cursos',
+                'route' => 'cursos',
+                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => 'cursos']
+            ];
         } else {
-            if($this->modo_admin)
-            {
-                $this->links_page_header[] = [
-                    'name' => 'Carga Académica',
-                    'route' => 'docentes.carga-academica',
-                    'params' => ['id_usuario' => $this->id_usuario_hash]
-                ];
-            }else{
-                $this->links_page_header[] = [
-                    'name' => 'Carga Académica',
-                    'route' => 'carga-academica',
-                    'params' => ['id_usuario' => $this->id_usuario_hash]
-                ];
-            }
+            $this->links_page_header[] = [
+                'name' => 'Carga Académica',
+                'route' => 'carga-academica',
+                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => 'carga-academica']
+            ];
         }
 
     }
 
-    public function mount($id_usuario, $id_curso)
+    public function mount($id_usuario, $tipo_vista, $id_curso)
     {
-
-        if(request()->routeIs('cursos*'))
-        {
-            session(['tipo_vista' => 'alumno']);
-        }elseif(request()->routeIs('carga-academica*'))
-        {
-            session(['tipo_vista' => 'docente']);
-        }elseif(request()->routeIs('alumnos*'))
-        {
-            session(['tipo_vista' => 'alumno']);
-        }elseif(request()->routeIs('docentes*'))
-        {
-            session(['tipo_vista' => 'docente']);
-        }
+        $this->tipo_vista = $tipo_vista;
 
         $this->id_gestion_aula_usuario_hash = $id_curso;
 
@@ -356,10 +299,7 @@ class Detalle extends Component
         $usuario = Hashids::decode($id_usuario);
         $this->usuario = Usuario::find($usuario[0]);
 
-        if(request()->routeIs('alumnos*') || request()->routeIs('docentes*'))
-        {
-            $this->modo_admin = true;
-        }
+        $this->modo_admin = session('modo_admin');
 
         $this->obtener_datos_page_header();
 

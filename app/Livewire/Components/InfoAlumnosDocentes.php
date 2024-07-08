@@ -8,10 +8,12 @@ use Livewire\Component;
 class InfoAlumnosDocentes extends Component
 {
     public $usuario;
+    public $tipo_vista;
 
-    public function mount(Usuario $usuario)
+    public function mount(Usuario $usuario, $tipo_vista)
     {
         $this->usuario = $usuario;
+        $this->tipo_vista = $tipo_vista;
     }
 
     public function render()

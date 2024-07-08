@@ -49,7 +49,10 @@
             <div class="container-xl">
 
                 @if($modo_admin)
-                    @livewire('components.info-alumnos-docentes', ['usuario' => $usuario])
+                    @livewire('components.info-alumnos-docentes', [
+                        'usuario' => $usuario,
+                        'tipo_vista' => $tipo_vista
+                    ])
                 @endif
 
                 <div class="row g-3">
@@ -71,7 +74,7 @@
                                         entradas
                                     </div>
                                     <div class="text-secondary row">
-                                        @if ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario) && session('tipo_vista') === 'docente')
+                                        @if ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario) && $tipo_vista === 'carga-academica')
                                             <div class="col-lg-7 col-9">
                                                 <div class="d-inline-block">
                                                     <input type="text" class="form-control"
@@ -89,7 +92,7 @@
                                             </div>
                                         @endif
 
-                                        @if ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario) && session('tipo_vista') === 'docente')
+                                        @if ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario) && $tipo_vista === 'carga-academica')
                                             <div class="col-lg-5 col-3 d-flex justify-content-end">
                                                 <a href="" class="btn btn-primary d-none d-md-inline-block">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
@@ -124,7 +127,7 @@
                                             <th class="col-2">Fecha</th>
                                             <th class="col-2">Hora</th>
                                             <th>Descripción</th>
-                                            @if (session('tipo_vista') === 'alumno')
+                                            @if ($tipo_vista === 'cursos')
                                                 <th class="col-2 text-center">Estado</th>
                                             @endif
                                             <th class="col-2 text-center">Acciones</th>
@@ -144,7 +147,7 @@
                                                 <td>
                                                     {{ $item->nombre_asistencia }}
                                                 </td>
-                                                @if (session('tipo_vista') === 'alumno')
+                                                @if ($tipo_vista === 'cursos')
                                                     <td class="text-center">
                                                         @if (!$item->asistenciaAlumno->isEmpty())
                                                             <span class="status status-teal px-3 py-2">
@@ -183,7 +186,7 @@
                                                             </svg>
                                                         @endif
                                                     </td>
-                                                @elseif (session('tipo_vista') === 'docente' && ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario) || $usuario->esRolGestionAula('DOCENTE INVITADO', $id_gestion_aula_usuario)))
+                                                @elseif ($tipo_vista === 'carga-academica' && ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario) || $usuario->esRolGestionAula('DOCENTE INVITADO', $id_gestion_aula_usuario)))
                                                     <td>
                                                         @if (verificar_hora_actual($item->hora_inicio_asistencia, $item->hora_fin_asistencia, $item->fecha_asistencia))
                                                             <button type="button" class="btn btn-outline-primary btn-sm">
@@ -278,9 +281,10 @@
 </div>
 
 @push('scripts')
-    <script src="{{ asset('js/mobile-detect/mobile-detect.min.js') }}"></script>
+
+<script src="{{ asset('js/mobile-detect/mobile-detect.min.js') }}"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener('livewire:navigated', () => {
             const asistencias = document.querySelector('.asistencias');
             const mobileMessage = document.querySelector('.mobile-message');
             const md = new MobileDetect(window.navigator.userAgent);

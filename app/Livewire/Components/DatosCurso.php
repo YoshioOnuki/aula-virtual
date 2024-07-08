@@ -18,6 +18,8 @@ class DatosCurso extends Component
 
     public $datos = false;
 
+    public $tipo_vista; // Para saber que tipo de vista se está mostrando
+
     public function load_datos_curso()
     {
         usleep(300000);
@@ -71,8 +73,9 @@ class DatosCurso extends Component
     }
 
 
-    public function mount($id_gestion_aula_usuario)
+    public function mount($id_gestion_aula_usuario, $tipo_vista)
     {
+        $this->tipo_vista = $tipo_vista;
         $this->id_gestion_aula_usuario = $id_gestion_aula_usuario;
 
         if(request()->routeIs('cursos.detalle') ||
