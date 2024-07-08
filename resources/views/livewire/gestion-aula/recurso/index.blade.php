@@ -348,7 +348,7 @@
     </div>
 
 
-    <div wire:ignore.self class="modal" id="modal-recursos" tabindex="-1">
+    <div wire:ignore.self class="modal fade" id="modal-recursos" tabindex="-1" data-bs-backdrop="static">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -434,13 +434,16 @@
 
 </div>
 
-{{-- /* =============== FUNCIONES PARA PRUEBAS DE CARGAS - SIMULACION DE CARGAS =============== */ --}}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        window.addEventListener('load_recursos_evento', () => {
-            setTimeout(() => {
-                @this.call('load_recursos')
-            }, 500);
+@push('scripts')
+    {{-- /* =============== FUNCIONES PARA PRUEBAS DE CARGAS - SIMULACION DE CARGAS =============== */ --}}
+    <script>
+        document.addEventListener('livewire:navigated', () => {
+        // document.addEventListener('DOMContentLoaded', function() {
+            window.addEventListener('load_recursos_evento', () => {
+                setTimeout(() => {
+                    @this.call('load_recursos')
+                }, 500);
+            });
         });
-    });
-</script>
+    </script>
+@endpush

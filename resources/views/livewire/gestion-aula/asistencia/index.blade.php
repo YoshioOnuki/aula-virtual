@@ -83,7 +83,7 @@
                                                 </div>
                                             </div>
                                         @else
-                                            <div class="col-lg-12 col-9">
+                                            <div class="col-lg-12">
                                                 <div class="d-inline-block">
                                                     <input type="text" class="form-control"
                                                         wire:model.live.debounce.500ms="search" aria-label="Search invoice"
@@ -160,7 +160,7 @@
                                                     <td class="text-center">
                                                         @if ($item->asistenciaAlumno->isEmpty())
                                                             <button type="button"
-                                                                class="btn btn-outline-primary btn-sm
+                                                                class="btn btn-outline-primary
                                                                 {{ verificar_hora_actual($item->hora_inicio_asistencia, $item->hora_fin_asistencia, $item->fecha_asistencia) ? '' : 'disabled' }}">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                     height="24" viewBox="0 0 24 24" fill="none"

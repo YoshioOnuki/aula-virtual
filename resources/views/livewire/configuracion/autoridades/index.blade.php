@@ -180,16 +180,17 @@
     </div>
 
 
-    <div wire:ignore.self class="modal" id="modal-estado-autoridad" tabindex="-1">
+    <div wire:ignore.self class="modal fade" id="modal-estado-autoridad" tabindex="-1" data-bs-backdrop="static">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
                         {{ $titulo_modal }}
                     </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" wire:click="limpiar_modal"></button>
+                    <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal" aria-label="Close" wire:click="limpiar_modal"></button>
                 </div>
                 <form autocomplete="off" wire:submit="cambiar_estado">
+                    <div class="modal-status bg-{{ $modo === 1 ? 'teal' : 'red' }}"></div>
                     <div class="modal-body px-6">
                         <div class="row g-3">
                             <div class="col-lg-12 mt-2 text-center">

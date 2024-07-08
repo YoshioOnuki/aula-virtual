@@ -15,13 +15,23 @@ class Webgrafia extends Model
     protected $primaryKey = 'id_webgrafia';
     protected $fillable = [
         'id_webgrafia',
-        'link_id_webgrafia',
+        'descripcion_webgrafia',
+        'link_webgrafia',
         'id_gestion_aula',
     ];
 
     public function gestionAula()
     {
         return $this->belongsTo(GestionAula::class, 'id_gestion_aula');
+    }
+
+    public function scopeSearch($query, $search) {
+        if ($search == null) {
+            return $query;
+        }
+
+        return $query->where('descripcion_webgrafia', 'LIKE', "%$search%")
+            ->orWhere('link_webgrafia', 'LIKE', "%$search%");
     }
 
     protected static function boot()

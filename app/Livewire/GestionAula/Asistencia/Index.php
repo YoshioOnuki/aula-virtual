@@ -31,7 +31,7 @@ class Index extends Component
     public $modo_admin = false;// Modo admin, para saber si se esta en modo administrador
 
     // Variables para page-header
-    public $titulo_page_header = 'Silabus';
+    public $titulo_page_header = 'Asistencia';
     public $links_page_header = [];
     public $regresar_page_header;
 
@@ -46,7 +46,7 @@ class Index extends Component
     /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
     public function obtener_datos_page_header()
     {
-        $this->titulo_page_header = 'Silabus';
+        $this->titulo_page_header = 'Asistencia';
 
         // Regresar
         if($this->tipo_vista === 'cursos')

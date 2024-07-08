@@ -310,16 +310,19 @@
     </div>
 </div>
 
-{{-- /* =============== FUNCIONES PARA PRUEBAS DE CARGAS - SIMULACION DE CARGAS =============== */ --}}
+@push('scripts')
+    {{-- /* =============== FUNCIONES PARA PRUEBAS DE CARGAS - SIMULACION DE CARGAS =============== */ --}}
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('livewire:navigated', () => {
+        // document.addEventListener('DOMContentLoaded', function() {
             window.addEventListener('load_silabus_evento', () => {
                 setTimeout(() => {
                     @this.call('load_silabus')
                 }, 1000);
             });
         });
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('livewire:navigated', () => {
+        // document.addEventListener('DOMContentLoaded', function() {
         window.addEventListener('load_datos_curso_evento', () => {
             setTimeout(() => {
                 @this.call('load_datos_curso')
@@ -327,3 +330,4 @@
         });
     });
     </script>
+@endpush
