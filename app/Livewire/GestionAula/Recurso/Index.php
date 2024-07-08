@@ -326,9 +326,10 @@ class Index extends Component
         $id_usuario = Hashids::decode($id_usuario);
         $this->usuario = Usuario::find($id_usuario[0]);
 
-        if (session('modo_admin'))
+        $usuario_sesion = Usuario::find(auth()->user()->id_usuario);
+        if (session('modo_admin') || $usuario_sesion->esRol('ADMINISTRADOR'))
         {
-            $this->modo_admin = session('modo_admin');
+            $this->modo_admin = true;
         }else{
             session()->forget('modo_admin');
         }

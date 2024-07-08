@@ -299,7 +299,13 @@ class Detalle extends Component
         $usuario = Hashids::decode($id_usuario);
         $this->usuario = Usuario::find($usuario[0]);
 
-        $this->modo_admin = session('modo_admin');
+        $usuario_sesion = Usuario::find(auth()->user()->id_usuario);
+        if (session('modo_admin') || $usuario_sesion->esRol('ADMINISTRADOR'))
+        {
+            $this->modo_admin = true;
+        }else{
+            session()->forget('modo_admin');
+        }
 
         $this->obtener_datos_page_header();
 

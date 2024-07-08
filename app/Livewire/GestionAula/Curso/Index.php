@@ -282,7 +282,13 @@ class Index extends Component
         $this->tipo_vista = $tipo_vista;
         // dd($this->tipo_vista);
 
-        $this->modo_admin = session('modo_admin') ? true : false;
+        $usuario_sesion = Usuario::find(auth()->user()->id_usuario);
+        if (session('modo_admin') || $usuario_sesion->esRol('ADMINISTRADOR'))
+        {
+            $this->modo_admin = true;
+        }else{
+            session()->forget('modo_admin');
+        }
 
         $this->id_usuario_hash = $id_usuario;
         $id = Hashids::decode($id_usuario);
