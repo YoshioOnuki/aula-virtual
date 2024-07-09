@@ -52,7 +52,7 @@ class Index extends Component
     public $tipo_vista;
 
 
-    /* =============== FUNCIONES PARA EL MODAL DE RECURSOS - CREAR Y EDITAR =============== */
+    /* =============== FUNCIONES PARA EL MODAL DE WEBGRAFIA - AGREGAR Y EDITAR =============== */
     public function abrir_modal_webgrafia_editar(Webgrafia $webgrafia)
     {
         $this->limpiar_modal();

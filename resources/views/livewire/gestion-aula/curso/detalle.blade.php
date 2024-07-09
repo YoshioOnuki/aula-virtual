@@ -56,7 +56,7 @@
                                         <div class="card-body px-5">
                                             @if($orientaciones_generales)
                                                 <span style="text-align: justify;">
-                                                    {{ $orientaciones_generales }}
+                                                    {{ $orientaciones_generales->descripcion_presentacion }}
                                                 </span>
                                             @else
                                                 <span class="text-muted" style="text-align: justify;">
@@ -108,6 +108,7 @@
                                 </div>
                                 <div class="card-body d-flex justify-content-center">
                                     <div class="row g-3">
+                                        {{-- Silabus --}}
                                         <div class="col-6 col-md-2 col-lg-4 col-xl-3">
                                             <span class="hide-theme-dark">
                                                 <div class="" wire:click="redireccionar_silabus({{ $id_gestion_aula_usuario }})">
@@ -133,6 +134,7 @@
                                             </span>
                                         </div>
 
+                                        {{-- Recursos --}}
                                         <div class="col-6 col-md-2 col-lg-4 col-xl-3">
                                             <span class="hide-theme-dark">
                                                 <div class="" wire:click="redireccionar_recursos({{ $id_gestion_aula_usuario }})">
@@ -158,6 +160,7 @@
                                             </span>
                                         </div>
 
+                                        {{-- Foro --}}
                                         <div class="col-6 col-md-2 col-lg-4 col-xl-3">
                                             <span class="hide-theme-dark">
                                                 <div class="" wire:click="redireccionar_foro({{ $id_gestion_aula_usuario }})">
@@ -183,7 +186,7 @@
                                             </span>
                                         </div>
 
-
+                                        {{-- Asistencia --}}
                                         <div class="col-6 col-md-2 col-lg-4 col-xl-3">
                                             <span class="hide-theme-dark">
                                                 <div class="" wire:click="redireccionar_asistencia({{ $id_gestion_aula_usuario }})">
@@ -209,6 +212,7 @@
                                             </span>
                                         </div>
 
+                                        {{-- Trabajos Academicos --}}
                                         <div class="col-6 col-md-2 col-lg-4 col-xl-3">
                                             <span class="hide-theme-dark">
                                                 <div class="" wire:click="redireccionar_trabajo_academico({{ $id_gestion_aula_usuario }})">
@@ -234,6 +238,7 @@
                                             </span>
                                         </div>
 
+                                        {{-- Webgrafia --}}
                                         <div class="col-6 col-md-2 col-lg-4 col-xl-3">
                                             <span class="hide-theme-dark">
                                                 <div class="" wire:click="redireccionar_webgrafia({{ $id_gestion_aula_usuario }})">
@@ -260,30 +265,31 @@
                                         </div>
 
                                         @if($tipo_vista ==='carga-academica')
-                                            <div class="col-6 col-md-2 col-lg-4 col-xl-3">
+                                            {{-- Link de Clases --}}
+                                            <div class="col-6 col-md-2 col-lg-4 col-xl-3" wire:init="obtener_link_clase">
                                                 <span class="hide-theme-dark">
-                                                    <div class="">
+                                                    <div class="" wire:click="abrir_modal_link_clase">
                                                         <div class="image-button image-button-docente position-relative">
                                                             <img src="/media/icons/icon-link-hipervinculo.webp" alt="Info"
                                                                 style="width: 80px; height: 80px;">
                                                             <div class="text-content text-center mt-3 fw-semibold fs-3">
                                                                 Subir Link de Clases
                                                             </div>
-                                                            @if(!$link_clase)
+                                                            @if(!$link_clase_bool)
                                                                 <span class="badge bg-yellow badge-notification badge-blink badge-pill">!</span>
                                                             @endif
                                                         </div>
                                                     </div>
                                                 </span>
                                                 <span class="hide-theme-light">
-                                                    <div class="dark-mode">
+                                                    <div class="dark-mode" wire:click="abrir_modal_link_clase">
                                                         <div class="image-button image-button-docente position-relative">
                                                             <img src="/media/icons/icon-link-hipervinculo.webp" alt="Info"
                                                                 style="width: 80px; height: 80px;">
                                                             <div class="text-content text-center mt-3 fw-semibold fs-3">
                                                                 Subir Link de Clases
                                                             </div>
-                                                            @if(!$link_clase)
+                                                            @if(!$link_clase_bool)
                                                                 <span class="badge bg-yellow badge-notification badge-blink badge-pill">!</span>
                                                             @endif
                                                         </div>
@@ -291,30 +297,31 @@
                                                 </span>
                                             </div>
 
+                                            {{-- Orientaciones --}}
                                             <div class="col-6 col-md-2 col-lg-4 col-xl-3" wire:init="load_orientaciones">
                                                 <span class="hide-theme-dark">
-                                                    <div class="">
+                                                    <div class="" wire:click="abrir_modal_orientaciones">
                                                         <div class="image-button image-button-docente position-relative" style="z-index: 1;">
                                                             <img src="/media/icons/icon-orien-presentacion2.webp" alt="Info"
                                                                 style="width: 80px; height: 80px;">
                                                             <div class="text-content text-center mt-3 fw-semibold fs-3">
                                                                 Orientaciones Generales
                                                             </div>
-                                                            @if(!$orientaciones_generales)
+                                                            @if(!$orientaciones_generales_bool)
                                                                 <span class="badge bg-yellow badge-notification badge-blink badge-pill">!</span>
                                                             @endif
                                                         </div>
                                                     </div>
                                                 </span>
                                                 <span class="hide-theme-light">
-                                                    <div class="dark-mode">
+                                                    <div class="dark-mode" wire:click="abrir_modal_orientaciones">
                                                         <div class="image-button image-button-docente position-relative">
                                                             <img src="/media/icons/icon-orien-presentacion2.webp" alt="Info"
                                                                 style="width: 80px; height: 80px;">
                                                             <div class="text-content text-center mt-3 fw-semibold fs-3">
                                                                 Orientaciones Generales
                                                             </div>
-                                                            @if(!$orientaciones_generales)
+                                                            @if(!$orientaciones_generales_bool)
                                                                 <span class="badge bg-yellow badge-notification badge-blink badge-pill">!</span>
                                                             @endif
                                                         </div>
@@ -322,6 +329,7 @@
                                                 </span>
                                             </div>
 
+                                            {{-- Alumnos --}}
                                             <div class="col-6 col-md-2 col-lg-4 col-xl-3">
                                                 <span class="hide-theme-dark">
                                                     <div class="" wire:click="redireccionar_alumnos({{ $id_gestion_aula_usuario }})">
@@ -370,6 +378,149 @@
 
                 </div>
 
+            </div>
+        </div>
+    </div>
+
+    <div wire:ignore.self class="modal fade" id="modal-link-clase" tabindex="-1" data-bs-backdrop="static">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        {{ $titulo_link_clase }}
+                    </h5>
+                    <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal"
+                        aria-label="Close" wire:click="cerrar_modal"></button>
+                </div>
+                <form autocomplete="off" wire:submit="guardar_link_clase">
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-lg-12">
+                                <label for="nombre_link_clase" class="form-label required">
+                                    Link de Clase
+                                </label>
+                                <input type="text" name="nombre_link_clase"
+                                    class="form-control @error('nombre_link_clase') is-invalid @elseif(strlen($nombre_link_clase) > 0) is-valid @enderror"
+                                    id="nombre_link_clase" wire:model.live="nombre_link_clase"
+                                    placeholder="Ingrese el link" />
+                                @error('nombre_link_clase')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal"
+                            wire:click="cerrar_modal">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round"
+                                class="icon icon-tabler icons-tabler-outline icon-tabler-ban">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                <path d="M5.7 5.7l12.6 12.6" />
+                            </svg>
+                            Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-primary ms-auto">
+                            @if ($modo_link_clase === 1)
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M12 5l0 14" />
+                                    <path d="M5 12l14 0" />
+                                </svg>
+                            @else
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                    <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                    <path d="M16 5l3 3" />
+                                </svg>
+                            @endif
+                            {{ $accion_estado_link_clase }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div wire:ignore.self class="modal fade" id="modal-orientaciones" tabindex="-1" data-bs-backdrop="static">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        {{ $titulo_orientaciones }}
+                    </h5>
+                    <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal"
+                        aria-label="Close" wire:click="cerrar_modal"></button>
+                </div>
+                <form autocomplete="off" wire:submit="guardar_orientaciones">
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-lg-12">
+                                <label for="descripcion_orientaciones" class="form-label required">
+                                    Orientaciones Generales
+                                </label>
+                                <textarea rows="4" class="form-control @error('descripcion_orientaciones') is-invalid @elseif(strlen($descripcion_orientaciones) > 0) is-valid @enderror"
+                                name="descripcion_orientaciones" id="descripcion_orientaciones" wire:model.live="descripcion_orientaciones"
+                                placeholder="Ingrese las orientaciones generales"></textarea>
+                                @error('descripcion_orientaciones')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal"
+                            wire:click="cerrar_modal">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round"
+                                class="icon icon-tabler icons-tabler-outline icon-tabler-ban">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                <path d="M5.7 5.7l12.6 12.6" />
+                            </svg>
+                            Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-primary ms-auto">
+                            @if ($modo_orientaciones === 1)
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M12 5l0 14" />
+                                    <path d="M5 12l14 0" />
+                                </svg>
+                            @else
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                    <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                    <path d="M16 5l3 3" />
+                                </svg>
+                            @endif
+                            {{ $accion_estado_orientaciones }}
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

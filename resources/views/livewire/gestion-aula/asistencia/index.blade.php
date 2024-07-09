@@ -189,7 +189,7 @@
                                                 @elseif ($tipo_vista === 'carga-academica' && ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario) || $usuario->esRolGestionAula('DOCENTE INVITADO', $id_gestion_aula_usuario)))
                                                     <td>
                                                         @if (verificar_hora_actual($item->hora_inicio_asistencia, $item->hora_fin_asistencia, $item->fecha_asistencia))
-                                                            <button type="button" class="btn btn-outline-primary btn-sm">
+                                                            <button type="button" class="btn btn-outline-primary">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                     height="24" viewBox="0 0 24 24" fill="none"
                                                                     stroke="currentColor" stroke-width="2"
@@ -203,7 +203,7 @@
                                                                 Marcar Asistencias
                                                             </button>
                                                         @else
-                                                            <button type="button" class="btn btn-outline-teal btn-sm">
+                                                            <button type="button" class="btn btn-outline-teal">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                     height="24" viewBox="0 0 24 24" fill="none"
                                                                     stroke="currentColor" stroke-width="2"

@@ -21,5 +21,7 @@ return [
     'fondo_detalle_doncente' => '/assets/static/photos/businesswoman-working-at-her-laptop-2.jpg',
     'fondo_detalle_alumno' => '/assets/static/photos/colorful-exotic-flowers-and-greenery.jpg',
 
+    'ver_docente_invitado' => false,
+
     'version_sistema' => 'BETA',
 ];

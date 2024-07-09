@@ -203,7 +203,7 @@ if (!function_exists('limpiar_cadena'))
         $cadena=str_replace($tilde, $reemplazo, $cadena);
         $cadena=str_replace($dieresis, $reemplazo, $cadena);
         $cadena=trim($cadena);
-        $cadena=strtoupper($cadena);
+        // $cadena=strtoupper($cadena);
         return $cadena;
     }
 }

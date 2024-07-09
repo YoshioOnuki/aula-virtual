@@ -32,15 +32,27 @@ class InfoDocente extends Component
 
         $gestion_aula = $gestion_aula_usuario->gestionAula;
 
-        $this->docente = GestionAulaUsuario::with(['usuario.persona'])
-            ->join('rol', 'gestion_aula_usuario.id_rol', '=', 'rol.id_rol')
-            ->where('id_gestion_aula', $gestion_aula->id_gestion_aula)
-            ->where(function($query) {
-                $query->where('rol.nombre_rol', 'DOCENTE')
-                    ->orWhere('rol.nombre_rol', 'DOCENTE INVITADO');
-            })
-            ->orderBy('rol.nombre_rol', 'asc')
-            ->get();
+        if(config('settings.ver_docente_invitado'))
+        {
+            $this->docente = GestionAulaUsuario::with(['usuario.persona'])
+                ->join('rol', 'gestion_aula_usuario.id_rol', '=', 'rol.id_rol')
+                ->where('id_gestion_aula', $gestion_aula->id_gestion_aula)
+                ->where(function($query) {
+                    $query->where('rol.nombre_rol', 'DOCENTE')
+                        ->orWhere('rol.nombre_rol', 'DOCENTE INVITADO');
+                })
+                ->orderBy('rol.nombre_rol', 'asc')
+                ->get();
+        }else{
+            $this->docente = GestionAulaUsuario::with(['usuario.persona'])
+                ->join('rol', 'gestion_aula_usuario.id_rol', '=', 'rol.id_rol')
+                ->where('id_gestion_aula', $gestion_aula->id_gestion_aula)
+                ->where(function($query) {
+                    $query->where('rol.nombre_rol', 'DOCENTE');
+                })
+                ->orderBy('rol.nombre_rol', 'asc')
+                ->get();
+        }
     }
 
 

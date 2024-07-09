@@ -159,8 +159,9 @@ class Index extends Component
             })
             ->first();
         if($docente) {
-            $id_url = Hashids::encode($docente->id_gestion_aula_usuario);
-            return redirect()->route('cursos.detalle', ['id' => $id_url]);
+            $id_curso = Hashids::encode($docente->id_gestion_aula_usuario);
+            $id_usuario = Hashids::encode($this->usuario->id_usuario);
+            return redirect()->route('cursos.detalle', ['id_usuario' => $id_usuario, 'tipo_vista' => 'cursos', 'id_curso' => $id_curso]);
         } else {
             $this->dispatch(
                 'toast-basico',
@@ -179,8 +180,9 @@ class Index extends Component
             })
             ->first();
         if($docente) {
-            $id_url = Hashids::encode($docente->id_gestion_aula_usuario);
-            return redirect()->route('carga-academica.detalle', ['id' => $id_url]);
+            $id_curso = Hashids::encode($docente->id_gestion_aula_usuario);
+            $id_usuario = Hashids::encode($this->usuario->id_usuario);
+            return redirect()->route('carga-academica.detalle', ['id_usuario' => $id_usuario, 'tipo_vista' => 'carga-academica', 'id_curso' => $id_curso]);
         } else {
             $this->dispatch(
                 'toast-basico',

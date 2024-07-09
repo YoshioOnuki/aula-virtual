@@ -20,6 +20,9 @@ class DatosCurso extends Component
 
     public $tipo_vista; // Para saber que tipo de vista se está mostrando
 
+    protected $listeners = ['actualizar_datos_curso' => 'load_datos_curso'];
+
+
     public function load_datos_curso()
     {
         usleep(300000);
@@ -58,7 +61,7 @@ class DatosCurso extends Component
 
     public function mostrar_link_clase()
     {
-        if($this->gestion_aula_usuario->gestionAula->linkClase->isEmpty())
+        if(!$this->gestion_aula_usuario->gestionAula->linkClase)
         {
             $this->dispatch(
                 'toast-basico',
@@ -66,9 +69,7 @@ class DatosCurso extends Component
                 type: 'error'
             );
         }else{
-            //redirigir a un enlace externo
-            return redirect()->away($this->gestion_aula_usuario->gestionAula->linkClase->nombre_link_clase);
-
+            $this->dispatch('redirectLink', $this->gestion_aula_usuario->gestionAula->linkClase->nombre_link_clase);
         }
     }
 

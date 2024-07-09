@@ -230,3 +230,13 @@
         </div>
     @endif
 </div>
+
+@push('scripts')
+<script>
+    document.addEventListener('livewire:navigated', () => {
+        Livewire.on('redirectLink', link => {
+            window.open(link, '_blank');
+        });
+    });
+</script>
+@endpush
