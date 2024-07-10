@@ -55,10 +55,10 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <h4 class="alert-title">¡Guía rápida para buscar {{ $tipo_vista }}s!</h4>
+                                        <h4 class="alert-title">¡Guía rápida para buscar {{ $tipo_vista === 'cursos' ? 'Alumnos' : 'Docentes' }}!</h4>
                                         <div class="text-secondary">
                                             <strong>
-                                                Puede buscar un {{ $tipo_vista }} por los siguientes criterios:
+                                                Puede buscar un {{ $tipo_vista === 'cursos' ? 'Alumnos' : 'Docentes' }} por los siguientes criterios:
                                             </strong>
                                         </div>
                                         <div class="text-secondary">
@@ -79,7 +79,7 @@
                                     <div class="w-100">
                                         <input type="text" class="form-control"
                                             wire:model.live.debounce.500ms="search" aria-label="Search invoice"
-                                            placeholder="Buscar {{ $tipo_vista }}">
+                                            placeholder="Buscar {{ $tipo_vista === 'cursos' ? 'Alumnos' : 'Docentes' }}">
                                     </div>
                             </div>
                         </div>
@@ -181,7 +181,7 @@
                                                     <div class="text-center"
                                                         style="padding-bottom: 2rem; padding-top: 2rem;">
                                                         <span class="text-secondary">
-                                                            Busca un {{ $tipo_vista }}...
+                                                            Busca un {{ $tipo_vista === 'cursos' ? 'Alumno' : 'Docente' }}...
                                                         </span>
                                                     </div>
                                                 </td>
