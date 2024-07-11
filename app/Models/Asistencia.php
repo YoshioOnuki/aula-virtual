@@ -15,12 +15,17 @@ class Asistencia extends Model
     protected $primaryKey = 'id_asistencia';
     protected $fillable = [
         'id_asistencia',
-        'nombre_asistencia',
         'fecha_asistencia',
         'hora_inicio_asistencia',
         'hora_fin_asistencia',
+        'id_tipo_asistencia',
         'id_gestion_aula',
     ];
+
+    public function tipoAsistencia()
+    {
+        return $this->belongsTo(TipoAsistencia::class, 'id_tipo_asistencia');
+    }
 
     public function asistenciaAlumno()
     {

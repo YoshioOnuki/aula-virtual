@@ -4,9 +4,11 @@ namespace App\Livewire\GestionAula\Asistencia;
 
 use App\Models\Asistencia;
 use App\Models\GestionAulaUsuario;
+use App\Models\TipoAsistencia;
 use App\Models\Usuario;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Vinkla\Hashids\Facades\Hashids;
@@ -28,6 +30,19 @@ class Index extends Component
     public $id_gestion_aula_usuario_hash;
     public $id_gestion_aula_usuario;
 
+    // Variables para el modal de Asistencias
+    public $modo_asistencias = 1; // Modo 1 = Agregar / 0 = Editar
+    public $titulo_asistencias = 'Agregar Link de Clase';
+    public $accion_asistencias = 'Agregar';
+    #[Validate('required')]
+    public $tipo_asistencia;
+    #[Validate('required|date|after_or_equal:today')]
+    public $fecha_asistencia;
+    #[Validate('required|date_format:H:i')]
+    public $hora_inicio_asistencia;
+    #[Validate('required|date_format:H:i')]
+    public $hora_fin_asistencia;
+
     public $modo_admin = false;// Modo admin, para saber si se esta en modo administrador
 
     // Variables para page-header
@@ -37,9 +52,42 @@ class Index extends Component
 
     public $tipo_vista;
 
+    protected $messages = [
+        'fecha_asistencia.after_or_equal' => 'El campo fecha de asistencia debe ser una fecha posterior o igual a hoy.',
+    ];
+
+
     public function updatingMostrarPaginate()
     {
         $this->resetPage();
+    }
+
+
+    /* =============== FUNCIONES PARA EL MODAL DE LINK DE CURSO Y ORIENTACIONES - AGREGAR Y EDITAR =============== */
+    public function abrir_modal_asistencias_agregar()
+    {
+        // $this->limpiar_modal();
+
+        $this->modo_asistencias = 1; // Agregar
+        $this->titulo_asistencias = 'Agregar Asistencia';
+        $this->accion_asistencias = 'Agregar';
+
+        $this->dispatch(
+            'modal',
+            modal: '#modal-asistencias',
+            action: 'show'
+        );
+    }
+
+    public function guardar_asistencias()
+    {
+        $this->validate([
+            'tipo_asistencia' => 'required',
+            'fecha_asistencia' => 'required|date|after_or_equal:today',
+            'hora_inicio_asistencia' => 'required|date_format:H:i',
+            'hora_fin_asistencia' => 'required|date_format:H:i',
+        ]);
+        dd($this->fecha_asistencia, $this->hora_inicio_asistencia, $this->hora_fin_asistencia);
     }
 
 
@@ -152,6 +200,9 @@ class Index extends Component
                                 ->select('id_gestion_aula_usuario', 'id_gestion_aula', 'id_usuario');
                         }
                     ])->select('id_asistencia_alumno', 'id_estado_asistencia', 'id_asistencia', 'id_gestion_aula_usuario');
+                },
+                'tipoAsistencia' => function ($query) {
+                    $query->select('id_tipo_asistencia', 'nombre_tipo_asistencia');
                 }
             ])->where('id_gestion_aula', $gestion_aula_usuario->gestionAula->id_gestion_aula)
                 ->search($this->search)
@@ -168,8 +219,11 @@ class Index extends Component
                 ->paginate($this->mostrar_paginate);
         }
 
+        $tipo_asistencias = TipoAsistencia::where('estado_tipo_asistencia', 1)->get();
+
         return view('livewire.gestion-aula.asistencia.index', [
             'asistencias' => $asistencias,
+            'tipo_asistencias' => $tipo_asistencias
         ]);
     }
 }

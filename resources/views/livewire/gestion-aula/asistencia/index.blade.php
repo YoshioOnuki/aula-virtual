@@ -94,7 +94,7 @@
 
                                         @if ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario) && $tipo_vista === 'carga-academica')
                                             <div class="col-lg-5 col-3 d-flex justify-content-end">
-                                                <a href="" class="btn btn-primary d-none d-md-inline-block">
+                                                <a class="btn btn-primary d-none d-md-inline-block" wire:click="abrir_modal_asistencias_agregar">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
                                                         height="24" viewBox="0 0 24 24" stroke-width="2"
                                                         stroke="currentColor" fill="none" stroke-linecap="round"
@@ -105,7 +105,7 @@
                                                     </svg>
                                                     Crear Asistencia
                                                 </a>
-                                                <a href="" class="btn btn-primary d-md-none btn-icon">
+                                                <a class="btn btn-primary d-md-none btn-icon" wire:click="abrir_modal_asistencias_agregar">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
                                                         height="24" viewBox="0 0 24 24" stroke-width="2"
                                                         stroke="currentColor" fill="none" stroke-linecap="round"
@@ -145,7 +145,7 @@
                                                     {{ format_hora($item->hora_fin_asistencia) }}
                                                 </td>
                                                 <td>
-                                                    {{ $item->nombre_asistencia }}
+                                                    Sesión de {{ $item->tipoAsistencia->nombre_tipo_asistencia }}
                                                 </td>
                                                 @if ($tipo_vista === 'cursos')
                                                     <td class="text-center">
@@ -278,11 +278,114 @@
             </div>
         </div>
     </div>
+
+
+    <div wire:ignore.self class="modal fade" id="modal-asistencias" tabindex="-1" data-bs-backdrop="static">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        {{ $titulo_asistencias }}
+                    </h5>
+                    <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal"
+                        aria-label="Close" wire:click="cerrar_modal"></button>
+                </div>
+                <form autocomplete="off" wire:submit="guardar_asistencias">
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-lg-12">
+                                <label for="tipo_asistencia" class="form-label required">Tipo de Asistencia</label>
+                                <select type="password" class="form-select @if ($errors->has('tipo_asistencia')) is-invalid @elseif($tipo_asistencia) is-valid @endif"
+                                id="tipo_asistencia" wire:model.live="tipo_asistencia">
+                                    <option value="">Seleccione el tipo de asistencia</option>
+                                    @foreach ($tipo_asistencias as $item)
+                                        <option value="{{ $item->id_tipo_asistencia }}">{{ $item->nombre_tipo_asistencia }}</option>
+                                    @endforeach
+                                </select>
+                                @error('tipo_asistencia')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <small class="form-hint">
+                                    <font style="vertical-align: inherit;">
+                                        <font style="vertical-align: inherit;">
+                                            <strong>Asistencia Autónoma:</strong> El alumno registra su asistencia de
+                                            manera autónoma. <br>
+                                            <strong>Asistencia Supervisada:</strong> El docente registra la asistencia del
+                                            alumno.
+                                        </font>
+                                    </font>
+                                </small>
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="fecha_asistencia" class="form-label required">Fecha de Asistencia</label>
+                                <input type="date" class="form-control @if ($errors->has('fecha_asistencia')) is-invalid @elseif($fecha_asistencia) is-valid @endif" wire:model.live="fecha_asistencia">
+                                @error('fecha_asistencia')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="hora_inicio_asistencia" class="form-label required">Hora de inicio</label>
+                                <input type="time" class="form-control @if ($errors->has('hora_inicio_asistencia')) is-invalid @elseif($hora_inicio_asistencia) is-valid @endif" wire:model.live="hora_inicio_asistencia">
+                                @error('hora_inicio_asistencia')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="hora_fin_asistencia" class="form-label required">Hora de fin</label>
+                                <input type="time" class="form-control @if ($errors->has('hora_fin_asistencia')) is-invalid @elseif($hora_fin_asistencia) is-valid @endif" wire:model.live="hora_fin_asistencia">
+                                @error('hora_fin_asistencia')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal"
+                            wire:click="cerrar_modal">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round"
+                                class="icon icon-tabler icons-tabler-outline icon-tabler-ban">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                <path d="M5.7 5.7l12.6 12.6" />
+                            </svg>
+                            Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-primary ms-auto">
+                            @if ($modo_asistencias === 1)
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M12 5l0 14" />
+                                    <path d="M5 12l14 0" />
+                                </svg>
+                            @else
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                    <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                    <path d="M16 5l3 3" />
+                                </svg>
+                            @endif
+                            {{ $accion_asistencias }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 @push('scripts')
 
-<script src="{{ asset('js/mobile-detect/mobile-detect.min.js') }}"></script>
+    <script src="{{ asset('js/mobile-detect/mobile-detect.min.js') }}"></script>
     <script>
         document.addEventListener('livewire:navigated', () => {
             const asistencias = document.querySelector('.asistencias');
