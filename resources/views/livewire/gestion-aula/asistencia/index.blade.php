@@ -130,7 +130,7 @@
                                             @if ($tipo_vista === 'cursos')
                                                 <th class="col-2 text-center">Estado</th>
                                             @endif
-                                            <th class="col-2 text-center">Acciones</th>
+                                            <th class="col-2">Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -157,10 +157,9 @@
                                                             ?
                                                         @endif
                                                     </td>
-                                                    <td class="text-center">
+                                                    <td>
                                                         @if ($item->asistenciaAlumno->isEmpty())
-                                                            <button type="button"
-                                                                class="btn btn-outline-primary
+                                                            <button type="button" class="btn btn-outline-primary
                                                                 {{ verificar_hora_actual($item->hora_inicio_asistencia, $item->hora_fin_asistencia, $item->fecha_asistencia) ? '' : 'disabled' }}">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                     height="24" viewBox="0 0 24 24" fill="none"
@@ -188,36 +187,27 @@
                                                     </td>
                                                 @elseif ($tipo_vista === 'carga-academica' && ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario) || $usuario->esRolGestionAula('DOCENTE INVITADO', $id_gestion_aula_usuario)))
                                                     <td>
-                                                        @if (verificar_hora_actual($item->hora_inicio_asistencia, $item->hora_fin_asistencia, $item->fecha_asistencia))
-                                                            <button type="button" class="btn btn-outline-primary">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                    height="24" viewBox="0 0 24 24" fill="none"
-                                                                    stroke="currentColor" stroke-width="2"
-                                                                    stroke-linecap="round" stroke-linejoin="round"
-                                                                    class="icon icon-tabler icons-tabler-outline icon-tabler-edit me-1">
-                                                                    <path stroke="none" d="M0 0h24v24H0z"
-                                                                        fill="none" />
-                                                                    <path d="M7 12l5 5l10 -10" />
-                                                                    <path d="M2 12l5 5m5 -5l5 -5" />
-                                                                </svg>
-                                                                Marcar Asistencias
-                                                            </button>
-                                                        @else
-                                                            <button type="button" class="btn btn-outline-teal">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                    height="24" viewBox="0 0 24 24" fill="none"
-                                                                    stroke="currentColor" stroke-width="2"
-                                                                    stroke-linecap="round" stroke-linejoin="round"
-                                                                    class="icon icon-tabler icons-tabler-outline icon-tabler-eye me-1">
-                                                                    <path stroke="none" d="M0 0h24v24H0z"
-                                                                        fill="none" />
-                                                                    <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-                                                                    <path
-                                                                        d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
-                                                                </svg>
-                                                                Ver Asistencias
-                                                            </button>
-                                                        @endif
+                                                        <div class="btn-list flex-nowrap">
+                                                            <div class="dropdown">
+                                                                <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                    Acciones
+                                                                </button>
+                                                                <div class="dropdown-menu dropdown-menu-end">
+                                                                    <a class="dropdown-item" style="cursor: pointer;">
+                                                                        Editar
+                                                                    </a>
+                                                                    @if (verificar_hora_actual($item->hora_inicio_asistencia, $item->hora_fin_asistencia, $item->fecha_asistencia))
+                                                                        <a class="dropdown-item" style="cursor: pointer;">
+                                                                            Marcar Asistencias
+                                                                        </a>
+                                                                    @else
+                                                                        <a class="dropdown-item" style="cursor: pointer;">
+                                                                            Ver Asistencias
+                                                                        </a>
+                                                                    @endif
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </td>
                                                 @endif
                                             </tr>
