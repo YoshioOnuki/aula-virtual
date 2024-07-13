@@ -59,9 +59,11 @@ class Index extends Component
     {
         $this->validate();
 
-        DB::beginTransaction();
 
-        try {
+        try
+        {
+            DB::beginTransaction();
+
             $nombre_bd = $this->subir_silabus();
 
             $gestion_aula_usuario = GestionAulaUsuario::find($this->id_gestion_aula_usuario);

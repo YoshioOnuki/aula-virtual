@@ -91,9 +91,11 @@ class Index extends Component
     {
         $this->validate();
 
-        DB::beginTransaction();
 
-        try {
+        try
+        {
+            DB::beginTransaction();
+
             if($this->modo === 1) // Agregar
             {
                 $webgrafia = new Webgrafia();
@@ -150,6 +152,8 @@ class Index extends Component
         $this->accion_estado = 'Crear';
         $this->descripcion_webgrafia = '';
         $this->link_webgrafia = '';
+        // Reiniciar errores
+        $this->resetErrorBag();
     }
 
     public function redirect_link(Webgrafia $webgrafia)

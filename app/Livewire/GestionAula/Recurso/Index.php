@@ -113,9 +113,10 @@ class Index extends Component
     {
         $this->validate();
 
-        DB::beginTransaction();
 
-        try {
+        try
+        {
+            DB::beginTransaction();
 
             $nombre_bd = $this->subir_archivo_recurso();
 
@@ -174,6 +175,8 @@ class Index extends Component
         $this->nombre_recurso = '';
         $this->editar_recurso = null;
         $this->reset('archivo_recurso');
+        // Reiniciar errores
+        $this->resetErrorBag();
     }
 
 

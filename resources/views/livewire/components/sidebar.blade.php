@@ -278,6 +278,40 @@
                         </a>
                     </li>
 
+                    <li class="nav-item {{ request()->routeIs('docentes*') || 
+                        request()->routeIs('carga-academica*') ? 'active' : '' }}">
+                        <a class="nav-link {{ request()->routeIs('docentes*') || 
+                            request()->routeIs('carga-academica*') ? 'text-primary fw-medium' : '' }}"
+                            style="cursor: pointer;" wire:click="redirigir_docentes">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-books
+                                    {{ request()->routeIs('docentes*') || 
+                                    request()->routeIs('carga-academica*') ? 'text-primary' : '' }}">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path
+                                        d="M5 4m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" />
+                                    <path
+                                        d="M9 4m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" />
+                                    <path d="M5 8h4" />
+                                    <path d="M9 16h4" />
+                                    <path
+                                        d="M13.803 4.56l2.184 -.53c.562 -.135 1.133 .19 1.282 .732l3.695 13.418a1.02 1.02 0 0 1 -.634 1.219l-.133 .041l-2.184 .53c-.562 .135 -1.133 -.19 -1.282 -.732l-3.695 -13.418a1.02 1.02 0 0 1 .634 -1.219l.133 -.041z" />
+                                    <path d="M14 9l4 -1" />
+                                    <path d="M16 16l3.923 -.98" />
+                                </svg>
+                            </span>
+                            <span class="nav-link-title hide-theme-dark">
+                                Todos los Cursos
+                            </span>
+                            <span class="nav-link-title hide-theme-light">
+                                Todos los Cursos
+                            </span>
+                        </a>
+                    </li>
+
                     <div class="ms-lg-3 mt-3 mb-3 hr-text hide-theme-dark">
                         <span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -376,22 +410,15 @@
                             href="#navbar-layout" data-bs-toggle="dropdown" data-bs-auto-close="false"
                             role="button" aria-expanded="true">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round"
-                                    class="icon icon-tabler icons-tabler-outline icon-tabler-books
-                                    {{ request()->routeIs('gestion-curso*') ? 'text-primary' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round"stroke-linejoin="round"
+                                class="icon icon-tabler icons-tabler-outline icon-tabler-book-2
+                                {{ request()->routeIs('gestion-curso*') ? 'text-primary' : '' }}">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path
-                                        d="M5 4m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" />
-                                    <path
-                                        d="M9 4m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" />
-                                    <path d="M5 8h4" />
-                                    <path d="M9 16h4" />
-                                    <path
-                                        d="M13.803 4.56l2.184 -.53c.562 -.135 1.133 .19 1.282 .732l3.695 13.418a1.02 1.02 0 0 1 -.634 1.219l-.133 .041l-2.184 .53c-.562 .135 -1.133 -.19 -1.282 -.732l-3.695 -13.418a1.02 1.02 0 0 1 .634 -1.219l.133 -.041z" />
-                                    <path d="M14 9l4 -1" />
-                                    <path d="M16 16l3.923 -.98" />
+                                    <path d="M19 4v16h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12z" />
+                                    <path d="M19 16h-12a2 2 0 0 0 -2 2" />
+                                    <path d="M9 8h6" />
                                 </svg>
                             </span>
                             <span class="nav-link-title">

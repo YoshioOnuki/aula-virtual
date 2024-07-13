@@ -73,7 +73,8 @@ class Index extends Component
     public function cambiar_estado()
     {
         //Transacción para el manejo de datos
-        try {
+        try
+        {
             DB::beginTransaction();
 
             $gestion_aula_usuario = GestionAulaUsuario::find($this->id_gestion_aula_usuario_alumno);
@@ -126,6 +127,9 @@ class Index extends Component
         $this->modo = 1;
         $this->titulo_modal = 'Estado de Alumno';
         $this->accion_estado = 'Habilitar';
+
+        // Reiniciar errores
+        $this->resetErrorBag();
 
         $this->dispatch(
             'modal',

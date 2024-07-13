@@ -112,10 +112,11 @@ class Detalle extends Component
             'nombre_link_clase' => 'required|url'
         ]);
 
-        DB::beginTransaction();
 
         try
         {
+            DB::beginTransaction();
+
             $id_gestion_aula = GestionAulaUsuario::find($this->id_gestion_aula_usuario)->id_gestion_aula;
 
             if($this->modo_link_clase === 1) // Agregar
@@ -160,10 +161,11 @@ class Detalle extends Component
             'descripcion_orientaciones' => 'required'
         ]);
 
-        DB::beginTransaction();
 
         try
         {
+            DB::beginTransaction();
+
             $id_gestion_aula = GestionAulaUsuario::find($this->id_gestion_aula_usuario)->id_gestion_aula;
 
             if($this->modo_orientaciones === 1) // Agregar
@@ -226,6 +228,8 @@ class Detalle extends Component
         $this->modo_orientaciones = 1;
         $this->titulo_orientaciones = 'Agregar Orientaciones';
         $this->accion_estado_orientaciones = 'Agregar';
+        // Reiniciar errores
+        $this->resetErrorBag();
     }
 
 
