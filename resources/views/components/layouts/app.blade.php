@@ -28,6 +28,14 @@
         body {
             font-feature-settings: "cv03", "cv04", "cv11";
         }
+
+        .full-height {
+            height: 100vh;
+        }
+
+        .empty {
+            text-align: center;
+        }
     </style>
     <!-- Tabler Core -->
     <script src="{{ asset('assets/dist/js/tabler.min.js?1684106062') }}" defer></script>
