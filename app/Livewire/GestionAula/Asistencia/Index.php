@@ -3,6 +3,9 @@
 namespace App\Livewire\GestionAula\Asistencia;
 
 use App\Models\Asistencia;
+use App\Models\AsistenciaAlumno;
+use App\Models\EstadoAsistencia;
+use App\Models\GestionAula;
 use App\Models\GestionAulaUsuario;
 use App\Models\TipoAsistencia;
 use App\Models\Usuario;
@@ -53,6 +56,15 @@ class Index extends Component
     public $fecha_asistencia_a_eliminar;
     public $hora_inicio_asistencia_a_eliminar;
     public $hora_fin_asistencia_a_eliminar;
+
+    // Variables para el modal de enviar asistencia
+    public $id_asistencia_enviar;
+    public $estado_asistencia;
+    public $estados = [];
+    public $tipo_asistencia_a_enviar;
+    public $fecha_asistencia_a_enviar;
+    public $hora_inicio_asistencia_a_enviar;
+    public $hora_fin_asistencia_a_enviar;
 
     public $modo_admin = false;// Modo admin, para saber si se esta en modo administrador
 
@@ -293,6 +305,95 @@ class Index extends Component
     }
 
 
+    /* =============== FUNCIONES PARA ENVIAR ASISTENCIAS =============== */
+    public function abrir_modal_enviar_asistencia(Asistencia $asistencia)
+    {
+        $this->limpiar_modal_enviar();
+        $this->dispatch(
+            'modal',
+            modal: '#modal-enviar-asistencia',
+            action: 'show'
+        );
+
+        $this->id_asistencia_enviar = $asistencia->id_asistencia;
+        $this->estados = EstadoAsistencia::where('estado_estado_asistencia', 1)->get();
+        $this->tipo_asistencia_a_enviar = $asistencia->tipoAsistencia->nombre_tipo_asistencia;
+        $this->fecha_asistencia_a_enviar = $asistencia->fecha_asistencia;
+        $this->hora_inicio_asistencia_a_enviar = $asistencia->hora_inicio_asistencia;
+        $this->hora_fin_asistencia_a_enviar = $asistencia->hora_fin_asistencia;
+    }
+
+    public function enviar_asistencia()
+    {
+        $this->validate([
+            'estado_asistencia' => 'required'
+        ]);
+
+        try
+        {
+            DB::beginTransaction();
+
+            // dd(verificar_hora_actual($this->hora_inicio_asistencia_a_enviar, $this->hora_fin_asistencia_a_enviar, $this->fecha_asistencia_a_enviar));
+            if(verificar_hora_actual($this->hora_inicio_asistencia_a_enviar, $this->hora_fin_asistencia_a_enviar, $this->fecha_asistencia_a_enviar))
+            {
+                $asistencia_alumno = new AsistenciaAlumno();
+                $asistencia_alumno->id_asistencia = $this->id_asistencia_enviar;
+                $asistencia_alumno->id_estado_asistencia = $this->estado_asistencia;
+                $asistencia_alumno->id_gestion_aula_usuario = $this->id_gestion_aula_usuario;
+                $asistencia_alumno->save();
+            }else{
+                $this->cerrar_modal_enviar();
+                $this->dispatch(
+                    'toast-basico',
+                    mensaje: 'No se puede enviar la asistencia,  el horario permitido para marcar asistencia ha finalizado.',
+                    type: 'error'
+                );
+                return;
+            }
+
+            DB::commit();
+
+            $this->cerrar_modal_enviar();
+
+            $this->dispatch(
+                'toast-basico',
+                mensaje: 'La asistencia se ha enviado correctamente',
+                type: 'success'
+            );
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $this->dispatch(
+                'toast-basico',
+                mensaje: 'Ha ocurrido un error al enviar la asistencia.',
+                type: 'error'
+            );
+        }
+    }
+
+    public function cerrar_modal_enviar()
+    {
+        $this->limpiar_modal_enviar();
+        $this->dispatch(
+            'modal',
+            modal: '#modal-enviar-asistencia',
+            action: 'hide'
+        );
+    }
+
+    public function limpiar_modal_enviar()
+    {
+        $this->id_asistencia_enviar = null;
+        $this->estado_asistencia = '';
+        $this->tipo_asistencia_a_enviar = '';
+        $this->fecha_asistencia_a_enviar = '';
+        $this->hora_inicio_asistencia_a_enviar = '';
+        $this->hora_fin_asistencia_a_enviar = '';
+        // Reiniciar errores
+        $this->resetErrorBag();
+    }
+
+
     /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
     public function obtener_datos_page_header()
     {
@@ -391,6 +492,23 @@ class Index extends Component
 
         if($this->tipo_vista === 'cursos')
         {
+            $prueba = GestionAulaUsuario::with([
+                'usuario' => function ($query) {
+                    $query->with([
+                        'persona' => function ($query) {
+                            $query->select('id_persona', 'nombres_persona', 'apellido_paterno_persona', 'apellido_materno_persona');
+                        }
+                    ])->select('id_usuario', 'id_persona');
+                },
+                'gestionAula' => function ($query) {
+                    $query->with([
+                        'curso' => function ($query) {
+                            $query->select('id_curso', 'nombre_curso');
+                        }
+                    ])->select('id_gestion_aula', 'id_curso');
+                }
+            ])->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)->first();
+            dd($prueba);
             $asistencias = Asistencia::with([
                 'asistenciaAlumno' => function ($query) {
                     $query->with([
@@ -398,10 +516,10 @@ class Index extends Component
                             $query->select('id_estado_asistencia', 'nombre_estado_asistencia');
                         },
                         'gestionAulaUsuario' => function ($query) {
-                            $query->where('id_usuario', $this->usuario->id_usuario)
-                                ->select('id_gestion_aula_usuario', 'id_gestion_aula', 'id_usuario');
+                            $query->select('id_gestion_aula_usuario', 'id_gestion_aula', 'id_usuario');
                         }
-                    ])->select('id_asistencia_alumno', 'id_estado_asistencia', 'id_asistencia', 'id_gestion_aula_usuario');
+                    ])->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)
+                        ->select('id_asistencia_alumno', 'id_estado_asistencia', 'id_asistencia', 'id_gestion_aula_usuario');
                 },
                 'tipoAsistencia' => function ($query) {
                     $query->select('id_tipo_asistencia', 'nombre_tipo_asistencia');
@@ -411,6 +529,8 @@ class Index extends Component
                 ->orderBy('fecha_asistencia', 'asc')
                 ->orderBy('hora_inicio_asistencia', 'asc')
                 ->paginate($this->mostrar_paginate);
+
+            dd($asistencias);
 
         }elseif($this->tipo_vista === 'carga-academica')
         {

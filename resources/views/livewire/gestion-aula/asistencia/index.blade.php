@@ -224,9 +224,9 @@
                                                 </td>
                                                 @if ($tipo_vista === 'cursos')
                                                     <td class="text-center">
-                                                        @if (!$item->asistenciaAlumno->isEmpty())
+                                                        @if ($item->asistenciaAlumno)
                                                             <span class="status status-teal px-3 py-2">
-                                                                Presente
+                                                                {{ $item->asistenciaAlumno }}
                                                             </span>
                                                         @else
                                                             ?
@@ -235,7 +235,8 @@
                                                     <td>
                                                         @if ($item->asistenciaAlumno->isEmpty())
                                                             <button type="button" class="btn btn-outline-primary
-                                                                {{ verificar_hora_actual($item->hora_inicio_asistencia, $item->hora_fin_asistencia, $item->fecha_asistencia) ? '' : 'disabled' }}">
+                                                                {{ verificar_hora_actual($item->hora_inicio_asistencia, $item->hora_fin_asistencia, $item->fecha_asistencia) ? '' : 'disabled' }}"
+                                                                wire:click="abrir_modal_enviar_asistencia({{ $item->id_asistencia }})">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                     height="24" viewBox="0 0 24 24" fill="none"
                                                                     stroke="currentColor" stroke-width="2"
@@ -363,7 +364,7 @@
                         <div class="row g-3">
                             <div class="col-lg-12">
                                 <label for="tipo_asistencia" class="form-label required">Tipo de Asistencia</label>
-                                <select type="password" class="form-select @if ($errors->has('tipo_asistencia')) is-invalid @elseif($tipo_asistencia) is-valid @endif"
+                                <select class="form-select @if ($errors->has('tipo_asistencia')) is-invalid @elseif($tipo_asistencia) is-valid @endif"
                                 id="tipo_asistencia" wire:model.live="tipo_asistencia">
                                     <option value="">Seleccione el tipo de asistencia</option>
                                     @foreach ($tipo_asistencias as $item)
@@ -563,6 +564,92 @@
                                 <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
                             </svg>
                             Eliminar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div wire:ignore.self class="modal fade" id="modal-enviar-asistencia" tabindex="-1" data-bs-backdrop="static">
+        <div class="modal-dialog modal-md modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        Enviar Asistencia
+                    </h5>
+                    <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal"
+                        aria-label="Close" wire:click="cerrar_modal_enviar"></button>
+                </div>
+                <form autocomplete="off" wire:submit="enviar_asistencia" novalidate>
+                    <div class="modal-status bg-teal"></div>
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-lg-12">
+                                <ul style="list-style-type: none;">
+                                    <li class="mb-2">
+                                        <strong>
+                                            Tipo de Asistencia:
+                                        </strong>
+                                        <span class="text-secondary">
+                                            {{ $tipo_asistencia_a_enviar }}
+                                        </span>
+                                    </li>
+                                    <li class="mb-2">
+                                        <strong>Fecha:</strong>
+                                        <span class="text-secondary">
+                                            {{ $fecha_asistencia_a_enviar }}
+                                        </span>
+                                    </li>
+                                    <li class="">
+                                        <strong>Horario:</strong>
+                                        <span class="text-secondary">
+                                            {{ format_hora($hora_inicio_asistencia_a_enviar) }} -
+                                            {{ format_hora($hora_fin_asistencia_a_enviar) }}
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="estado_asistencia" class="form-label required">Estado de Asistencia</label>
+                                <select class="form-select @if ($errors->has('estado_asistencia')) is-invalid @elseif($estado_asistencia) is-valid @endif"
+                                id="estado_asistencia" wire:model.live="estado_asistencia">
+                                    <option value="">Seleccione el tipo de asistencia</option>
+                                    @foreach ($estados as $item)
+                                        <option value="{{ $item->id_estado_asistencia }}">{{ $item->nombre_estado_asistencia }}</option>
+                                    @endforeach
+                                </select>
+                                @error('estado_asistencia')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <a class="btn btn-outline-secondary" data-bs-dismiss="modal"
+                            wire:click="cerrar_modal_enviar">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round"
+                                class="icon icon-tabler icons-tabler-outline icon-tabler-ban">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                <path d="M5.7 5.7l12.6 12.6" />
+                            </svg>
+                            Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-teal ms-auto">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                height="24" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round"
+                                class="icon icon-tabler icons-tabler-outline icon-tabler-checks">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M7 12l5 5l10 -10" />
+                                <path d="M2 12l5 5m5 -5l5 -5" />
+                            </svg>
+                            Enviar Asistencia
                         </button>
                     </div>
                 </form>
