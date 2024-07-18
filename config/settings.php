@@ -17,6 +17,11 @@ return [
     'bg-docente' => 'orange',
     'bg-docente-lt' => 'orange-lt',
 
+    'color-asistencia-presente' => 'teal',
+    'color-asistencia-tarde' => 'yellow',
+    'color-asistencia-ausente' => 'danger',
+    'color-asistencia-justificado' => 'info',
+
     'fondo_curso_default' => '/media/fondo-cursos/fondo-infor.webp',
     'fondo_detalle_doncente' => '/assets/static/photos/businesswoman-working-at-her-laptop-2.jpg',
     'fondo_detalle_alumno' => '/assets/static/photos/colorful-exotic-flowers-and-greenery.jpg',

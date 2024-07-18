@@ -56,7 +56,10 @@ class Index extends Component
             })
             ->first();
         if($docente) {
-            $id_curso = Hashids::encode($docente->id_gestion_aula_usuario);
+            $gestion_aula_usuario = GestionAulaUsuario::where('id_gestion_aula', $id)
+                ->where('id_usuario', $this->usuario->id_usuario)
+                ->first();
+            $id_curso = Hashids::encode($gestion_aula_usuario->id_gestion_aula_usuario);
             $id_usuario = Hashids::encode($this->usuario->id_usuario);
 
             if(session('modo_admin'))

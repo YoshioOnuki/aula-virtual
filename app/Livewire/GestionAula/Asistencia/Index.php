@@ -492,23 +492,6 @@ class Index extends Component
 
         if($this->tipo_vista === 'cursos')
         {
-            $prueba = GestionAulaUsuario::with([
-                'usuario' => function ($query) {
-                    $query->with([
-                        'persona' => function ($query) {
-                            $query->select('id_persona', 'nombres_persona', 'apellido_paterno_persona', 'apellido_materno_persona');
-                        }
-                    ])->select('id_usuario', 'id_persona');
-                },
-                'gestionAula' => function ($query) {
-                    $query->with([
-                        'curso' => function ($query) {
-                            $query->select('id_curso', 'nombre_curso');
-                        }
-                    ])->select('id_gestion_aula', 'id_curso');
-                }
-            ])->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)->first();
-            dd($prueba);
             $asistencias = Asistencia::with([
                 'asistenciaAlumno' => function ($query) {
                     $query->with([
@@ -530,7 +513,7 @@ class Index extends Component
                 ->orderBy('hora_inicio_asistencia', 'asc')
                 ->paginate($this->mostrar_paginate);
 
-            dd($asistencias);
+            // dd($asistencias);
 
         }elseif($this->tipo_vista === 'carga-academica')
         {

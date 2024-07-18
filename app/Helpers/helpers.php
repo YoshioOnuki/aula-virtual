@@ -401,3 +401,21 @@ if (!function_exists('obtener_extension_archivo')) {
         return $extension;
     }
 }
+
+
+// Funcion para retornar el color del estado de la asistencia
+if (!function_exists('color_estado_asistencia')) {
+    function color_estado_asistencia($estado)
+    {
+        switch ($estado) {
+            case 'Presente':
+                return config('settings.color-asistencia-presente');
+            case 'Tarde':
+                return config('settings.color-asistencia-tarde');
+            case 'Ausente':
+                return config('settings.color-asistencia-ausente');
+            case 'Justificado':
+                return config('settings.color-asistencia-justificado');
+        }
+    }
+}
