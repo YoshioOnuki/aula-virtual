@@ -19,8 +19,8 @@ return [
 
     'color-asistencia-presente' => 'teal',
     'color-asistencia-tarde' => 'yellow',
-    'color-asistencia-ausente' => 'danger',
-    'color-asistencia-justificado' => 'info',
+    'color-asistencia-ausente' => 'red',
+    'color-asistencia-justificado' => 'azure',
 
     'fondo_curso_default' => '/media/fondo-cursos/fondo-infor.webp',
     'fondo_detalle_doncente' => '/assets/static/photos/businesswoman-working-at-her-laptop-2.jpg',
