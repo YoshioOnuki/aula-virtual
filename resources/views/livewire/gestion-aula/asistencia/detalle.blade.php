@@ -1,5 +1,5 @@
 <div>
-    <div class="mobile-message">
+    <div class="{{ config('settings.restringir_mobile') === true ? 'mobile-message' : 'd-none' }}">
         <div class="d-flex justify-content-center align-items-center full-height">
             <div class="container-tight animate__animated animate__fadeIn animate__faster">
                 <div class="empty">
@@ -111,7 +111,7 @@
         </div>
     </div>
 
-    <div class="asistencias">
+    <div class="{{ config('settings.restringir_mobile') === true ? 'asistencias' : '' }}">
 
         @livewire('components.page-header', [
             'titulo_pasos' => $titulo_page_header,

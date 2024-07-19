@@ -28,5 +28,7 @@ return [
 
     'ver_docente_invitado' => false,
 
+    'restringir_mobile' => true,
+
     'version_sistema' => 'BETA',
 ];
