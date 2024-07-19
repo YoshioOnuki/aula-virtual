@@ -5,6 +5,7 @@ use App\Livewire\Configuracion\Autoridades\Index as AutoridadesIndex;
 use App\Livewire\Configuracion\Perfil\Index as PerfilIndex;
 use App\Livewire\Configuracion\Usuario\Index as UsuarioIndex;
 use App\Livewire\GestionAula\Alumnos\Index as AlumnoIndex;
+use App\Livewire\GestionAula\Asistencia\Detalle as AsistenciaDetalle;
 use App\Livewire\GestionAula\Asistencia\Index as AsistenciaIndex;
 use App\Livewire\GestionAula\Curso\Detalle as CursoDetalle;
 use App\Livewire\GestionAula\Curso\Index as CursoIndex;
@@ -121,6 +122,9 @@ Route::middleware(['auth'])->group(function () {
         // Asistencia
         Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/asistencia', AsistenciaIndex::class)
             ->name('cursos.detalle.asistencia');
+        // Detalle de asistencia
+        Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/asistencia/{id_asistencia}', AsistenciaDetalle::class)
+            ->name('cursos.detalle.asistencia.detalle');
         // Trabajos academicos
         Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/trabajo-academico', TrabajoAcademicoIndex::class)
             ->name('cursos.detalle.trabajo-academico');
@@ -147,6 +151,9 @@ Route::middleware(['auth'])->group(function () {
         // Asistencia
         Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/asistencia', AsistenciaIndex::class)
             ->name('carga-academica.detalle.asistencia');
+        // Detalle de asistencia
+        Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/asistencia/{id_asistencia}', AsistenciaDetalle::class)
+            ->name('carga-academica.detalle.asistencia.detalle');
         // Trabajos academicos
         Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/trabajo-academico', TrabajoAcademicoIndex::class)
             ->name('carga-academica.detalle.trabajo-academico');

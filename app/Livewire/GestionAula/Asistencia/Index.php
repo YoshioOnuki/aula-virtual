@@ -305,7 +305,7 @@ class Index extends Component
     }
 
 
-    /* =============== FUNCIONES PARA ENVIAR ASISTENCIAS =============== */
+    /* =============== FUNCIONES PARA EL MODAL DE  ENVIAR ASISTENCIAS =============== */
     public function abrir_modal_enviar_asistencia(Asistencia $asistencia)
     {
         $this->limpiar_modal_enviar();
@@ -394,6 +394,18 @@ class Index extends Component
     }
 
 
+    /* =============== OBTENER DATOS PARA REDIRIJIR =============== */
+    public function redirifir_detalle_asistencias(Asistencia $asistencia)
+    {
+        $this->redirect(route('carga-academica.detalle.asistencia.detalle', [
+            'id_usuario' => $this->id_usuario_hash,
+            'tipo_vista' => $this->tipo_vista,
+            'id_curso' => $this->id_gestion_aula_usuario_hash,
+            'id_asistencia' => Hashids::encode($asistencia->id_asistencia)
+        ]));
+    }
+
+
     /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
     public function obtener_datos_page_header()
     {
@@ -470,11 +482,9 @@ class Index extends Component
         $this->usuario = Usuario::find($id_usuario[0]);
 
         $usuario_sesion = Usuario::find(auth()->user()->id_usuario);
-        if (session('modo_admin') || $usuario_sesion->esRol('ADMINISTRADOR'))
+        if ($usuario_sesion->esRol('ADMINISTRADOR'))
         {
             $this->modo_admin = true;
-        }else{
-            session()->forget('modo_admin');
         }
 
         $this->obtener_datos_page_header();

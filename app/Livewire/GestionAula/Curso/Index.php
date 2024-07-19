@@ -62,9 +62,10 @@ class Index extends Component
             $id_curso = Hashids::encode($gestion_aula_usuario->id_gestion_aula_usuario);
             $id_usuario = Hashids::encode($this->usuario->id_usuario);
 
-            if(session('modo_admin'))
+            $usuario_sesion = Usuario::find(auth()->user()->id_usuario);
+            if ($usuario_sesion->esRol('ADMINISTRADOR'))
             {
-                $this->modo_admin = session('modo_admin');
+                $this->modo_admin = true;
             }
 
             if($this->tipo_vista === 'cursos')
