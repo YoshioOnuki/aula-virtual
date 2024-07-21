@@ -164,10 +164,14 @@
                                 <table class="table card-table table-vcenter text-nowrap table-striped">
                                     <thead>
                                         <tr>
+                                            <th class="w-1">
+                                                <input class="form-check-input" type="checkbox">
+                                            </th>
                                             <th class="w-1">No.</th>
                                             <th class="col-1">Código</th>
                                             <th>Alumno</th>
-                                            <th class="col-2">Asistencia</th>
+                                            <th>Fecha de asistencia</th>
+                                            <th class="col-2 text-center">Estado</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -177,11 +181,19 @@
                                         @forelse ($alumnos as $item)
                                             <tr class="{{ $item->estado_gestion_aula_usuario === 0 ? 'bg-red text-white fw-bold' : '' }}">
                                                 <td>
-                                                    <span class="text-secondary">{{ $i++ }}</span>
+                                                    <input class="form-check-input" type="checkbox"
+                                                    {{ $item->estado_gestion_aula_usuario === 0 || !$item->asistenciaAlumno->isEmpty() ? 'disabled' : '' }}>
                                                 </td>
                                                 <td>
+                                                    <span class="{{ $item->estado_gestion_aula_usuario === 0 ? 'text-white' : 'text-secondary' }}">{{ $i++ }}</span>
+                                                </td>
+                                                <td>
+                                                    {{ $item->usuario->persona->codigo_alumno_persona }}
+                                                </td>
+
+                                                <td>
                                                     <div class="d-flex py-1 align-items-center">
-                                                        <img src="{{ asset($item->usuario->mostrarFoto('azure')) }}" alt="avatar" class="avatar me-2">
+                                                        <img src="{{ $item->usuario->mostrarFoto('azure') }}" alt="avatar" class="avatar me-2">
                                                         <div class="flex-fill">
                                                             <div class="font-weight-medium">{{ $item->usuario->nombre_completo }}
                                                             </div>
@@ -192,6 +204,36 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                </td>
+                                                <td>
+                                                    @forelse ($item->asistenciaAlumno as $asistencias)
+                                                        {{ format_fecha_horas($asistencias->created_at) }}
+                                                    @empty
+                                                        <span class="text-secondary">No tiene asistencia</span>
+                                                    @endforelse
+                                                </td>
+                                                <td class="text-center">
+                                                    @forelse ($item->asistenciaAlumno as $alumno)
+                                                        <span wire:key="{{ $alumno->id_asistencia_alumno }}"
+                                                        class="status status-{{ color_estado_asistencia($alumno->estadoAsistencia->nombre_estado_asistencia) }} px-3 py-2">
+                                                            {{ $alumno->estadoAsistencia->nombre_estado_asistencia }}
+                                                        </span>
+                                                    @empty
+                                                        <button type="button" class="btn btn-outline-primary"
+                                                            wire:click="abrir_modal_enviar_asistencia({{ $item->id_asistencia }})">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round"
+                                                                class="icon icon-tabler icons-tabler-outline icon-tabler-checks">
+                                                                <path stroke="none" d="M0 0h24v24H0z"
+                                                                    fill="none" />
+                                                                <path d="M7 12l5 5l10 -10" />
+                                                                <path d="M2 12l5 5m5 -5l5 -5" />
+                                                            </svg>
+                                                            Enviar Asistencia
+                                                        </button>
+                                                    @endforelse
                                                 </td>
                                             </tr>
                                         @empty

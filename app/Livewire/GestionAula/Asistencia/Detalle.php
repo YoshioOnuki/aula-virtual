@@ -3,6 +3,7 @@
 namespace App\Livewire\GestionAula\Asistencia;
 
 use App\Models\AsistenciaAlumno;
+use App\Models\GestionAulaUsuario;
 use App\Models\Usuario;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -24,6 +25,7 @@ class Detalle extends Component
 
     public $id_gestion_aula_usuario_hash;
     public $id_gestion_aula_usuario;
+    public $id_gestion_aula;
 
     public $id_asistencia;
 
@@ -125,13 +127,15 @@ class Detalle extends Component
 
     public function mount($id_usuario, $tipo_vista, $id_curso, $id_asistencia)
     {
-        $this->id_asistencia = $id_asistencia;
+        $this->id_asistencia = Hashids::decode($id_asistencia);
 
         $this->tipo_vista = $tipo_vista;
         $this->id_gestion_aula_usuario_hash = $id_curso;
 
         $id_gestion_aula_usuario = Hashids::decode($id_curso);
         $this->id_gestion_aula_usuario = $id_gestion_aula_usuario[0];
+        $this->id_gestion_aula = GestionAulaUsuario::find($this->id_gestion_aula_usuario)->id_gestion_aula;
+
 
         $this->id_usuario_hash = $id_usuario;
         $id_usuario = Hashids::decode($id_usuario);
@@ -150,8 +154,33 @@ class Detalle extends Component
 
     public function render()
     {
-        $alumnos = AsistenciaAlumno::where('id_asistencia', $this->id_asistencia)
+        $alumnos = GestionAulaUsuario::with([
+            'usuario' => function ($query) {
+                $query->with([
+                    'persona' => function ($query) {
+                        $query->select('id_persona', 'documento_persona', 'nombres_persona', 'apellido_paterno_persona', 'apellido_materno_persona', 'codigo_alumno_persona', 'correo_persona');
+                    }
+                ])->select('id_usuario', 'correo_usuario', 'foto_usuario', 'estado_usuario', 'id_persona');
+            },
+            'rol' => function ($query) {
+                $query->select('id_rol', 'nombre_rol', 'estado_rol');
+            },
+            'asistenciaAlumno' => function ($query) {
+                $query->with([
+                    'estadoAsistencia' => function ($query) {
+                        $query->select('id_estado_asistencia', 'nombre_estado_asistencia');
+                    }
+                ])->where('id_asistencia', $this->id_asistencia);
+            }
+        ])->where('id_gestion_aula', $this->id_gestion_aula)
+            ->whereHas('rol', function ($query) {
+                $query->where('nombre_rol', 'ALUMNO');
+            })
             ->paginate($this->mostrar_paginate);
+
+
+        // $alumnos = AsistenciaAlumno::where('id_asistencia', $this->id_asistencia)
+        //     ->paginate($this->mostrar_paginate);
         return view('livewire.gestion-aula.asistencia.detalle', [
             'alumnos' => $alumnos
         ]);

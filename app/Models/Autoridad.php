@@ -61,7 +61,7 @@ class Autoridad extends Model
         return $query->where('estado_autoridad', 0);
     }
 
-    public function getMostrarFotoAttribute()
+    public function MostrarFoto()
     {
         return $this->foto_autoridad ?? 'https://ui-avatars.com/api/?name=' . $this->solo_primeros_nombres . '&size=64&&color='. config('settings.color_lt_autoridades') .'&background='. config('settings.color_autoridades') .'&bold=true';
     }

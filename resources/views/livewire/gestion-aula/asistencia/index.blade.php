@@ -210,7 +210,7 @@
                                     </thead>
                                     <tbody>
                                         @forelse($asistencias as $item)
-                                            <tr>
+                                            <tr wire:key="{{ $item->id_asistencia }}">
                                                 <td>
                                                     {{ format_fecha($item->fecha_asistencia) }}
                                                     ({{ format_dia_semana($item->fecha_asistencia) }})
@@ -228,7 +228,8 @@
                                                 @if ($tipo_vista === 'cursos')
                                                     <td class="text-center">
                                                         @forelse ($item->asistenciaAlumno as $alumno)
-                                                            <span class="status status-{{ color_estado_asistencia($alumno->estadoAsistencia->nombre_estado_asistencia) }} px-3 py-2">
+                                                            <span wire:key="{{ $alumno->id_asistencia_alumno }}"
+                                                            class="status status-{{ color_estado_asistencia($alumno->estadoAsistencia->nombre_estado_asistencia) }} px-3 py-2">
                                                                 {{ $alumno->estadoAsistencia->nombre_estado_asistencia }}
                                                             </span>
                                                         @empty

@@ -236,7 +236,7 @@
                             <div class="d-flex flex-column align-items-cent justify-content-center gap-5 ">
                                 @forelse($autoridades_model as $item)
                                 <div class="form-selectgroup-label-content d-flex align-items-start">
-                                    <img src="{{ asset($item->mostrar_foto ?? '/media/avatar-none.webp') }}" alt="avatar" class="avatar me-3 rounded-circle">
+                                    <img src="{{ asset($item->MostrarFoto() ?? '/media/avatar-none.webp') }}" alt="avatar" class="avatar me-3 rounded-circle">
                                     <div>
                                         <div class="fs-3">{{ $item->nombre_autoridad }}</div>
                                         <div class="text-muted fs-4">
