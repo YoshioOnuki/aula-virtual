@@ -238,7 +238,7 @@
                     Lo sentimos pero nuestro servidor encontró un error interno
                 </p>
                 <div class="empty-action">
-                    <a href="{{ route('inicio') }}" class="btn btn-secondary">
+                    <a href="{{ route('inicio') }}" class="btn btn-secondary" id="backButton">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                             <path d="M5 12l14 0"></path>
@@ -254,6 +254,28 @@
 
     <script src="{{ asset('assets/dist/js/tabler.min.js?1720208459') }}" defer=""></script>
     <script src="{{ asset('assets/dist/js/demo.min.js?1720208459') }}" defer=""></script>
+
+    <script>
+        document.getElementById('backButton').addEventListener('click', function(event) {
+            event.preventDefault();
+            var url = this.href;
+
+            fetch('/validate-url?url=' + encodeURIComponent(url))
+                .then(response => response.json())
+                .then(data => {
+                    if (data.valid) {
+                        window.location.href = url;
+                    } else {
+                        console.error('Error:', data.message);
+                        window.location.href = '/';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    window.location.href = '/';
+                });
+        });
+    </script>
 
 </body>
 </html>

@@ -19,7 +19,6 @@
     </div>
     <div class="page-body">
         <div class="container-xl">
-            {{-- <div wire:init="mostrar_toast"></div> --}}
             <div class="row g-3">
                 <div class="col-12">
                     <div class="card animate__animated animate__fadeIn animate__faster">

@@ -18,7 +18,19 @@ use App\Livewire\GestionAula\TrabajoAcademico\Index as TrabajoAcademicoIndex;
 use App\Livewire\GestionAula\Webgrafia\Index as WebgrafiaIndex;
 use App\Livewire\Home\Index as HomeIndex;
 use App\Livewire\Seguridad\Auth\Login;
+use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Route;
+
+
+
+Route::get('/validate-url', function(Request $request) {
+    $url = $request->query('url');
+    $headers = @get_headers($url);
+
+    return response()->json([
+        'valid' => $headers && strpos($headers[0], '200') !== false
+    ]);
+});
 
 Route::redirect('/', '/inicio');
 
