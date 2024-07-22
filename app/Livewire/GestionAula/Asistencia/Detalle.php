@@ -169,6 +169,9 @@ class Detalle extends Component
                 $query->with([
                     'estadoAsistencia' => function ($query) {
                         $query->select('id_estado_asistencia', 'nombre_estado_asistencia');
+                    },
+                    'asistencia' => function ($query) {
+                        $query->select('id_asistencia', 'fecha_asistencia', 'hora_inicio_asistencia', 'hora_fin_asistencia');
                     }
                 ])->where('id_asistencia', $this->id_asistencia);
             }

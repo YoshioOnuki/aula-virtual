@@ -208,6 +208,11 @@
                                                 <td>
                                                     @forelse ($item->asistenciaAlumno as $asistencias)
                                                         {{ format_fecha_horas($asistencias->created_at) }}
+                                                        @if(tiempo_transcurrido($asistencias->created_at, $asistencias->asistencia->fecha_asistencia, $asistencias->asistencia->hora_inicio_asistencia, $asistencias->asistencia->hora_fin_asistencia) !== '')
+                                                            <span class="text-red ms-2">
+                                                                ({{ tiempo_transcurrido($asistencias->created_at, $asistencias->asistencia->fecha_asistencia, $asistencias->asistencia->hora_inicio_asistencia, $asistencias->asistencia->hora_fin_asistencia) }} tarde)
+                                                            </span>
+                                                        @endif
                                                     @empty
                                                         <span class="text-secondary">No tiene asistencia</span>
                                                     @endforelse

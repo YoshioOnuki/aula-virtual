@@ -124,6 +124,48 @@ if (!function_exists('verificar_hora_actual'))
     }
 }
 
+// funcion para verificar cuanto tiempo paso desde la fecha ingresada en formato Y-m-d H:i:s, y si no a pasado el tiempo establecido, que no muestre nada
+if (!function_exists('tiempo_transcurrido'))
+{
+    function tiempo_transcurrido($fecha_limite, $fecha, $hora_inicio, $hora_fin)
+    {
+        $fecha_limite = date('Y-m-d', strtotime($fecha_limite));
+        $hora_limite = date('H:i:s', strtotime($hora_fin));
+        $hora_inicio = date('H:i:s', strtotime($hora_inicio));
+        $hora_fin = date('H:i:s', strtotime($hora_fin));
+        $fecha = date('Y-m-d', strtotime($fecha));
+
+        if ($fecha_limite === $fecha) {
+            if ($hora_limite >= $hora_inicio && $hora_limite <= $hora_fin) {
+                return '';
+            }
+        } else {
+            // Retornar el tiempo que ha pasado como "2 días, 3 horas, 5 minutos tarde", sin segundos
+            $fecha_limite = strtotime($fecha_limite . ' ' . $hora_fin);
+            $fecha_actual = strtotime($fecha . ' ' . $hora_inicio);
+            $diferencia = $fecha_actual - $fecha_limite;
+            $dias = floor($diferencia / (60 * 60 * 24));
+            $diferencia -= $dias * (60 * 60 * 24);
+            $horas = floor($diferencia / (60 * 60));
+            $diferencia -= $horas * (60 * 60);
+            $minutos = floor($diferencia / 60);
+            $tiempo = '';
+            if ($dias > 0) {
+                $tiempo .= $dias . ' días, ';
+            }
+            if ($horas > 0) {
+                $tiempo .= $horas . ' horas, ';
+            }
+            if ($minutos > 0) {
+                $tiempo .= $minutos . ' minutos, ';
+            }
+            $tiempo = substr($tiempo, 0, -2);
+            return $tiempo;
+        }
+
+    }
+}
+
 // Funcion para retornar el color de acuerdo al porcentaje conseguido para el proceso
 if (!function_exists('color_porcentaje'))
 {
