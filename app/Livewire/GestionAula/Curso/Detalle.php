@@ -370,12 +370,6 @@ class Detalle extends Component
     public function redireccionar_asistencia($id)
     {
         $id_curso = Hashids::encode($id);
-        if($this->modo_admin)
-        {
-            session(['modo_admin' => true]);
-        }else{
-            session()->forget('modo_admin');
-        }
 
         if($this->tipo_vista === 'cursos'){
             return redirect()->route('cursos.detalle.asistencia', ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => 'cursos', 'id_curso' => $id_curso]);

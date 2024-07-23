@@ -2,9 +2,12 @@
 
 namespace App\Livewire\GestionAula\Asistencia;
 
+use App\Models\Asistencia;
 use App\Models\AsistenciaAlumno;
+use App\Models\EstadoAsistencia;
 use App\Models\GestionAulaUsuario;
 use App\Models\Usuario;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -30,6 +33,8 @@ class Detalle extends Component
     public $id_asistencia;
 
     // Variables para el modal de enviar asistencia
+    public $titulo_modal_enviar = 'Enviar Asistencia';
+    public $modo_enviar = 0; // 0: Enviar asistencia a un solo alumno, 1: Enviar asistencia a varios alumnos
     public $id_asistencia_enviar;
     public $estado_asistencia;
     public $estados = [];
@@ -37,6 +42,10 @@ class Detalle extends Component
     public $fecha_asistencia_a_enviar;
     public $hora_inicio_asistencia_a_enviar;
     public $hora_fin_asistencia_a_enviar;
+    public $id_gestion_aula_usuario_enviar;
+
+    public $check_alumno = [];
+    public $check_all = false;
 
     public $modo_admin = false;// Modo admin, para saber si se esta en modo administrador
 
@@ -48,11 +57,145 @@ class Detalle extends Component
     public $tipo_vista;
 
 
+    /* =============== FUNCIONES PARA EL MODAL DE  ENVIAR ASISTENCIAS =============== */
+    public function abrir_modal_enviar_asistencia($id_gestion_aula_usuario)
+    {
+        $this->limpiar_modal_enviar();
+        $this->dispatch(
+            'modal',
+            modal: '#modal-enviar-asistencia',
+            action: 'show'
+        );
+
+        $this->titulo_modal_enviar = 'Enviar Asistencia';
+        $this->modo_enviar = 0; // Enviar asistencia a un solo alumno
+
+        $this->id_gestion_aula_usuario_enviar = $id_gestion_aula_usuario;
+        $this->id_asistencia_enviar = $this->id_asistencia;
+        $asistencia = Asistencia::find($this->id_asistencia);
+
+        $this->estados = EstadoAsistencia::where('estado_estado_asistencia', 1)->get();
+        $this->tipo_asistencia_a_enviar = $asistencia->tipoAsistencia->nombre_tipo_asistencia;
+        $this->fecha_asistencia_a_enviar = $asistencia->fecha_asistencia;
+        $this->hora_inicio_asistencia_a_enviar = $asistencia->hora_inicio_asistencia;
+        $this->hora_fin_asistencia_a_enviar = $asistencia->hora_fin_asistencia;
+    }
+
+    public function abrir_modal_enviar_asistencias()
+    {
+        $this->limpiar_modal_enviar();
+        $this->dispatch(
+            'modal',
+            modal: '#modal-enviar-asistencia',
+            action: 'show'
+        );
+
+        $this->titulo_modal_enviar = 'Enviar varias asistencias';
+        $this->modo_enviar = 1; // Enviar asistencia a varios alumnos
+
+        $this->id_asistencia_enviar = $this->id_asistencia;
+        $asistencia = Asistencia::find($this->id_asistencia);
+
+        $this->estados = EstadoAsistencia::where('estado_estado_asistencia', 1)->get();
+        $this->tipo_asistencia_a_enviar = $asistencia->tipoAsistencia->nombre_tipo_asistencia;
+        $this->fecha_asistencia_a_enviar = $asistencia->fecha_asistencia;
+        $this->hora_inicio_asistencia_a_enviar = $asistencia->hora_inicio_asistencia;
+        $this->hora_fin_asistencia_a_enviar = $asistencia->hora_fin_asistencia;
+    }
+
+    public function enviar_asistencia()
+    {
+        $this->validate([
+            'estado_asistencia' => 'required'
+        ]);
+
+        try
+        {
+            DB::beginTransaction();
+
+            if(count($this->check_alumno) > 0 && $this->modo_enviar === 1)
+            {
+                // Eliminar los checks falsos
+                $this->check_alumno = array_filter($this->check_alumno);
+                // Sacar los alumnos seleccionados por sus indices
+                $this->check_alumno = array_keys($this->check_alumno);
+                foreach ($this->check_alumno as $id_gestion_aula_usuario)
+                {
+                    $asistencia_alumno = new AsistenciaAlumno();
+                    $asistencia_alumno->id_asistencia = $this->id_asistencia_enviar;
+                    $asistencia_alumno->id_estado_asistencia = $this->estado_asistencia;
+                    $asistencia_alumno->id_gestion_aula_usuario = $id_gestion_aula_usuario;
+                    $asistencia_alumno->save();
+                }
+            } else if ($this->modo_enviar === 1 && count($this->check_alumno) === 0){
+                $this->dispatch(
+                    'toast-basico',
+                    mensaje: 'No se ha seleccionado ningún alumno.',
+                    type: 'error'
+                );
+                return;
+            } else {
+                $asistencia_alumno = new AsistenciaAlumno();
+                $asistencia_alumno->id_asistencia = $this->id_asistencia_enviar;
+                $asistencia_alumno->id_estado_asistencia = $this->estado_asistencia;
+                $asistencia_alumno->id_gestion_aula_usuario = $this->id_gestion_aula_usuario_enviar;
+                $asistencia_alumno->save();
+            }
+
+            // Limpiar los checks
+            $this->check_alumno = [];
+            $this->check_all = false;
+
+
+            DB::commit();
+
+            $this->cerrar_modal_enviar();
+
+            $this->dispatch(
+                'toast-basico',
+                mensaje: 'La asistencia se ha enviado correctamente',
+                type: 'success'
+            );
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $this->dispatch(
+                'toast-basico',
+                mensaje: 'Ha ocurrido un error al enviar la asistencia.' . $e->getMessage(),
+                type: 'error'
+            );
+        }
+    }
+
+    public function cerrar_modal_enviar()
+    {
+        $this->limpiar_modal_enviar();
+        $this->dispatch(
+            'modal',
+            modal: '#modal-enviar-asistencia',
+            action: 'hide'
+        );
+    }
+
+    public function limpiar_modal_enviar()
+    {
+        $this->id_asistencia_enviar = null;
+        $this->estado_asistencia = '';
+        $this->tipo_asistencia_a_enviar = '';
+        $this->fecha_asistencia_a_enviar = '';
+        $this->hora_inicio_asistencia_a_enviar = '';
+        $this->hora_fin_asistencia_a_enviar = '';
+        // Reiniciar errores
+        $this->resetErrorBag();
+    }
+
+
      /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
     public function obtener_datos_page_header()
     {
         $this->titulo_page_header = 'Detalle de Asistencia';
 
+        // Regresar
         if($this->tipo_vista === 'cursos')
         {
             $this->regresar_page_header = [
@@ -125,9 +268,11 @@ class Detalle extends Component
 
     }
 
+
     public function mount($id_usuario, $tipo_vista, $id_curso, $id_asistencia)
     {
         $this->id_asistencia = Hashids::decode($id_asistencia);
+        $this->id_asistencia = $this->id_asistencia[0];
 
         $this->tipo_vista = $tipo_vista;
         $this->id_gestion_aula_usuario_hash = $id_curso;
@@ -149,6 +294,8 @@ class Detalle extends Component
 
         $this->obtener_datos_page_header();
 
+        $this->check_alumno = [];
+        $this->check_all = false;
     }
 
 
@@ -181,9 +328,6 @@ class Detalle extends Component
             })
             ->paginate($this->mostrar_paginate);
 
-
-        // $alumnos = AsistenciaAlumno::where('id_asistencia', $this->id_asistencia)
-        //     ->paginate($this->mostrar_paginate);
         return view('livewire.gestion-aula.asistencia.detalle', [
             'alumnos' => $alumnos
         ]);

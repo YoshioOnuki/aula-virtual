@@ -25751,3 +25751,14 @@ img {
         display: none;
     }
 }
+
+/* Rectificar tamaño de imagen de avatar */
+.avatar-static {
+    max-width: 40px;
+    max-height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    width: auto;  /* Mantiene la proporción de ancho */
+    height: auto; /* Mantiene la proporción de alto */
+    object-fit: cover;
+}

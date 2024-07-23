@@ -59,6 +59,7 @@ class Index extends Component
             $gestion_aula_usuario = GestionAulaUsuario::where('id_gestion_aula', $id)
                 ->where('id_usuario', $this->usuario->id_usuario)
                 ->first();
+
             $id_curso = Hashids::encode($gestion_aula_usuario->id_gestion_aula_usuario);
             $id_usuario = Hashids::encode($this->usuario->id_usuario);
 
@@ -284,7 +285,6 @@ class Index extends Component
     public function mount($id_usuario, $tipo_vista)
     {
         $this->tipo_vista = $tipo_vista;
-        // dd($this->tipo_vista);
 
         $usuario_sesion = Usuario::find(auth()->user()->id_usuario);
         if (session('modo_admin') || $usuario_sesion->esRol('ADMINISTRADOR'))

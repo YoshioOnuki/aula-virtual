@@ -16,7 +16,7 @@ class Index extends Component
     protected $paginationTheme = 'bootstrap';
 
     #[Url('mostrar')]
-    public $mostrar_paginate = 10;
+    public $mostrar_paginate = 15;
 
     #[Url('buscar')]
     public $search = '';

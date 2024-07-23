@@ -148,15 +148,57 @@
                                         </div>
                                         entradas
                                     </div>
-                                    <div class="text-secondary">
-                                        <div class="">
-                                            <div class="d-inline-block">
-                                                <input type="text" class="form-control"
-                                                    wire:model.live.debounce.500ms="search" aria-label="Search invoice"
-                                                    placeholder="Buscar">
+
+                                    <div class="text-secondary row">
+                                        @if (in_array(true, $this->check_alumno))
+                                            <div class="col-lg-7 col-9">
+                                                <div class="d-inline-block">
+                                                    <input type="text" class="form-control"
+                                                        wire:model.live.debounce.500ms="search" aria-label="Search invoice"
+                                                        placeholder="Buscar">
+                                                </div>
                                             </div>
-                                        </div>
+                                        @else
+                                            <div class="col-lg-12">
+                                                <div class="d-inline-block">
+                                                    <input type="text" class="form-control"
+                                                        wire:model.live.debounce.500ms="search" aria-label="Search invoice"
+                                                        placeholder="Buscar">
+                                                </div>
+                                            </div>
+                                        @endif
+
+                                        @if (in_array(true, $this->check_alumno))
+                                            <div class="col-lg-5 col-3 d-flex justify-content-end">
+                                                <a class="btn btn-outline-primary d-none d-md-inline-block" wire:click="abrir_modal_enviar_asistencias">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round"
+                                                                class="icon icon-tabler icons-tabler-outline icon-tabler-checks">
+                                                                <path stroke="none" d="M0 0h24v24H0z"
+                                                                    fill="none" />
+                                                                <path d="M7 12l5 5l10 -10" />
+                                                                <path d="M2 12l5 5m5 -5l5 -5" />
+                                                            </svg>
+                                                    Enviar Asistencias
+                                                </a>
+                                                <a class="btn btn-outline-primary d-md-none btn-icon" wire:click="abrir_modal_enviar_asistencias">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                        height="24" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2"
+                                                        stroke-linecap="round" stroke-linejoin="round"
+                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-checks">
+                                                        <path stroke="none" d="M0 0h24v24H0z"
+                                                            fill="none" />
+                                                        <path d="M7 12l5 5l10 -10" />
+                                                        <path d="M2 12l5 5m5 -5l5 -5" />
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        @endif
                                     </div>
+
                                 </div>
                             </div>
 
@@ -169,8 +211,8 @@
                                             </th>
                                             <th class="w-1">No.</th>
                                             <th class="col-1">Código</th>
-                                            <th>Alumno</th>
-                                            <th>Fecha de asistencia</th>
+                                            <th class="">Alumno</th>
+                                            <th class="col-3">Fecha de asistencia</th>
                                             <th class="col-2 text-center">Estado</th>
                                         </tr>
                                     </thead>
@@ -181,7 +223,7 @@
                                         @forelse ($alumnos as $item)
                                             <tr class="{{ $item->estado_gestion_aula_usuario === 0 ? 'bg-red text-white fw-bold' : '' }}">
                                                 <td>
-                                                    <input class="form-check-input" type="checkbox"
+                                                    <input class="form-check-input" type="checkbox"  wire:model.live="check_alumno.{{ $item->id_gestion_aula_usuario }}"
                                                     {{ $item->estado_gestion_aula_usuario === 0 || !$item->asistenciaAlumno->isEmpty() ? 'disabled' : '' }}>
                                                 </td>
                                                 <td>
@@ -193,7 +235,7 @@
 
                                                 <td>
                                                     <div class="d-flex py-1 align-items-center">
-                                                        <img src="{{ $item->usuario->mostrarFoto('azure') }}" alt="avatar" class="avatar me-2">
+                                                        <img src="{{ $item->usuario->mostrarFoto('azure') }}" alt="avatar" class="avatar rounded avatar-static me-2">
                                                         <div class="flex-fill">
                                                             <div class="font-weight-medium">{{ $item->usuario->nombre_completo }}
                                                             </div>
@@ -216,7 +258,9 @@
                                                             </span>
                                                         @endif
                                                     @empty
-                                                        <span class="text-secondary">No tiene asistencia</span>
+                                                        <span class="text-secondary">
+                                                            Sin asistencia
+                                                        </span>
                                                     @endforelse
                                                 </td>
                                                 <td class="text-center">
@@ -226,8 +270,8 @@
                                                             {{ $alumno->estadoAsistencia->nombre_estado_asistencia }}
                                                         </span>
                                                     @empty
-                                                        <button type="button" class="btn btn-outline-primary"
-                                                            wire:click="abrir_modal_enviar_asistencia({{ $item->id_asistencia }})">
+                                                        <button type="button" class="btn btn-outline-primary {{ in_array(true, $this->check_alumno) ? 'disabled' : '' }}"
+                                                            wire:click="abrir_modal_enviar_asistencia({{ $item->id_gestion_aula_usuario }})">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                 height="24" viewBox="0 0 24 24" fill="none"
                                                                 stroke="currentColor" stroke-width="2"
@@ -301,12 +345,12 @@
     </div>
 
 
-    {{-- <div wire:ignore.self class="modal fade" id="modal-enviar-asistencia" tabindex="-1" data-bs-backdrop="static">
+    <div wire:ignore.self class="modal fade" id="modal-enviar-asistencia" tabindex="-1" data-bs-backdrop="static">
         <div class="modal-dialog modal-md modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        Enviar Asistencia
+                        {{ $titulo_modal_enviar }}
                     </h5>
                     <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal"
                         aria-label="Close" wire:click="cerrar_modal_enviar"></button>
@@ -385,7 +429,7 @@
                 </form>
             </div>
         </div>
-    </div> --}}
+    </div>
 
 </div>
 

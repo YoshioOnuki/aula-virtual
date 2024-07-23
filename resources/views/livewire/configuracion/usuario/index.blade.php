@@ -87,7 +87,7 @@
                                         </td>
                                         <td>
                                             <div class="d-flex py-1 align-items-center">
-                                                <img src="{{ asset($item->mostrarFoto('alumno')) }}" alt="avatar" class="avatar me-2">
+                                                <img src="{{ asset($item->mostrarFoto('alumno')) }}" alt="avatar" class="avatar me-2 rounded avatar-static">
                                                 <div class="flex-fill">
                                                     <div class="font-weight-medium">{{ $item->nombre_completo }}
                                                     </div>

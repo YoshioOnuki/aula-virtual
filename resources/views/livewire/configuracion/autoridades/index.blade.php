@@ -30,6 +30,7 @@
                                         <select wire:model.live="mostrar_paginate" class="form-select">
                                             <option value="5">5</option>
                                             <option value="10">10</option>
+                                            <option value="15">15</option>
                                             <option value="20">20</option>
                                         </select>
                                     </div>
@@ -83,7 +84,7 @@
                                         <td>
                                             <div class="form-selectgroup-label-content d-flex align-items-start">
                                                 <img src="{{ asset($item->MostrarFoto() ?? '/media/avatar-none.webp') }}" alt="avatar"
-                                                    class="avatar me-3">
+                                                    class="avatar me-3 rounded avatar-static">
                                                 <div>
                                                     <div class="fs-3">{{ $item->nombre_autoridad }}</div>
                                                     <div class="text-muted fs-4">
