@@ -209,7 +209,7 @@
                             <div class="col-12">
                                 <a class="btn btn-primary w-100 mt-1
                                     {{ !$gestion_aula_usuario->gestionAula->linkClase ? 'disabled' : '' }}"
-                                    style="cursor: pointer;" wire:click="mostrar_link_clase">
+                                    style="cursor: pointer;" href="{{ $gestion_aula_usuario->gestionAula->linkClase->nombre_link_clase }}" target="_blank">
                                     Link de Clase
                                 </a>
                                 @if(!$gestion_aula_usuario->gestionAula->linkClase)

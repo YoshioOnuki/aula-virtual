@@ -74,12 +74,14 @@
                                 </thead>
                                 <tbody>
                                     @php
-                                    $i = 1;
+                                        $i = $autoridades->count() ?? 0;
                                     @endphp
                                     @forelse ($autoridades as $item)
                                     <tr>
                                         <td>
-                                            <span class="text-secondary">{{ $i++ }}</span>
+                                            <span class="text-secondary">
+                                                {{ $i-- }}
+                                            </span>
                                         </td>
                                         <td>
                                             <div class="form-selectgroup-label-content d-flex align-items-start">

@@ -330,11 +330,10 @@ class Index extends Component
         $this->usuario = Usuario::find($id_usuario[0]);
 
         $usuario_sesion = Usuario::find(auth()->user()->id_usuario);
-        if (session('modo_admin') || $usuario_sesion->esRol('ADMINISTRADOR'))
+
+        if ($usuario_sesion->esRol('ADMINISTRADOR'))
         {
             $this->modo_admin = true;
-        }else{
-            session()->forget('modo_admin');
         }
 
         $this->obtener_datos_page_header();

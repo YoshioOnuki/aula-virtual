@@ -148,12 +148,12 @@
                                                         <div class="dropdown-menu dropdown-menu-end">
                                                             @if($tipo_vista === 'carga-academica')
                                                                 <a class="dropdown-item" style="cursor: pointer;"
-                                                                    wire:click="mostrar_carga_academica({{ $item->id_usuario }})">
+                                                                    href="{{ route('carga-academica', ['id_usuario' => Hashids::encode($item->id_usuario), 'tipo_vista' => $tipo_vista]) }}">
                                                                     Carga académica
                                                                 </a>
                                                             @elseif($tipo_vista === 'cursos')
                                                                 <a class="dropdown-item" style="cursor: pointer;"
-                                                                    wire:click="mostrar_cursos({{ $item->id_usuario }})">
+                                                                    href="{{ route('carga-academica', ['id_usuario' => Hashids::encode($item->id_usuario), 'tipo_vista' => $tipo_vista]) }}">
                                                                     Cursos
                                                                 </a>
                                                             @endif

@@ -16,21 +16,6 @@ class Buscar extends Component
     public $tipo_vista;
 
 
-    public function mostrar_carga_academica($id)
-    {
-        session(['modo_admin' => true]);
-        $id_usuario = Hashids::encode($id);
-        return redirect()->route('carga-academica', ['id_usuario' => $id_usuario, 'tipo_vista' => $this->tipo_vista]);
-    }
-
-    public function mostrar_cursos($id)
-    {
-        session(['modo_admin' => true]);
-        $id_usuario = Hashids::encode($id);
-        return redirect()->route('cursos', ['id_usuario' => $id_usuario, 'tipo_vista' => $this->tipo_vista]);
-    }
-
-
     public function mostrar_usuarios()
     {
         $this->usuarios = Usuario::with('persona', 'roles', 'accionUsuario')
@@ -51,7 +36,7 @@ class Buscar extends Component
             })->get();
 
             $this->usuarios = $this->usuarios->sortBy(function ($usuario) {
-                return $usuario->persona->apellido_paterno_persona . ' ' . $usuario->persona->apellido_materno_persona;
+                return $usuario->persona->nombres_persona . ' ' . $usuario->persona->apellido_paterno_persona . ' ' . $usuario->persona->apellido_materno_persona;
             });
     }
 

@@ -51,22 +51,30 @@
                             <table class="table card-table table-vcenter text-nowrap table-striped">
                                 <thead>
                                     <tr>
+                                        <th class="w-1">No.</th>
                                         <th class="col-1">Código</th>
                                         <th>Alumno</th>
                                         <th>Usuario</th>
                                         <th>Última conexión</th>
-                                        <th class="col-2">Estado</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @php
+                                        $i = $alumnos->count() ?? 0;
+                                    @endphp
                                     @forelse ($alumnos as $item)
                                         <tr class="{{ $item->estado_gestion_aula_usuario === 0 ? 'bg-red text-white fw-bold' : '' }}">
+                                            <td>
+                                                <span class="{{ $item->estado_gestion_aula_usuario === 0 ? 'text-white' : 'text-secondary' }}">
+                                                    {{ $i-- }}
+                                                </span>
+                                            </td>
                                             <td>
                                                 {{ $item->usuario->persona->codigo_alumno_persona }}
                                             </td>
                                             <td>
                                                 <div class="d-flex py-1 align-items-center">
-                                                    <img src="{{ asset($item->usuario->mostrarFoto('azure')) }}" alt="avatar" class="avatar me-2">
+                                                    <img src="{{ asset($item->usuario->mostrarFoto('azure')) }}" alt="avatar" class="avatar rounded avatar-static me-2">
                                                     <div class="flex-fill">
                                                         <div class="font-weight-medium">{{ $item->usuario->nombre_completo }}
                                                         </div>
@@ -83,23 +91,6 @@
                                             </td>
                                             <td>
                                                 {{ ultima_conexion('2024-06-23 12:18:17') }}
-                                            </td>
-                                            <td>
-                                                @if ($item->estado_gestion_aula_usuario === 1)
-                                                    <a wire:click="abrir_modal_estado({{ $item->id_gestion_aula_usuario }}, 0)" class="text-decoration-none cursor-pointer">
-                                                        <span class="badge bg-teal-lt status-teal px-3 py-2 fs-4">
-                                                            <span class="status-dot status-dot-animated me-2"></span>
-                                                            Matriculado
-                                                        </span>
-                                                    </a>
-                                                @elseif ($item->estado_gestion_aula_usuario === 0)
-                                                    <a wire:click="abrir_modal_estado({{ $item->id_gestion_aula_usuario }}, 1)" class="text-decoration-none cursor-pointer">
-                                                        <span class="badge bg-red-lt status-red px-3 py-2 fs-4">
-                                                            <span class="status-dot status-dot-animated me-2"></span>
-                                                            Retirado
-                                                        </span>
-                                                    </a>
-                                                @endif
                                             </td>
                                         </tr>
                                     @empty

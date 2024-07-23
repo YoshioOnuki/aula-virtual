@@ -78,12 +78,14 @@
                                 </thead>
                                 <tbody>
                                     @php
-                                    $i = 1;
+                                        $i = $usuarios->count() ?? 0;
                                     @endphp
                                     @forelse ($usuarios as $item)
                                     <tr>
                                         <td>
-                                            <span class="text-secondary">{{ $i++ }}</span>
+                                            <span class="text-secondary">
+                                                {{ $i-- }}
+                                            </span>
                                         </td>
                                         <td>
                                             <div class="d-flex py-1 align-items-center">

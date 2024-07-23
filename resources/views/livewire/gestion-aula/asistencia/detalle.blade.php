@@ -218,7 +218,7 @@
                                     </thead>
                                     <tbody>
                                         @php
-                                            $i = 1;
+                                            $i = $alumnos->count() ?? 0;
                                         @endphp
                                         @forelse ($alumnos as $item)
                                             <tr class="{{ $item->estado_gestion_aula_usuario === 0 ? 'bg-red text-white fw-bold' : '' }}">
@@ -227,7 +227,9 @@
                                                     {{ $item->estado_gestion_aula_usuario === 0 || !$item->asistenciaAlumno->isEmpty() ? 'disabled' : '' }}>
                                                 </td>
                                                 <td>
-                                                    <span class="{{ $item->estado_gestion_aula_usuario === 0 ? 'text-white' : 'text-secondary' }}">{{ $i++ }}</span>
+                                                    <span class="{{ $item->estado_gestion_aula_usuario === 0 ? 'text-white' : 'text-secondary' }}">
+                                                        {{ $i-- }}
+                                                    </span>
                                                 </td>
                                                 <td>
                                                     {{ $item->usuario->persona->codigo_alumno_persona }}
