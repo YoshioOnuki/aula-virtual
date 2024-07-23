@@ -57,6 +57,34 @@ class Detalle extends Component
     public $tipo_vista;
 
 
+    /* =============== FUNCION UPDATE PARA CHECKBOX =============== */
+    public function updatedCheckAll($value)
+    {
+        $alumnos = GestionAulaUsuario::where('id_gestion_aula', $this->id_gestion_aula)
+            ->whereHas('rol', function ($query) {
+                $query->where('nombre_rol', 'ALUMNO');
+            })
+            // que no tenga registros en la tabla asistencia_alumno
+            ->whereDoesntHave('asistenciaAlumno', function ($query) {
+                $query->where('id_asistencia', $this->id_asistencia);
+            })
+            ->get();
+        if ($value)
+        {
+            // Marcar todos los checks true
+            foreach ($alumnos as $alumno)
+            {
+                $this->check_alumno[$alumno->id_gestion_aula_usuario] = true;
+            }
+        } else {
+            // Desmarcar todos los checks false
+            foreach ($alumnos as $alumno)
+            {
+                $this->check_alumno[$alumno->id_gestion_aula_usuario] = false;
+            }
+        }
+    }
+
     /* =============== FUNCIONES PARA EL MODAL DE  ENVIAR ASISTENCIAS =============== */
     public function abrir_modal_enviar_asistencia($id_gestion_aula_usuario)
     {
@@ -127,7 +155,7 @@ class Detalle extends Component
                     $asistencia_alumno->id_gestion_aula_usuario = $id_gestion_aula_usuario;
                     $asistencia_alumno->save();
                 }
-            } else if ($this->modo_enviar === 1 && count($this->check_alumno) === 0){
+            } else if ($this->modo_enviar === 1 && count($this->check_alumno) <= 0){
                 $this->dispatch(
                     'toast-basico',
                     mensaje: 'No se ha seleccionado ningún alumno.',
@@ -294,7 +322,20 @@ class Detalle extends Component
 
         $this->obtener_datos_page_header();
 
-        $this->check_alumno = [];
+        $alumnos = GestionAulaUsuario::where('id_gestion_aula', $this->id_gestion_aula)
+            ->whereHas('rol', function ($query) {
+                $query->where('nombre_rol', 'ALUMNO');
+            })
+            ->whereDoesntHave('asistenciaAlumno', function ($query) {
+                $query->where('id_asistencia', $this->id_asistencia);
+            })
+            ->get();
+
+        foreach ($alumnos as $alumno)
+        {
+            $this->check_alumno[$alumno->id_gestion_aula_usuario] = false;
+        }
+
         $this->check_all = false;
     }
 
@@ -322,10 +363,14 @@ class Detalle extends Component
                     }
                 ])->where('id_asistencia', $this->id_asistencia);
             }
-        ])->where('id_gestion_aula', $this->id_gestion_aula)
+        ])->join('usuario', 'usuario.id_usuario', '=', 'gestion_aula_usuario.id_usuario')
+            ->join('persona', 'persona.id_persona', '=', 'usuario.id_persona')
+            ->where('id_gestion_aula', $this->id_gestion_aula)
             ->whereHas('rol', function ($query) {
                 $query->where('nombre_rol', 'ALUMNO');
             })
+            ->orderBy('persona.nombres_persona')
+            ->orderBy('persona.apellido_paterno_persona')
             ->paginate($this->mostrar_paginate);
 
         return view('livewire.gestion-aula.asistencia.detalle', [

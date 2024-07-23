@@ -207,7 +207,7 @@
                                     <thead>
                                         <tr>
                                             <th class="w-1">
-                                                <input class="form-check-input" type="checkbox">
+                                                <input class="form-check-input" type="checkbox" wire:model.live="check_all">
                                             </th>
                                             <th class="w-1">No.</th>
                                             <th class="col-1">Código</th>
@@ -270,7 +270,7 @@
                                                             {{ $alumno->estadoAsistencia->nombre_estado_asistencia }}
                                                         </span>
                                                     @empty
-                                                        <button type="button" class="btn btn-outline-primary {{ in_array(true, $this->check_alumno) ? 'disabled' : '' }}"
+                                                        <button type="button" class="btn btn-outline-primary btn-sm {{ in_array(true, $this->check_alumno) ? 'disabled' : '' }}"
                                                             wire:click="abrir_modal_enviar_asistencia({{ $item->id_gestion_aula_usuario }})">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                 height="24" viewBox="0 0 24 24" fill="none"
@@ -435,6 +435,7 @@
 
 @push('scripts')
 
+    <script src="https://unpkg.com/@tabler/core@latest/dist/js/tabler.min.js"></script>
     <script src="{{ asset('js/mobile-detect/mobile-detect.min.js') }}"></script>
     <script>
         document.addEventListener('livewire:navigated', () => {
@@ -455,6 +456,10 @@
 
             toggleContent();
             window.addEventListener("resize", toggleContent);
+
+            var checkbox = document.getElementById('myCheckbox');
+                checkbox.indeterminate = true;
+            });
         });
     </script>
 @endpush
