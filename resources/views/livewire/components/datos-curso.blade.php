@@ -1,4 +1,4 @@
-<div class="mt-3" wire:init="load_datos_curso">
+<div wire:init="load_datos_curso">
     @if($cargando_datos_curso)
         <div class="card card-stacked placeholder-glow animate__animated animate__fadeIn animate__faster">
             <div class="card-header {{ $tipo_vista === 'cursos' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
@@ -209,7 +209,7 @@
                             <div class="col-12">
                                 <a class="btn btn-primary w-100 mt-1
                                     {{ !$gestion_aula_usuario->gestionAula->linkClase ? 'disabled' : '' }}"
-                                    style="cursor: pointer;" href="{{ $gestion_aula_usuario->gestionAula->linkClase->nombre_link_clase }}" target="_blank">
+                                    wire:click="redireccionar_link_clase">
                                     Link de Clase
                                 </a>
                                 @if(!$gestion_aula_usuario->gestionAula->linkClase)

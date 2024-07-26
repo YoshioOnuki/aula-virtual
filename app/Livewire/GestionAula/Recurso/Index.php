@@ -52,268 +52,272 @@ class Index extends Component
     public $tipo_vista;
 
 
-    /* =============== FUNCIONES PARA EL MODAL DE RECURSOS - CREAR Y EDITAR =============== */
-    public function abrir_modal_recurso_editar(Recurso $recurso)
-    {
-        $this->limpiar_modal();
+    /* =============== FUNCIONES PARA EL MODAL DE RECURSOS - CREAR, EDITAR Y DESCARGAR =============== */
+        public function abrir_modal_recurso_editar(Recurso $recurso)
+        {
+            $this->limpiar_modal();
 
-        $this->modo = 0;
-        $this->titulo_modal = 'Editar Recurso';
-        $this->accion_estado = 'Editar';
+            $this->modo = 0;
+            $this->titulo_modal = 'Editar Recurso';
+            $this->accion_estado = 'Editar';
 
-        $this->editar_recurso = Recurso::find($recurso->id_recurso);
-        $this->nombre_recurso = $this->editar_recurso->nombre_recurso;
+            $this->editar_recurso = Recurso::find($recurso->id_recurso);
+            $this->nombre_recurso = $this->editar_recurso->nombre_recurso;
 
-        $this->dispatch(
-            'modal',
-            modal: '#modal-recursos',
-            action: 'show'
-        );
-    }
-
-    public function abrir_modal_recurso_agregar()
-    {
-        $this->limpiar_modal();
-
-        $this->modo = 1;
-        $this->titulo_modal = 'Agregar Recurso';
-        $this->accion_estado = 'Agregar';
-
-        $this->dispatch(
-            'modal',
-            modal: '#modal-recursos',
-            action: 'show'
-        );
-
-    }
-
-    public function subir_archivo_recurso()
-    {
-        $carpetas = obtener_ruta_base($this->id_gestion_aula_usuario);
-
-        $archivo = $this->archivo_recurso;
-        $nombre_archivo_recurso = $this->editar_recurso->archivo_recurso ?? null;
-        array_push($carpetas, 'recursos');
-        $extension_archivo = strtolower($archivo->getClientOriginalExtension());
-
-        $extensiones_permitidas = ['pdf', 'xls', 'xlsx', 'doc', 'docx', 'ppt', 'pptx', 'txt'];
-
-        if (in_array($extension_archivo, $extensiones_permitidas)) {
-            $extencion_archivo = $extension_archivo;
-        } else {
-            return null;
+            $this->dispatch(
+                'modal',
+                modal: '#modal-recursos',
+                action: 'show'
+            );
         }
 
-        $nombre_bd = subir_archivo($archivo, $nombre_archivo_recurso, $carpetas, $extencion_archivo);
-
-        return $nombre_bd;
-    }
-
-    public function guardar_recurso()
-    {
-        $this->validate();
-
-
-        try
+        public function abrir_modal_recurso_agregar()
         {
-            DB::beginTransaction();
+            $this->limpiar_modal();
 
-            $nombre_bd = $this->subir_archivo_recurso();
+            $this->modo = 1;
+            $this->titulo_modal = 'Agregar Recurso';
+            $this->accion_estado = 'Agregar';
 
-            if($this->modo === 1)
-            {
-                $recurso = new Recurso();
-                $recurso->nombre_recurso = $this->nombre_recurso;
-                $recurso->archivo_recurso = $nombre_bd;
-                $recurso->id_gestion_aula = $this->gestion_aula_usuario->gestionAula->id_gestion_aula;
-                $recurso->save();
-            }else{
-                $recurso = Recurso::find($this->editar_recurso->id_recurso);
-                $recurso->nombre_recurso = $this->nombre_recurso;
-                $recurso->archivo_recurso = $nombre_bd;
-                $recurso->save();
+            $this->dispatch(
+                'modal',
+                modal: '#modal-recursos',
+                action: 'show'
+            );
+
+        }
+
+        public function subir_archivo_recurso()
+        {
+            $carpetas = obtener_ruta_base($this->id_gestion_aula_usuario);
+
+            $archivo = $this->archivo_recurso;
+            $nombre_archivo_recurso = $this->editar_recurso->archivo_recurso ?? null;
+            array_push($carpetas, 'recursos');
+            $extension_archivo = strtolower($archivo->getClientOriginalExtension());
+
+            $extensiones_permitidas = ['pdf', 'xls', 'xlsx', 'doc', 'docx', 'ppt', 'pptx', 'txt'];
+
+            if (in_array($extension_archivo, $extensiones_permitidas)) {
+                $extencion_archivo = $extension_archivo;
+            } else {
+                return null;
             }
 
-            DB::commit();
+            $nombre_bd = subir_archivo($archivo, $nombre_archivo_recurso, $carpetas, $extencion_archivo);
 
-            $this->cerrar_modal();
-            $this->load_recursos();
+            return $nombre_bd;
+        }
 
+        public function guardar_recurso()
+        {
+            $this->validate();
+
+
+            try
+            {
+                DB::beginTransaction();
+
+                $nombre_bd = $this->subir_archivo_recurso();
+
+                if($this->modo === 1)
+                {
+                    $recurso = new Recurso();
+                    $recurso->nombre_recurso = $this->nombre_recurso;
+                    $recurso->archivo_recurso = $nombre_bd;
+                    $recurso->id_gestion_aula = $this->gestion_aula_usuario->gestionAula->id_gestion_aula;
+                    $recurso->save();
+                }else{
+                    $recurso = Recurso::find($this->editar_recurso->id_recurso);
+                    $recurso->nombre_recurso = $this->nombre_recurso;
+                    $recurso->archivo_recurso = $nombre_bd;
+                    $recurso->save();
+                }
+
+                DB::commit();
+
+                $this->cerrar_modal();
+                $this->load_recursos();
+
+                $this->dispatch(
+                    'toast-basico',
+                    mensaje: 'El recurso se ha guardado correctamente',
+                    type: 'success'
+                );
+
+            } catch (\Exception $e) {
+                DB::rollBack();
+                // dd($e);
+                $this->dispatch(
+                    'toast-basico',
+                    mensaje: 'Ha ocurrido un error al guardar el recurso',
+                    type: 'error'
+                );
+            }
+
+        }
+
+        public function cerrar_modal()
+        {
+            $this->limpiar_modal();
             $this->dispatch(
-                'toast-basico',
-                mensaje: 'El recurso se ha guardado correctamente',
-                type: 'success'
-            );
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            // dd($e);
-            $this->dispatch(
-                'toast-basico',
-                mensaje: 'Ha ocurrido un error al guardar el recurso',
-                type: 'error'
+                'modal',
+                modal: '#modal-recursos',
+                action: 'hide'
             );
         }
 
-    }
+        public function limpiar_modal()
+        {
+            $this->modo = 1;
+            $this->titulo_modal = 'Estado de Usuario';
+            $this->accion_estado = 'Agregar';
+            $this->nombre_recurso = '';
+            $this->editar_recurso = null;
+            $this->reset('archivo_recurso');
+            // Reiniciar errores
+            $this->resetErrorBag();
+        }
 
-    public function cerrar_modal()
-    {
-        $this->limpiar_modal();
-        $this->dispatch(
-            'modal',
-            modal: '#modal-recursos',
-            action: 'hide'
-        );
-    }
-
-    public function limpiar_modal()
-    {
-        $this->modo = 1;
-        $this->titulo_modal = 'Estado de Usuario';
-        $this->accion_estado = 'Agregar';
-        $this->nombre_recurso = '';
-        $this->editar_recurso = null;
-        $this->reset('archivo_recurso');
-        // Reiniciar errores
-        $this->resetErrorBag();
-    }
+        public function descargar_recurso(Recurso $recurso)
+        {
+            $ruta = $recurso->archivo_recurso;
+            return response()->download($ruta, $recurso->nombre_recurso.'.'.pathinfo($ruta, PATHINFO_EXTENSION));
+        }
+    /* ==================================================================================== */
 
 
     /* =============== OBTENER DATOS PARA MOSTRAR LOS RECURSOS =============== */
-    public function mostrar_recursos()
-    {
-        $this->gestion_aula_usuario = GestionAulaUsuario::with([
-            'gestionAula' => function ($query) {
-                $query->with([
-                    'curso' => function ($query) {
-                        $query->with([
-                            'ciclo',
-                            'planEstudio',
-                            'programa' => function ($query) {
-                                $query->with([
-                                    'facultad',
-                                    'tipoPrograma'
-                                ])->select('id_programa', 'nombre_programa', 'mencion_programa', 'id_tipo_programa', 'id_facultad');
-                            }
-                        ])->select('id_curso', 'codigo_curso', 'nombre_curso', 'creditos_curso', 'horas_lectivas_curso', 'id_programa', 'id_plan_estudio', 'id_ciclo');
-                    },
-                    'recurso' => function ($query) {
-                        $query->select('id_recurso', 'nombre_recurso', 'archivo_recurso', 'id_gestion_aula', 'created_at');
-                    }
-                ])->select('id_gestion_aula', 'grupo_gestion_aula', 'id_curso');
-            }
-        ])->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)->first();
+        public function mostrar_recursos()
+        {
+            $this->gestion_aula_usuario = GestionAulaUsuario::with([
+                'gestionAula' => function ($query) {
+                    $query->with([
+                        'curso' => function ($query) {
+                            $query->with([
+                                'ciclo',
+                                'planEstudio',
+                                'programa' => function ($query) {
+                                    $query->with([
+                                        'facultad',
+                                        'tipoPrograma'
+                                    ])->select('id_programa', 'nombre_programa', 'mencion_programa', 'id_tipo_programa', 'id_facultad');
+                                }
+                            ])->select('id_curso', 'codigo_curso', 'nombre_curso', 'creditos_curso', 'horas_lectivas_curso', 'id_programa', 'id_plan_estudio', 'id_ciclo');
+                        },
+                        'recurso' => function ($query) {
+                            $query->select('id_recurso', 'nombre_recurso', 'archivo_recurso', 'id_gestion_aula', 'created_at');
+                        }
+                    ])->select('id_gestion_aula', 'grupo_gestion_aula', 'id_curso');
+                }
+            ])->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)->first();
 
-        if ($this->gestion_aula_usuario) {
-            $this->recursos = $this->gestion_aula_usuario->gestionAula->recurso;
+            if ($this->gestion_aula_usuario) {
+                $this->recursos = $this->gestion_aula_usuario->gestionAula->recurso;
+            }
         }
-    }
 
-    public function load_recursos()
-    {
-        $this->mostrar_recursos();
-        $this->cargando_recursos = false;
-    }
+        public function load_recursos()
+        {
+            $this->mostrar_recursos();
+            $this->cargando_recursos = false;
+        }
 
-    public function calcular_cantidad_recursos()
-    {
-        $id_gestion_aula = GestionAulaUsuario::find($this->id_gestion_aula_usuario)->id_gestion_aula;
-        $this->gestion_aula_usuario = GestionAulaUsuario::with([
-            'gestionAula' => function ($query) {
-                $query->with([
-                    'recurso' => function ($query) {
-                        $query->select('id_recurso');
-                    }
-                ])->select('id_gestion_aula');
-            }
-        ])->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)->first();
+        public function calcular_cantidad_recursos()
+        {
+            $id_gestion_aula = GestionAulaUsuario::find($this->id_gestion_aula_usuario)->id_gestion_aula;
+            $this->gestion_aula_usuario = GestionAulaUsuario::with([
+                'gestionAula' => function ($query) {
+                    $query->with([
+                        'recurso' => function ($query) {
+                            $query->select('id_recurso');
+                        }
+                    ])->select('id_gestion_aula');
+                }
+            ])->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)->first();
 
-        $this->cantidad_recursos = Recurso::where('id_gestion_aula', $id_gestion_aula)->count();
+            $this->cantidad_recursos = Recurso::where('id_gestion_aula', $id_gestion_aula)->count();
 
-        $this->cantidad_recursos === 0 ? $this->cantidad_recursos = 1 : $this->cantidad_recursos;
-    }
-
-    public function descargar_recurso(Recurso $recurso)
-    {
-        $ruta = $recurso->archivo_recurso;
-        return response()->download($ruta, $recurso->nombre_recurso.'.'.pathinfo($ruta, PATHINFO_EXTENSION));
-    }
+            $this->cantidad_recursos === 0 ? $this->cantidad_recursos = 1 : $this->cantidad_recursos;
+        }
+    /* ======================================================================= */
 
 
     /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
-    public function obtener_datos_page_header()
-    {
-        $this->titulo_page_header = 'Recursos';
-
-        // Regresar
-        if($this->tipo_vista === 'cursos')
+        public function obtener_datos_page_header()
         {
-            $this->regresar_page_header = [
-                'route' => 'cursos.detalle',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+            $this->titulo_page_header = 'Recursos';
+
+            // Regresar
+            if($this->tipo_vista === 'cursos')
+            {
+                $this->regresar_page_header = [
+                    'route' => 'cursos.detalle',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            } else {
+                $this->regresar_page_header = [
+                    'route' => 'carga-academica.detalle',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            }
+
+            // Links --> Inicio
+            $this->links_page_header = [
+                [
+                    'name' => 'Inicio',
+                    'route' => 'inicio',
+                    'params' => []
+                ]
             ];
-        } else {
-            $this->regresar_page_header = [
-                'route' => 'carga-academica.detalle',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-            ];
+
+            // Links --> Cursos o Carga Académica
+            if ($this->tipo_vista === 'cursos')
+            {
+                $this->links_page_header[] = [
+                    'name' => 'Mis Cursos',
+                    'route' => 'cursos',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista]
+                ];
+            } else {
+                $this->links_page_header[] = [
+                    'name' => 'Carga Académica',
+                    'route' => 'carga-academica',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista]
+                ];
+            }
+
+            // Links --> Detalle del curso o carga académica
+            if ($this->tipo_vista === 'cursos')
+            {
+                $this->links_page_header[] = [
+                    'name' => 'Detalle',
+                    'route' => 'cursos.detalle',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            } else {
+                $this->links_page_header[] = [
+                    'name' => 'Detalle',
+                    'route' => 'carga-academica.detalle',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            }
+
         }
-
-        // Links --> Inicio
-        $this->links_page_header = [
-            [
-                'name' => 'Inicio',
-                'route' => 'inicio',
-                'params' => []
-            ]
-        ];
-
-        // Links --> Cursos o Carga Académica
-        if ($this->tipo_vista === 'cursos')
-        {
-            $this->links_page_header[] = [
-                'name' => 'Mis Cursos',
-                'route' => 'cursos',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista]
-            ];
-        } else {
-            $this->links_page_header[] = [
-                'name' => 'Carga Académica',
-                'route' => 'carga-academica',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista]
-            ];
-        }
-
-        // Links --> Detalle del curso o carga académica
-        if ($this->tipo_vista === 'cursos')
-        {
-            $this->links_page_header[] = [
-                'name' => 'Detalle',
-                'route' => 'cursos.detalle',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-            ];
-        } else {
-            $this->links_page_header[] = [
-                'name' => 'Detalle',
-                'route' => 'carga-academica.detalle',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-            ];
-        }
-
-    }
+    /* ==================================================================================== */
 
 
     /* =============== FUNCIONES PARA PRUEBAS DE CARGAS - SIMULACION DE CARGAS =============== */
-    public function load_recursos_llamar()
-    {
-        $this->dispatch('load_recursos_evento');
-    }
+        public function load_recursos_llamar()
+        {
+            $this->dispatch('load_recursos_evento');
+        }
 
-    public function load_datos_curso_llamar()
-    {
-        $this->dispatch('load_datos_curso_evento');
-    }
+        public function load_datos_curso_llamar()
+        {
+            $this->dispatch('load_datos_curso_evento');
+        }
+    /* ======================================================================================= */
 
     public function mount($id_usuario, $tipo_vista, $id_curso)
     {

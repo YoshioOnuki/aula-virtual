@@ -32,6 +32,11 @@ class TrabajoAcademico extends Model
         return $this->hasMany(TrabajoAcademicoAlumno::class, 'id_trabajo_academico');
     }
 
+    public function archivoDocente()
+    {
+        return $this->hasMany(ArchivoDocente::class, 'id_trabajo_academico');
+    }
+
     protected static function boot()
     {
         parent::boot();
