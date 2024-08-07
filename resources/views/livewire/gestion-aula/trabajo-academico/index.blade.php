@@ -124,6 +124,12 @@
                                             {{-- Card trabajo --}}
 
                                             {{ $item->titulo_trabajo_academico }}
+
+                                            @livewire('components.card-trabajo-academico', [
+                                                // 'trabajo_academico' => $item,
+                                                // 'tipo_vista' => $tipo_vista
+                                            ])
+
                                         </div>
                                     @empty
                                         <div class="col-lg-12">
