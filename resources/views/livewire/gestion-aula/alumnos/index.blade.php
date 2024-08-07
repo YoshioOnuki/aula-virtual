@@ -96,7 +96,7 @@
                                     @empty
                                         @if ($alumnos->count() == 0 && $search != '')
                                             <tr>
-                                                <td colspan="4">
+                                                <td colspan="5">
                                                     <div class="text-center"
                                                         style="padding-bottom: 2rem; padding-top: 2rem;">
                                                         <span class="text-secondary">
@@ -108,7 +108,7 @@
                                             </tr>
                                         @else
                                             <tr>
-                                                <td colspan="4">
+                                                <td colspan="5">
                                                     <div class="text-center"
                                                         style="padding-bottom: 2rem; padding-top: 2rem;">
                                                         <span class="text-secondary">

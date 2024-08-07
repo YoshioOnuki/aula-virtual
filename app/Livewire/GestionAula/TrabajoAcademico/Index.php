@@ -23,7 +23,7 @@ class Index extends Component
     // Variables para la carga de datos
     public $cargando_trabajos = true;
 
-    public $modo_admin = false;// Modo admin, para saber si se esta en modo administrador
+    public $modo_admin = false; // Modo admin, para saber si se esta en modo administrador
 
     // Variables para page-header
     public $titulo_page_header = 'Trabajo académico';
@@ -35,132 +35,128 @@ class Index extends Component
 
 
     /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
-        public function obtener_datos_page_header()
-        {
-            $this->titulo_page_header = 'Trabajos Académicos';
+    public function obtener_datos_page_header()
+    {
+        $this->titulo_page_header = 'Trabajos Académicos';
 
-            // Regresar
-            if($this->tipo_vista === 'cursos')
-            {
-                $this->regresar_page_header = [
-                    'route' => 'cursos.detalle',
-                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-                ];
-            } else {
-                $this->regresar_page_header = [
-                    'route' => 'carga-academica.detalle',
-                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-                ];
-            }
-
-            // Links --> Inicio
-            $this->links_page_header = [
-                [
-                    'name' => 'Inicio',
-                    'route' => 'inicio',
-                    'params' => []
-                ]
+        // Regresar
+        if ($this->tipo_vista === 'cursos') {
+            $this->regresar_page_header = [
+                'route' => 'cursos.detalle',
+                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
             ];
-
-            // Links --> Cursos o Carga Académica
-            if ($this->tipo_vista === 'cursos')
-            {
-                $this->links_page_header[] = [
-                    'name' => 'Mis Cursos',
-                    'route' => 'cursos',
-                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista]
-                ];
-            } else {
-                $this->links_page_header[] = [
-                    'name' => 'Carga Académica',
-                    'route' => 'carga-academica',
-                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista]
-                ];
-            }
-
-            // Links --> Detalle del curso o carga académica
-            if ($this->tipo_vista === 'cursos')
-            {
-                $this->links_page_header[] = [
-                    'name' => 'Detalle',
-                    'route' => 'cursos.detalle',
-                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-                ];
-            } else {
-                $this->links_page_header[] = [
-                    'name' => 'Detalle',
-                    'route' => 'carga-academica.detalle',
-                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-                ];
-            }
-
+        } else {
+            $this->regresar_page_header = [
+                'route' => 'carga-academica.detalle',
+                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+            ];
         }
+
+        // Links --> Inicio
+        $this->links_page_header = [
+            [
+                'name' => 'Inicio',
+                'route' => 'inicio',
+                'params' => []
+            ]
+        ];
+
+        // Links --> Cursos o Carga Académica
+        if ($this->tipo_vista === 'cursos') {
+            $this->links_page_header[] = [
+                'name' => 'Mis Cursos',
+                'route' => 'cursos',
+                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista]
+            ];
+        } else {
+            $this->links_page_header[] = [
+                'name' => 'Carga Académica',
+                'route' => 'carga-academica',
+                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista]
+            ];
+        }
+
+        // Links --> Detalle del curso o carga académica
+        if ($this->tipo_vista === 'cursos') {
+            $this->links_page_header[] = [
+                'name' => 'Detalle',
+                'route' => 'cursos.detalle',
+                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+            ];
+        } else {
+            $this->links_page_header[] = [
+                'name' => 'Detalle',
+                'route' => 'carga-academica.detalle',
+                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+            ];
+        }
+    }
     /* ==================================================================================== */
 
 
-        /* =============== OBTENER DATOS PARA MOSTRAR LOS RECURSOS =============== */
-        public function mostrar_trabajos()
-        {
-            $this->gestion_aula_usuario = GestionAulaUsuario::with([
-                'gestionAula' => function ($query) {
-                    $query->with([
-                        'curso' => function ($query) {
-                            $query->with([
-                                'ciclo',
-                                'planEstudio',
-                                'programa' => function ($query) {
-                                    $query->with([
-                                        'facultad',
-                                        'tipoPrograma'
-                                    ])->select('id_programa', 'nombre_programa', 'mencion_programa', 'id_tipo_programa', 'id_facultad');
-                                }
-                            ])->select('id_curso', 'codigo_curso', 'nombre_curso', 'creditos_curso', 'horas_lectivas_curso', 'id_programa', 'id_plan_estudio', 'id_ciclo');
-                        },
-                        'trabajoAcademico' => function ($query) {
-                            $query->with([
-                                'archivoDocente' => function ($query) {
-                                    $query->get();
-                                },
-                                'trabajoAcademicoAlumno' => function ($query) {
-                                    $query->with([
-                                        'archivoAlumno' => function ($query) {
-                                            $query->get();
-                                        },
-                                        'estadoTrabajoAcademicoAlumno' => function ($query) {
-                                            $query->get();
-                                        },
-                                        'comentarioTrabajoAcademico' => function ($query) {
-                                            $query->get();
-                                        }
-                                    ])->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)->get();
-                                },
-                            ])->orderBy('fecha_inicio_trabajo_academico', 'DESC')
-                                ->get();
-                        }
-                    ])->select('id_gestion_aula', 'grupo_gestion_aula', 'id_curso');
-                }
-            ])->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)
-                ->first();
-
-            if ($this->gestion_aula_usuario) {
-                $this->trabajos_academicos = $this->gestion_aula_usuario->gestionAula->trabajoAcademico;
+    /* =============== OBTENER DATOS PARA MOSTRAR LOS RECURSOS =============== */
+    public function mostrar_trabajos()
+    {
+        $this->gestion_aula_usuario = GestionAulaUsuario::with([
+            'gestionAula' => function ($query) {
+                $query->with([
+                    'curso' => function ($query) {
+                        $query->with([
+                            'ciclo',
+                            'planEstudio',
+                            'programa' => function ($query) {
+                                $query->with([
+                                    'facultad',
+                                    'tipoPrograma'
+                                ])->select('id_programa', 'nombre_programa', 'mencion_programa', 'id_tipo_programa', 'id_facultad');
+                            }
+                        ])->select('id_curso', 'codigo_curso', 'nombre_curso', 'creditos_curso', 'horas_lectivas_curso', 'id_programa', 'id_plan_estudio', 'id_ciclo');
+                    },
+                    'trabajoAcademico' => function ($query) {
+                        $query->with([
+                            'archivoDocente' => function ($query) {
+                                $query->get();
+                            },
+                            'trabajoAcademicoAlumno' => function ($query) {
+                                $query->with([
+                                    'archivoAlumno' => function ($query) {
+                                        $query->get();
+                                    },
+                                    'estadoTrabajoAcademico' => function ($query) {
+                                        $query->first();
+                                    },
+                                    'comentarioTrabajoAcademico' => function ($query) {
+                                        $query->get();
+                                    }
+                                ])->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)->get();
+                            },
+                        ])->orderBy('fecha_inicio_trabajo_academico', 'DESC')
+                            ->get();
+                    }
+                ])->select('id_gestion_aula', 'grupo_gestion_aula', 'id_curso');
             }
-        }
+        ])->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)
+            ->first();
 
-        public function load_trabajos()
-        {
-            $this->mostrar_trabajos();
-            $this->cargando_trabajos = false;
+        if ($this->gestion_aula_usuario) {
+            $this->trabajos_academicos = $this->gestion_aula_usuario->gestionAula->trabajoAcademico;
         }
+    }
+
+    public function load_trabajos()
+    {
+        $this->mostrar_trabajos();
+        $this->cargando_trabajos = false;
+    }
 
     /* ======================================================================= */
 
 
     /* =============== FUNCIONES PARA PRUEBAS DE CARGAS - SIMULACION DE CARGAS =============== */
-        public function load_trabajos_llamar()
-        {
-            $this->dispatch('load_trabajos_evento');
-        }
+    public function load_trabajos_llamar()
+    {
+        $this->dispatch('load_trabajos_evento');
+    }
     /* ======================================================================================= */
 
 
@@ -180,13 +176,11 @@ class Index extends Component
 
         $usuario_sesion = Usuario::find(auth()->user()->id_usuario);
 
-        if ($usuario_sesion->esRol('ADMINISTRADOR'))
-        {
+        if ($usuario_sesion->esRol('ADMINISTRADOR')) {
             $this->modo_admin = true;
         }
 
         $this->obtener_datos_page_header();
-
     }
 
     public function render()
