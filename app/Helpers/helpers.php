@@ -294,7 +294,6 @@ if (!function_exists('desencriptar'))
 
 }
 
-
 // Funcion para subir un archivo del curso
 if (!function_exists('subir_archivo'))
 {
@@ -458,7 +457,6 @@ if (!function_exists('obtener_extension_archivo')) {
     }
 }
 
-
 // Funcion para retornar el color del estado de la asistencia
 if (!function_exists('color_estado_asistencia')) {
     function color_estado_asistencia($estado)
@@ -472,6 +470,21 @@ if (!function_exists('color_estado_asistencia')) {
                 return config('settings.color-asistencia-ausente');
             case 'Justificado':
                 return config('settings.color-asistencia-justificado');
+        }
+    }
+}
+
+// Funcion para retornar el color del estado del trabajo academico
+if (!function_exists('color_estado_trabajo_academico')) {
+    function color_estado_trabajo_academico($estado)
+    {
+        switch ($estado) {
+            case 'Entregado':
+                return config('settings.color-trabajo-academico-entregado');
+            case 'Revisado':
+                return config('settings.color-trabajo-academico-revisado');
+            case 'No entregado':
+                return config('settings.color-trabajo-academico-no-entregado');
         }
     }
 }

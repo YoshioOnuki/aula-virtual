@@ -25762,3 +25762,15 @@ img {
     height: auto; /* Mantiene la proporción de alto */
     object-fit: cover;
 }
+
+
+/* Estilo para card de trabajos académicos */
+.card-trabajo-academico:hover {
+    transform: scale(1.01);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+
+    .card-titulo {
+        text-decoration: underline;
+    }
+
+}

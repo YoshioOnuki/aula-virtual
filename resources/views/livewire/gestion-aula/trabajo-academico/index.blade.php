@@ -121,13 +121,11 @@
                                     @forelse ($trabajos_academicos as $item)
                                         <div class="col-12">
 
-                                            {{-- Card trabajo --}}
-
-                                            {{ $item->titulo_trabajo_academico }}
-
                                             @livewire('components.card-trabajo-academico', [
-                                                // 'trabajo_academico' => $item,
-                                                // 'tipo_vista' => $tipo_vista
+                                                'trabajo_academico' => $item,
+                                                'tipo_vista' => $tipo_vista,
+                                                'usuario' => $usuario,
+                                                'id_gestion_aula_usuario' => $id_gestion_aula_usuario
                                             ])
 
                                         </div>

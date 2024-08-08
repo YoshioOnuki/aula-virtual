@@ -22,6 +22,14 @@ return [
     'color-asistencia-ausente' => 'red',
     'color-asistencia-justificado' => 'azure',
 
+    'color-trabajo-academico-entregado' => 'teal',
+    'color-trabajo-academico-no-entregado' => 'red',
+    'color-trabajo-academico-revisado' => 'primary',
+
+    'color-border-card-trabajo-academico' => 'blue',
+    'color-border-card-recurso' => 'pink',
+    'color-border-card-foro' => 'lime',
+
     'fondo_curso_default' => '/media/fondo-cursos/fondo-infor.webp',
     'fondo_detalle_doncente' => '/assets/static/photos/businesswoman-working-at-her-laptop-2.jpg',
     'fondo_detalle_alumno' => '/assets/static/photos/colorful-exotic-flowers-and-greenery.jpg',

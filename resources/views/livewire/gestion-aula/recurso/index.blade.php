@@ -96,7 +96,7 @@
                                     @for ($i = 0; $i < $cantidad_recursos; $i++)
                                         <div class="col-12">
                                             <div class="card placeholder-glow">
-                                                <div class="card-body">
+                                                <div class="card-body p-4">
                                                     <div class="d-flex justify-content-between mb-5">
                                                         <div class="placeholder col-6" style="height: 1.5rem;"></div>
                                                         <div class="placeholder"></div>
@@ -133,13 +133,14 @@
                                         <div class="col-12">
                                             @if (file_exists($item->archivo_recurso))
                                                 <div class="card">
-                                                    <div class="card-body">
+                                                    <div class="modal-status bg-{{ config('settings.color-border-card-recurso') }}"></div>
+                                                    <div class="card-body p-4">
                                                         <div class="d-flex justify-content-between">
 
                                                             <div>
                                                                 <h5 class="card-title d-flex align-items-center">
                                                                     <img src="{{ obtener_icono_archivo($item->archivo_recurso) }}"
-                                                                        alt="Info" class="w-6 h-6 me-2">
+                                                                        alt="icono-recurso" class="w-6 h-6 me-2">
                                                                     <span class="fw-bold">
                                                                         {{ $item->nombre_recurso }}
                                                                     </span>

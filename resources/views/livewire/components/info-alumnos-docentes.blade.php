@@ -120,11 +120,11 @@
         textElement.style.display = 'none';
         successElement.style.display = 'inline';
 
-        // Después de 2 segundos, revertir los cambios
+        // Después de 1 segundos, revertir los cambios
         setTimeout(function() {
             textElement.style.display = 'inline';
             successElement.style.display = 'none';
-        }, 2000);
+        }, 1000);
     }).catch(function(err) {
         console.error('Error al copiar al portapapeles: ', err);
     });
