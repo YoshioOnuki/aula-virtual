@@ -52,7 +52,8 @@
 
                                 @if ($tipo_vista === 'carga-academica' && $usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario))
                                     <div class="col-lg-12">
-                                        <div class="card hover-shadow-sm cursor-pointer">
+                                        <div class="card hover-shadow-sm cursor-pointer"
+                                            wire:click="abrir_modal_trabajo()">
                                             <div class="card-body text-secondary">
                                                 <div class="row g-2">
                                                     <div
@@ -155,6 +156,162 @@
             </div>
         </div>
     </div>
+
+
+    <div wire:ignore.self class="modal fade" id="modal-trabajo-academico" tabindex="-1" data-bs-backdrop="static">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        {{ $titulo_modal }}
+                    </h5>
+                    <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal"
+                        aria-label="Close" wire:click="cerrar_modal"></button>
+                </div>
+                <form autocomplete="off" wire:submit="guardar_recurso">
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-lg-12">
+                                <label for="nombre_recurso" class="form-label required">
+                                    Nombre del trabajo académico
+                                </label>
+                                <input type="text" name="nombre_trabajo_academico"
+                                    class="form-control @error('nombre_trabajo_academico') is-invalid @elseif(strlen($nombre_trabajo_academico) > 0) is-valid @enderror"
+                                    id="nombre_trabajo_academico" wire:model.live="nombre_trabajo_academico"
+                                    placeholder="Ingrese su correo electrónico" />
+                                @error('nombre_trabajo_academico')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="descripcion_recurso" class="form-label">
+                                    Descripción del trabajo académico
+                                </label>
+                                <textarea name="descripcion_trabajo_academico"
+                                    class="form-control @error('descripcion_trabajo_academico') is-invalid @elseif(strlen($descripcion_trabajo_academico) > 0) is-valid @enderror"
+                                    id="descripcion_trabajo_academico" wire:model.live="descripcion_trabajo_academico"
+                                    placeholder="Ingrese la descripción del trabajo académico" rows="4"></textarea>
+                                @error('descripcion_trabajo_academico')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="fecha_inicio_trabajo_academico" class="form-label required">
+                                    Fecha de inicio
+                                </label>
+                                <input type="date" name="fecha_inicio_trabajo_academico"
+                                    class="form-control @error('fecha_inicio_trabajo_academico') is-invalid @elseif(strlen($fecha_inicio_trabajo_academico) > 0) is-valid @enderror"
+                                    id="fecha_inicio_trabajo_academico"
+                                    wire:model.live="fecha_inicio_trabajo_academico" />
+                                @error('fecha_inicio_trabajo_academico')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="hora_inicio_trabajo_academico" class="form-label required">
+                                    Hora de inicio
+                                </label>
+                                <input type="time" name="hora_inicio_trabajo_academico"
+                                    class="form-control @error('hora_inicio_trabajo_academico') is-invalid @elseif(strlen($hora_inicio_trabajo_academico) > 0) is-valid @enderror"
+                                    id="hora_inicio_trabajo_academico"
+                                    wire:model.live="hora_inicio_trabajo_academico" />
+                                @error('hora_inicio_trabajo_academico')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="fecha_fin_trabajo_academico" class="form-label required">
+                                    Fecha de fin
+                                </label>
+                                <input type="date" name="fecha_fin_trabajo_academico"
+                                    class="form-control @error('fecha_fin_trabajo_academico') is-invalid @elseif(strlen($fecha_fin_trabajo_academico) > 0) is-valid @enderror"
+                                    id="fecha_fin_trabajo_academico"
+                                    wire:model.live="fecha_fin_trabajo_academico" />
+                                @error('fecha_fin_trabajo_academico')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="hora_fin_trabajo_academico" class="form-label required">
+                                    Hora de fin
+                                </label>
+                                <input type="time" name="hora_fin_trabajo_academico"
+                                    class="form-control @error('hora_fin_trabajo_academico') is-invalid @elseif(strlen($hora_fin_trabajo_academico) > 0) is-valid @enderror"
+                                    id="hora_fin_trabajo_academico"
+                                    wire:model.live="hora_fin_trabajo_academico" />
+                                @error('hora_fin_trabajo_academico')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="archivo_recurso" class="form-label required">
+                                    Archivos
+                                </label>
+                                <input type="file" class="form-control @error('archivo_recurso') is-invalid @enderror"
+                                    id="archivo_recurso" wire:model.live="archivo_recurso" accept=".pdf,.xls,.xlsx,.doc,.docx,.ppt,.pptx,.txt"/>
+                                @error('archivo_recurso')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal"
+                            wire:click="cerrar_modal">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round"
+                                class="icon icon-tabler icons-tabler-outline icon-tabler-ban">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                <path d="M5.7 5.7l12.6 12.6" />
+                            </svg>
+                            Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-primary ms-auto">
+                            @if ($modo === 1)
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M12 5l0 14" />
+                                    <path d="M5 12l14 0" />
+                                </svg>
+                            @else
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                    <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                    <path d="M16 5l3 3" />
+                                </svg>
+                            @endif
+                            {{ $accion_modal }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
 </div>
 

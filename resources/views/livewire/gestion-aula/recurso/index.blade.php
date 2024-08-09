@@ -227,9 +227,8 @@
                                                 </div>
                                             @else
                                                 <div class="card">
-                                                    <div class="card-body">
+                                                    <div class="card-body p-4">
                                                         <div class="d-flex justify-content-between">
-
                                                             <div>
                                                                 <h5 class="card-title d-flex align-items-center">
                                                                     <img src="/media/icons/icon-archivo-generico2.webp"
