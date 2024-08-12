@@ -93,7 +93,7 @@
                                 @endif
 
                                 @if ($cargando_recursos)
-                                    @for ($i = 0; $i < $cantidad_recursos; $i++)
+                                    {{-- @for ($i = 0; $i < $cantidad_recursos; $i++) --}}
                                         <div class="col-12">
                                             <div class="card placeholder-glow">
                                                 <div class="card-body p-4">
@@ -127,7 +127,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    @endfor
+                                    {{-- @endfor --}}
                                 @else
                                     @forelse ($recursos as $item)
                                         <div class="col-12">
@@ -179,8 +179,7 @@
                                                                             height="24" viewBox="0 0 24 24" fill="none"
                                                                             stroke="currentColor" stroke-width="2"
                                                                             stroke-linecap="round" stroke-linejoin="round"
-                                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-edit"
-                                                                            wire:click="abrir_modal_recurso_editar({{ $item->id_recurso }})">
+                                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
                                                                             <path stroke="none" d="M0 0h24v24H0z"
                                                                                 fill="none" />
                                                                             <path

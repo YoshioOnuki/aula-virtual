@@ -53,7 +53,7 @@
                                 @if ($tipo_vista === 'carga-academica' && $usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario))
                                     <div class="col-lg-12">
                                         <div class="card hover-shadow-sm cursor-pointer"
-                                            wire:click="abrir_modal_trabajo()">
+                                            wire:click="abrir_modal_agregar_trabajo()">
                                             <div class="card-body text-secondary">
                                                 <div class="row g-2">
                                                     <div
@@ -87,7 +87,7 @@
                                 @if ($cargando_trabajos)
                                     <div class="col-12">
                                         <div class="card placeholder-glow">
-                                            <div class="card-body">
+                                            <div class="card-body p-4">
                                                 <div class="d-flex justify-content-between mb-5">
                                                     <div class="placeholder col-6" style="height: 1.5rem;"></div>
                                                     <div class="placeholder"></div>
@@ -101,19 +101,14 @@
                                                     </div>
                                                 </div>
                                                 <div class=" d-flex justify-content-end">
+                                                    @if ($tipo_vista === 'carga-academica' && $usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario))
                                                     <a href="#" tabindex="-1"
                                                         class="btn btn-secondary disabled placeholder col-sm-2 col-lg-3 col-xl-2 d-none d-md-inline-block me-2"
                                                         aria-hidden="true"></a>
                                                     <a href="#" tabindex="-1"
                                                         class="btn btn-secondary disabled placeholder col-1 d-md-none btn-icon me-2"
                                                         aria-hidden="true"></a>
-
-                                                    <a href="#" tabindex="-1"
-                                                        class="btn btn-primary disabled placeholder col-sm-3 col-lg-4 col-xl-2 d-none d-md-inline-block"
-                                                        aria-hidden="true"></a>
-                                                    <a href="#" tabindex="-1"
-                                                        class="btn btn-primary disabled placeholder col-1 d-md-none btn-icon"
-                                                        aria-hidden="true"></a>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
@@ -168,7 +163,7 @@
                     <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal"
                         aria-label="Close" wire:click="cerrar_modal"></button>
                 </div>
-                <form autocomplete="off" wire:submit="guardar_recurso">
+                <form autocomplete="off" wire:submit="guardar_trabajo">
                     <div class="modal-body">
                         <div class="row g-3">
                             <div class="col-lg-12">
@@ -256,12 +251,17 @@
                                 @enderror
                             </div>
                             <div class="col-lg-12">
-                                <label for="archivo_recurso" class="form-label required">
-                                    Archivos
+                                <label for="archivos_trabajo_academico" class="form-label required">
+                                    @if ($modo === 1)
+                                        Archivo del trabajo académico
+                                    @else
+                                        Agregar más archivos al trabajo académico
+                                    @endif
                                 </label>
-                                <input type="file" class="form-control @error('archivo_recurso') is-invalid @enderror"
-                                    id="archivo_recurso" wire:model.live="archivo_recurso" accept=".pdf,.xls,.xlsx,.doc,.docx,.ppt,.pptx,.txt"/>
-                                @error('archivo_recurso')
+                                <input type="file" class="form-control @error('archivos_trabajo_academico') is-invalid @enderror"
+                                    id="archivos_trabajo_academico" wire:model.live="archivos_trabajo_academico"
+                                    accept=".pdf,.xls,.xlsx,.doc,.docx,.ppt,.pptx,.txt" multiple>
+                                @error('archivos_trabajo_academico')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>

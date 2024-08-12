@@ -30,7 +30,6 @@ class Index extends Component
     // Variables para la carga de datos
     public $cargando_recursos = true;
     public $cargando_datos_curso = true;
-    public $cantidad_recursos = 1;
 
     // Variables para el modal de Recursos
     public $modo = 1; // Modo 1 = Agregar / 0 = Editar
@@ -222,24 +221,6 @@ class Index extends Component
             $this->mostrar_recursos();
             $this->cargando_recursos = false;
         }
-
-        public function calcular_cantidad_recursos()
-        {
-            $id_gestion_aula = GestionAulaUsuario::find($this->id_gestion_aula_usuario)->id_gestion_aula;
-            $this->gestion_aula_usuario = GestionAulaUsuario::with([
-                'gestionAula' => function ($query) {
-                    $query->with([
-                        'recurso' => function ($query) {
-                            $query->select('id_recurso');
-                        }
-                    ])->select('id_gestion_aula');
-                }
-            ])->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)->first();
-
-            $this->cantidad_recursos = Recurso::where('id_gestion_aula', $id_gestion_aula)->count();
-
-            $this->cantidad_recursos === 0 ? $this->cantidad_recursos = 1 : $this->cantidad_recursos;
-        }
     /* ======================================================================= */
 
 
@@ -326,8 +307,6 @@ class Index extends Component
 
         $id_gestion_aula_usuario = Hashids::decode($id_curso);
         $this->id_gestion_aula_usuario = $id_gestion_aula_usuario[0];
-
-        $this->calcular_cantidad_recursos();
 
         $this->id_usuario_hash = $id_usuario;
         $id_usuario = Hashids::decode($id_usuario);

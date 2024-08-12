@@ -12,6 +12,12 @@ class CardTrabajoAcademico extends Component
     public $usuario;
     public $id_gestion_aula_usuario;
 
+
+    public function abrir_modal($id_trabajo_academico)
+    {
+        $this->dispatch('abrir-modal-editar', $id_trabajo_academico);
+    }
+
     public function mount($trabajo_academico, $tipo_vista, $usuario, $id_gestion_aula_usuario)
     {
         $this->trabajo_academico = $trabajo_academico;

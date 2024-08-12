@@ -2,22 +2,28 @@
 
 namespace App\Livewire\GestionAula\TrabajoAcademico;
 
+use App\Models\ArchivoDocente;
 use App\Models\GestionAulaUsuario;
+use App\Models\TrabajoAcademico;
 use App\Models\Usuario;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Vinkla\Hashids\Facades\Hashids;
 
 #[Layout('components.layouts.app')]
 class Index extends Component
 {
+    use WithFileUploads;
 
     public $id_usuario_hash;
     public $usuario;
 
     public $id_gestion_aula_usuario_hash;
     public $id_gestion_aula_usuario;
+    public $id_gestion_aula;
     public $gestion_aula_usuario;
     public $trabajos_academicos;
 
@@ -28,6 +34,7 @@ class Index extends Component
     public $modo = 1; // Modo 1 = Agregar / 0 = Editar
     public $titulo_modal = 'Agregar Trabajo Académico';
     public $accion_modal = 'Agregar';
+    public $editar_trabajo_academico;
     #[Validate('required')]
     public $nombre_trabajo_academico;
     #[Validate('nullable')]
@@ -40,7 +47,11 @@ class Index extends Component
     public $hora_inicio_trabajo_academico;
     #[Validate('required')]
     public $hora_fin_trabajo_academico;
+    #[Validate(['required', 'array'])]
+    public $archivos_trabajo_academico = [];
+    #[Validate(['archivos_trabajo_academico.*' => 'nullable|file|mimes:pdf,xls,xlsx,doc,docx,ppt,pptx,txt|max:4096'])]
 
+    protected $listeners = ['abrir-modal-editar' => 'abrir_modal_editar_trabajo'];
 
     public $modo_admin = false; // Modo admin, para saber si se esta en modo administrador
 
@@ -52,10 +63,9 @@ class Index extends Component
     public $tipo_vista;
 
     /* =============== FUNCIONES PARA EL MODAL DE TRABAJO ACADEMICO - AGREGAR =============== */
-        public function abrir_modal_trabajo()
+        public function abrir_modal_agregar_trabajo()
         {
-            // $this->limpiar_modal();
-
+            $this->limpiar_modal();
             $this->modo = 1;
             $this->titulo_modal = 'Agregar Trabajo Académico';
             $this->accion_modal = 'Agregar';
@@ -65,7 +75,168 @@ class Index extends Component
                 modal: '#modal-trabajo-academico',
                 action: 'show'
             );
+        }
 
+        public function abrir_modal_editar_trabajo($id_trabajo_academico)
+        {
+            $this->limpiar_modal();
+            $this->modo = 0;
+            $this->titulo_modal = 'Editar Trabajo Académico';
+            $this->accion_modal = 'Editar';
+
+            $this->editar_trabajo_academico = TrabajoAcademico::find($id_trabajo_academico);
+            $this->nombre_trabajo_academico = $this->editar_trabajo_academico->titulo_trabajo_academico;
+            $this->descripcion_trabajo_academico = $this->editar_trabajo_academico->descripcion_trabajo_academico;
+            $this->fecha_inicio_trabajo_academico = date('Y-m-d', strtotime($this->editar_trabajo_academico->fecha_inicio_trabajo_academico));
+            $this->fecha_fin_trabajo_academico = date('Y-m-d', strtotime($this->editar_trabajo_academico->fecha_fin_trabajo_academico));
+            $this->hora_inicio_trabajo_academico = date('H:i', strtotime($this->editar_trabajo_academico->fecha_inicio_trabajo_academico));
+            $this->hora_fin_trabajo_academico = date('H:i', strtotime($this->editar_trabajo_academico->fecha_fin_trabajo_academico));
+
+            $this->dispatch(
+                'modal',
+                modal: '#modal-trabajo-academico',
+                action: 'show'
+            );
+        }
+
+        public function subir_archivo_trabajo()
+        {
+            $carpetas = obtener_ruta_base($this->id_gestion_aula_usuario);
+            array_push($carpetas, 'trabajos-academicos');
+
+            $nombres_bd = [];
+
+            foreach ($this->archivos_trabajo_academico as $archivo) {
+                $nombre_archivo_trabajo = null;
+                $extension_archivo = strtolower($archivo->getClientOriginalExtension());
+
+                $extensiones_permitidas = ['pdf', 'xls', 'xlsx', 'doc', 'docx', 'ppt', 'pptx', 'txt'];
+
+                if (!in_array($extension_archivo, $extensiones_permitidas)) {
+                    continue; // Si la extensión no está permitida, saltar al siguiente archivo
+                }
+
+                $nombre_bd = subir_archivo($archivo, $nombre_archivo_trabajo, $carpetas, $extension_archivo);
+                $nombres_bd[] = $nombre_bd; // Guardar el nombre del archivo en la base de datos
+            }
+
+            return $nombres_bd; // Retornar un array con los nombres de los archivos guardados
+        }
+
+        public function guardar_trabajo()
+        {
+            $this->validate([
+                'nombre_trabajo_academico' => 'required',
+                'fecha_inicio_trabajo_academico' => 'required|before_or_equal:fecha_fin_trabajo_academico|date',
+                'fecha_fin_trabajo_academico' => 'required|after_or_equal:fecha_inicio_trabajo_academico|date',
+                'hora_inicio_trabajo_academico' => 'required|date_format:H:i|before_or_equal:hora_fin_trabajo_academico',
+                'hora_fin_trabajo_academico' => 'required|date_format:H:i|after_or_equal:hora_inicio_trabajo_academico',
+                'archivos_trabajo_academico' => 'nullable|array',
+                'archivos_trabajo_academico.*' => 'nullable|file|mimes:pdf,xls,xlsx,doc,docx,ppt,pptx,txt|max:4096',
+            ]);
+
+            try {
+                DB::beginTransaction();
+
+                if (count($this->archivos_trabajo_academico) > 0) {
+                    $nombres_bd = $this->subir_archivo_trabajo();
+                }
+
+                if($this->modo === 1)
+                {
+                    $trabajo_academico = new TrabajoAcademico();
+                    $trabajo_academico->titulo_trabajo_academico = $this->nombre_trabajo_academico;
+                    $trabajo_academico->descripcion_trabajo_academico = $this->descripcion_trabajo_academico;
+                    $trabajo_academico->fecha_inicio_trabajo_academico = $this->fecha_inicio_trabajo_academico . ' ' . $this->hora_inicio_trabajo_academico;
+                    $trabajo_academico->fecha_fin_trabajo_academico = $this->fecha_fin_trabajo_academico . ' ' . $this->hora_fin_trabajo_academico;
+                    $trabajo_academico->id_gestion_aula = $this->id_gestion_aula;
+                    $trabajo_academico->save();
+
+                    // Guardar el archivos
+                    if (count($nombres_bd) > 0) {
+                        foreach ($nombres_bd as $nombre_bd) {
+                            $archivo_docente = new ArchivoDocente();
+                            $archivo_docente->id_trabajo_academico = $trabajo_academico->id_trabajo_academico;
+                            $archivo_docente->archivo_docente = $nombre_bd;
+                            $archivo_docente->save();
+                        }
+                    }
+                }else{
+                    $trabajo_academico = TrabajoAcademico::find($this->editar_trabajo_academico->id_trabajo_academico);
+                    $trabajo_academico->titulo_trabajo_academico = $this->nombre_trabajo_academico;
+                    $trabajo_academico->descripcion_trabajo_academico = $this->descripcion_trabajo_academico;
+                    $trabajo_academico->fecha_inicio_trabajo_academico = $this->fecha_inicio_trabajo_academico . ' ' . $this->hora_inicio_trabajo_academico;
+                    $trabajo_academico->fecha_fin_trabajo_academico = $this->fecha_fin_trabajo_academico . ' ' . $this->hora_fin_trabajo_academico;
+                    $trabajo_academico->save();
+
+                    // Guardar el archivos
+                    if (count($nombres_bd) > 0) {
+                        foreach ($nombres_bd as $nombre_bd) {
+                            $archivo_docente = new ArchivoDocente();
+                            $archivo_docente->id_trabajo_academico = $trabajo_academico->id_trabajo_academico;
+                            $archivo_docente->archivo_docente = $nombre_bd;
+                            $archivo_docente->save();
+                        }
+                    }
+                }
+
+                DB::commit();
+
+                $this->cerrar_modal();
+                $this->load_trabajos();
+
+                if (count($this->archivos_trabajo_academico) === 0 && $this->modo === 1) {
+                    $this->dispatch(
+                        'toast-basico',
+                        mensaje: 'El trabajo académico se ha guardado correctamente, pero no se ha subido ningún archivo',
+                        type: 'success'
+                    );
+                }else{
+                    $this->dispatch(
+                        'toast-basico',
+                        mensaje: 'El trabajo académico se ha guardado correctamente',
+                        type: 'success'
+                    );
+                }
+
+            } catch (\Exception $e) {
+                DB::rollBack();
+                dd($e);
+                $this->dispatch(
+                    'toast-basico',
+                    mensaje: 'Ha ocurrido un error al guardar el Trabajo Academico',
+                    type: 'error'
+                );
+            }
+        }
+
+        public function cerrar_modal()
+        {
+            $this->limpiar_modal();
+            $this->dispatch(
+                'modal',
+                modal: '#modal-trabajo-academico',
+                action: 'hide'
+            );
+        }
+
+        public function limpiar_modal()
+        {
+            $this->modo = 1;
+            $this->titulo_modal = 'Agregar Trabajo Académico';
+            $this->accion_modal = 'Agregar';
+            $this->reset([
+                'nombre_trabajo_academico',
+                'descripcion_trabajo_academico',
+                'fecha_inicio_trabajo_academico',
+                'fecha_fin_trabajo_academico',
+                'hora_inicio_trabajo_academico',
+                'hora_fin_trabajo_academico',
+                'archivos_trabajo_academico'
+            ]);
+
+            // Reiniciar errores
+            $this->resetErrorBag();
         }
     /* ====================================================================================== */
 
@@ -130,7 +301,7 @@ class Index extends Component
     /* ==================================================================================== */
 
 
-    /* =============== OBTENER DATOS PARA MOSTRAR LOS RECURSOS =============== */
+    /* =============== OBTENER DATOS PARA MOSTRAR LOS TRABAJOS =============== */
         public function mostrar_trabajos()
         {
             $this->gestion_aula_usuario = GestionAulaUsuario::with([
@@ -204,7 +375,7 @@ class Index extends Component
         $id_gestion_aula_usuario = Hashids::decode($id_curso);
         $this->id_gestion_aula_usuario = $id_gestion_aula_usuario[0];
 
-        // $this->calcular_cantidad_recursos();
+        $this->id_gestion_aula = GestionAulaUsuario::find($this->id_gestion_aula_usuario)->id_gestion_aula;
 
         $this->id_usuario_hash = $id_usuario;
         $id_usuario = Hashids::decode($id_usuario);
