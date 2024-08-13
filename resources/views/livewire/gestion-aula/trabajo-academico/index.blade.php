@@ -236,17 +236,19 @@
                                 @enderror
                             </div>
                             <div class="col-lg-12">
-                                <label for="archivos_trabajo_academico" class="form-label required">
+                                <label for="archivos_trabajo_academico" class="form-label">
                                     @if ($modo === 1)
-                                        Archivo del trabajo académico
+                                        Archivos del trabajo académico
                                     @else
-                                        Agregar más archivos al trabajo académico
+                                        Agregar archivos al trabajo académico
                                     @endif
                                 </label>
-                                <input type="file" class="form-control @error('archivos_trabajo_academico') is-invalid @enderror"
+                                <input type="file" class="form-control @error('archivos_trabajo_academico') is-invalid @enderror
+                                    @if(count($archivos_trabajo_academico) > 0 && $errors->has('archivos_trabajo_academico.*')) is-invalid 
+                                    @elseif(count($archivos_trabajo_academico) > 0) is-valid @endif"
                                     id="archivos_trabajo_academico" wire:model.live="archivos_trabajo_academico"
                                     accept=".pdf,.xls,.xlsx,.doc,.docx,.ppt,.pptx,.txt" multiple>
-                                @error('archivos_trabajo_academico')
+                                @error('archivos_trabajo_academico.*')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>

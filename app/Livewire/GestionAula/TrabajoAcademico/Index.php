@@ -47,9 +47,8 @@ class Index extends Component
     public $hora_inicio_trabajo_academico;
     #[Validate('required')]
     public $hora_fin_trabajo_academico;
-    #[Validate(['required', 'array'])]
-    public $archivos_trabajo_academico = [];
     #[Validate(['archivos_trabajo_academico.*' => 'nullable|file|mimes:pdf,xls,xlsx,doc,docx,ppt,pptx,txt|max:4096'])]
+    public $archivos_trabajo_academico = [];
 
     protected $listeners = ['abrir-modal-editar' => 'abrir_modal_editar_trabajo'];
 
@@ -131,7 +130,6 @@ class Index extends Component
                 'fecha_fin_trabajo_academico' => 'required|after_or_equal:fecha_inicio_trabajo_academico|date',
                 'hora_inicio_trabajo_academico' => 'required|date_format:H:i|before_or_equal:hora_fin_trabajo_academico',
                 'hora_fin_trabajo_academico' => 'required|date_format:H:i|after_or_equal:hora_inicio_trabajo_academico',
-                'archivos_trabajo_academico' => 'nullable|array',
                 'archivos_trabajo_academico.*' => 'nullable|file|mimes:pdf,xls,xlsx,doc,docx,ppt,pptx,txt|max:4096',
             ]);
 
@@ -170,7 +168,7 @@ class Index extends Component
                     $trabajo_academico->save();
 
                     // Guardar el archivos
-                    if (count($nombres_bd) > 0) {
+                    if (count($this->archivos_trabajo_academico) > 0) {
                         foreach ($nombres_bd as $nombre_bd) {
                             $archivo_docente = new ArchivoDocente();
                             $archivo_docente->id_trabajo_academico = $trabajo_academico->id_trabajo_academico;
@@ -182,10 +180,7 @@ class Index extends Component
 
                 DB::commit();
 
-                $this->cerrar_modal();
-                $this->load_trabajos();
-
-                if (count($this->archivos_trabajo_academico) === 0 && $this->modo === 1) {
+                if (count($this->archivos_trabajo_academico) <= 0) {
                     $this->dispatch(
                         'toast-basico',
                         mensaje: 'El trabajo académico se ha guardado correctamente, pero no se ha subido ningún archivo',
@@ -199,9 +194,14 @@ class Index extends Component
                     );
                 }
 
+                $this->cargando_trabajos = true;
+                $this->cerrar_modal();
+                $this->load_trabajos_llamar();
+
             } catch (\Exception $e) {
                 DB::rollBack();
                 dd($e);
+                $this->cerrar_modal();
                 $this->dispatch(
                     'toast-basico',
                     mensaje: 'Ha ocurrido un error al guardar el Trabajo Academico',

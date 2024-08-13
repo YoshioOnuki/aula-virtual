@@ -135,14 +135,15 @@ class Index extends Component
 
                 DB::commit();
 
-                $this->cerrar_modal();
-                $this->load_recursos();
-
                 $this->dispatch(
                     'toast-basico',
                     mensaje: 'El recurso se ha guardado correctamente',
                     type: 'success'
                 );
+
+                $this->cargando_recursos = true;
+                $this->cerrar_modal();
+                $this->load_recursos_llamar();
 
             } catch (\Exception $e) {
                 DB::rollBack();
