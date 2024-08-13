@@ -114,28 +114,13 @@
                                         </div>
                                     </div>
                                 @else
-                                    @forelse ($trabajos_academicos as $item)
-                                        <div class="col-12">
-
-                                            @livewire('components.card-trabajo-academico', [
-                                                'trabajo_academico' => $item,
-                                                'tipo_vista' => $tipo_vista,
-                                                'usuario' => $usuario,
-                                                'id_gestion_aula_usuario' => $id_gestion_aula_usuario
-                                            ])
-
-                                        </div>
-                                    @empty
-                                        <div class="col-lg-12">
-                                            <div class="d-flex justify-content-center align-items-center">
-                                                <div class="text-muted">
-                                                    No hay trabajos académicos registrados
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endforelse
+                                    @livewire('components.card-trabajo-academico', [
+                                        'trabajos_academicos' => $trabajos_academicos,
+                                        'tipo_vista' => $tipo_vista,
+                                        'usuario' => $usuario,
+                                        'id_gestion_aula_usuario' => $id_gestion_aula_usuario
+                                    ])
                                 @endif
-
                             </div>
                         </div>
                     </div>

@@ -7,7 +7,7 @@ use Livewire\Component;
 class CardTrabajoAcademico extends Component
 {
 
-    public $trabajo_academico;
+    public $trabajos_academicos;
     public $tipo_vista;
     public $usuario;
     public $id_gestion_aula_usuario;
@@ -18,9 +18,9 @@ class CardTrabajoAcademico extends Component
         $this->dispatch('abrir-modal-editar', $id_trabajo_academico);
     }
 
-    public function mount($trabajo_academico, $tipo_vista, $usuario, $id_gestion_aula_usuario)
+    public function mount($trabajos_academicos, $tipo_vista, $usuario, $id_gestion_aula_usuario)
     {
-        $this->trabajo_academico = $trabajo_academico;
+        $this->trabajos_academicos = $trabajos_academicos;
         $this->tipo_vista = $tipo_vista;
         $this->usuario = $usuario;
         $this->id_gestion_aula_usuario = $id_gestion_aula_usuario;
