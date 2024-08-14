@@ -3,6 +3,7 @@
 namespace App\Livewire\Components;
 
 use Livewire\Component;
+use Vinkla\Hashids\Facades\Hashids;
 
 class CardTrabajoAcademico extends Component
 {
@@ -11,6 +12,8 @@ class CardTrabajoAcademico extends Component
     public $tipo_vista;
     public $usuario;
     public $id_gestion_aula_usuario;
+
+    public $id_usuario_hash;
 
 
     public function abrir_modal($id_trabajo_academico)
@@ -24,6 +27,7 @@ class CardTrabajoAcademico extends Component
         $this->tipo_vista = $tipo_vista;
         $this->usuario = $usuario;
         $this->id_gestion_aula_usuario = $id_gestion_aula_usuario;
+        $this->id_usuario_hash = Hashids::encode($usuario->id_usuario);
     }
 
     public function render()

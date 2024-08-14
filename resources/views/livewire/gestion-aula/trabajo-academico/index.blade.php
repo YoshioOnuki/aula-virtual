@@ -246,7 +246,7 @@
                                 <input type="file" class="form-control @error('archivos_trabajo_academico') is-invalid @enderror
                                     @if(count($archivos_trabajo_academico) > 0 && $errors->has('archivos_trabajo_academico.*')) is-invalid 
                                     @elseif(count($archivos_trabajo_academico) > 0) is-valid @endif"
-                                    id="archivos_trabajo_academico" wire:model.live="archivos_trabajo_academico"
+                                    wire:model.live="archivos_trabajo_academico" id="upload{{ $iteration }}"
                                     accept=".pdf,.xls,.xlsx,.doc,.docx,.ppt,.pptx,.txt" multiple>
                                 @error('archivos_trabajo_academico.*')
                                     <div class="invalid-feedback">

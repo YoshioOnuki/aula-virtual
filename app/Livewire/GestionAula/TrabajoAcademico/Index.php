@@ -49,6 +49,7 @@ class Index extends Component
     public $hora_fin_trabajo_academico;
     #[Validate(['archivos_trabajo_academico.*' => 'nullable|file|mimes:pdf,xls,xlsx,doc,docx,ppt,pptx,txt|max:4096'])]
     public $archivos_trabajo_academico = [];
+    public $iteration = 1;
 
     protected $listeners = ['abrir-modal-editar' => 'abrir_modal_editar_trabajo'];
 
@@ -136,7 +137,7 @@ class Index extends Component
             try {
                 DB::beginTransaction();
 
-                if (count($this->archivos_trabajo_academico) > 0) {
+                if (!empty($this->archivos_trabajo_academico)) {
                     $nombres_bd = $this->subir_archivo_trabajo();
                 }
 
@@ -234,6 +235,7 @@ class Index extends Component
                 'hora_fin_trabajo_academico',
                 'archivos_trabajo_academico'
             ]);
+            $this->iteration++;
 
             // Reiniciar errores
             $this->resetErrorBag();
