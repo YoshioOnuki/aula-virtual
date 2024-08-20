@@ -113,8 +113,7 @@ class Detalle extends Component
         $this->id_gestion_aula_usuario_hash = $id_curso;
 
         $id_trabajo_academico = Hashids::decode($id_trabajo_academico);
-        $this->trabajo_academico = TrabajoAcademico::find($id_trabajo_academico[0]);
-
+        $this->trabajo_academico = TrabajoAcademico::with('archivoDocente')->find($id_trabajo_academico[0]);
         $id_gestion_aula_usuario = Hashids::decode($id_curso);
         $this->id_gestion_aula_usuario = $id_gestion_aula_usuario[0];
 

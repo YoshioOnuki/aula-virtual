@@ -103,10 +103,10 @@
                                                 <div class=" d-flex justify-content-end">
                                                     @if ($tipo_vista === 'carga-academica' && $usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario))
                                                     <a href="#" tabindex="-1"
-                                                        class="btn btn-secondary disabled placeholder col-sm-2 col-lg-3 col-xl-2 d-none d-md-inline-block me-2"
+                                                        class="btn btn-secondary disabled placeholder col-sm-2 col-lg-3 col-xl-2 d-none d-md-inline-block"
                                                         aria-hidden="true"></a>
                                                     <a href="#" tabindex="-1"
-                                                        class="btn btn-secondary disabled placeholder col-1 d-md-none btn-icon me-2"
+                                                        class="btn btn-secondary disabled placeholder col-1 d-md-none btn-icon"
                                                         aria-hidden="true"></a>
                                                     @endif
                                                 </div>
