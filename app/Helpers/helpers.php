@@ -457,6 +457,31 @@ if (!function_exists('obtener_extension_archivo')) {
     }
 }
 
+// Funcion para obtener el nombre del archivo sin la extension
+if (!function_exists('obtener_nombre_archivo')) {
+    function obtener_nombre_archivo($ruta)
+    {
+        $nombre = pathinfo($ruta, PATHINFO_FILENAME);
+        return $nombre;
+    }
+}
+
+// Funcion para obtener los datos de un archivo
+if (!function_exists('format_bytes')) {
+    function format_bytes($bytes, $precision)
+    {
+        $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+
+        $bytes = max($bytes, 0);
+        $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+        $pow = min($pow, count($units) - 1);
+
+        $bytes /= (1 << (10 * $pow));
+
+        return round($bytes, $precision) . ' ' . $units[$pow];
+    }
+}
+
 // Funcion para retornar el color del estado de la asistencia
 if (!function_exists('color_estado_asistencia')) {
     function color_estado_asistencia($estado)

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\GestionAula\TrabajoAcademico;
 
+use App\Models\ArchivoDocente;
 use App\Models\GestionAulaUsuario;
 use App\Models\TrabajoAcademico;
 use App\Models\Usuario;
@@ -33,7 +34,7 @@ class Detalle extends Component
     public $tipo_vista;
 
 
-        /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
+    /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
         public function obtener_datos_page_header()
         {
             $this->titulo_page_header = 'Detalle del Trabajo Académico';
@@ -106,6 +107,13 @@ class Detalle extends Component
             }
         }
     /* ==================================================================================== */
+
+
+        public function descargar_archivo(ArchivoDocente $archivo)
+        {
+            $ruta = $archivo->archivo_docente;
+            return response()->download($ruta, $archivo->nombre_archivo_docente.'.'.pathinfo($ruta, PATHINFO_EXTENSION));
+        }
 
     public function mount($id_usuario, $tipo_vista, $id_curso, $id_trabajo_academico)
     {

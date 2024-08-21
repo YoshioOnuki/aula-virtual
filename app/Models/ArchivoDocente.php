@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 class ArchivoDocente extends Model
 {
@@ -15,6 +16,7 @@ class ArchivoDocente extends Model
     protected $primaryKey = 'id_archivo_docente';
     protected $fillable = [
         'id_archivo_docente',
+        'nombre_archivo_docente',
         'archivo_docente',
         'id_trabajo_academico',
     ];

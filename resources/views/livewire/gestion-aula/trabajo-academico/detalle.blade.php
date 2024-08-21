@@ -81,45 +81,38 @@
                                 </p>
                             </div>
 
-                            {{-- Archivos adjuntos --}}
-                            <div class="mt-4">
-                                <div class="hr-text hr-text-center ">
-                                    <span>
-                                        Archivos adjuntos
-                                    </span>
-                                </div>
+                            @if($trabajo_academico->archivoDocente->count() > 0)
+                                {{-- Archivos adjuntos --}}
+                                <div class="">
 
-                                <div class="row g-2">
-                                    @foreach ($trabajo_academico->archivoDocente as $archivo)
-                                        <div class="col-6 col-md-4 col-lg-3">
-                                            <a href=""
-                                                class="card card-md card-stacked">
-                                                <div class="card-body">
-                                                    <div class="d-flex justify-content-center">
-                                                        <div class="icon-block bg-info">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                                viewBox="0 0 24 24" fill="none" stroke="white"
-                                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                                class="icon icon-tabler icon-tabler-file">
-                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                <path
-                                                                    d="M14 3v4a1 1 0 0 0 1 1h4" />
-                                                                <path
-                                                                    d="M14 21v-13a2 2 0 0 0 -2 -2h-7l-5 5v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2" />
-                                                            </svg>
+                                    <div class="hr-text hr-text-center ">
+                                        <span>
+                                            Archivos adjuntos
+                                        </span>
+                                    </div>
+
+                                    <div class="row g-2">
+                                        @foreach ($trabajo_academico->archivoDocente as $archivo)
+                                            <div class="col-6 col-md-3 col-lg-4 col-xl-4">
+                                                <a class="card p-3 mb-3 text-decoration-none cursor-pointer" wire:click="descargar_archivo({{ $archivo->id_archivo_docente }})">
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="{{ obtener_icono_archivo($archivo->archivo_docente) }}"
+                                                                alt="icono-recurso" class="me-2" width="40">
+                                                        <div>
+                                                            <h5 class="mb-0 text-dark">
+                                                                {{ $archivo->nombre_archivo_docente }}
+                                                            </h5>
+                                                            <small class="text-muted d-block mt-1 fw-light">
+                                                                {{ formato_tamano_archivo(filesize($archivo->archivo_docente)) }}
+                                                            </small>
                                                         </div>
                                                     </div>
-                                                    <div class="text-center mt-2">
-                                                        <p class="card-text">
-                                                            {{ $archivo->nombre_archivo }}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    @endforeach
+                                                </a>
+                                            </div>
+                                        @endforeach
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
 
                             @if($tipo_vista === 'cursos')
                                 <div class="card-footer d-flex justify-content-end align-items-center mt-4">
