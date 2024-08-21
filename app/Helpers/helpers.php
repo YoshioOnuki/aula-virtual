@@ -378,11 +378,11 @@ if (!function_exists('obtener_ruta_base'))
         ])->where('id_gestion_aula_usuario', $id_gestion_aula_usuario)->first();
 
 
-        $nombre_curso = $curso->gestionAula->curso->nombre_curso.'_'.$curso->gestionAula->grupo_gestion_aula;
+        $nombre_curso = $curso->gestionAula->curso->nombre_curso.' - '.$curso->gestionAula->grupo_gestion_aula;
         $proceso = $curso->gestionAula->proceso->nombre_proceso;
         if($curso->gestionAula->curso->programa->mencion_programa)
         {
-            $nombre_programa = $curso->gestionAula->curso->programa->nombre_programa.'_'.$curso->gestionAula->curso->programa->mencion_programa;
+            $nombre_programa = $curso->gestionAula->curso->programa->nombre_programa.' - '.$curso->gestionAula->curso->programa->mencion_programa;
         }else{
             $nombre_programa = $curso->gestionAula->curso->nombre_programa;
         }
@@ -401,6 +401,17 @@ if (!function_exists('obtener_ruta_base'))
 
         return $carpetas;
 
+    }
+}
+
+// Funcion para eliminar un archivo con el nombre del archivo y la ruta
+if (!function_exists('eliminar_archivo'))
+{
+    function eliminar_archivo($ruta)
+    {
+        if (file_exists($ruta)) {
+            unlink($ruta);
+        }
     }
 }
 

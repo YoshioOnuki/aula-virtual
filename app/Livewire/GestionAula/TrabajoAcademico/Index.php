@@ -123,6 +123,17 @@ class Index extends Component
             return $nombres_bd; // Retornar un array con los nombres de los archivos guardados
         }
 
+        public function eliminar_archivo_trabajo($nombres_archivos)
+        {
+            $carpetas = obtener_ruta_base($this->id_gestion_aula_usuario);
+
+            array_push($carpetas, 'trabajos-academicos');
+
+            foreach ($nombres_archivos as $ruta) {
+                eliminar_archivo($ruta);
+            }
+        }
+
         public function guardar_trabajo()
         {
             $this->validate([
@@ -201,6 +212,11 @@ class Index extends Component
 
             } catch (\Exception $e) {
                 DB::rollBack();
+
+                if (!empty($nombres_bd)) {
+                    $this->eliminar_archivo_trabajo($nombres_bd);
+                }
+
                 dd($e);
                 $this->cerrar_modal();
                 $this->dispatch(
