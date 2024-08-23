@@ -60,7 +60,7 @@
 
                                 @if ($tipo_vista === 'carga-academica' && $usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario))
                                     <div class="col-lg-12">
-                                        <div class="card hover-shadow-sm cursor-pointer"
+                                        <a class="card cursor-pointer"
                                             wire:click="abrir_modal_recurso_agregar()">
                                             <div class="card-body text-secondary">
                                                 <div class="row g-2">
@@ -88,7 +88,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </a>
                                     </div>
                                 @endif
 
