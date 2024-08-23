@@ -2,9 +2,12 @@
 
 namespace App\Livewire\GestionAula\TrabajoAcademico;
 
+use App\Models\ArchivoAlumno;
 use App\Models\ArchivoDocente;
+use App\Models\EstadoTrabajoAcademico;
 use App\Models\GestionAulaUsuario;
 use App\Models\TrabajoAcademico;
+use App\Models\TrabajoAcademicoAlumno;
 use App\Models\Usuario;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Validate;
@@ -26,6 +29,10 @@ class Detalle extends Component
     public $gestion_aula_usuario;
     public $trabajo_academico;
 
+    // Variable para verificar si el alumno ya entrego el trabajo académico
+    public $entrega_trabajo = false;
+    public $trabajo_academico_alumno;
+
     // Variables para el modal de Trabajo Académico
     public $modo = 1; // Modo 1 = Agregar / 0 = Editar
     public $titulo_modal = 'Agregar Entrega de Trabajo Académico';
@@ -34,6 +41,7 @@ class Detalle extends Component
     public $descripcion_trabajo_academico_alumno;
     #[Validate(['archivos_trabajo_alumno.*' => 'nullable|file|mimes:pdf,xls,xlsx,doc,docx,ppt,pptx,txt,jpg,jpeg,png|max:4096'])]
     public $archivos_trabajo_alumno = [];
+    public $nombre_archivo_trabajo_academico = [];
     public $iteration = 1;
 
 
@@ -142,7 +150,7 @@ class Detalle extends Component
         public function subir_archivo_entrega()
         {
             $carpetas = obtener_ruta_base($this->id_gestion_aula_usuario);
-            array_push($carpetas, 'trabajos-academicos');
+            array_push($carpetas, 'trabajos-academicos-alumnos');
 
             $nombres_bd = [];
 
@@ -173,103 +181,109 @@ class Detalle extends Component
             }
         }
 
-        // public function guardar_entrega_trabajo()
-        // {
-        //     $this->validate([
-        //         'descripcion_trabajo_academico_alumno' => 'required',
-        //         'archivos_trabajo_alumno.*' => 'nullable|file|mimes:pdf,xls,xlsx,doc,docx,ppt,pptx,txt,jpg,jpeg,png|max:4096',
-        //     ]);
-
-        //     try {
-        //         DB::beginTransaction();
-
-        //         if (!empty($this->archivos_trabajo_academico)) {
-        //             $nombres_bd = $this->subir_archivo_trabajo();
-        //         }
-
-        //         if($this->modo === 1)// Modo agregar
-        //         {
-        //             $trabajo_academico = new TrabajoAcademico();
-        //             $trabajo_academico->titulo_trabajo_academico = $this->nombre_trabajo_academico;
-        //             $trabajo_academico->descripcion_trabajo_academico = $this->descripcion_trabajo_academico;
-        //             $trabajo_academico->fecha_inicio_trabajo_academico = $this->fecha_inicio_trabajo_academico . ' ' . $this->hora_inicio_trabajo_academico;
-        //             $trabajo_academico->fecha_fin_trabajo_academico = $this->fecha_fin_trabajo_academico . ' ' . $this->hora_fin_trabajo_academico;
-        //             $trabajo_academico->id_gestion_aula = $this->id_gestion_aula;
-        //             $trabajo_academico->save();
-
-        //             // Guardar el archivos
-        //             if (count($nombres_bd) > 0) {
-        //                 foreach ($nombres_bd as $nombre_bd) {
-        //                     $archivo_docente = new ArchivoDocente();
-        //                     $archivo_docente->nombre_archivo_docente = $this->nombre_archivo_trabajo_academico[array_search($nombre_bd, $nombres_bd)];
-        //                     $archivo_docente->id_trabajo_academico = $trabajo_academico->id_trabajo_academico;
-        //                     $archivo_docente->archivo_docente = $nombre_bd;
-        //                     $archivo_docente->save();
-        //                 }
-        //             }
-        //         }else{// Modo editar
-        //             $trabajo_academico = TrabajoAcademico::find($this->editar_trabajo_academico->id_trabajo_academico);
-        //             $trabajo_academico->titulo_trabajo_academico = $this->nombre_trabajo_academico;
-        //             $trabajo_academico->descripcion_trabajo_academico = $this->descripcion_trabajo_academico;
-        //             $trabajo_academico->fecha_inicio_trabajo_academico = $this->fecha_inicio_trabajo_academico . ' ' . $this->hora_inicio_trabajo_academico;
-        //             $trabajo_academico->fecha_fin_trabajo_academico = $this->fecha_fin_trabajo_academico . ' ' . $this->hora_fin_trabajo_academico;
-        //             $trabajo_academico->save();
-
-        //             // Guardar el archivos
-        //             if (count($this->archivos_trabajo_academico) > 0) {
-        //                 foreach ($nombres_bd as $nombre_bd) {
-        //                     $archivo_docente = new ArchivoDocente();
-        //                     $archivo_docente->nombre_archivo_docente = $this->nombre_archivo_trabajo_academico[array_search($nombre_bd, $nombres_bd)];
-        //                     $archivo_docente->id_trabajo_academico = $trabajo_academico->id_trabajo_academico;
-        //                     $archivo_docente->archivo_docente = $nombre_bd;
-        //                     $archivo_docente->save();
-        //                 }
-        //             }
-        //         }
-
-        //         DB::commit();
-
-        //         if (count($this->archivos_trabajo_academico) <= 0) {
-        //             $this->dispatch(
-        //                 'toast-basico',
-        //                 mensaje: 'El trabajo académico se ha guardado correctamente, pero no se ha subido ningún archivo',
-        //                 type: 'success'
-        //             );
-        //         }else{
-        //             $this->dispatch(
-        //                 'toast-basico',
-        //                 mensaje: 'El trabajo académico se ha guardado correctamente',
-        //                 type: 'success'
-        //             );
-        //         }
-
-        //         $this->cargando_trabajos = true;
-        //         $this->cerrar_modal();
-        //         $this->load_trabajos_llamar();
-
-        //     } catch (\Exception $e) {
-        //         DB::rollBack();
-
-        //         if (isset($nombres_bd)) {
-        //             $this->eliminar_archivo_trabajo($nombres_bd);
-        //         }
-
-        //         dd($e);
-        //         $this->cerrar_modal();
-        //         $this->dispatch(
-        //             'toast-basico',
-        //             mensaje: 'Ha ocurrido un error al guardar el Trabajo Academico',
-        //             type: 'error'
-        //         );
-        //     }
-        // }
-
         public function texto_descripcion_trabajo()
         {
             $mensaje = $this->descripcion_trabajo_academico_alumno;
             $mensaje = '<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head><body>' . $mensaje . '</body></html>';
 
             return $mensaje;
+        }
+
+        // Function para verificar si el usuario ya entrego el trabajo académico
+        public function verificar_entrega_trabajo()
+        {
+            $this->trabajo_academico_alumno = TrabajoAcademicoAlumno::with('estadoTrabajoAcademico')
+                ->where('id_trabajo_academico', $this->trabajo_academico->id_trabajo_academico)
+                ->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)
+                ->first();
+
+            if ($this->trabajo_academico_alumno) {
+                $this->entrega_trabajo = true;
+            } else {
+                $this->entrega_trabajo = false;
+            }
+        }
+
+        public function guardar_entrega_trabajo()
+        {
+            $this->validate([
+                'descripcion_trabajo_academico_alumno' => 'required',
+                'archivos_trabajo_alumno.*' => 'nullable|file|mimes:pdf,xls,xlsx,doc,docx,ppt,pptx,txt,jpg,jpeg,png|max:4096',
+            ]);
+
+            try {
+                DB::beginTransaction();
+
+                if (!empty($this->archivos_trabajo_alumno)) {
+                    $nombres_bd = $this->subir_archivo_entrega();
+                }
+
+                // Obtener el texto de la descripción del trabajo
+                $descripcion_trabajo = $this->texto_descripcion_trabajo();
+
+                if($this->modo === 1)// Modo agregar
+
+                    // Obtener el estado del trabajo académico
+                    $estado_trabajo = EstadoTrabajoAcademico::where('nombre_estado_trabajo_academico', 'Entregado')->first();
+
+                    // Crear el trabajo académico Alumno
+                    $trabajo_academico_alumno = new TrabajoAcademicoAlumno();
+                    $trabajo_academico_alumno->descripcion_trabajo_academico_alumno = $descripcion_trabajo;
+                    $trabajo_academico_alumno->nota_trabajo_academico_alumno = -1;
+                    $trabajo_academico_alumno->id_estado_trabajo_academico = $estado_trabajo->id_estado_trabajo_academico;
+                    $trabajo_academico_alumno->id_trabajo_academico = $this->trabajo_academico->id_trabajo_academico;
+                    $trabajo_academico_alumno->id_gestion_aula_usuario = $this->id_gestion_aula_usuario;
+                    $trabajo_academico_alumno->save();
+
+                    // Guardar el archivos
+                    if (count($nombres_bd) > 0) {
+                        foreach ($nombres_bd as $nombre_bd) {
+                            $archivo_alumno = new ArchivoAlumno();
+                            $archivo_alumno->nombre_archivo_alumno = $this->nombre_archivo_trabajo_academico[array_search($nombre_bd, $nombres_bd)];
+                            $archivo_alumno->archivo_alumno = $nombre_bd;
+                            $archivo_alumno->id_trabajo_academico_alumno = $trabajo_academico_alumno->id_trabajo_academico_alumno;
+                            $archivo_alumno->save();
+                        }
+                    }
+                else{// Modo editar
+                    // Editar el trabajo académico
+                }
+
+                $this->dispatch('actualizar_estado_trabajo');
+                $this->verificar_entrega_trabajo();
+                DB::commit();
+
+                if (count($this->archivos_trabajo_alumno) <= 0) {
+                    $this->dispatch(
+                        'toast-basico',
+                        mensaje: 'La entrega del trabajo académico se ha guardado correctamente, pero no se ha subido ningún archivo',
+                        type: 'success'
+                    );
+                }else{
+                    $this->dispatch(
+                        'toast-basico',
+                        mensaje: 'La entrega del trabajo académico se ha guardado correctamente',
+                        type: 'success'
+                    );
+                }
+
+                $this->cerrar_modal();
+
+            } catch (\Exception $e) {
+                DB::rollBack();
+
+                if (isset($nombres_bd)) {
+                    $this->eliminar_archivo_entrega($nombres_bd);
+                }
+
+                dd($e);
+                $this->cerrar_modal();
+                $this->dispatch(
+                    'toast-basico',
+                    mensaje: 'Ha ocurrido un error al guardar la entrega del trabajo académico',
+                    type: 'error'
+                );
+            }
         }
 
         public function cerrar_modal()
@@ -329,6 +343,7 @@ class Detalle extends Component
         }
 
         $this->obtener_datos_page_header();
+        $this->verificar_entrega_trabajo();
     }
 
 

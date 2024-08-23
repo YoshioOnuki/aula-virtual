@@ -53,7 +53,7 @@
                                     </svg>
                                 </button>
                             @endif
-                            @if ($usuario->esRolGestionAula('ALUMNO', $id_gestion_aula_usuario))
+                            @if ($usuario->esRolGestionAula('ALUMNO', $id_gestion_aula_usuario) && $tipo_vista === 'cursos')
                                 <span class="status status-{{ color_estado_trabajo_academico($trabajo_academico->trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico ?? 'No entregado') }}
                                         px-3 py-2 h-100">
                                     {{

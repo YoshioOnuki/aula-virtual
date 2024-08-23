@@ -223,7 +223,7 @@ class Index extends Component
                 $this->cerrar_modal();
                 $this->dispatch(
                     'toast-basico',
-                    mensaje: 'Ha ocurrido un error al guardar el Trabajo Academico',
+                    mensaje: 'Ha ocurrido un error al guardar el trabajo academico',
                     type: 'error'
                 );
             }

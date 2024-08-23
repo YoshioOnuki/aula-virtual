@@ -114,12 +114,26 @@
                                 </div>
                             @endif
 
-                            @if($tipo_vista === 'cursos')
-                                <div class="card-footer d-flex justify-content-end align-items-center mt-4">
-                                    <a class="btn btn-primary" wire:click="abrir_modal_entrega_trabajo()">
-                                        Agregar entrega
-                                    </a>
-                                </div>
+                            @if ($usuario->esRolGestionAula('ALUMNO', $id_gestion_aula_usuario) && $tipo_vista === 'cursos')
+                                @if($entrega_trabajo === false)
+                                    <div class="card-footer d-flex justify-content-end align-items-center mt-4">
+                                        <a class="btn btn-primary" wire:click="abrir_modal_entrega_trabajo()">
+                                            Agregar entrega
+                                        </a>
+                                    </div>
+                                @else
+                                    <div class="card-footer d-flex justify-content-end align-items-center mt-4">
+                                        <span class="status status-{{ color_estado_trabajo_academico($trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico ?? 'No entregado') }}
+                                                px-3 py-2 h-100">
+                                            {{ $trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico ?? 'No entregado' }}
+                                        </span>
+                                    </div>
+                                    {{-- <div class="card-footer d-flex justify-content-end align-items-center mt-4">
+                                        <a class="btn btn-primary" wire:click="abrir_modal_entrega_trabajo()">
+                                            Editar entrega
+                                        </a>
+                                    </div> --}}
+                                @endif
                             @endif
                         </div>
                     </div>
@@ -129,7 +143,8 @@
                     @livewire('components.card-estado-trabajo', [
                         'trabajo_academico' => $trabajo_academico,
                         'tipo_vista' => $tipo_vista,
-                        'id_gestion_aula' => $id_gestion_aula
+                        'id_gestion_aula' => $id_gestion_aula,
+                        'id_gestion_aula_usuario' => $id_gestion_aula_usuario,
                     ])
                 </div>
 

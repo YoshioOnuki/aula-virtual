@@ -21,6 +21,10 @@ class TrabajoAcademico extends Model
         'fecha_fin_trabajo_academico',
         'id_gestion_aula',
     ];
+    protected $casts = [
+        'fecha_inicio_trabajo_academico' => 'datetime',
+        'fecha_fin_trabajo_academico' => 'datetime',
+    ];
 
     public function gestionAula()
     {
