@@ -44,6 +44,8 @@
     <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
     <script src="{{ asset('assets/dist/libs/tom-select/dist/js/tom-select.base.min.js?1684106062') }}" defer></script>
 
+    @stack('styles')
+
 </head>
 
 <body class="layout-fluid">

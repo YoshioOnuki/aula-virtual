@@ -1,4 +1,4 @@
-<div class="row g-3" wire:init="load_datos_docente">
+<div class="row g-3 mb-3" wire:init="load_datos_docente">
     @if($cargando_docente)
         <div class="col-12">
             <a class="card card-link card-stacked placeholder-glow animate__animated animate__fadeIn animate__faster">

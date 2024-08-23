@@ -99,8 +99,8 @@
                                                         <img src="{{ obtener_icono_archivo($archivo->archivo_docente) }}"
                                                                 alt="icono-recurso" class="me-2" width="40">
                                                         <div>
-                                                            <h5 class="mb-0 text-dark">
-                                                                {{ $archivo->nombre_archivo_docente }}
+                                                            <h5 class="mb-0">
+                                                                {{ Str::limit($archivo->nombre_archivo_docente, 20) }}
                                                             </h5>
                                                             <small class="text-muted d-block mt-1 fw-light">
                                                                 {{ formato_tamano_archivo(filesize($archivo->archivo_docente)) }}
@@ -116,9 +116,8 @@
 
                             @if($tipo_vista === 'cursos')
                                 <div class="card-footer d-flex justify-content-end align-items-center mt-4">
-                                    <a
-                                        class="btn btn-primary">
-                                        Entregar
+                                    <a class="btn btn-primary" wire:click="abrir_modal_entrega_trabajo()">
+                                        Agregar entrega
                                     </a>
                                 </div>
                             @endif
@@ -138,5 +137,121 @@
         </div>
     </div>
 
+
+    <div wire:ignore.self class="modal fade" id="modal-entrega" tabindex="-1" data-bs-backdrop="static">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        {{ $titulo_modal }}
+                    </h5>
+                    <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal"
+                        aria-label="Close" wire:click="cerrar_modal"></button>
+                </div>
+                <form autocomplete="off" wire:submit="guardar_entrega_trabajo">
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-lg-12">
+                                <label for="descripcion_recurso" class="form-label">
+                                    Descripción del trabajo académico
+                                </label>
+                                <div wire:ignore>
+                                    <textarea class="form-control @error('descripcion_trabajo_academico_alumno') is-invalid @enderror"
+                                        wire:model="descripcion_trabajo_academico_alumno" id="descripcion_trabajo_academico_alumno"
+                                        placeholder="Ingrese la descripción del trabajo académico a entregar">
+                                    </textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12">
+                                <label for="archivos_trabajo_alumno" class="form-label">
+                                    Archivos del trabajo académico
+                                </label>
+                                <input type="file" class="form-control @error('archivos_trabajo_alumno') is-invalid @enderror
+                                    @if(count($archivos_trabajo_alumno) > 0 && $errors->has('archivos_trabajo_alumno.*')) is-invalid 
+                                    @elseif(count($archivos_trabajo_alumno) > 0) is-valid @endif"
+                                    wire:model.live="archivos_trabajo_alumno" id="upload{{ $iteration }}"
+                                    accept=".pdf,.xls,.xlsx,.doc,.docx,.ppt,.pptx,.txt,.jpg,.jpeg,.png" multiple>
+                                @error('archivos_trabajo_alumno.*')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal"
+                            wire:click="cerrar_modal">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round"
+                                class="icon icon-tabler icons-tabler-outline icon-tabler-ban">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                <path d="M5.7 5.7l12.6 12.6" />
+                            </svg>
+                            Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-primary ms-auto">
+                            @if ($modo === 1)
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M12 5l0 14" />
+                                    <path d="M5 12l14 0" />
+                                </svg>
+                            @else
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                    <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                    <path d="M16 5l3 3" />
+                                </svg>
+                            @endif
+                            {{ $accion_modal }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </div>
 
+@push('styles')
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+@endpush
+
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+    <script>
+        $(function() {
+            $('#descripcion_trabajo_academico_alumno').summernote({
+                placeholder: 'Ingrese la descripción del trabajo académico a entregar',
+                height: 200,
+                tabsize: 2,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    // ['insert', ['link', 'picture']],
+                    ['view', ['codeview']]
+                ],
+                callbacks: {
+                    onChange: function(contents, $editable) {
+                        @this.set('descripcion_trabajo_academico_alumno', contents);
+                    }
+                }
+            });
+        })
+    </script>
+@endpush

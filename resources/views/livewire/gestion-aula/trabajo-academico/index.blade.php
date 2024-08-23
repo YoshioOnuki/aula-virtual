@@ -247,7 +247,7 @@
                                     @if(count($archivos_trabajo_academico) > 0 && $errors->has('archivos_trabajo_academico.*')) is-invalid 
                                     @elseif(count($archivos_trabajo_academico) > 0) is-valid @endif"
                                     wire:model.live="archivos_trabajo_academico" id="upload{{ $iteration }}"
-                                    accept=".pdf,.xls,.xlsx,.doc,.docx,.ppt,.pptx,.txt" multiple>
+                                    accept=".pdf,.xls,.xlsx,.doc,.docx,.ppt,.pptx,.txt,.jpg,.jpeg,.png" multiple>
                                 @error('archivos_trabajo_academico.*')
                                     <div class="invalid-feedback">
                                         {{ $message }}

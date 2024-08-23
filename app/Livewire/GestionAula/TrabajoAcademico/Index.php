@@ -47,8 +47,9 @@ class Index extends Component
     public $hora_inicio_trabajo_academico;
     #[Validate('required')]
     public $hora_fin_trabajo_academico;
-    #[Validate(['archivos_trabajo_academico.*' => 'nullable|file|mimes:pdf,xls,xlsx,doc,docx,ppt,pptx,txt|max:4096'])]
+    #[Validate(['archivos_trabajo_academico.*' => 'nullable|file|mimes:pdf,xls,xlsx,doc,docx,ppt,pptx,txt,jpg,jpeg,png|max:4096'])]
     public $archivos_trabajo_academico = [];
+    public $nombre_archivo_trabajo_academico = [];
     public $iteration = 1;
 
     protected $listeners = ['abrir-modal-editar' => 'abrir_modal_editar_trabajo'];
@@ -110,7 +111,7 @@ class Index extends Component
                 $nombre_archivo_trabajo = null;
                 $extension_archivo = strtolower($archivo->getClientOriginalExtension());
 
-                $extensiones_permitidas = ['pdf', 'xls', 'xlsx', 'doc', 'docx', 'ppt', 'pptx', 'txt'];
+                $extensiones_permitidas = ['pdf', 'xls', 'xlsx', 'doc', 'docx', 'ppt', 'pptx', 'txt', 'jpg', 'jpeg', 'png'];
 
                 if (!in_array($extension_archivo, $extensiones_permitidas)) {
                     continue; // Si la extensión no está permitida, saltar al siguiente archivo
@@ -118,6 +119,9 @@ class Index extends Component
 
                 $nombre_bd = subir_archivo($archivo, $nombre_archivo_trabajo, $carpetas, $extension_archivo);
                 $nombres_bd[] = $nombre_bd; // Guardar el nombre del archivo en la base de datos
+
+                // Guardar el nombre del archivo original
+                $this->nombre_archivo_trabajo_academico[] = pathinfo($archivo->getClientOriginalName(), PATHINFO_FILENAME);
             }
 
             return $nombres_bd; // Retornar un array con los nombres de los archivos guardados
@@ -125,10 +129,6 @@ class Index extends Component
 
         public function eliminar_archivo_trabajo($nombres_archivos)
         {
-            $carpetas = obtener_ruta_base($this->id_gestion_aula_usuario);
-
-            array_push($carpetas, 'trabajos-academicos');
-
             foreach ($nombres_archivos as $ruta) {
                 eliminar_archivo($ruta);
             }
@@ -142,7 +142,7 @@ class Index extends Component
                 'fecha_fin_trabajo_academico' => 'required|after_or_equal:fecha_inicio_trabajo_academico|date',
                 'hora_inicio_trabajo_academico' => 'required|date_format:H:i|before_or_equal:hora_fin_trabajo_academico',
                 'hora_fin_trabajo_academico' => 'required|date_format:H:i|after_or_equal:hora_inicio_trabajo_academico',
-                'archivos_trabajo_academico.*' => 'nullable|file|mimes:pdf,xls,xlsx,doc,docx,ppt,pptx,txt|max:4096',
+                'archivos_trabajo_academico.*' => 'nullable|file|mimes:pdf,xls,xlsx,doc,docx,ppt,pptx,txt,jpg,jpeg,png|max:4096',
             ]);
 
             try {
@@ -152,7 +152,7 @@ class Index extends Component
                     $nombres_bd = $this->subir_archivo_trabajo();
                 }
 
-                if($this->modo === 1)
+                if($this->modo === 1)// Modo agregar
                 {
                     $trabajo_academico = new TrabajoAcademico();
                     $trabajo_academico->titulo_trabajo_academico = $this->nombre_trabajo_academico;
@@ -166,12 +166,13 @@ class Index extends Component
                     if (count($nombres_bd) > 0) {
                         foreach ($nombres_bd as $nombre_bd) {
                             $archivo_docente = new ArchivoDocente();
+                            $archivo_docente->nombre_archivo_docente = $this->nombre_archivo_trabajo_academico[array_search($nombre_bd, $nombres_bd)];
                             $archivo_docente->id_trabajo_academico = $trabajo_academico->id_trabajo_academico;
                             $archivo_docente->archivo_docente = $nombre_bd;
                             $archivo_docente->save();
                         }
                     }
-                }else{
+                }else{// Modo editar
                     $trabajo_academico = TrabajoAcademico::find($this->editar_trabajo_academico->id_trabajo_academico);
                     $trabajo_academico->titulo_trabajo_academico = $this->nombre_trabajo_academico;
                     $trabajo_academico->descripcion_trabajo_academico = $this->descripcion_trabajo_academico;
@@ -183,6 +184,7 @@ class Index extends Component
                     if (count($this->archivos_trabajo_academico) > 0) {
                         foreach ($nombres_bd as $nombre_bd) {
                             $archivo_docente = new ArchivoDocente();
+                            $archivo_docente->nombre_archivo_docente = $this->nombre_archivo_trabajo_academico[array_search($nombre_bd, $nombres_bd)];
                             $archivo_docente->id_trabajo_academico = $trabajo_academico->id_trabajo_academico;
                             $archivo_docente->archivo_docente = $nombre_bd;
                             $archivo_docente->save();
@@ -213,7 +215,7 @@ class Index extends Component
             } catch (\Exception $e) {
                 DB::rollBack();
 
-                if (!empty($nombres_bd)) {
+                if (isset($nombres_bd)) {
                     $this->eliminar_archivo_trabajo($nombres_bd);
                 }
 

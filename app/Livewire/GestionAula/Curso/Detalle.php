@@ -6,6 +6,7 @@ use App\Models\GestionAulaUsuario;
 use App\Models\LinkClase;
 use App\Models\Presentacion;
 use App\Models\Usuario;
+use DOMDocument;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
@@ -60,177 +61,236 @@ class Detalle extends Component
 
 
     /* =============== FUNCIONES PARA EL MODAL DE LINK DE CURSO Y ORIENTACIONES - AGREGAR Y EDITAR =============== */
-    public function abrir_modal_link_clase()
-    {
-        $this->limpiar_modal();
-        if(!$this->link_clase)
+        public function abrir_modal_link_clase()
         {
-            $this->modo_link_clase = 1; // Agregar
+            $this->limpiar_modal();
+            if(!$this->link_clase)
+            {
+                $this->modo_link_clase = 1; // Agregar
+                $this->titulo_link_clase = 'Agregar Link de Clase';
+                $this->accion_estado_link_clase = 'Agregar';
+            }else{
+                $this->modo_link_clase = 0; // Editar
+                $this->titulo_link_clase = 'Editar Link de Clase';
+                $this->accion_estado_link_clase = 'Editar';
+                $this->nombre_link_clase = $this->link_clase->nombre_link_clase;
+            }
+
+            $this->dispatch(
+                'modal',
+                modal: '#modal-link-clase',
+                action: 'show'
+            );
+        }
+
+        public function abrir_modal_orientaciones()
+        {
+            $this->limpiar_modal();
+
+            if(!$this->orientaciones_generales)
+            {
+                $this->modo_orientaciones = 1; // Agregar
+                $this->titulo_orientaciones = 'Agregar Orientaciones';
+                $this->accion_estado_orientaciones = 'Agregar';
+            }else{
+                $this->modo_orientaciones = 0; // Editar
+                $this->titulo_orientaciones = 'Editar Orientaciones';
+                $this->accion_estado_orientaciones = 'Editar';
+                $this->descripcion_orientaciones = $this->orientaciones_generales->descripcion_presentacion;
+            }
+
+            $this->dispatch(
+                'modal',
+                modal: '#modal-orientaciones',
+                action: 'show'
+            );
+        }
+
+        public function guardar_link_clase()
+        {
+            $this->nombre_link_clase = limpiar_cadena($this->nombre_link_clase);
+            $this->validate([
+                'nombre_link_clase' => 'required|url'
+            ]);
+
+
+            try
+            {
+                DB::beginTransaction();
+
+                $id_gestion_aula = GestionAulaUsuario::find($this->id_gestion_aula_usuario)->id_gestion_aula;
+
+                if($this->modo_link_clase === 1) // Agregar
+                {
+                    $link_clase = new LinkClase();
+                    $link_clase->nombre_link_clase = $this->nombre_link_clase;
+                    $link_clase->id_gestion_aula = $id_gestion_aula;
+                    $link_clase->save();
+                    $this->link_clase_bool = true;
+                    $this->dispatch('actualizar_datos_curso');
+                }else{ // Editar
+                    $link_clase = LinkClase::find($this->link_clase->id_link_clase);
+                    $link_clase->nombre_link_clase = $this->nombre_link_clase;
+                    $link_clase->save();
+                }
+
+                DB::commit();
+
+                $this->cerrar_modal();
+
+                $this->dispatch(
+                    'toast-basico',
+                    mensaje: 'El Link de Clase se ha guardado correctamente',
+                    type: 'success'
+                );
+
+            } catch (\Exception $e) {
+                DB::rollBack();
+                // dd($e);
+                $this->dispatch(
+                    'toast-basico',
+                    mensaje: 'Ha ocurrido un error al guardar el Link de Clase',
+                    type: 'error'
+                );
+            }
+        }
+
+        public function guardar_orientaciones()
+        {
+            $this->validate([
+                'descripcion_orientaciones' => 'required'
+            ]);
+
+            try
+            {
+                DB::beginTransaction();
+
+                $id_gestion_aula = GestionAulaUsuario::find($this->id_gestion_aula_usuario)->id_gestion_aula;
+
+                $mensaje = $this->texto_orientaciones();
+
+                if($this->modo_orientaciones === 1) // Agregar
+                {
+                    $orientaciones = new Presentacion();
+                    $orientaciones->descripcion_presentacion = $mensaje;
+                    $orientaciones->id_gestion_aula = $id_gestion_aula;
+                    $orientaciones->save();
+                    $this->orientaciones_generales_bool = true;
+                }else{ // Editar
+                    $orientaciones = Presentacion::find($this->orientaciones_generales->id_presentacion);
+                    $orientaciones->descripcion_presentacion = $mensaje;
+                    $orientaciones->save();
+                }
+
+                DB::commit();
+
+                $this->cerrar_modal();
+
+                $this->dispatch(
+                    'toast-basico',
+                    mensaje: 'Las Orientaciones Generales se han guardado correctamente',
+                    type: 'success'
+                );
+
+            } catch (\Exception $e) {
+                DB::rollBack();
+                // dd($e);
+                $this->limpiar_modal();
+
+                $this->dispatch(
+                    'toast-basico',
+                    mensaje: 'Ha ocurrido un error al guardar las Orientaciones Generales',
+                    type: 'error'
+                );
+            }
+        }
+
+        public function texto_orientaciones()
+        {
+            $mensaje = $this->descripcion_orientaciones;
+
+            $mensaje = '<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head><body>' . $mensaje . '</body></html>';
+
+            // $dom = new DOMDocument();
+            // // Convertir y cargar el contenido HTML en UTF-8
+            // $utf8Html = mb_convert_encoding($mensaje, 'HTML-ENTITIES', 'UTF-8');
+            // @$dom->loadHTML($utf8Html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOERROR | LIBXML_NOWARNING);
+
+            // $images = $dom->getElementsByTagName('img');
+
+            // foreach ($images as $img) {
+            //     $data = $img->getAttribute('src');
+            //     if (preg_match('/^data:image\/(\w+);base64,/', $data, $type)) {
+            //         // Obtener el tipo y decodificar
+            //         $data = substr($data, strpos($data, ',') + 1);
+            //         $type = strtolower($type[1]); // jpg, png, gif
+
+            //         $data = base64_decode($data);
+            //         if ($data === false) {
+            //             continue;
+            //         }
+
+            //         $directory = public_path('archivos/Posgrado/media/orientaciones/');
+
+            //         // Verifica si el directorio existe, si no, lo crea
+            //         if (!file_exists($directory)) {
+            //             mkdir($directory, 0777, true);
+            //         }
+
+            //         $filename = time() . uniqid() . ".$type";
+            //         $filePath = $directory . $filename;
+
+            //         // Guarda el archivo en la ruta especificada
+            //         file_put_contents($filePath, $data);
+
+            //         // Actualizar la fuente de la imagen en el HTML
+            //         $img->removeAttribute('src');
+            //         $img->setAttribute('src', asset('Posgrado/files/media/' . $filename));
+            //     }
+            // }
+
+            // $m = $dom->saveHTML();
+            return $mensaje;
+        }
+
+        public function cerrar_modal()
+        {
+            $this->limpiar_modal();
+            $this->dispatch(
+                'modal',
+                modal: '#modal-link-clase',
+                action: 'hide'
+            );
+            $this->dispatch(
+                'modal',
+                modal: '#modal-orientaciones',
+                action: 'hide'
+            );
+        }
+
+        public function limpiar_modal()
+        {
+            // Variables de link de clase
+            $this->modo_link_clase = 1;
             $this->titulo_link_clase = 'Agregar Link de Clase';
             $this->accion_estado_link_clase = 'Agregar';
-        }else{
-            $this->modo_link_clase = 0; // Editar
-            $this->titulo_link_clase = 'Editar Link de Clase';
-            $this->accion_estado_link_clase = 'Editar';
-            $this->nombre_link_clase = $this->link_clase->nombre_link_clase;
-        }
 
-        $this->dispatch(
-            'modal',
-            modal: '#modal-link-clase',
-            action: 'show'
-        );
-    }
-
-    public function abrir_modal_orientaciones()
-    {
-        $this->limpiar_modal();
-
-        if(!$this->orientaciones_generales)
-        {
-            $this->modo_orientaciones = 1; // Agregar
+            // Variables de Orientaciones
+            $this->modo_orientaciones = 1;
             $this->titulo_orientaciones = 'Agregar Orientaciones';
             $this->accion_estado_orientaciones = 'Agregar';
-        }else{
-            $this->modo_orientaciones = 0; // Editar
-            $this->titulo_orientaciones = 'Editar Orientaciones';
-            $this->accion_estado_orientaciones = 'Editar';
-            $this->descripcion_orientaciones = $this->orientaciones_generales->descripcion_presentacion;
+
+            $this->reset([
+                'descripcion_orientaciones',
+                'nombre_link_clase'
+            ]);
+            // Limpiar el texarea de las orientaciones, ya que estoy usando un editor de texto
+            $this->dispatch('limpiar-orientaciones');
+
+            // Reiniciar errores
+            $this->resetErrorBag();
         }
-
-        $this->dispatch(
-            'modal',
-            modal: '#modal-orientaciones',
-            action: 'show'
-        );
-    }
-
-    public function guardar_link_clase()
-    {
-        $this->nombre_link_clase = limpiar_cadena($this->nombre_link_clase);
-        $this->validate([
-            'nombre_link_clase' => 'required|url'
-        ]);
-
-
-        try
-        {
-            DB::beginTransaction();
-
-            $id_gestion_aula = GestionAulaUsuario::find($this->id_gestion_aula_usuario)->id_gestion_aula;
-
-            if($this->modo_link_clase === 1) // Agregar
-            {
-                $link_clase = new LinkClase();
-                $link_clase->nombre_link_clase = $this->nombre_link_clase;
-                $link_clase->id_gestion_aula = $id_gestion_aula;
-                $link_clase->save();
-                $this->link_clase_bool = true;
-                $this->dispatch('actualizar_datos_curso');
-            }else{ // Editar
-                $link_clase = LinkClase::find($this->link_clase->id_link_clase);
-                $link_clase->nombre_link_clase = $this->nombre_link_clase;
-                $link_clase->save();
-            }
-
-            DB::commit();
-
-            $this->cerrar_modal();
-
-            $this->dispatch(
-                'toast-basico',
-                mensaje: 'El Link de Clase se ha guardado correctamente',
-                type: 'success'
-            );
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            // dd($e);
-            $this->dispatch(
-                'toast-basico',
-                mensaje: 'Ha ocurrido un error al guardar el Link de Clase',
-                type: 'error'
-            );
-        }
-    }
-
-    public function guardar_orientaciones()
-    {
-        $this->descripcion_orientaciones = limpiar_cadena($this->descripcion_orientaciones);
-        $this->validate([
-            'descripcion_orientaciones' => 'required'
-        ]);
-
-
-        try
-        {
-            DB::beginTransaction();
-
-            $id_gestion_aula = GestionAulaUsuario::find($this->id_gestion_aula_usuario)->id_gestion_aula;
-
-            if($this->modo_orientaciones === 1) // Agregar
-            {
-                $orientaciones = new Presentacion();
-                $orientaciones->descripcion_presentacion = $this->descripcion_orientaciones;
-                $orientaciones->id_gestion_aula = $id_gestion_aula;
-                $orientaciones->save();
-                $this->orientaciones_generales_bool = true;
-            }else{ // Editar
-                $orientaciones = Presentacion::find($this->orientaciones_generales->id_presentacion);
-                $orientaciones->descripcion_presentacion = $this->descripcion_orientaciones;
-                $orientaciones->save();
-            }
-
-            DB::commit();
-
-            $this->cerrar_modal();
-
-            $this->dispatch(
-                'toast-basico',
-                mensaje: 'Las Orientaciones Generales se han guardado correctamente',
-                type: 'success'
-            );
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            // dd($e);
-            $this->dispatch(
-                'toast-basico',
-                mensaje: 'Ha ocurrido un error al guardar las Orientaciones Generales',
-                type: 'error'
-            );
-        }
-    }
-
-    public function cerrar_modal()
-    {
-        $this->limpiar_modal();
-        $this->dispatch(
-            'modal',
-            modal: '#modal-link-clase',
-            action: 'hide'
-        );
-        $this->dispatch(
-            'modal',
-            modal: '#modal-orientaciones',
-            action: 'hide'
-        );
-    }
-
-    public function limpiar_modal()
-    {
-        // Variables de link de clase
-        $this->modo_link_clase = 1;
-        $this->titulo_link_clase = 'Agregar Link de Clase';
-        $this->accion_estado_link_clase = 'Agregar';
-
-        // Variables de Orientaciones
-        $this->modo_orientaciones = 1;
-        $this->titulo_orientaciones = 'Agregar Orientaciones';
-        $this->accion_estado_orientaciones = 'Agregar';
-        // Reiniciar errores
-        $this->resetErrorBag();
-    }
+    /* ======================================================================= */
 
 
     /* =============== OBTENER DATOS PARA LA VISTA =============== */

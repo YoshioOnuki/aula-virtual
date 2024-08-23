@@ -54,7 +54,10 @@
             </div>
             <ul class="navbar-nav pt-lg-3">
 
-                <div class="ms-lg-3 mt-3 mb-3 hr-text hide-theme-dark">
+                <hr class="ms-lg-3 mt-3 mb-3 hide-theme-dark">
+                <hr class="ms-lg-3 mt-3 mb-3 hide-theme-light text-white">
+
+                {{-- <div class="ms-lg-3 mt-3 mb-3 hr-text hide-theme-dark">
                     <span>
                         <svg xmlns="http://www.w3.org/2000/svg"
                             class="icon {{ request()->routeIs('inicio*') ||
@@ -93,7 +96,7 @@
                             <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
                         </svg>
                     </span>
-                </div>
+                </div> --}}
 
                 <li class="nav-item {{ request()->routeIs('inicio*') ? 'active' : '' }}">
                     <a class="nav-link {{ request()->routeIs('inicio*') ? 'text-primary fw-medium' : '' }}"
@@ -189,13 +192,16 @@
                         </div>
                     </li>
 
-                    <div class="ms-lg-3 mt-3 mb-3 hr-text hide-theme-dark">
+                    <hr class="ms-lg-3 mt-3 mb-3 hide-theme-dark">
+                    <hr class="ms-lg-3 mt-3 mb-3 hide-theme-light text-white">
+
+                    {{-- <div class="ms-lg-3 mt-3 mb-3 hr-text hide-theme-dark">
                         <span>
                             <svg xmlns="http://www.w3.org/2000/svg"
                             class="icon
-                            {{ request()->routeIs('alumnos*') || 
-                            request()->routeIs('docentes*')|| 
-                            request()->routeIs('cursos*')|| 
+                            {{ request()->routeIs('alumnos*') ||
+                            request()->routeIs('docentes*')||
+                            request()->routeIs('cursos*')||
                             request()->routeIs('carga-academica*') ? 'text-primary' : '' }}"
                             width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                             stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -209,9 +215,9 @@
                         <span>
                             <svg xmlns="http://www.w3.org/2000/svg"
                             class="icon
-                            {{ request()->routeIs('alumnos*') || 
-                            request()->routeIs('docentes*')|| 
-                            request()->routeIs('cursos*')|| 
+                            {{ request()->routeIs('alumnos*') ||
+                            request()->routeIs('docentes*')||
+                            request()->routeIs('cursos*')||
                             request()->routeIs('carga-academica*')  ? 'text-primary' : '' }}"
                             width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                             stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -220,7 +226,7 @@
                                 <line x1="21" y1="21" x2="15" y2="15"></line>
                             </svg>
                         </span>
-                    </div>
+                    </div> --}}
 
 
 
@@ -312,13 +318,16 @@
                         </a>
                     </li>
 
-                    <div class="ms-lg-3 mt-3 mb-3 hr-text hide-theme-dark">
+                    <hr class="ms-lg-3 mt-3 mb-3 hide-theme-dark">
+                    <hr class="ms-lg-3 mt-3 mb-3 hide-theme-light text-white">
+
+                    {{-- <div class="ms-lg-3 mt-3 mb-3 hr-text hide-theme-dark">
                         <span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round"
                             class="icon icon-tabler icons-tabler-outline icon-tabler-layout-dashboard
-                            {{ request()->routeIs('estructura-academica*') || 
+                            {{ request()->routeIs('estructura-academica*') ||
                             request()->routeIs('gestion-curso*') ? 'text-primary' : '' }}">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                 <path d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1" />
@@ -334,7 +343,7 @@
                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round"
                             class="icon icon-tabler icons-tabler-outline icon-tabler-layout-dashboard
-                            {{ request()->routeIs('estructura-academica*') || 
+                            {{ request()->routeIs('estructura-academica*') ||
                             request()->routeIs('gestion-curso*') ? 'text-primary' : '' }}">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                 <path d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1" />
@@ -343,7 +352,7 @@
                                 <path d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1" />
                             </svg>
                         </span>
-                    </div>
+                    </div> --}}
 
                     <li class="nav-item {{ request()->routeIs('estructura-academica*') ? 'active' : '' }} dropdown">
                         <a class="nav-link dropdown-toggle {{ request()->routeIs('estructura-academica*') ? 'text-primary fw-medium' : '' }}"
@@ -452,13 +461,16 @@
 
                 @if ($usuario->esRol('ALUMNO') || $usuario->esRol('DOCENTE') || $usuario->esRol('DOCENTE INVITADO'))
 
-                    <div class="ms-lg-3 mt-3 mb-3 hr-text hide-theme-dark">
+                    <hr class="ms-lg-3 mt-3 mb-3 hide-theme-dark">
+                    <hr class="ms-lg-3 mt-3 mb-3 hide-theme-light text-white">
+
+                    {{-- <div class="ms-lg-3 mt-3 mb-3 hr-text hide-theme-dark">
                         <span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                             class="icon icon-tabler icons-tabler-outline icon-tabler-school
-                            {{ request()->routeIs('cursos*') || 
+                            {{ request()->routeIs('cursos*') ||
                             request()->routeIs('carga-academica*') ? 'text-primary' : '' }}">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                 <path d="M22 9l-10 -4l-10 4l10 4l10 -4v6" />
@@ -472,14 +484,14 @@
                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                             class="icon icon-tabler icons-tabler-outline icon-tabler-school
-                            {{ request()->routeIs('cursos*') || 
+                            {{ request()->routeIs('cursos*') ||
                             request()->routeIs('carga-academica*') ? 'text-primary' : '' }}">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                 <path d="M22 9l-10 -4l-10 4l10 4l10 -4v6" />
                                 <path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4" />
                             </svg>
                         </span>
-                    </div>
+                    </div> --}}
 
 
                     @if ($usuario->esRol('ALUMNO'))
@@ -545,7 +557,10 @@
                     @endif
                 @endif
 
-                <div class="ms-lg-3 mt-3 mb-3 hr-text hide-theme-dark">
+                <hr class="ms-lg-3 mt-3 mb-3 hide-theme-dark">
+                <hr class="ms-lg-3 mt-3 mb-3 hide-theme-light text-white">
+
+                {{-- <div class="ms-lg-3 mt-3 mb-3 hr-text hide-theme-dark">
                     <span>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -578,7 +593,7 @@
                             <path d="M12 11h.01" />
                         </svg>
                     </span>
-                </div>
+                </div> --}}
 
                 @if ($usuario->esRol('ALUMNO'))
                     <li class="nav-item {{ request()->routeIs('calificaciones*') ? 'active' : '' }}">
@@ -662,8 +677,8 @@
                     </a>
                 </li>
 
-                {{-- <hr class="ms-lg-3 mt-3 mb-3 hide-theme-dark">
-                <hr class="ms-lg-3 mt-3 mb-3 hide-theme-light text-white"> --}}
+                <hr class="ms-lg-3 mt-3 mb-3 hide-theme-dark">
+                <hr class="ms-lg-3 mt-3 mb-3 hide-theme-light text-white">
 
             </ul>
             <div class="mt-2 mb-4 mb-lg-0 w-full ps-3">

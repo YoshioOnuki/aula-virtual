@@ -15,6 +15,7 @@ class TrabajoAcademicoAlumno extends Model
     protected $primaryKey = 'id_trabajo_academico_alumno';
     protected $fillable = [
         'id_trabajo_academico_alumno',
+        'descripcion_trabajo_academico_alumno',
         'nota_trabajo_academico_alumno',
         'id_estado_trabajo_academico',
         'id_trabajo_academico',

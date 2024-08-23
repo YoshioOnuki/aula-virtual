@@ -55,8 +55,8 @@
                                         </div>
                                         <div class="card-body px-5">
                                             @if($orientaciones_generales)
-                                                <span style="text-align: justify;">
-                                                    {{ $orientaciones_generales->descripcion_presentacion }}
+                                                <span>
+                                                    {!! $orientaciones_generales->descripcion_presentacion !!}
                                                 </span>
                                             @else
                                                 <span class="text-muted" style="text-align: justify;">
@@ -500,10 +500,14 @@
                                 <label for="descripcion_orientaciones" class="form-label required">
                                     Orientaciones Generales
                                 </label>
-                                <textarea rows="4" class="form-control @error('descripcion_orientaciones') is-invalid @elseif(strlen($descripcion_orientaciones) > 0) is-valid @enderror"
-                                name="descripcion_orientaciones" id="descripcion_orientaciones" wire:model.live="descripcion_orientaciones"
-                                placeholder="Ingrese las orientaciones generales"></textarea>
-                                @error('descripcion_orientaciones')
+                                <div wire:ignore>
+                                    <textarea class="form-control @error('descripcion_orientaciones') is-invalid @enderror"
+                                    wire:model="descripcion_orientaciones" id="descripcion_orientaciones"
+                                        placeholder="Ingrese la descripcion de las orientaciones">
+                                        {{ $descripcion_orientaciones }}
+                                    </textarea>
+                                </div>
+                                @error('descripcion_orientaciones.*')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
@@ -555,3 +559,38 @@
     </div>
 
 </div>
+
+@push('styles')
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+@endpush
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+    <script>
+        $(function() {
+            $('#descripcion_orientaciones').summernote({
+                placeholder: 'Ingrese la descripcion de las orientaciones',
+                height: 300,
+                tabsize: 2,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    // ['insert', ['link', 'picture']],
+                    ['view', ['codeview']]
+                ],
+                callbacks: {
+                    onChange: function(contents, $editable) {
+                        @this.set('descripcion_orientaciones', contents);
+                    }
+                }
+            });
+        })
+
+        // Escuchar el evento para limpiar el editor de texto
+        window.livewire.on('limpiar-orientaciones', () => {
+            $('#descripcion_orientaciones').summernote('code', '');
+        });
+    </script>
+@endpush

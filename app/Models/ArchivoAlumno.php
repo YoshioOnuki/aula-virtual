@@ -15,6 +15,7 @@ class ArchivoAlumno extends Model
     protected $primaryKey = 'id_archivo_alumno';
     protected $fillable = [
         'id_archivo_alumno',
+        'nombre_archivo_alumno',
         'archivo_alumno',
         'id_trabajo_academico_alumno',
     ];
