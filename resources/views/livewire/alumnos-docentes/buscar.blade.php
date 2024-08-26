@@ -153,7 +153,7 @@
                                                                 </a>
                                                             @elseif($tipo_vista === 'cursos')
                                                                 <a class="dropdown-item" style="cursor: pointer;"
-                                                                    href="{{ route('carga-academica', ['id_usuario' => Hashids::encode($item->id_usuario), 'tipo_vista' => $tipo_vista]) }}">
+                                                                    href="{{ route('cursos', ['id_usuario' => Hashids::encode($item->id_usuario), 'tipo_vista' => $tipo_vista]) }}">
                                                                     Cursos
                                                                 </a>
                                                             @endif
