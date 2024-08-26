@@ -20,7 +20,7 @@
             <div class="row g-3">
 
                 <div class="col-lg-8">
-                    <div class="card card-stacked animate__animated animate__fadeIn animate__faster" wire:init="load_silabus_llamar">
+                    <div class="card card-stacked animate__animated animate__fadeIn animate__faster" wire:init="load_silabus">
                         <div class="card-body p-0" style="{{ $silabus_pdf && file_exists($silabus_pdf->archivo_silabus) ? '' : 'height: 625px' }}">
                             @if($cargando_silabus)
                                 <div class="d-flex justify-content-center align-items-center w-100 h-100">
@@ -67,7 +67,7 @@
                     </div>
                 </div>
 
-                <div class="col-4" wire:init="load_datos_curso_llamar">
+                <div class="col-4" wire:init="load_datos_curso">
                     @if($cargando_datos_curso)
                         <div class="card card-stacked placeholder-glow">
                             <div class="card-header {{ $tipo_vista === 'cursos' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
@@ -309,25 +309,3 @@
         </div>
     </div>
 </div>
-
-@push('scripts')
-    {{-- /* =============== FUNCIONES PARA PRUEBAS DE CARGAS - SIMULACION DE CARGAS =============== */ --}}
-    <script>
-        document.addEventListener('livewire:navigated', () => {
-        // document.addEventListener('DOMContentLoaded', function() {
-            window.addEventListener('load_silabus_evento', () => {
-                setTimeout(() => {
-                    @this.call('load_silabus')
-                }, 1000);
-            });
-        });
-        document.addEventListener('livewire:navigated', () => {
-        // document.addEventListener('DOMContentLoaded', function() {
-        window.addEventListener('load_datos_curso_evento', () => {
-            setTimeout(() => {
-                @this.call('load_datos_curso')
-            }, 500);
-        });
-    });
-    </script>
-@endpush

@@ -56,7 +56,7 @@
                             @endif
                         </div>
                         <div class="card-body">
-                            <div class="row row-cards d-flex justify-content-start" wire:init="load_recursos_llamar">
+                            <div class="row row-cards d-flex justify-content-start" wire:init="load_recursos">
 
                                 @if ($tipo_vista === 'carga-academica' && $usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario))
                                     <div class="col-lg-12">
@@ -434,17 +434,3 @@
     </div>
 
 </div>
-
-@push('scripts')
-    {{-- /* =============== FUNCIONES PARA PRUEBAS DE CARGAS - SIMULACION DE CARGAS =============== */ --}}
-    <script>
-        document.addEventListener('livewire:navigated', () => {
-        // document.addEventListener('DOMContentLoaded', function() {
-            window.addEventListener('load_recursos_evento', () => {
-                setTimeout(() => {
-                    @this.call('load_recursos')
-                }, 500);
-            });
-        });
-    </script>
-@endpush

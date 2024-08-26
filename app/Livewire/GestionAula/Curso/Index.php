@@ -37,7 +37,7 @@ class Index extends Component
 
     public function curso_favorito($id)
     {
-        usleep(500000);
+        // usleep(500000);
         $gest_aula_usua = GestionAulaUsuario::find($id);
         if ($gest_aula_usua->favorito_gestion_aula_usuario == 0) {
             $gest_aula_usua->favorito_gestion_aula_usuario = 1;
@@ -209,7 +209,7 @@ class Index extends Component
 
     public function load_cursos()
     {
-        usleep(100000);
+        // usleep(100000);
         $this->mostrar_cursos();
         $this->calcular_progreso();
         $this->mostrar_foto_docente();

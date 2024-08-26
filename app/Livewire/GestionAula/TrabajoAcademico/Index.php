@@ -379,14 +379,6 @@ class Index extends Component
     /* ======================================================================= */
 
 
-    /* =============== FUNCIONES PARA PRUEBAS DE CARGAS - SIMULACION DE CARGAS =============== */
-        public function load_trabajos_llamar()
-        {
-            $this->dispatch('load_trabajos_evento');
-        }
-    /* ======================================================================================= */
-
-
     public function mount($id_usuario, $tipo_vista, $id_curso)
     {
         $this->tipo_vista = $tipo_vista;
