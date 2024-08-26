@@ -198,7 +198,7 @@ class Index extends Component
                     $this->dispatch(
                         'toast-basico',
                         mensaje: 'El trabajo académico se ha guardado correctamente, pero no se ha subido ningún archivo',
-                        type: 'success'
+                        type: 'info'
                     );
                 }else{
                     $this->dispatch(

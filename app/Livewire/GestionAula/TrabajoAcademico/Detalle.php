@@ -268,7 +268,7 @@ class Detalle extends Component
                         $this->dispatch(
                             'toast-basico',
                             mensaje: 'La entrega del trabajo académico se ha guardado correctamente, pero no se ha subido ningún archivo',
-                            type: 'success'
+                            type: 'info'
                         );
                     }else{
                         $this->dispatch(

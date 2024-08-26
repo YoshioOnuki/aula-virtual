@@ -90,15 +90,37 @@
             var notyf = new Notyf({
                 duration: 6000, // Duración predeterminada de la notificación
                 position: {x: 'center', y: 'top'}, // Posición predeterminada
-                dismissible: true // Hacer todas las notificaciones descartables
+                dismissible: true, // Hacer todas las notificaciones descartables
+                types: [
+                {
+                    type: 'info',
+                    background: '#4299e1', // Color personalizado para info
+                    icon: {
+                        tagName: 'i',
+                        text: ''
+                    }
+                },
+                {
+                    type: 'warning',
+                    background: '#f59f00', // Color personalizado para warning
+                    icon: {
+                        tagName: 'i',
+                        text: ''
+                    }
+                }
+            ]
             });
 
             // Función para mostrar notificaciones
             function mostrarNotificacion(tipo, mensaje) {
                 if (tipo === 'success') {
                     notyf.success({message: mensaje});
-                } else {
+                } else if (tipo === 'error') {
                     notyf.error({message: mensaje});
+                } else if (tipo === 'info') {
+                    notyf.open({type: 'info', message: mensaje});
+                } else if (tipo === 'warning') {
+                    notyf.open({type: 'warning', message: mensaje});
                 }
             }
 

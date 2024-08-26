@@ -501,17 +501,11 @@
                                     Orientaciones Generales
                                 </label>
                                 <div wire:ignore>
-                                    <textarea class="form-control @error('descripcion_orientaciones') is-invalid @enderror"
-                                    wire:model="descripcion_orientaciones" id="descripcion_orientaciones"
-                                        placeholder="Ingrese la descripcion de las orientaciones">
+                                    <textarea class="form-control"
+                                    wire:model="descripcion_orientaciones" id="descripcion_orientaciones">
                                         {{ $descripcion_orientaciones }}
                                     </textarea>
                                 </div>
-                                @error('descripcion_orientaciones.*')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
                             </div>
                         </div>
                     </div>
@@ -587,10 +581,5 @@
                 }
             });
         })
-
-        // Escuchar el evento para limpiar el editor de texto
-        window.livewire.on('limpiar-orientaciones', () => {
-            $('#descripcion_orientaciones').summernote('code', '');
-        });
     </script>
 @endpush

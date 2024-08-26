@@ -57,7 +57,7 @@ class DatosCurso extends Component
 
         public function load_datos_curso()
         {
-            usleep(300000);
+            // usleep(300000);
             $this->mostrar_datos_curso();
             $this->cargando_datos_curso = false;
         }

@@ -157,9 +157,28 @@ class Detalle extends Component
 
         public function guardar_orientaciones()
         {
-            $this->validate([
-                'descripcion_orientaciones' => 'required'
-            ]);
+            // dd($this->descripcion_orientaciones);
+            if ($this->descripcion_orientaciones === '<p><br></p>' || $this->descripcion_orientaciones === '<h1><br></h1>' ||
+            $this->descripcion_orientaciones === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><h1><br></h1>' ||
+            $this->descripcion_orientaciones === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><p><br></p>' ||
+            $this->descripcion_orientaciones === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><h1><br></h1>' ||
+            $this->descripcion_orientaciones === '<p></p>' || $this->descripcion_orientaciones === '' ||
+            $this->descripcion_orientaciones === null) {
+                $this->dispatch(
+                    'toast-basico',
+                    mensaje: 'El campo de Orientaciones Generales es obligatorio',
+                    type: 'error'
+                );
+                return;
+            } elseif ($this->orientaciones_generales->descripcion_presentacion === $this->descripcion_orientaciones) {
+                $this->dispatch(
+                    'toast-basico',
+                    mensaje: 'No se han realizado cambios en las Orientaciones Generales',
+                    type: 'info'
+                );
+                $this->cerrar_modal();
+                return;
+            }
 
             try
             {
@@ -209,7 +228,10 @@ class Detalle extends Component
         {
             $mensaje = $this->descripcion_orientaciones;
 
-            $mensaje = '<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head><body>' . $mensaje . '</body></html>';
+            if($this->modo_orientaciones === 1)
+            {
+                $mensaje = '<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head><body>' . $mensaje . '</body></html>';
+            }
 
             // $dom = new DOMDocument();
             // // Convertir y cargar el contenido HTML en UTF-8
@@ -294,135 +316,139 @@ class Detalle extends Component
 
 
     /* =============== OBTENER DATOS PARA LA VISTA =============== */
-    public function mostrar_orientaciones()
-    {
-        $gestion_aula_usuario = GestionAulaUsuario::with([
-            'gestionAula' => function ($query) {
-                $query->with([
-                    'presentacion' => function ($query) {
-                        $query->select('id_presentacion', 'descripcion_presentacion', 'id_gestion_aula');
-                    }
-                ])->select('id_gestion_aula', 'grupo_gestion_aula', 'id_curso');
-            }
-        ])->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)->first();
-
-        if ($gestion_aula_usuario->gestionAula->presentacion) {
-            $this->orientaciones_generales = $gestion_aula_usuario->gestionAula->presentacion;
-            $this->orientaciones_generales_bool = true;
-        }else{
-            $this->orientaciones_generales = null;
-            $this->orientaciones_generales_bool = false;
-        }
-    }
-
-    public function mostrar_titulo_curso()
-    {
-        $gestion_aula_usuario = GestionAulaUsuario::with([
-            'gestionAula' => function ($query) {
-                $query->with([
-                    'curso' => function ($query) {
-                        $query->select('id_curso', 'nombre_curso');
-                    }
-                ])->select('id_gestion_aula', 'grupo_gestion_aula', 'id_curso');
-            }
-        ])->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)->first();
-
-        if ($gestion_aula_usuario) {
-            $this->nombre_curso = $gestion_aula_usuario->gestionAula->curso->nombre_curso;
-            $this->grupo_gestion_aula = $gestion_aula_usuario->gestionAula->grupo_gestion_aula;
-        }
-    }
-
-    public function obtener_link_clase()
-    {
-        $this->gestion_aula_usuario = GestionAulaUsuario::with([
-            'gestionAula' => function ($query) {
-                $query->with([
-                    'curso' => function ($query) {
-                        $query->with([
-                            'ciclo',
-                            'planEstudio',
-                            'programa' => function ($query) {
-                                $query->with([
-                                    'facultad',
-                                    'tipoPrograma'
-                                ])->select('id_programa', 'nombre_programa', 'mencion_programa', 'id_tipo_programa', 'id_facultad');
-                            }
-                        ])->select('id_curso', 'codigo_curso', 'nombre_curso', 'creditos_curso', 'horas_lectivas_curso', 'id_programa', 'id_plan_estudio', 'id_ciclo');
-                    },
-                    'linkClase' => function ($query) {
-                        $query->select('id_link_clase', 'id_gestion_aula', 'nombre_link_clase');
-                    },
-                ])->select('id_gestion_aula', 'grupo_gestion_aula', 'id_curso');
-            }
-        ])->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)->first();
-
-        if($this->gestion_aula_usuario->gestionAula->linkClase)
+        public function mostrar_orientaciones()
         {
-            $this->link_clase = $this->gestion_aula_usuario->gestionAula->linkClase;
-            $this->link_clase_bool = true;
-        }else{
-            $this->link_clase = null;
-            $this->link_clase_bool = false;
+            $gestion_aula_usuario = GestionAulaUsuario::with([
+                'gestionAula' => function ($query) {
+                    $query->with([
+                        'presentacion' => function ($query) {
+                            $query->select('id_presentacion', 'descripcion_presentacion', 'id_gestion_aula');
+                        }
+                    ])->select('id_gestion_aula', 'grupo_gestion_aula', 'id_curso');
+                }
+            ])->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)->first();
+
+            if ($gestion_aula_usuario->gestionAula->presentacion) {
+                $this->orientaciones_generales = $gestion_aula_usuario->gestionAula->presentacion;
+                $this->orientaciones_generales_bool = true;
+            }else{
+                $this->orientaciones_generales = null;
+                $this->orientaciones_generales_bool = false;
+            }
         }
 
-    }
+        public function mostrar_titulo_curso()
+        {
+            $gestion_aula_usuario = GestionAulaUsuario::with([
+                'gestionAula' => function ($query) {
+                    $query->with([
+                        'curso' => function ($query) {
+                            $query->select('id_curso', 'nombre_curso');
+                        }
+                    ])->select('id_gestion_aula', 'grupo_gestion_aula', 'id_curso');
+                }
+            ])->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)->first();
+
+            if ($gestion_aula_usuario) {
+                $this->nombre_curso = $gestion_aula_usuario->gestionAula->curso->nombre_curso;
+                $this->grupo_gestion_aula = $gestion_aula_usuario->gestionAula->grupo_gestion_aula;
+            }
+        }
+
+        public function obtener_link_clase()
+        {
+            $this->gestion_aula_usuario = GestionAulaUsuario::with([
+                'gestionAula' => function ($query) {
+                    $query->with([
+                        'curso' => function ($query) {
+                            $query->with([
+                                'ciclo',
+                                'planEstudio',
+                                'programa' => function ($query) {
+                                    $query->with([
+                                        'facultad',
+                                        'tipoPrograma'
+                                    ])->select('id_programa', 'nombre_programa', 'mencion_programa', 'id_tipo_programa', 'id_facultad');
+                                }
+                            ])->select('id_curso', 'codigo_curso', 'nombre_curso', 'creditos_curso', 'horas_lectivas_curso', 'id_programa', 'id_plan_estudio', 'id_ciclo');
+                        },
+                        'linkClase' => function ($query) {
+                            $query->select('id_link_clase', 'id_gestion_aula', 'nombre_link_clase');
+                        },
+                    ])->select('id_gestion_aula', 'grupo_gestion_aula', 'id_curso');
+                }
+            ])->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)->first();
+
+            if($this->gestion_aula_usuario->gestionAula->linkClase)
+            {
+                $this->link_clase = $this->gestion_aula_usuario->gestionAula->linkClase;
+                $this->link_clase_bool = true;
+            }else{
+                $this->link_clase = null;
+                $this->link_clase_bool = false;
+            }
+
+        }
+    /* =========================================================== */
 
 
     /* =============== CARGA DE ORIENTACIONES =============== */
-    public function load_orientaciones()
-    {
-        $this->mostrar_orientaciones();
-        $this->cargando_orientaciones = false;
-    }
+        public function load_orientaciones()
+        {
+            $this->mostrar_orientaciones();
+            $this->cargando_orientaciones = false;
+        }
+    /* ====================================================== */
 
 
     /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
-    public function obtener_datos_page_header()
-    {
-        $this->titulo_pasos_header = 'Detalle';
-        $this->titulo_page_header = $this->nombre_curso . ' GRUPO ' . $this->grupo_gestion_aula;
-
-        // Regresar
-        if($this->tipo_vista === 'cursos')
+        public function obtener_datos_page_header()
         {
-            $this->regresar_page_header = [
-                'route' => 'cursos',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => 'cursos']
+            $this->titulo_pasos_header = 'Detalle';
+            $this->titulo_page_header = $this->nombre_curso . ' GRUPO ' . $this->grupo_gestion_aula;
+
+            // Regresar
+            if($this->tipo_vista === 'cursos')
+            {
+                $this->regresar_page_header = [
+                    'route' => 'cursos',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => 'cursos']
+                ];
+            } else {
+                $this->regresar_page_header = [
+                    'route' => 'carga-academica',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => 'carga-academica']
+                ];
+            }
+
+            // Links --> Inicio
+            $this->links_page_header = [
+                [
+                    'name' => 'Inicio',
+                    'route' => 'inicio',
+                    'params' => []
+                ]
             ];
-        } else {
-            $this->regresar_page_header = [
-                'route' => 'carga-academica',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => 'carga-academica']
-            ];
+
+            // Links --> Cursos o Carga Académica
+            if ($this->tipo_vista === 'cursos')
+            {
+                $this->links_page_header[] = [
+                    'name' => 'Mis Cursos',
+                    'route' => 'cursos',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => 'cursos']
+                ];
+            } else {
+                $this->links_page_header[] = [
+                    'name' => 'Carga Académica',
+                    'route' => 'carga-academica',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => 'carga-academica']
+                ];
+            }
+
         }
+    /* ==================================================================================== */
 
-        // Links --> Inicio
-        $this->links_page_header = [
-            [
-                'name' => 'Inicio',
-                'route' => 'inicio',
-                'params' => []
-            ]
-        ];
-
-        // Links --> Cursos o Carga Académica
-        if ($this->tipo_vista === 'cursos')
-        {
-            $this->links_page_header[] = [
-                'name' => 'Mis Cursos',
-                'route' => 'cursos',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => 'cursos']
-            ];
-        } else {
-            $this->links_page_header[] = [
-                'name' => 'Carga Académica',
-                'route' => 'carga-academica',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => 'carga-academica']
-            ];
-        }
-
-    }
 
     public function mount($id_usuario, $tipo_vista, $id_curso)
     {
@@ -446,6 +472,8 @@ class Detalle extends Component
         }
 
         $this->obtener_datos_page_header();
+        $this->mostrar_orientaciones();
+        $this->descripcion_orientaciones = $this->orientaciones_generales->descripcion_presentacion ?? '';
 
     }
 
