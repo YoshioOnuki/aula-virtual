@@ -124,6 +124,19 @@ if (!function_exists('verificar_hora_actual'))
     }
 }
 
+// Funcion para verificar si la hora actual está entre la fecha de inicio y fin en la fecha actual (datetime)
+if (!function_exists('verificar_fecha_trabajo'))
+{
+    function verificar_fecha_trabajo($fecha_inicio, $fecha_fin)
+    {
+        $fecha_actual = date('Y-m-d H:i:s');
+        if ($fecha_actual >= $fecha_inicio && $fecha_actual < $fecha_fin) {
+            return true;
+        }
+        return false;
+    }
+}
+
 // Funcion para verificar si la hora ingresada está entre la hora de inicio y fin en la fecha ingresada en formato Y-m-d H:i:s
 if (!function_exists('verificar_hora'))
 {

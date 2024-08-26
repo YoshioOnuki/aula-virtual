@@ -58,243 +58,247 @@ class Detalle extends Component
 
 
     /* =============== FUNCION UPDATE PARA CHECKBOX =============== */
-    public function updatedCheckAll($value)
-    {
-        $alumnos = GestionAulaUsuario::where('id_gestion_aula', $this->id_gestion_aula)
-            ->whereHas('rol', function ($query) {
-                $query->where('nombre_rol', 'ALUMNO');
-            })
-            // que no tenga registros en la tabla asistencia_alumno
-            ->whereDoesntHave('asistenciaAlumno', function ($query) {
-                $query->where('id_asistencia', $this->id_asistencia);
-            })
-            ->get();
-        if ($value)
+        public function updatedCheckAll($value)
         {
-            // Marcar todos los checks true
-            foreach ($alumnos as $alumno)
+            $alumnos = GestionAulaUsuario::where('id_gestion_aula', $this->id_gestion_aula)
+                ->whereHas('rol', function ($query) {
+                    $query->where('nombre_rol', 'ALUMNO');
+                })
+                // que no tenga registros en la tabla asistencia_alumno
+                ->whereDoesntHave('asistenciaAlumno', function ($query) {
+                    $query->where('id_asistencia', $this->id_asistencia);
+                })
+                ->get();
+            if ($value)
             {
-                $this->check_alumno[$alumno->id_gestion_aula_usuario] = true;
-            }
-        } else {
-            // Desmarcar todos los checks false
-            foreach ($alumnos as $alumno)
-            {
-                $this->check_alumno[$alumno->id_gestion_aula_usuario] = false;
+                // Marcar todos los checks true
+                foreach ($alumnos as $alumno)
+                {
+                    $this->check_alumno[$alumno->id_gestion_aula_usuario] = true;
+                }
+            } else {
+                // Desmarcar todos los checks false
+                foreach ($alumnos as $alumno)
+                {
+                    $this->check_alumno[$alumno->id_gestion_aula_usuario] = false;
+                }
             }
         }
-    }
+    /* ============================================================ */
 
     /* =============== FUNCIONES PARA EL MODAL DE  ENVIAR ASISTENCIAS =============== */
-    public function abrir_modal_enviar_asistencia($id_gestion_aula_usuario)
-    {
-        $this->limpiar_modal_enviar();
-        $this->dispatch(
-            'modal',
-            modal: '#modal-enviar-asistencia',
-            action: 'show'
-        );
-
-        $this->titulo_modal_enviar = 'Enviar Asistencia';
-        $this->modo_enviar = 0; // Enviar asistencia a un solo alumno
-
-        $this->id_gestion_aula_usuario_enviar = $id_gestion_aula_usuario;
-        $this->id_asistencia_enviar = $this->id_asistencia;
-        $asistencia = Asistencia::find($this->id_asistencia);
-
-        $this->estados = EstadoAsistencia::where('estado_estado_asistencia', 1)->get();
-        $this->tipo_asistencia_a_enviar = $asistencia->tipoAsistencia->nombre_tipo_asistencia;
-        $this->fecha_asistencia_a_enviar = $asistencia->fecha_asistencia;
-        $this->hora_inicio_asistencia_a_enviar = $asistencia->hora_inicio_asistencia;
-        $this->hora_fin_asistencia_a_enviar = $asistencia->hora_fin_asistencia;
-    }
-
-    public function abrir_modal_enviar_asistencias()
-    {
-        $this->limpiar_modal_enviar();
-        $this->dispatch(
-            'modal',
-            modal: '#modal-enviar-asistencia',
-            action: 'show'
-        );
-
-        $this->titulo_modal_enviar = 'Enviar varias asistencias';
-        $this->modo_enviar = 1; // Enviar asistencia a varios alumnos
-
-        $this->id_asistencia_enviar = $this->id_asistencia;
-        $asistencia = Asistencia::find($this->id_asistencia);
-
-        $this->estados = EstadoAsistencia::where('estado_estado_asistencia', 1)->get();
-        $this->tipo_asistencia_a_enviar = $asistencia->tipoAsistencia->nombre_tipo_asistencia;
-        $this->fecha_asistencia_a_enviar = $asistencia->fecha_asistencia;
-        $this->hora_inicio_asistencia_a_enviar = $asistencia->hora_inicio_asistencia;
-        $this->hora_fin_asistencia_a_enviar = $asistencia->hora_fin_asistencia;
-    }
-
-    public function enviar_asistencia()
-    {
-        $this->validate([
-            'estado_asistencia' => 'required'
-        ]);
-
-        try
+        public function abrir_modal_enviar_asistencia($id_gestion_aula_usuario)
         {
-            DB::beginTransaction();
+            $this->limpiar_modal_enviar();
+            $this->dispatch(
+                'modal',
+                modal: '#modal-enviar-asistencia',
+                action: 'show'
+            );
 
-            if(count($this->check_alumno) > 0 && $this->modo_enviar === 1)
+            $this->titulo_modal_enviar = 'Enviar Asistencia';
+            $this->modo_enviar = 0; // Enviar asistencia a un solo alumno
+
+            $this->id_gestion_aula_usuario_enviar = $id_gestion_aula_usuario;
+            $this->id_asistencia_enviar = $this->id_asistencia;
+            $asistencia = Asistencia::find($this->id_asistencia);
+
+            $this->estados = EstadoAsistencia::where('estado_estado_asistencia', 1)->get();
+            $this->tipo_asistencia_a_enviar = $asistencia->tipoAsistencia->nombre_tipo_asistencia;
+            $this->fecha_asistencia_a_enviar = $asistencia->fecha_asistencia;
+            $this->hora_inicio_asistencia_a_enviar = $asistencia->hora_inicio_asistencia;
+            $this->hora_fin_asistencia_a_enviar = $asistencia->hora_fin_asistencia;
+        }
+
+        public function abrir_modal_enviar_asistencias()
+        {
+            $this->limpiar_modal_enviar();
+            $this->dispatch(
+                'modal',
+                modal: '#modal-enviar-asistencia',
+                action: 'show'
+            );
+
+            $this->titulo_modal_enviar = 'Enviar varias asistencias';
+            $this->modo_enviar = 1; // Enviar asistencia a varios alumnos
+
+            $this->id_asistencia_enviar = $this->id_asistencia;
+            $asistencia = Asistencia::find($this->id_asistencia);
+
+            $this->estados = EstadoAsistencia::where('estado_estado_asistencia', 1)->get();
+            $this->tipo_asistencia_a_enviar = $asistencia->tipoAsistencia->nombre_tipo_asistencia;
+            $this->fecha_asistencia_a_enviar = $asistencia->fecha_asistencia;
+            $this->hora_inicio_asistencia_a_enviar = $asistencia->hora_inicio_asistencia;
+            $this->hora_fin_asistencia_a_enviar = $asistencia->hora_fin_asistencia;
+        }
+
+        public function enviar_asistencia()
+        {
+            $this->validate([
+                'estado_asistencia' => 'required'
+            ]);
+
+            try
             {
-                // Eliminar los checks falsos
-                $this->check_alumno = array_filter($this->check_alumno);
-                // Sacar los alumnos seleccionados por sus indices
-                $this->check_alumno = array_keys($this->check_alumno);
-                foreach ($this->check_alumno as $id_gestion_aula_usuario)
+                DB::beginTransaction();
+
+                if(count($this->check_alumno) > 0 && $this->modo_enviar === 1)
                 {
+                    // Eliminar los checks falsos
+                    $this->check_alumno = array_filter($this->check_alumno);
+                    // Sacar los alumnos seleccionados por sus indices
+                    $this->check_alumno = array_keys($this->check_alumno);
+                    foreach ($this->check_alumno as $id_gestion_aula_usuario)
+                    {
+                        $asistencia_alumno = new AsistenciaAlumno();
+                        $asistencia_alumno->id_asistencia = $this->id_asistencia_enviar;
+                        $asistencia_alumno->id_estado_asistencia = $this->estado_asistencia;
+                        $asistencia_alumno->id_gestion_aula_usuario = $id_gestion_aula_usuario;
+                        $asistencia_alumno->save();
+                    }
+                } else if ($this->modo_enviar === 1 && count($this->check_alumno) <= 0){
+                    $this->dispatch(
+                        'toast-basico',
+                        mensaje: 'No se ha seleccionado ningún alumno.',
+                        type: 'error'
+                    );
+                    return;
+                } else {
                     $asistencia_alumno = new AsistenciaAlumno();
                     $asistencia_alumno->id_asistencia = $this->id_asistencia_enviar;
                     $asistencia_alumno->id_estado_asistencia = $this->estado_asistencia;
-                    $asistencia_alumno->id_gestion_aula_usuario = $id_gestion_aula_usuario;
+                    $asistencia_alumno->id_gestion_aula_usuario = $this->id_gestion_aula_usuario_enviar;
                     $asistencia_alumno->save();
                 }
-            } else if ($this->modo_enviar === 1 && count($this->check_alumno) <= 0){
+
+                // Limpiar los checks
+                $this->check_alumno = [];
+                $this->check_all = false;
+
+
+                DB::commit();
+
+                $this->cerrar_modal_enviar();
+
                 $this->dispatch(
                     'toast-basico',
-                    mensaje: 'No se ha seleccionado ningún alumno.',
+                    mensaje: 'La asistencia se ha enviado correctamente',
+                    type: 'success'
+                );
+
+            } catch (\Exception $e) {
+                DB::rollBack();
+                $this->dispatch(
+                    'toast-basico',
+                    mensaje: 'Ha ocurrido un error al enviar la asistencia.' . $e->getMessage(),
                     type: 'error'
                 );
-                return;
-            } else {
-                $asistencia_alumno = new AsistenciaAlumno();
-                $asistencia_alumno->id_asistencia = $this->id_asistencia_enviar;
-                $asistencia_alumno->id_estado_asistencia = $this->estado_asistencia;
-                $asistencia_alumno->id_gestion_aula_usuario = $this->id_gestion_aula_usuario_enviar;
-                $asistencia_alumno->save();
             }
+        }
 
-            // Limpiar los checks
-            $this->check_alumno = [];
-            $this->check_all = false;
-
-
-            DB::commit();
-
-            $this->cerrar_modal_enviar();
-
+        public function cerrar_modal_enviar()
+        {
+            $this->limpiar_modal_enviar();
             $this->dispatch(
-                'toast-basico',
-                mensaje: 'La asistencia se ha enviado correctamente',
-                type: 'success'
-            );
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            $this->dispatch(
-                'toast-basico',
-                mensaje: 'Ha ocurrido un error al enviar la asistencia.' . $e->getMessage(),
-                type: 'error'
+                'modal',
+                modal: '#modal-enviar-asistencia',
+                action: 'hide'
             );
         }
-    }
 
-    public function cerrar_modal_enviar()
-    {
-        $this->limpiar_modal_enviar();
-        $this->dispatch(
-            'modal',
-            modal: '#modal-enviar-asistencia',
-            action: 'hide'
-        );
-    }
+        public function limpiar_modal_enviar()
+        {
+            $this->id_asistencia_enviar = null;
+            $this->estado_asistencia = '';
+            $this->tipo_asistencia_a_enviar = '';
+            $this->fecha_asistencia_a_enviar = '';
+            $this->hora_inicio_asistencia_a_enviar = '';
+            $this->hora_fin_asistencia_a_enviar = '';
+            // Reiniciar errores
+            $this->resetErrorBag();
+        }
+    /* ============================================================================== */
 
-    public function limpiar_modal_enviar()
-    {
-        $this->id_asistencia_enviar = null;
-        $this->estado_asistencia = '';
-        $this->tipo_asistencia_a_enviar = '';
-        $this->fecha_asistencia_a_enviar = '';
-        $this->hora_inicio_asistencia_a_enviar = '';
-        $this->hora_fin_asistencia_a_enviar = '';
-        // Reiniciar errores
-        $this->resetErrorBag();
-    }
 
 
      /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
-    public function obtener_datos_page_header()
-    {
-        $this->titulo_page_header = 'Detalle de Asistencia';
-
-        // Regresar
-        if($this->tipo_vista === 'cursos')
+        public function obtener_datos_page_header()
         {
-            $this->regresar_page_header = [
-                'route' => 'cursos.detalle.asistencia',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+            $this->titulo_page_header = 'Detalle de Asistencia';
+
+            // Regresar
+            if($this->tipo_vista === 'cursos')
+            {
+                $this->regresar_page_header = [
+                    'route' => 'cursos.detalle.asistencia',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            } else {
+                $this->regresar_page_header = [
+                    'route' => 'carga-academica.detalle.asistencia',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            }
+
+            // Links --> Inicio
+            $this->links_page_header = [
+                [
+                    'name' => 'Inicio',
+                    'route' => 'inicio',
+                    'params' => []
+                ]
             ];
-        } else {
-            $this->regresar_page_header = [
-                'route' => 'carga-academica.detalle.asistencia',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-            ];
+
+            // Links --> Cursos o Carga Académica
+            if ($this->tipo_vista === 'cursos')
+            {
+                $this->links_page_header[] = [
+                    'name' => 'Mis Cursos',
+                    'route' => 'cursos',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista]
+                ];
+            } else {
+                $this->links_page_header[] = [
+                    'name' => 'Carga Académica',
+                    'route' => 'carga-academica',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista]
+                ];
+            }
+
+            // Links --> Detalle del curso o carga académica
+            if ($this->tipo_vista === 'cursos')
+            {
+                $this->links_page_header[] = [
+                    'name' => 'Detalle',
+                    'route' => 'cursos.detalle',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            } else {
+                $this->links_page_header[] = [
+                    'name' => 'Detalle',
+                    'route' => 'carga-academica.detalle',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            }
+
+            // Links --> Asistencia
+            if ($this->tipo_vista === 'cursos')
+            {
+                $this->links_page_header[] = [
+                    'name' => 'Asistencia',
+                    'route' => 'cursos.detalle.asistencia',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            } else {
+                $this->links_page_header[] = [
+                    'name' => 'Asistencia',
+                    'route' => 'carga-academica.detalle.asistencia',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            }
+
         }
-
-        // Links --> Inicio
-        $this->links_page_header = [
-            [
-                'name' => 'Inicio',
-                'route' => 'inicio',
-                'params' => []
-            ]
-        ];
-
-        // Links --> Cursos o Carga Académica
-        if ($this->tipo_vista === 'cursos')
-        {
-            $this->links_page_header[] = [
-                'name' => 'Mis Cursos',
-                'route' => 'cursos',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista]
-            ];
-        } else {
-            $this->links_page_header[] = [
-                'name' => 'Carga Académica',
-                'route' => 'carga-academica',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista]
-            ];
-        }
-
-        // Links --> Detalle del curso o carga académica
-        if ($this->tipo_vista === 'cursos')
-        {
-            $this->links_page_header[] = [
-                'name' => 'Detalle',
-                'route' => 'cursos.detalle',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-            ];
-        } else {
-            $this->links_page_header[] = [
-                'name' => 'Detalle',
-                'route' => 'carga-academica.detalle',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-            ];
-        }
-
-        // Links --> Asistencia
-        if ($this->tipo_vista === 'cursos')
-        {
-            $this->links_page_header[] = [
-                'name' => 'Asistencia',
-                'route' => 'cursos.detalle.asistencia',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-            ];
-        } else {
-            $this->links_page_header[] = [
-                'name' => 'Asistencia',
-                'route' => 'carga-academica.detalle.asistencia',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-            ];
-        }
-
-    }
+    /* ===================================================================================== */
 
 
     public function mount($id_usuario, $tipo_vista, $id_curso, $id_asistencia)

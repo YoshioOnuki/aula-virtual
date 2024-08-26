@@ -88,74 +88,196 @@ class Index extends Component
     }
 
 
-    /* =============== FUNCIONES PARA EL MODAL DE LINK DE CURSO Y ORIENTACIONES- AGREGAR Y EDITAR =============== */
-    public function abrir_modal_asistencias_agregar()
-    {
-        $this->limpiar_modal();
+    /* =============== FUNCIONES PARA EL MODAL DE ASISTENCIA- AGREGAR Y EDITAR =============== */
+        public function abrir_modal_asistencias_agregar()
+        {
+            $this->limpiar_modal();
 
-        $this->modo_asistencias = 1; // Agregar
-        $this->titulo_asistencias = 'Agregar Asistencia';
-        $this->accion_asistencias = 'Agregar';
+            $this->modo_asistencias = 1; // Agregar
+            $this->titulo_asistencias = 'Agregar Asistencia';
+            $this->accion_asistencias = 'Agregar';
 
-        $this->dispatch(
-            'modal',
-            modal: '#modal-asistencias',
-            action: 'show'
-        );
-    }
+            $this->dispatch(
+                'modal',
+                modal: '#modal-asistencias',
+                action: 'show'
+            );
+        }
 
-    public function abrir_modal_asistencias_editar(Asistencia $asistencia)
-    {
-        $this->limpiar_modal();
+        public function abrir_modal_asistencias_editar(Asistencia $asistencia)
+        {
+            $this->limpiar_modal();
 
-        $this->modo_asistencias = 0; // Editar
-        $this->titulo_asistencias = 'Editar Asistencia';
-        $this->accion_asistencias = 'Editar';
+            $this->modo_asistencias = 0; // Editar
+            $this->titulo_asistencias = 'Editar Asistencia';
+            $this->accion_asistencias = 'Editar';
 
-        $this->id_asistencia_editar = $asistencia->id_asistencia;
-        $this->tipo_asistencia = $asistencia->id_tipo_asistencia;
-        $this->fecha_asistencia = $asistencia->fecha_asistencia;
-        $this->fecha_asistencia_temporal = $this->fecha_asistencia;
-        $this->hora_inicio_asistencia = Carbon::createFromFormat('H:i:s', $asistencia->hora_inicio_asistencia)->format('H:i');
-        $this->hora_fin_asistencia = Carbon::createFromFormat('H:i:s', $asistencia->hora_fin_asistencia)->format('H:i');
+            $this->id_asistencia_editar = $asistencia->id_asistencia;
+            $this->tipo_asistencia = $asistencia->id_tipo_asistencia;
+            $this->fecha_asistencia = $asistencia->fecha_asistencia;
+            $this->fecha_asistencia_temporal = $this->fecha_asistencia;
+            $this->hora_inicio_asistencia = Carbon::createFromFormat('H:i:s', $asistencia->hora_inicio_asistencia)->format('H:i');
+            $this->hora_fin_asistencia = Carbon::createFromFormat('H:i:s', $asistencia->hora_fin_asistencia)->format('H:i');
 
-        $this->dispatch(
-            'modal',
-            modal: '#modal-asistencias',
-            action: 'show'
-        );
-    }
+            $this->dispatch(
+                'modal',
+                modal: '#modal-asistencias',
+                action: 'show'
+            );
+        }
 
-    public function guardar_asistencias()
-    {
-        $this->validate([
-            'tipo_asistencia' => 'required',
-            'fecha_asistencia' => 'required|date|after_or_equal:today',
-            'hora_inicio_asistencia' => 'required|date_format:H:i',
-            'hora_fin_asistencia' => 'required|date_format:H:i|after:hora_inicio_asistencia',
-        ]);
+        public function guardar_asistencias()
+        {
+            $this->validate([
+                'tipo_asistencia' => 'required',
+                'fecha_asistencia' => 'required|date|after_or_equal:today',
+                'hora_inicio_asistencia' => 'required|date_format:H:i',
+                'hora_fin_asistencia' => 'required|date_format:H:i|after:hora_inicio_asistencia',
+            ]);
 
-        if ($this->validate_hora_inicio() && $this->modo_asistencias == 1) {
-            $this->addError('hora_inicio_asistencia', 'La hora de inicio no puede ser menor a la hora actual.');
-        }else{
+            if ($this->validate_hora_inicio() && $this->modo_asistencias == 1) {
+                $this->addError('hora_inicio_asistencia', 'La hora de inicio no puede ser menor a la hora actual.');
+            }else{
+                try
+                {
+                    DB::beginTransaction();
+
+                    if ($this->modo_asistencias == 1) // Agregar
+                    {
+                        $this->agregar_asistenca();
+                    }else{
+                        $this->editar_asistencia();
+                    }
+
+                    DB::commit();
+
+                    $this->cerrar_modal();
+
+                    $this->dispatch(
+                        'toast-basico',
+                        mensaje: 'La asistencia se ha guardado correctamente',
+                        type: 'success'
+                    );
+
+                } catch (\Exception $e) {
+                    DB::rollBack();
+                    $this->dispatch(
+                        'toast-basico',
+                        mensaje: 'Ha ocurrido un error al guardar la asistencia: ',
+                        type: 'error'
+                    );
+                }
+            }
+        }
+
+        public function agregar_asistenca()
+        {
+            $id_gestion_aula = GestionAulaUsuario::where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)->first()->id_gestion_aula;
+            $asistencia = new Asistencia();
+            $asistencia->fecha_asistencia = $this->fecha_asistencia;
+            $hora_inicio = Carbon::createFromFormat('H:i', $this->hora_inicio_asistencia);
+            $asistencia->hora_inicio_asistencia = $hora_inicio->format('H:i:s');
+            $hora_fin = Carbon::createFromFormat('H:i', $this->hora_fin_asistencia);
+            $asistencia->hora_fin_asistencia = $hora_fin->format('H:i:s');
+            $asistencia->id_tipo_asistencia = $this->tipo_asistencia;
+            $asistencia->id_gestion_aula = $id_gestion_aula;
+            $asistencia->save();
+        }
+
+        public function editar_asistencia()
+        {
+            $asistencia = Asistencia::find($this->id_asistencia_editar);
+            $asistencia->fecha_asistencia = $this->fecha_asistencia;
+            $hora_inicio = Carbon::createFromFormat('H:i', $this->hora_inicio_asistencia);
+            $asistencia->hora_inicio_asistencia = $hora_inicio->format('H:i:s');
+            $hora_fin = Carbon::createFromFormat('H:i', $this->hora_fin_asistencia);
+            $asistencia->hora_fin_asistencia = $hora_fin->format('H:i:s');
+            $asistencia->id_tipo_asistencia = $this->tipo_asistencia;
+            $asistencia->save();
+        }
+
+        public function validate_hora_inicio()
+        {
+            $horaActual = Carbon::now()->format('H:i');
+            $fechaActual = Carbon::today()->toDateString();
+
+            if ($this->fecha_asistencia == $fechaActual && $this->hora_inicio_asistencia < $horaActual) {
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        public function validate_fecha()
+        {
+            $fechaActual = Carbon::today()->toDateString();
+
+            if ($this->fecha_asistencia < $fechaActual) {
+                return true;
+            }
+
+            return false;
+        }
+
+        public function cerrar_modal()
+        {
+            $this->limpiar_modal();
+            $this->dispatch(
+                'modal',
+                modal: '#modal-asistencias',
+                action: 'hide'
+            );
+        }
+
+        public function limpiar_modal()
+        {
+            $this->modo_asistencias = 1;
+            $this->titulo_asistencias = 'Agregar Asistencia';
+            $this->accion_asistencias = 'Agregar';
+            $this->tipo_asistencia = '';
+            $this->fecha_asistencia = '';
+            $this->fecha_asistencia_temporal = '';
+            $this->hora_inicio_asistencia = '';
+            $this->hora_fin_asistencia = '';
+            // Reiniciar errores
+            $this->resetErrorBag();
+        }
+    /* ========================================================================================================== */
+
+
+
+    /* =============== FUNCIONES PARA EL MODAL DE ELIMINAR ASISTENCIA =============== */
+        public function abrir_modal_eliminar(Asistencia $asistencia)
+        {
+            $this->dispatch(
+                'modal',
+                modal: '#modal-eliminar',
+                action: 'show'
+            );
+
+            $this->id_asistencia_a_eliminar = $asistencia->id_asistencia;
+            $this->tipo_asistencia_a_eliminar = $asistencia->tipoAsistencia->nombre_tipo_asistencia;
+            $this->fecha_asistencia_a_eliminar = $asistencia->fecha_asistencia;
+            $this->hora_inicio_asistencia_a_eliminar = format_hora($asistencia->hora_inicio_asistencia);
+            $this->hora_fin_asistencia_a_eliminar = format_hora($asistencia->hora_fin_asistencia);
+        }
+
+        public function eliminar_asistencia(Asistencia $asistencia)
+        {
             try
             {
                 DB::beginTransaction();
 
-                if ($this->modo_asistencias == 1) // Agregar
-                {
-                    $this->agregar_asistenca();
-                }else{
-                    $this->editar_asistencia();
-                }
+                $asistencia->asistenciaAlumno()->delete();
+                $asistencia->delete();
 
                 DB::commit();
 
-                $this->cerrar_modal();
+                $this->cerrar_modal_eliminar();
 
                 $this->dispatch(
                     'toast-basico',
-                    mensaje: 'La asistencia se ha guardado correctamente',
+                    mensaje: 'La asistencia se ha eliminado correctamente',
                     type: 'success'
                 );
 
@@ -163,310 +285,197 @@ class Index extends Component
                 DB::rollBack();
                 $this->dispatch(
                     'toast-basico',
-                    mensaje: 'Ha ocurrido un error al guardar la asistencia: ',
+                    mensaje: 'Ha ocurrido un error al eliminar la asistencia.',
                     type: 'error'
                 );
             }
         }
-    }
 
-    public function agregar_asistenca()
-    {
-        $id_gestion_aula = GestionAulaUsuario::where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)->first()->id_gestion_aula;
-        $asistencia = new Asistencia();
-        $asistencia->fecha_asistencia = $this->fecha_asistencia;
-        $hora_inicio = Carbon::createFromFormat('H:i', $this->hora_inicio_asistencia);
-        $asistencia->hora_inicio_asistencia = $hora_inicio->format('H:i:s');
-        $hora_fin = Carbon::createFromFormat('H:i', $this->hora_fin_asistencia);
-        $asistencia->hora_fin_asistencia = $hora_fin->format('H:i:s');
-        $asistencia->id_tipo_asistencia = $this->tipo_asistencia;
-        $asistencia->id_gestion_aula = $id_gestion_aula;
-        $asistencia->save();
-    }
-
-    public function editar_asistencia()
-    {
-        $asistencia = Asistencia::find($this->id_asistencia_editar);
-        $asistencia->fecha_asistencia = $this->fecha_asistencia;
-        $hora_inicio = Carbon::createFromFormat('H:i', $this->hora_inicio_asistencia);
-        $asistencia->hora_inicio_asistencia = $hora_inicio->format('H:i:s');
-        $hora_fin = Carbon::createFromFormat('H:i', $this->hora_fin_asistencia);
-        $asistencia->hora_fin_asistencia = $hora_fin->format('H:i:s');
-        $asistencia->id_tipo_asistencia = $this->tipo_asistencia;
-        $asistencia->save();
-    }
-
-    public function validate_hora_inicio()
-    {
-        $horaActual = Carbon::now()->format('H:i');
-        $fechaActual = Carbon::today()->toDateString();
-
-        if ($this->fecha_asistencia == $fechaActual && $this->hora_inicio_asistencia < $horaActual) {
-            return true;
-        }else{
-            return false;
-        }
-    }
-
-    public function validate_fecha()
-    {
-        $fechaActual = Carbon::today()->toDateString();
-
-        if ($this->fecha_asistencia < $fechaActual) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public function cerrar_modal()
-    {
-        $this->limpiar_modal();
-        $this->dispatch(
-            'modal',
-            modal: '#modal-asistencias',
-            action: 'hide'
-        );
-    }
-
-    public function limpiar_modal()
-    {
-        $this->modo_asistencias = 1;
-        $this->titulo_asistencias = 'Agregar Asistencia';
-        $this->accion_asistencias = 'Agregar';
-        $this->tipo_asistencia = '';
-        $this->fecha_asistencia = '';
-        $this->fecha_asistencia_temporal = '';
-        $this->hora_inicio_asistencia = '';
-        $this->hora_fin_asistencia = '';
-        // Reiniciar errores
-        $this->resetErrorBag();
-    }
-
-
-    /* =============== FUNCIONES PARA EL MODAL DE ELIMINAR ASISTENCIA =============== */
-    public function abrir_modal_eliminar(Asistencia $asistencia)
-    {
-        $this->dispatch(
-            'modal',
-            modal: '#modal-eliminar',
-            action: 'show'
-        );
-
-        $this->id_asistencia_a_eliminar = $asistencia->id_asistencia;
-        $this->tipo_asistencia_a_eliminar = $asistencia->tipoAsistencia->nombre_tipo_asistencia;
-        $this->fecha_asistencia_a_eliminar = $asistencia->fecha_asistencia;
-        $this->hora_inicio_asistencia_a_eliminar = format_hora($asistencia->hora_inicio_asistencia);
-        $this->hora_fin_asistencia_a_eliminar = format_hora($asistencia->hora_fin_asistencia);
-    }
-
-    public function eliminar_asistencia(Asistencia $asistencia)
-    {
-        try
+        public function cerrar_modal_eliminar()
         {
-            DB::beginTransaction();
-
-            $asistencia->asistenciaAlumno()->delete();
-            $asistencia->delete();
-
-            DB::commit();
-
-            $this->cerrar_modal_eliminar();
+            $this->id_asistencia_a_eliminar = null;
+            $this->tipo_asistencia_a_eliminar = '';
+            $this->fecha_asistencia_a_eliminar = '';
+            $this->hora_inicio_asistencia_a_eliminar = '';
+            $this->hora_fin_asistencia_a_eliminar = '';
 
             $this->dispatch(
-                'toast-basico',
-                mensaje: 'La asistencia se ha eliminado correctamente',
-                type: 'success'
-            );
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            $this->dispatch(
-                'toast-basico',
-                mensaje: 'Ha ocurrido un error al eliminar la asistencia.',
-                type: 'error'
+                'modal',
+                modal: '#modal-eliminar',
+                action: 'hide'
             );
         }
-    }
+    /* ============================================================================== */
 
-    public function cerrar_modal_eliminar()
-    {
-        $this->id_asistencia_a_eliminar = null;
-        $this->tipo_asistencia_a_eliminar = '';
-        $this->fecha_asistencia_a_eliminar = '';
-        $this->hora_inicio_asistencia_a_eliminar = '';
-        $this->hora_fin_asistencia_a_eliminar = '';
-
-        $this->dispatch(
-            'modal',
-            modal: '#modal-eliminar',
-            action: 'hide'
-        );
-    }
 
 
     /* =============== FUNCIONES PARA EL MODAL DE  ENVIAR ASISTENCIAS =============== */
-    public function abrir_modal_enviar_asistencia(Asistencia $asistencia)
-    {
-        $this->limpiar_modal_enviar();
-        $this->dispatch(
-            'modal',
-            modal: '#modal-enviar-asistencia',
-            action: 'show'
-        );
-
-        $this->id_asistencia_enviar = $asistencia->id_asistencia;
-        $this->estados = EstadoAsistencia::where('estado_estado_asistencia', 1)->get();
-        $this->tipo_asistencia_a_enviar = $asistencia->tipoAsistencia->nombre_tipo_asistencia;
-        $this->fecha_asistencia_a_enviar = $asistencia->fecha_asistencia;
-        $this->hora_inicio_asistencia_a_enviar = $asistencia->hora_inicio_asistencia;
-        $this->hora_fin_asistencia_a_enviar = $asistencia->hora_fin_asistencia;
-    }
-
-    public function enviar_asistencia()
-    {
-        $this->validate([
-            'estado_asistencia' => 'required'
-        ]);
-
-        try
+        public function abrir_modal_enviar_asistencia(Asistencia $asistencia)
         {
-            DB::beginTransaction();
+            $this->limpiar_modal_enviar();
+            $this->dispatch(
+                'modal',
+                modal: '#modal-enviar-asistencia',
+                action: 'show'
+            );
 
-            // dd(verificar_hora_actual($this->hora_inicio_asistencia_a_enviar, $this->hora_fin_asistencia_a_enviar, $this->fecha_asistencia_a_enviar));
-            if(verificar_hora_actual($this->hora_inicio_asistencia_a_enviar, $this->hora_fin_asistencia_a_enviar, $this->fecha_asistencia_a_enviar))
+            $this->id_asistencia_enviar = $asistencia->id_asistencia;
+            $this->estados = EstadoAsistencia::where('estado_estado_asistencia', 1)->get();
+            $this->tipo_asistencia_a_enviar = $asistencia->tipoAsistencia->nombre_tipo_asistencia;
+            $this->fecha_asistencia_a_enviar = $asistencia->fecha_asistencia;
+            $this->hora_inicio_asistencia_a_enviar = $asistencia->hora_inicio_asistencia;
+            $this->hora_fin_asistencia_a_enviar = $asistencia->hora_fin_asistencia;
+        }
+
+        public function enviar_asistencia()
+        {
+            $this->validate([
+                'estado_asistencia' => 'required'
+            ]);
+
+            try
             {
-                $asistencia_alumno = new AsistenciaAlumno();
-                $asistencia_alumno->id_asistencia = $this->id_asistencia_enviar;
-                $asistencia_alumno->id_estado_asistencia = $this->estado_asistencia;
-                $asistencia_alumno->id_gestion_aula_usuario = $this->id_gestion_aula_usuario;
-                $asistencia_alumno->save();
-            }else{
+                DB::beginTransaction();
+
+                // dd(verificar_hora_actual($this->hora_inicio_asistencia_a_enviar, $this->hora_fin_asistencia_a_enviar, $this->fecha_asistencia_a_enviar));
+                if(verificar_hora_actual($this->hora_inicio_asistencia_a_enviar, $this->hora_fin_asistencia_a_enviar, $this->fecha_asistencia_a_enviar))
+                {
+                    $asistencia_alumno = new AsistenciaAlumno();
+                    $asistencia_alumno->id_asistencia = $this->id_asistencia_enviar;
+                    $asistencia_alumno->id_estado_asistencia = $this->estado_asistencia;
+                    $asistencia_alumno->id_gestion_aula_usuario = $this->id_gestion_aula_usuario;
+                    $asistencia_alumno->save();
+                }else{
+                    $this->cerrar_modal_enviar();
+                    $this->dispatch(
+                        'toast-basico',
+                        mensaje: 'No se puede enviar la asistencia,  el horario permitido para marcar asistencia ha finalizado.',
+                        type: 'error'
+                    );
+                    return;
+                }
+
+                DB::commit();
+
                 $this->cerrar_modal_enviar();
+
                 $this->dispatch(
                     'toast-basico',
-                    mensaje: 'No se puede enviar la asistencia,  el horario permitido para marcar asistencia ha finalizado.',
+                    mensaje: 'La asistencia se ha enviado correctamente',
+                    type: 'success'
+                );
+
+            } catch (\Exception $e) {
+                DB::rollBack();
+                $this->dispatch(
+                    'toast-basico',
+                    mensaje: 'Ha ocurrido un error al enviar la asistencia.',
                     type: 'error'
                 );
-                return;
             }
+        }
 
-            DB::commit();
-
-            $this->cerrar_modal_enviar();
-
+        public function cerrar_modal_enviar()
+        {
+            $this->limpiar_modal_enviar();
             $this->dispatch(
-                'toast-basico',
-                mensaje: 'La asistencia se ha enviado correctamente',
-                type: 'success'
-            );
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            $this->dispatch(
-                'toast-basico',
-                mensaje: 'Ha ocurrido un error al enviar la asistencia.',
-                type: 'error'
+                'modal',
+                modal: '#modal-enviar-asistencia',
+                action: 'hide'
             );
         }
-    }
 
-    public function cerrar_modal_enviar()
-    {
-        $this->limpiar_modal_enviar();
-        $this->dispatch(
-            'modal',
-            modal: '#modal-enviar-asistencia',
-            action: 'hide'
-        );
-    }
+        public function limpiar_modal_enviar()
+        {
+            $this->id_asistencia_enviar = null;
+            $this->estado_asistencia = '';
+            $this->tipo_asistencia_a_enviar = '';
+            $this->fecha_asistencia_a_enviar = '';
+            $this->hora_inicio_asistencia_a_enviar = '';
+            $this->hora_fin_asistencia_a_enviar = '';
+            // Reiniciar errores
+            $this->resetErrorBag();
+        }
+    /* ============================================================================== */
 
-    public function limpiar_modal_enviar()
-    {
-        $this->id_asistencia_enviar = null;
-        $this->estado_asistencia = '';
-        $this->tipo_asistencia_a_enviar = '';
-        $this->fecha_asistencia_a_enviar = '';
-        $this->hora_inicio_asistencia_a_enviar = '';
-        $this->hora_fin_asistencia_a_enviar = '';
-        // Reiniciar errores
-        $this->resetErrorBag();
-    }
 
 
     /* =============== OBTENER DATOS PARA REDIRIJIR =============== */
-    public function redirifir_detalle_asistencias(Asistencia $asistencia)
-    {
-        $this->redirect(route('carga-academica.detalle.asistencia.detalle', [
-            'id_usuario' => $this->id_usuario_hash,
-            'tipo_vista' => $this->tipo_vista,
-            'id_curso' => $this->id_gestion_aula_usuario_hash,
-            'id_asistencia' => Hashids::encode($asistencia->id_asistencia)
-        ]));
-    }
+        public function redirifir_detalle_asistencias(Asistencia $asistencia)
+        {
+            $this->redirect(route('carga-academica.detalle.asistencia.detalle', [
+                'id_usuario' => $this->id_usuario_hash,
+                'tipo_vista' => $this->tipo_vista,
+                'id_curso' => $this->id_gestion_aula_usuario_hash,
+                'id_asistencia' => Hashids::encode($asistencia->id_asistencia)
+            ]));
+        }
+    /* ============================================================ */
 
 
     /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
-    public function obtener_datos_page_header()
-    {
-        $this->titulo_page_header = 'Asistencia';
-
-        // Regresar
-        if($this->tipo_vista === 'cursos')
+        public function obtener_datos_page_header()
         {
-            $this->regresar_page_header = [
-                'route' => 'cursos.detalle',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+            $this->titulo_page_header = 'Asistencia';
+
+            // Regresar
+            if($this->tipo_vista === 'cursos')
+            {
+                $this->regresar_page_header = [
+                    'route' => 'cursos.detalle',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            } else {
+                $this->regresar_page_header = [
+                    'route' => 'carga-academica.detalle',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            }
+
+            // Links --> Inicio
+            $this->links_page_header = [
+                [
+                    'name' => 'Inicio',
+                    'route' => 'inicio',
+                    'params' => []
+                ]
             ];
-        } else {
-            $this->regresar_page_header = [
-                'route' => 'carga-academica.detalle',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-            ];
+
+            // Links --> Cursos o Carga Académica
+            if ($this->tipo_vista === 'cursos')
+            {
+                $this->links_page_header[] = [
+                    'name' => 'Mis Cursos',
+                    'route' => 'cursos',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista]
+                ];
+            } else {
+                $this->links_page_header[] = [
+                    'name' => 'Carga Académica',
+                    'route' => 'carga-academica',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista]
+                ];
+            }
+
+            // Links --> Detalle del curso o carga académica
+            if ($this->tipo_vista === 'cursos')
+            {
+                $this->links_page_header[] = [
+                    'name' => 'Detalle',
+                    'route' => 'cursos.detalle',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            } else {
+                $this->links_page_header[] = [
+                    'name' => 'Detalle',
+                    'route' => 'carga-academica.detalle',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            }
+
         }
+    /* ==================================================================================== */
 
-        // Links --> Inicio
-        $this->links_page_header = [
-            [
-                'name' => 'Inicio',
-                'route' => 'inicio',
-                'params' => []
-            ]
-        ];
-
-        // Links --> Cursos o Carga Académica
-        if ($this->tipo_vista === 'cursos')
-        {
-            $this->links_page_header[] = [
-                'name' => 'Mis Cursos',
-                'route' => 'cursos',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista]
-            ];
-        } else {
-            $this->links_page_header[] = [
-                'name' => 'Carga Académica',
-                'route' => 'carga-academica',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista]
-            ];
-        }
-
-        // Links --> Detalle del curso o carga académica
-        if ($this->tipo_vista === 'cursos')
-        {
-            $this->links_page_header[] = [
-                'name' => 'Detalle',
-                'route' => 'cursos.detalle',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-            ];
-        } else {
-            $this->links_page_header[] = [
-                'name' => 'Detalle',
-                'route' => 'carga-academica.detalle',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-            ];
-        }
-
-    }
 
 
     public function mount($id_usuario, $tipo_vista, $id_curso)

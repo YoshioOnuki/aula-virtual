@@ -117,7 +117,9 @@
                             @if ($usuario->esRolGestionAula('ALUMNO', $id_gestion_aula_usuario) && $tipo_vista === 'cursos')
                                 @if($entrega_trabajo === false)
                                     <div class="card-footer d-flex justify-content-end align-items-center mt-4">
-                                        <a class="btn btn-primary" wire:click="abrir_modal_entrega_trabajo()">
+                                        <a class="btn btn-primary 
+                                            {{ verificar_fecha_trabajo($trabajo_academico->fecha_inicio_trabajo_academico, $trabajo_academico->fecha_fin_trabajo_academico) ? '' : 'disabled' }}"
+                                            wire:click="abrir_modal_entrega_trabajo()">
                                             Agregar entrega
                                         </a>
                                     </div>
