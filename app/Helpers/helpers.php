@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\GestionAulaUsuario;
+use Illuminate\Support\Str;
 
 const METHOD="AES-256-CBC";
 const SECRET_KEY='$AULA@2024';
@@ -404,12 +405,12 @@ if (!function_exists('obtener_ruta_base'))
         $nivel_academico = $curso->gestionAula->curso->programa->tipoPrograma->nivelAcademico->nombre_nivel_academico;
 
         $carpetas = [
-            $nivel_academico,
-            $proceso,
-            $tipo_programa,
-            $nombre_programa,
-            $ciclo,
-            $nombre_curso
+            Str::slug($nivel_academico),
+            Str::slug($proceso),
+            Str::slug($tipo_programa),
+            Str::slug($nombre_programa),
+            Str::slug($ciclo),
+            Str::slug($nombre_curso)
         ];
 
         return $carpetas;

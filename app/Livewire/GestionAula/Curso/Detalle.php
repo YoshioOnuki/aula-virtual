@@ -191,6 +191,7 @@ class Detalle extends Component
                 // Eliminar archivos de la descripción anterior
                 if ($this->orientaciones_generales) {
                     $deletedFiles = $this->eliminar_archivos($this->orientaciones_generales->descripcion_presentacion);
+                    // dd($deletedFiles);
                 }
 
                 if($this->modo_orientaciones === 1) // Agregar
@@ -223,6 +224,7 @@ class Detalle extends Component
                 // Eliminar archivos subidos recientemente $mensaje, si hubo un error
                 if ($mensaje) {
                     $errorFiles = $this->eliminar_archivos($mensaje);
+                    // dd($errorFiles);
                 }
                 $this->cerrar_modal();
                 $this->mount($this->id_usuario_hash, $this->tipo_vista, $this->id_gestion_aula_usuario_hash);
@@ -259,7 +261,7 @@ class Detalle extends Component
                     if (preg_match('/^data:image\/(\w+);base64,/', $data, $type)) {
                         // Extraer el tipo de imagen y los datos
                         $data = substr($data, strpos($data, ',') + 1);
-                        // Asegurarse de que sea un tipo de imagen válido (png, jpg, jpeg, gif)
+                        // Asegurarse de que sea un tipo de imagen válido (png, jpg, jpeg, webp, gif)
                         $type = strtolower($type[1]);
 
                         // Si no es un tipo de imagen válido, continúa con la siguiente iteración
@@ -269,7 +271,7 @@ class Detalle extends Component
                         }
 
                         // Directorio donde se guardará la imagen
-                        $directory = public_path('archivos/Posgrado/media/orientaciones/');
+                        $directory = public_path('archivos/posgrado/media/orientaciones/');
 
                         // Verifica si el directorio existe, si no, lo crea
                         if (!file_exists($directory)) {
@@ -284,7 +286,7 @@ class Detalle extends Component
 
                         // Actualizar la fuente de la imagen en el HTML
                         $img->removeAttribute('src');
-                        $img->setAttribute('src', asset('archivos/Posgrado/media/orientaciones/' . $filename));
+                        $img->setAttribute('src', asset('archivos/posgrado/media/orientaciones/' . $filename));
                     }
                 }
             }

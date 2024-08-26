@@ -143,7 +143,7 @@ class Index extends Component
 
                 $this->cargando_recursos = true;
                 $this->cerrar_modal();
-                $this->load_recursos_llamar();
+                $this->load_recursos();
 
             } catch (\Exception $e) {
                 DB::rollBack();

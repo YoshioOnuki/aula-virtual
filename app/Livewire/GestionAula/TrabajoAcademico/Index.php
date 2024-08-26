@@ -210,7 +210,7 @@ class Index extends Component
 
                 $this->cargando_trabajos = true;
                 $this->cerrar_modal();
-                $this->load_trabajos_llamar();
+                $this->load_trabajos();
 
             } catch (\Exception $e) {
                 DB::rollBack();
