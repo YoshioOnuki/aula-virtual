@@ -188,6 +188,10 @@ class Detalle extends Component
                 $id_gestion_aula = GestionAulaUsuario::find($this->id_gestion_aula_usuario)->id_gestion_aula;
 
                 $mensaje = $this->texto_orientaciones();
+                // Eliminar archivos de la descripción anterior
+                if ($this->orientaciones_generales) {
+                    $deletedFiles = $this->eliminar_archivos($this->orientaciones_generales->descripcion_presentacion);
+                }
 
                 if($this->modo_orientaciones === 1) // Agregar
                 {
@@ -216,6 +220,10 @@ class Detalle extends Component
             } catch (\Exception $e) {
                 DB::rollBack();
                 dd($e);
+                // Eliminar archivos subidos recientemente $mensaje, si hubo un error
+                if ($mensaje) {
+                    $errorFiles = $this->eliminar_archivos($mensaje);
+                }
                 $this->cerrar_modal();
                 $this->mount($this->id_usuario_hash, $this->tipo_vista, $this->id_gestion_aula_usuario_hash);
 
@@ -283,6 +291,40 @@ class Detalle extends Component
 
             $m = $dom->saveHTML();
             return $m;
+        }
+
+        public function eliminar_archivos($descripcion)
+        {
+            $mensaje = $descripcion;
+
+            // Parsear el contenido HTML
+            $dom = new DOMDocument();
+            libxml_use_internal_errors(true);
+            $dom->loadHTML($mensaje, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+
+            // Encontrar todas las etiquetas <img>
+            $images = $dom->getElementsByTagName('img');
+            $deletedFiles = [];
+
+            foreach ($images as $img) {
+                if ($img instanceof DOMElement) {
+                    $src = $img->getAttribute('src');
+
+                    // Si la ruta es relativa, obtén la parte que corresponde al archivo
+                    if (strpos($src, asset('archivos/Posgrado/media/orientaciones/')) !== false) {
+                        $filePath = str_replace(asset(''), '', $src);
+                        $absolutePath = public_path($filePath);
+
+                        // Verificar si el archivo existe y eliminarlo
+                        if (file_exists($absolutePath)) {
+                            unlink($absolutePath);
+                            $deletedFiles[] = $absolutePath;
+                        }
+                    }
+                }
+            }
+
+            return $deletedFiles; // Retornar los archivos eliminados para referencia
         }
 
         public function cerrar_modal()
