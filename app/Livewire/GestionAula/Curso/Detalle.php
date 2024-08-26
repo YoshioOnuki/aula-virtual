@@ -7,6 +7,7 @@ use App\Models\LinkClase;
 use App\Models\Presentacion;
 use App\Models\Usuario;
 use DOMDocument;
+use DOMElement;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
@@ -157,7 +158,6 @@ class Detalle extends Component
 
         public function guardar_orientaciones()
         {
-            // dd($this->descripcion_orientaciones);
             if ($this->descripcion_orientaciones === '<p><br></p>' || $this->descripcion_orientaciones === '<h1><br></h1>' ||
             $this->descripcion_orientaciones === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><h1><br></h1>' ||
             $this->descripcion_orientaciones === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><p><br></p>' ||
@@ -170,7 +170,8 @@ class Detalle extends Component
                     type: 'error'
                 );
                 return;
-            } elseif ($this->orientaciones_generales->descripcion_presentacion === $this->descripcion_orientaciones) {
+            } elseif ($this->orientaciones_generales !== null &&
+                $this->orientaciones_generales->descripcion_presentacion === $this->descripcion_orientaciones) {
                 $this->dispatch(
                     'toast-basico',
                     mensaje: 'No se han realizado cambios en las Orientaciones Generales',
@@ -210,11 +211,13 @@ class Detalle extends Component
                     mensaje: 'Las Orientaciones Generales se han guardado correctamente',
                     type: 'success'
                 );
+                $this->mount($this->id_usuario_hash, $this->tipo_vista, $this->id_gestion_aula_usuario_hash);
 
             } catch (\Exception $e) {
                 DB::rollBack();
-                // dd($e);
-                $this->limpiar_modal();
+                dd($e);
+                $this->cerrar_modal();
+                $this->mount($this->id_usuario_hash, $this->tipo_vista, $this->id_gestion_aula_usuario_hash);
 
                 $this->dispatch(
                     'toast-basico',
@@ -227,52 +230,59 @@ class Detalle extends Component
         public function texto_orientaciones()
         {
             $mensaje = $this->descripcion_orientaciones;
+            // dd($mensaje);
+            if ($this->modo_orientaciones === 0) {
+                $mensaje = preg_replace('/<meta http-equiv="Content-Type" content="text\/html; charset=utf-8">/', '', $mensaje);
+                $mensaje = preg_replace('/\n/', '', $mensaje);
+            }
+            $mensaje = '<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head><body>' . $mensaje . '</body></html>';
 
-            if($this->modo_orientaciones === 1)
-            {
-                $mensaje = '<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head><body>' . $mensaje . '</body></html>';
+            $dom = new DOMDocument();
+            libxml_use_internal_errors(true);
+            // Convertir y cargar el contenido HTML en UTF-8
+            $utf8Html = mb_convert_encoding($mensaje, 'HTML-ENTITIES', 'UTF-8');
+            @$dom->loadHTML($utf8Html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOERROR | LIBXML_NOWARNING);
+
+            $images = $dom->getElementsByTagName('img');
+
+            foreach ($images as $img) {
+                if ($img instanceof DOMElement) {// Verificar si es una instancia de DOMElement
+                    $data = $img->getAttribute('src');
+                    if (preg_match('/^data:image\/(\w+);base64,/', $data, $type)) {
+                        // Extraer el tipo de imagen y los datos
+                        $data = substr($data, strpos($data, ',') + 1);
+                        // Asegurarse de que sea un tipo de imagen válido (png, jpg, jpeg, gif)
+                        $type = strtolower($type[1]);
+
+                        // Si no es un tipo de imagen válido, continúa con la siguiente iteración
+                        $data = base64_decode($data);
+                        if ($data === false) {
+                            continue;
+                        }
+
+                        // Directorio donde se guardará la imagen
+                        $directory = public_path('archivos/Posgrado/media/orientaciones/');
+
+                        // Verifica si el directorio existe, si no, lo crea
+                        if (!file_exists($directory)) {
+                            mkdir($directory, 0777, true);
+                        }
+
+                        $filename = time() . uniqid() . ".$type";
+                        $filePath = $directory . $filename;
+
+                        // Guarda el archivo en la ruta especificada
+                        file_put_contents($filePath, $data);
+
+                        // Actualizar la fuente de la imagen en el HTML
+                        $img->removeAttribute('src');
+                        $img->setAttribute('src', asset('archivos/Posgrado/media/orientaciones/' . $filename));
+                    }
+                }
             }
 
-            // $dom = new DOMDocument();
-            // // Convertir y cargar el contenido HTML en UTF-8
-            // $utf8Html = mb_convert_encoding($mensaje, 'HTML-ENTITIES', 'UTF-8');
-            // @$dom->loadHTML($utf8Html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOERROR | LIBXML_NOWARNING);
-
-            // $images = $dom->getElementsByTagName('img');
-
-            // foreach ($images as $img) {
-            //     $data = $img->getAttribute('src');
-            //     if (preg_match('/^data:image\/(\w+);base64,/', $data, $type)) {
-            //         // Obtener el tipo y decodificar
-            //         $data = substr($data, strpos($data, ',') + 1);
-            //         $type = strtolower($type[1]); // jpg, png, gif
-
-            //         $data = base64_decode($data);
-            //         if ($data === false) {
-            //             continue;
-            //         }
-
-            //         $directory = public_path('archivos/Posgrado/media/orientaciones/');
-
-            //         // Verifica si el directorio existe, si no, lo crea
-            //         if (!file_exists($directory)) {
-            //             mkdir($directory, 0777, true);
-            //         }
-
-            //         $filename = time() . uniqid() . ".$type";
-            //         $filePath = $directory . $filename;
-
-            //         // Guarda el archivo en la ruta especificada
-            //         file_put_contents($filePath, $data);
-
-            //         // Actualizar la fuente de la imagen en el HTML
-            //         $img->removeAttribute('src');
-            //         $img->setAttribute('src', asset('Posgrado/files/media/' . $filename));
-            //     }
-            // }
-
-            // $m = $dom->saveHTML();
-            return $mensaje;
+            $m = $dom->saveHTML();
+            return $m;
         }
 
         public function cerrar_modal()
