@@ -143,10 +143,11 @@
 
                 <div class="col-lg-4">
                     @livewire('components.card-estado-trabajo', [
-                        'trabajo_academico' => $trabajo_academico,
+                        'id_usuario_hash' => $id_usuario_hash,
                         'tipo_vista' => $tipo_vista,
-                        'id_gestion_aula' => $id_gestion_aula,
                         'id_gestion_aula_usuario' => $id_gestion_aula_usuario,
+                        'trabajo_academico' => $trabajo_academico,
+                        'id_gestion_aula' => $id_gestion_aula,
                     ])
                 </div>
 

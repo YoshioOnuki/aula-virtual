@@ -16,6 +16,7 @@ use App\Livewire\GestionAula\Recurso\Index as RecursoIndex;
 use App\Livewire\GestionAula\Silabus\Index as SilabusIndex;
 use App\Livewire\GestionAula\TrabajoAcademico\Detalle as TrabajoAcademicoDetalle;
 use App\Livewire\GestionAula\TrabajoAcademico\Index as TrabajoAcademicoIndex;
+use App\Livewire\GestionAula\TrabajoAcademico\ListaEntregasAcademicas;
 use App\Livewire\GestionAula\Webgrafia\Index as WebgrafiaIndex;
 use App\Livewire\Home\Index as HomeIndex;
 use App\Livewire\Seguridad\Auth\Login;
@@ -178,6 +179,9 @@ Route::middleware(['auth'])->group(function () {
                 // Detalle de trabajo academico
                 Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/trabajo-academico/{id_trabajo_academico}', TrabajoAcademicoDetalle::class)
                     ->name('carga-academica.detalle.trabajo-academico.detalle');
+                // Lista de entregas de trabajos academicos de los alumnos
+                Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/trabajo-academico/{id_trabajo_academico}/alumnos', ListaEntregasAcademicas::class)
+                    ->name('carga-academica.detalle.trabajo-academico.alumnos');
                 // Webgrafía
                 Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/webgrafia', WebgrafiaIndex::class)
                     ->name('carga-academica.detalle.webgrafia');

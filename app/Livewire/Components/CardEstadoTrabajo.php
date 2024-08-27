@@ -9,11 +9,11 @@ use Livewire\Component;
 
 class CardEstadoTrabajo extends Component
 {
-
+    public $id_usuario_hash;
     public $tipo_vista;
+    public $id_gestion_aula_usuario;
     public $trabajo_academico;
     public $trabajo_academico_alumno;
-    public $id_gestion_aula_usuario;
     public $cantidad_alumnos;
     public $cantidad_alumnos_entregados;
     public $cantidad_alumnos_revisados;
@@ -56,11 +56,12 @@ class CardEstadoTrabajo extends Component
     }
 
 
-    public function mount(TrabajoAcademico $trabajo_academico, $tipo_vista, $id_gestion_aula, $id_gestion_aula_usuario)
+    public function mount($id_usuario_hash, $tipo_vista, $id_gestion_aula_usuario, TrabajoAcademico $trabajo_academico, $id_gestion_aula)
     {
+        $this->id_usuario_hash = $id_usuario_hash;
         $this->tipo_vista = $tipo_vista;
-        $this->trabajo_academico = $trabajo_academico;
         $this->id_gestion_aula_usuario = $id_gestion_aula_usuario;
+        $this->trabajo_academico = $trabajo_academico;
         $this->trabajo_academico_alumno = TrabajoAcademicoAlumno::where('id_trabajo_academico', $this->trabajo_academico->id_trabajo_academico)
             ->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)
             ->first();
