@@ -190,7 +190,7 @@ class Detalle extends Component
                 $mensaje = $this->texto_orientaciones();
                 // Eliminar archivos de la descripción anterior
                 if ($this->orientaciones_generales) {
-                    $deletedFiles = $this->eliminar_archivos($this->orientaciones_generales->descripcion_presentacion);
+                    $deletedFiles = $this->eliminar_archivos_v2($mensaje, $this->orientaciones_generales->descripcion_presentacion);
                     // dd($deletedFiles);
                 }
 
@@ -223,7 +223,7 @@ class Detalle extends Component
                 dd($e);
                 // Eliminar archivos subidos recientemente $mensaje, si hubo un error
                 if ($mensaje) {
-                    $errorFiles = $this->eliminar_archivos($mensaje);
+                    $errorFiles = $this->eliminar_archivos_v2($this->descripcion_orientaciones, $this->orientaciones_generales->descripcion_presentacion);
                     // dd($errorFiles);
                 }
                 $this->cerrar_modal();
@@ -295,6 +295,52 @@ class Detalle extends Component
             return $m;
         }
 
+        public function eliminar_archivos_v2($descripcion_actual, $descripcion_anterior)
+        {
+            $dom_actual = new DOMDocument();
+            libxml_use_internal_errors(true);
+            $dom_actual->loadHTML($descripcion_actual, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+
+            $dom_anterior = new DOMDocument();
+            libxml_use_internal_errors(true);
+            $dom_anterior->loadHTML($descripcion_anterior, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+
+            $imagenes_actuales = $dom_actual->getElementsByTagName('img');
+            $imagenes_anteriores = $dom_anterior->getElementsByTagName('img');
+
+            // Crear un array para las rutas de las imágenes en la descripción actual
+            $rutas_actuales = [];
+            foreach ($imagenes_actuales as $img_actual) {
+                if ($img_actual instanceof DOMElement) {
+                    $src_actual = $img_actual->getAttribute('src');
+                    if (strpos($src_actual, asset('archivos/posgrado/media/orientaciones/')) !== false) {
+                        $rutas_actuales[] = $src_actual;
+                    }
+                }
+            }
+
+            $deletedFiles = [];
+            foreach ($imagenes_anteriores as $img_anterior) {
+                if ($img_anterior instanceof DOMElement) {
+                    $src_anterior = $img_anterior->getAttribute('src');
+
+                    // Si la imagen en la descripción anterior no está en la actual, se elimina
+                    if (strpos($src_anterior, asset('archivos/posgrado/media/orientaciones/')) !== false && !in_array($src_anterior, $rutas_actuales)) {
+                        $filePath = str_replace(asset(''), '', $src_anterior);
+                        $absolutePath = public_path($filePath);
+
+                        // Verificar si el archivo existe y eliminarlo
+                        if (file_exists($absolutePath)) {
+                            unlink($absolutePath);
+                            $deletedFiles[] = $absolutePath;
+                        }
+                    }
+                }
+            }
+
+            return $deletedFiles; // Retornar los archivos eliminados para referencia
+        }
+
         public function eliminar_archivos($descripcion)
         {
             $mensaje = $descripcion;
@@ -307,13 +353,12 @@ class Detalle extends Component
             // Encontrar todas las etiquetas <img>
             $images = $dom->getElementsByTagName('img');
             $deletedFiles = [];
-
             foreach ($images as $img) {
                 if ($img instanceof DOMElement) {
                     $src = $img->getAttribute('src');
 
                     // Si la ruta es relativa, obtén la parte que corresponde al archivo
-                    if (strpos($src, asset('archivos/Posgrado/media/orientaciones/')) !== false) {
+                    if (strpos($src, asset('archivos/posgrado/media/orientaciones/')) !== false) {
                         $filePath = str_replace(asset(''), '', $src);
                         $absolutePath = public_path($filePath);
 

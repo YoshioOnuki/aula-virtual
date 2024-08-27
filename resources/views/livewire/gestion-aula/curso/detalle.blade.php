@@ -575,11 +575,42 @@
                     ['view', ['codeview']]
                 ],
                 callbacks: {
+                    onImageUpload: function(files) {
+                        var maxSize = 2 * 1024 * 1024; // 2MB
+                        if (files[0].size > maxSize) {
+                            mostrarNotificacion('error', 'El archivo supera el tamaño máximo permitido de 2MB.');
+                            console.log('El archivo supera el tamaño máximo permitido de 2MB.');
+                            return;
+                        }else{
+                            let editor = $(this);
+                            let reader = new FileReader();
+                            reader.onloadend = function () {
+                                editor.summernote('insertImage', reader.result);
+                            };
+                            reader.readAsDataURL(files[0]);
+                        }
+                    },
                     onChange: function(contents, $editable) {
                         @this.set('descripcion_orientaciones', contents);
                     }
-                }
+                },
             });
+
+            // Función para mostrar la notificación de Notyf desde tu script
+            function mostrarNotificacion(tipo, mensaje) {
+                var notyf = new Notyf({
+                    duration: 6000, // Duración predeterminada de la notificación
+                    position: {x: 'center', y: 'top'}, // Posición predeterminada
+                    dismissible: true, // Hacer todas las notificaciones descartables
+                });
+
+                // Mostrar la notificación
+                if (tipo === 'success') {
+                    notyf.success({ message: mensaje });
+                } else if (tipo === 'error') {
+                    notyf.error({ message: mensaje });
+                }
+            }
         })
     </script>
 @endpush
