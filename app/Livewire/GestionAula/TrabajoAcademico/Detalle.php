@@ -41,7 +41,7 @@ class Detalle extends Component
     public $accion_modal = 'Agregar';
     #[Validate('nullable')]
     public $descripcion_trabajo_academico_alumno;
-    #[Validate(['archivos_trabajo_alumno.*' => 'nullable|file|mimes:pdf,xls,xlsx,doc,docx,ppt,pptx,txt,jpg,jpeg,png|max:4096'])]
+    #[Validate(['archivos_trabajo_alumno.*' => 'nullable|file|mimes:pdf,xls,xlsx,doc,docx,ppt,pptx,txt,jpg,jpeg,png,webp|max:4096'])]
     public $archivos_trabajo_alumno = [];
     public $nombre_archivo_trabajo_academico = [];
     public $iteration = 1;
@@ -160,7 +160,7 @@ class Detalle extends Component
                 $nombre_archivo_trabajo = null;
                 $extension_archivo = strtolower($archivo->getClientOriginalExtension());
 
-                $extensiones_permitidas = ['pdf', 'xls', 'xlsx', 'doc', 'docx', 'ppt', 'pptx', 'txt', 'jpg', 'jpeg', 'png'];
+                $extensiones_permitidas = ['pdf', 'xls', 'xlsx', 'doc', 'docx', 'ppt', 'pptx', 'txt', 'jpg', 'jpeg', 'png', 'webp'];
 
                 if (!in_array($extension_archivo, $extensiones_permitidas)) {
                     continue; // Si la extensión no está permitida, saltar al siguiente archivo
@@ -210,7 +210,7 @@ class Detalle extends Component
         {
             $this->validate([
                 'descripcion_trabajo_academico_alumno' => 'required',
-                'archivos_trabajo_alumno.*' => 'nullable|file|mimes:pdf,xls,xlsx,doc,docx,ppt,pptx,txt,jpg,jpeg,png|max:4096',
+                'archivos_trabajo_alumno.*' => 'nullable|file|mimes:pdf,xls,xlsx,doc,docx,ppt,pptx,txt,jpg,jpeg,png,webp|max:4096',
             ]);
 
             try {
@@ -231,10 +231,9 @@ class Detalle extends Component
                     }
 
                     // Obtener el texto de la descripción del trabajo
-                    $descripcion_trabajo = $this->texto_descripcion_trabajo();
+                    $descripcion_trabajo = subir_archivo_editor($this->descripcion_trabajo_academico_alumno, 'archivos/posgrado/media/editor-texto/trabajos-academicos/');
 
                     if($this->modo === 1)// Modo agregar
-
                         // Obtener el estado del trabajo académico
                         $estado_trabajo = EstadoTrabajoAcademico::where('nombre_estado_trabajo_academico', 'Entregado')->first();
 
@@ -289,8 +288,7 @@ class Detalle extends Component
                 if (isset($nombres_bd)) {
                     $this->eliminar_archivo_entrega($nombres_bd);
                 }
-
-                dd($e);
+                // dd($e);
                 $this->cerrar_modal();
                 $this->dispatch(
                     'toast-basico',
