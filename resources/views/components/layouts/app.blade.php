@@ -126,6 +126,7 @@
 
             // Listener para eventos de notificación
             window.addEventListener('toast-basico', event => {
+                notyf.dismissAll();
                 mostrarNotificacion(event.detail.type, event.detail.mensaje);
             });
 
