@@ -538,3 +538,114 @@ if (!function_exists('color_estado_trabajo_academico')) {
         }
     }
 }
+
+
+// Funcion para subir archivos de un editor de texto
+if (!function_exists('subir_archivo_editor')) {
+    function subir_archivo_editor($descripcion, $ruta_archivos)
+    {
+        $mensaje = $descripcion;
+        // dd($mensaje);
+        // if ($this->modo_orientaciones === 0) {
+            $mensaje = preg_replace('/<meta http-equiv="Content-Type" content="text\/html; charset=utf-8">/', '', $mensaje);
+            $mensaje = preg_replace('/\n/', '', $mensaje);
+        // }
+        $mensaje = '<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head><body>' . $mensaje . '</body></html>';
+
+        $dom = new DOMDocument();
+        libxml_use_internal_errors(true);
+        // Convertir y cargar el contenido HTML en UTF-8
+        $utf8Html = mb_convert_encoding($mensaje, 'HTML-ENTITIES', 'UTF-8');
+        @$dom->loadHTML($utf8Html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOERROR | LIBXML_NOWARNING);
+
+        $images = $dom->getElementsByTagName('img');
+
+        foreach ($images as $img) {
+            if ($img instanceof DOMElement) {// Verificar si es una instancia de DOMElement
+                $data = $img->getAttribute('src');
+                if (preg_match('/^data:image\/(\w+);base64,/', $data, $type)) {
+                    // Extraer el tipo de imagen y los datos
+                    $data = substr($data, strpos($data, ',') + 1);
+                    // Asegurarse de que sea un tipo de imagen válido (png, jpg, jpeg, webp, gif)
+                    $type = strtolower($type[1]);
+
+                    // Si no es un tipo de imagen válido, continúa con la siguiente iteración
+                    $data = base64_decode($data);
+                    if ($data === false) {
+                        continue;
+                    }
+
+                    // Directorio donde se guardará la imagen
+                    $directory = public_path($ruta_archivos);
+
+                    // Verifica si el directorio existe, si no, lo crea
+                    if (!file_exists($directory)) {
+                        mkdir($directory, 0777, true);
+                    }
+
+                    $filename = time() . uniqid() . ".$type";
+                    $filePath = $directory . $filename;
+
+                    // Guarda el archivo en la ruta especificada
+                    file_put_contents($filePath, $data);
+
+                    // Actualizar la fuente de la imagen en el HTML
+                    $img->removeAttribute('src');
+                    $img->setAttribute('src', asset($ruta_archivos . $filename));
+                }
+            }
+        }
+
+        $m = $dom->saveHTML();
+        return $m;
+    }
+}
+
+
+if (!function_exists('eliminar_archivos_editor')) {
+    function eliminar_archivos_editor($descripcion_actual, $descripcion_anterior, $ruta_archivos)
+    {
+        $dom_actual = new DOMDocument();
+        libxml_use_internal_errors(true);
+        $dom_actual->loadHTML($descripcion_actual, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+
+        $dom_anterior = new DOMDocument();
+        libxml_use_internal_errors(true);
+        $dom_anterior->loadHTML($descripcion_anterior, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+
+        $imagenes_actuales = $dom_actual->getElementsByTagName('img');
+        $imagenes_anteriores = $dom_anterior->getElementsByTagName('img');
+
+        // Crear un array para las rutas de las imágenes en la descripción actual
+        $rutas_actuales = [];
+        foreach ($imagenes_actuales as $img_actual) {
+            if ($img_actual instanceof DOMElement) {
+                $src_actual = $img_actual->getAttribute('src');
+                if (strpos($src_actual, asset($ruta_archivos)) !== false) {
+                    $rutas_actuales[] = $src_actual;
+                }
+            }
+        }
+
+        $deletedFiles = [];
+        foreach ($imagenes_anteriores as $img_anterior) {
+            if ($img_anterior instanceof DOMElement) {
+                $src_anterior = $img_anterior->getAttribute('src');
+
+                // Si la imagen en la descripción anterior no está en la actual, se elimina
+                if (strpos($src_anterior, asset($ruta_archivos)) !== false && !in_array($src_anterior, $rutas_actuales)) {
+                    $filePath = str_replace(asset(''), '', $src_anterior);
+                    $absolutePath = public_path($filePath);
+
+                    // Verificar si el archivo existe y eliminarlo
+                    if (file_exists($absolutePath)) {
+                        unlink($absolutePath);
+                        $deletedFiles[] = $absolutePath;
+                    }
+                }
+            }
+        }
+
+        return $deletedFiles; // Retornar los archivos eliminados para referencia
+    }
+}

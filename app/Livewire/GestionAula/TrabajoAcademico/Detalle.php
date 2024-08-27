@@ -9,6 +9,8 @@ use App\Models\GestionAulaUsuario;
 use App\Models\TrabajoAcademico;
 use App\Models\TrabajoAcademicoAlumno;
 use App\Models\Usuario;
+use DOMDocument;
+use DOMElement;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
