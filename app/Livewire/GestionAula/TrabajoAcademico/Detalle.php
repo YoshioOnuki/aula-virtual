@@ -208,10 +208,19 @@ class Detalle extends Component
 
         public function guardar_entrega_trabajo()
         {
-            $this->validate([
-                'descripcion_trabajo_academico_alumno' => 'required',
-                'archivos_trabajo_alumno.*' => 'nullable|file|mimes:pdf,xls,xlsx,doc,docx,ppt,pptx,txt,jpg,jpeg,png,webp|max:4096',
-            ]);
+            if (($this->descripcion_trabajo_academico_alumno === '<p><br></p>' || $this->descripcion_trabajo_academico_alumno === '<h1><br></h1>' ||
+            $this->descripcion_trabajo_academico_alumno === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><h1><br></h1>' ||
+            $this->descripcion_trabajo_academico_alumno === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><p><br></p>' ||
+            $this->descripcion_trabajo_academico_alumno === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><h1><br></h1>' ||
+            $this->descripcion_trabajo_academico_alumno === '<p></p>' || $this->descripcion_trabajo_academico_alumno === '' ||
+            $this->descripcion_trabajo_academico_alumno === null) && count($this->archivos_trabajo_alumno) <= 0) {
+                $this->dispatch(
+                    'toast-basico',
+                    mensaje: 'Debe ingresar la descripción del trabajo académico o subir un archivo',
+                    type: 'error'
+                );
+                return;
+            }
 
             try {
                 DB::beginTransaction();
