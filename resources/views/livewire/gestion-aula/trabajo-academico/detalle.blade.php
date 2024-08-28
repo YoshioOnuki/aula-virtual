@@ -1,20 +1,13 @@
 <div>
 
-    @livewire('components.page-header', [
-        'titulo_pasos' => $titulo_page_header,
-        'titulo' => $titulo_page_header,
-        'links_array' => $links_page_header,
-        'regresar' => $regresar_page_header
-    ])
+    <livewire:components.page-header :titulo_pasos="$titulo_page_header" :titulo="$titulo_page_header"
+        :links_array="$links_page_header" :regresar="$regresar_page_header" lazy />
 
     <div class="page-body">
         <div class="container-xl">
 
             @if($modo_admin)
-                @livewire('components.info-alumnos-docentes', [
-                    'usuario' => $usuario,
-                    'tipo_vista' => $tipo_vista
-                ])
+            <livewire:components.info-alumnos-docentes :usuario="$usuario" :tipo_vista="$tipo_vista" lazy />
             @endif
 
             <div class="row g-3">
@@ -22,29 +15,39 @@
                     <div class="card card-md card-stacked animate__animated animate__fadeIn animate__faster">
                         <div class="card-stamp card-stamp-lg">
                             @if ($tipo_vista === 'cursos')
-                                <div class="card-stamp-icon bg-teal">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-list-details">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M13 5h8" />
-                                        <path d="M13 9h5" />
-                                        <path d="M13 15h8" />
-                                        <path d="M13 19h5" />
-                                        <path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
-                                        <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
-                                    </svg>
-                                </div>
+                            <div class="card-stamp-icon bg-teal">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-list-details">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M13 5h8" />
+                                    <path d="M13 9h5" />
+                                    <path d="M13 15h8" />
+                                    <path d="M13 19h5" />
+                                    <path
+                                        d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+                                    <path
+                                        d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+                                </svg>
+                            </div>
                             @elseif($tipo_vista === 'carga-academica')
-                                <div class="card-stamp-icon bg-orange">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-list-details">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M13 5h8" />
-                                        <path d="M13 9h5" />
-                                        <path d="M13 15h8" />
-                                        <path d="M13 19h5" />
-                                        <path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
-                                        <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
-                                    </svg>
-                                </div>
+                            <div class="card-stamp-icon bg-orange">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-list-details">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M13 5h8" />
+                                    <path d="M13 9h5" />
+                                    <path d="M13 15h8" />
+                                    <path d="M13 19h5" />
+                                    <path
+                                        d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+                                    <path
+                                        d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+                                </svg>
+                            </div>
                             @endif
                         </div>
                         <div class="card-body">
@@ -57,12 +60,14 @@
                             <p class="card-text">
                                 <small class="text-muted
                                     d-none d-sm-block">
-                                    Fecha de inicio: {{ format_fecha($trabajo_academico->fecha_inicio_trabajo_academico) }}
+                                    Fecha de inicio: {{ format_fecha($trabajo_academico->fecha_inicio_trabajo_academico)
+                                    }}
                                     - {{ format_hora($trabajo_academico->fecha_inicio_trabajo_academico) }}
                                 </small>
                                 <small class="text-muted
                                     d-none d-sm-block mt-2">
-                                    Fecha de fin: {{ format_fecha($trabajo_academico->fecha_fin_trabajo_academico) }} - {{
+                                    Fecha de fin: {{ format_fecha($trabajo_academico->fecha_fin_trabajo_academico) }} -
+                                    {{
                                     format_hora($trabajo_academico->fecha_fin_trabajo_academico) }}
                                 </small>
                             </p>
@@ -82,60 +87,65 @@
                             </div>
 
                             @if($trabajo_academico->archivoDocente->count() > 0)
-                                {{-- Archivos adjuntos --}}
-                                <div class="">
+                            {{-- Archivos adjuntos --}}
+                            <div class="">
 
-                                    <div class="hr-text hr-text-center ">
-                                        <span>
-                                            Archivos adjuntos
-                                        </span>
-                                    </div>
-
-                                    <div class="row g-2">
-                                        @foreach ($trabajo_academico->archivoDocente as $archivo)
-                                            <div class="col-6 col-md-3 col-lg-4 col-xl-4">
-                                                <a class="card p-3 mb-3 text-decoration-none cursor-pointer" wire:click="descargar_archivo({{ $archivo->id_archivo_docente }})">
-                                                    <div class="d-flex align-items-center">
-                                                        <img src="{{ obtener_icono_archivo($archivo->archivo_docente) }}"
-                                                                alt="icono-recurso" class="me-2" width="40">
-                                                        <div>
-                                                            <h5 class="mb-0">
-                                                                {{ Str::limit($archivo->nombre_archivo_docente, 20) }}
-                                                            </h5>
-                                                            <small class="text-muted d-block mt-1 fw-light">
-                                                                {{ formato_tamano_archivo(filesize($archivo->archivo_docente)) }}
-                                                            </small>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        @endforeach
-                                    </div>
+                                <div class="hr-text hr-text-center ">
+                                    <span>
+                                        Archivos adjuntos
+                                    </span>
                                 </div>
+
+                                <div class="row g-2">
+                                    @foreach ($trabajo_academico->archivoDocente as $archivo)
+                                    <div class="col-6 col-md-3 col-lg-4 col-xl-4">
+                                        <a class="card p-3 mb-3 text-decoration-none cursor-pointer"
+                                            wire:click="descargar_archivo({{ $archivo->id_archivo_docente }})">
+                                            <div class="d-flex align-items-center">
+                                                <img src="{{ obtener_icono_archivo($archivo->archivo_docente) }}"
+                                                    alt="icono-recurso" class="me-2" width="40">
+                                                <div>
+                                                    <h5 class="mb-0">
+                                                        {{ Str::limit($archivo->nombre_archivo_docente, 20) }}
+                                                    </h5>
+                                                    <small class="text-muted d-block mt-1 fw-light">
+                                                        {{ formato_tamano_archivo(filesize($archivo->archivo_docente))
+                                                        }}
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    @endforeach
+                                </div>
+                            </div>
                             @endif
 
-                            @if ($usuario->esRolGestionAula('ALUMNO', $id_gestion_aula_usuario) && $tipo_vista === 'cursos')
-                                @if($entrega_trabajo === false)
-                                    <div class="card-footer d-flex justify-content-end align-items-center mt-4">
-                                        <a class="btn btn-primary 
+                            @if ($usuario->esRolGestionAula('ALUMNO', $id_gestion_aula_usuario) && $tipo_vista ===
+                            'cursos')
+                            @if($entrega_trabajo === false)
+                            <div class="card-footer d-flex justify-content-end align-items-center mt-4">
+                                <a class="btn btn-primary
                                             {{ verificar_fecha_trabajo($trabajo_academico->fecha_inicio_trabajo_academico, $trabajo_academico->fecha_fin_trabajo_academico) ? '' : 'disabled' }}"
-                                            wire:click="abrir_modal_entrega_trabajo()">
-                                            Agregar entrega
-                                        </a>
-                                    </div>
-                                @else
-                                    <div class="card-footer d-flex justify-content-end align-items-center mt-4">
-                                        <span class="status status-{{ color_estado_trabajo_academico($trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico ?? 'No entregado') }}
+                                    wire:click="abrir_modal_entrega_trabajo()">
+                                    Agregar entrega
+                                </a>
+                            </div>
+                            @else
+                            <div class="card-footer d-flex justify-content-end align-items-center mt-4">
+                                <span class="status status-{{ color_estado_trabajo_academico($trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico ?? 'No entregado') }}
                                                 px-3 py-2 h-100">
-                                            {{ $trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico ?? 'No entregado' }}
-                                        </span>
-                                    </div>
-                                    {{-- <div class="card-footer d-flex justify-content-end align-items-center mt-4">
-                                        <a class="btn btn-primary" wire:click="abrir_modal_entrega_trabajo()">
-                                            Editar entrega
-                                        </a>
-                                    </div> --}}
-                                @endif
+                                    {{
+                                    $trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico
+                                    ?? 'No entregado' }}
+                                </span>
+                            </div>
+                            {{-- <div class="card-footer d-flex justify-content-end align-items-center mt-4">
+                                <a class="btn btn-primary" wire:click="abrir_modal_entrega_trabajo()">
+                                    Editar entrega
+                                </a>
+                            </div> --}}
+                            @endif
                             @endif
                         </div>
                     </div>
@@ -143,11 +153,11 @@
 
                 <div class="col-lg-4">
                     @livewire('components.card-estado-trabajo', [
-                        'id_usuario_hash' => $id_usuario_hash,
-                        'tipo_vista' => $tipo_vista,
-                        'id_gestion_aula_usuario' => $id_gestion_aula_usuario,
-                        'trabajo_academico' => $trabajo_academico,
-                        'id_gestion_aula' => $id_gestion_aula,
+                    'id_usuario_hash' => $id_usuario_hash,
+                    'tipo_vista' => $tipo_vista,
+                    'id_gestion_aula_usuario' => $id_gestion_aula_usuario,
+                    'trabajo_academico' => $trabajo_academico,
+                    'id_gestion_aula' => $id_gestion_aula,
                     ])
                 </div>
 
@@ -174,8 +184,10 @@
                                     Descripción del trabajo académico
                                 </label>
                                 <div wire:ignore>
-                                    <textarea class="form-control @error('descripcion_trabajo_academico_alumno') is-invalid @enderror"
-                                        wire:model="descripcion_trabajo_academico_alumno" id="descripcion_trabajo_academico_alumno"
+                                    <textarea
+                                        class="form-control @error('descripcion_trabajo_academico_alumno') is-invalid @enderror"
+                                        wire:model="descripcion_trabajo_academico_alumno"
+                                        id="descripcion_trabajo_academico_alumno"
                                         placeholder="Ingrese la descripción del trabajo académico a entregar">
                                     </textarea>
                                 </div>
@@ -186,26 +198,24 @@
                                     Archivos del trabajo académico
                                 </label>
                                 <input type="file" class="form-control @error('archivos_trabajo_alumno') is-invalid @enderror
-                                    @if(count($archivos_trabajo_alumno) > 0 && $errors->has('archivos_trabajo_alumno.*')) is-invalid 
+                                    @if(count($archivos_trabajo_alumno) > 0 && $errors->has('archivos_trabajo_alumno.*')) is-invalid
                                     @elseif(count($archivos_trabajo_alumno) > 0) is-valid @endif"
                                     wire:model.live="archivos_trabajo_alumno" id="upload{{ $iteration }}"
                                     accept=".pdf,.xls,.xlsx,.doc,.docx,.ppt,.pptx,.txt,.jpg,.jpeg,.png" multiple>
                                 @error('archivos_trabajo_alumno.*')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
                                 @enderror
                             </div>
                         </div>
                     </div>
 
                     <div class="modal-footer">
-                        <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal"
-                            wire:click="cerrar_modal">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round"
-                                class="icon icon-tabler icons-tabler-outline icon-tabler-ban">
+                        <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="cerrar_modal">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-ban">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                 <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
                                 <path d="M5.7 5.7l12.6 12.6" />
@@ -214,24 +224,22 @@
                         </a>
                         <button type="submit" class="btn btn-primary ms-auto">
                             @if ($modo === 1)
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round"
-                                    class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path d="M12 5l0 14" />
-                                    <path d="M5 12l14 0" />
-                                </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M12 5l0 14" />
+                                <path d="M5 12l14 0" />
+                            </svg>
                             @else
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round"
-                                    class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                    <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                    <path d="M16 5l3 3" />
-                                </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                <path d="M16 5l3 3" />
+                            </svg>
                             @endif
                             {{ $accion_modal }}
                         </button>
@@ -244,12 +252,12 @@
 </div>
 
 @push('styles')
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
 @endpush
 @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
-    <script>
-        $(function() {
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+<script>
+    $(function() {
             $('#descripcion_trabajo_academico_alumno').summernote({
                 placeholder: 'Ingrese la descripción del trabajo académico a entregar',
                 height: 200,
@@ -291,5 +299,5 @@
                 },
             });
         })
-    </script>
+</script>
 @endpush

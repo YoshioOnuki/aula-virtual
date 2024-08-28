@@ -11,12 +11,23 @@ class PageHeader extends Component
     public $linksArray = [];
     public $regresar;
 
+
     public function mount($titulo, $links_array, $regresar, $titulo_pasos)
     {
         $this->titulo_pasos = $titulo_pasos;
         $this->titulo = $titulo;
         $this->regresar = $regresar;
         $this->linksArray = $links_array;
+    }
+
+
+    public function placeholder()
+    {
+        return <<<'HTML'
+        <div class="my-5 d-flex justify-content-center">
+            <div class="spinner-border text-blue" role="status"></div>
+        </div>
+        HTML;
     }
 
 

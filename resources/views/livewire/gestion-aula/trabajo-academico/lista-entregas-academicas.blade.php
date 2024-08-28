@@ -1,24 +1,17 @@
 <div>
 
-    @livewire('components.page-header', [
-        'titulo_pasos' => $titulo_page_header,
-        'titulo' => $titulo_page_header,
-        'links_array' => $links_page_header,
-        'regresar' => $regresar_page_header
-    ])
+    <livewire:components.page-header :titulo_pasos="$titulo_page_header" :titulo="$titulo_page_header"
+        :links_array="$links_page_header" :regresar="$regresar_page_header" lazy />
 
     <div class="page-body">
         <div class="container-xl">
 
             @if($modo_admin)
-                @livewire('components.info-alumnos-docentes', [
-                    'usuario' => $usuario,
-                    'tipo_vista' => $tipo_vista
-                ])
+                <livewire:components.info-alumnos-docentes :usuario="$usuario" :tipo_vista="$tipo_vista" lazy />
             @endif
 
             <div class="row g-3">
-                <div class="col-12">
+                <div class="col-lg-8">
                     {{-- <div class="card animate__animated animate__fadeIn animate__faster">
                         <div class="card-body border-bottom py-3">
                             <div class="d-flex align-items-center justify-content-between">
@@ -144,6 +137,16 @@
                             @endif
                         </div>
                     </div> --}}
+                </div>
+
+                <div class="col-lg-4">
+                    @livewire('components.card-estado-trabajo', [
+                        'id_usuario_hash' => $id_usuario_hash,
+                        'tipo_vista' => $tipo_vista,
+                        'id_gestion_aula_usuario' => $id_gestion_aula_usuario,
+                        'trabajo_academico' => $trabajo_academico,
+                        'id_gestion_aula' => $id_gestion_aula,
+                    ])
                 </div>
             </div>
         </div>

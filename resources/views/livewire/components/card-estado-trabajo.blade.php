@@ -193,8 +193,8 @@
 
                         </tbody>
                     </table>
-                    @if($tipo_vista === 'carga-academica')
-                        {{-- Boton para ingresar a la lista de alumnos y ver sus trabajos academicos --}}
+                    {{-- Si en la ruta existe 'alumnos' aparesca esto --}}
+                    @if($tipo_vista === 'carga-academica' && request()->routeIs('carga-academica.detalle.trabajo-academico.detalle'))
                         <a href="{{ route('carga-academica.detalle.trabajo-academico.alumnos', ['id_usuario' => $id_usuario_hash, 'tipo_vista' => $tipo_vista, 'id_curso' => Hashids::encode($id_gestion_aula_usuario), 'id_trabajo_academico' => Hashids::encode($trabajo_academico->id_trabajo_academico)]) }}"
                             class="btn btn-primary col-12 mt-4 mb-2">
                             Ver trabajos académicos

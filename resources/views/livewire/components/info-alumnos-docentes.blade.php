@@ -1,5 +1,5 @@
 <div>
-    <div class="card card-stacked animate__animated animate__fadeIn animate__faster mb-3">
+    <div class="card card-stacked  mb-3">
         <div class="progress card-progress h-2">
             <div class="progress-bar bg-{{ $tipo_vista === 'cursos' ? 'teal-lt' : 'orange-lt' }}" style="width: 100%"
                 role="progressbar" aria-valuemin="0" aria-valuemax="100">
@@ -10,11 +10,11 @@
             <div class="row g-2 align-items-center">
                 <div class="col-auto">
                     @if ($tipo_vista === 'cursos')
-                    <img src="{{ asset($usuario->mostrarFoto('alumno')) }}" alt="avatar"
-                        class="avatar avatar-md avatar-thumb rounded">
+                        <img src="{{ asset($usuario->mostrarFoto('alumno')) }}" alt="avatar"
+                            class="avatar avatar-md avatar-thumb rounded">
                     @elseif($tipo_vista === 'carga-academica')
-                    <img src="{{ asset($usuario->mostrarFoto('docente')) }}" alt="avatar"
-                        class="avatar avatar-md avatar-thumb rounded">
+                        <img src="{{ asset($usuario->mostrarFoto('docente')) }}" alt="avatar"
+                            class="avatar avatar-md avatar-thumb rounded">
                     @endif
                     {{-- <span class="avatar avatar-md" style="background-image: url(...)"></span> --}}
                 </div>
@@ -84,8 +84,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-auto d-none d-md-flex">
-                    <a href="#" class="btn btn-azure">
+                <div class="col-auto">
+                    <a href="#" class="btn btn-azure d-none d-md-inline-block">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                             class="icon icon-tabler icons-tabler-outline icon-tabler-address-book">
@@ -99,6 +99,22 @@
                             <path d="M4 16h3" />
                         </svg>
                         Ver perfil
+                    </a>
+
+                    <a href="#"
+                    class="btn btn-azure d-md-none btn-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-address-book">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path
+                                d="M20 6v12a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2z" />
+                            <path d="M10 16h6" />
+                            <path d="M13 11m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                            <path d="M4 8h3" />
+                            <path d="M4 12h3" />
+                            <path d="M4 16h3" />
+                        </svg>
                     </a>
                 </div>
             </div>
