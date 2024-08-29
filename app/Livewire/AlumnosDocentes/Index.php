@@ -11,6 +11,34 @@ class Index extends Component
 {
     public $tipo_vista;
 
+    public $titulo_page_header;
+    public $regresar_page_header;
+    public $links_page_header;
+
+
+    /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
+        public function obtener_datos_page_header()
+        {
+            if($this->tipo_vista === 'cursos')
+            {
+                $this->titulo_page_header = 'ALUMNOS';
+            } else {
+                $this->titulo_page_header = 'DOCENTES';
+            }
+
+            // Links --> Inicio
+            $this->links_page_header = [
+                [
+                    'name' => 'Inicio',
+                    'route' => 'inicio',
+                    'params' => []
+                ]
+            ];
+
+        }
+    /* ===================================================================================== */
+
+
     public function mount()
     {
         if(request()->routeIs('alumnos*'))
@@ -20,6 +48,8 @@ class Index extends Component
         {
             $this->tipo_vista = 'carga-academica';
         }
+
+        $this->obtener_datos_page_header();
 
     }
 

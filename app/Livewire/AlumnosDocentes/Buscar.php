@@ -50,6 +50,16 @@ class Buscar extends Component
     }
 
 
+    public function placeholder()
+    {
+        return <<<'HTML'
+        <div class="mt-8 d-flex justify-content-center">
+            <div class="spinner-border text-blue" role="status"></div>
+        </div>
+        HTML;
+    }
+
+
     public function mount($tipo_vista)
     {
         $this->tipo_vista = $tipo_vista;

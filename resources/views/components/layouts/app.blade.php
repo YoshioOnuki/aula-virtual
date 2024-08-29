@@ -54,9 +54,9 @@
 
     <div class="page">
 
-        @livewire('components.sidebar')
+        <livewire:components.navegacion.sidebar />
 
-        @livewire('components.navbar')
+        <livewire:components.navegacion.navbar />
 
         <div class="page-wrapper">
 

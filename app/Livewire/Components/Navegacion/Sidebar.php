@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Livewire\Components;
+namespace App\Livewire\Components\Navegacion;
 
 use Livewire\Component;
-use Vinkla\Hashids\Facades\Hashids;
 
 class Sidebar extends Component
 {
+
     public $usuario;
     public $persona;
     public $nombre;
@@ -25,8 +25,9 @@ class Sidebar extends Component
         $this->nombre = strtoupper($this->persona->soloPrimerosNombres);
     }
 
+
     public function render()
     {
-        return view('livewire.components.sidebar');
+        return view('livewire.components.navegacion.sidebar');
     }
 }

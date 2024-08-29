@@ -1,13 +1,13 @@
 <div>
 
-    <livewire:components.page-header :titulo_pasos="$titulo_page_header" :titulo="$titulo_page_header"
-        :links_array="$links_page_header" :regresar="$regresar_page_header" lazy />
+    <livewire:components.navegacion.page-header :titulo_pasos=$titulo_page_header :titulo=$titulo_page_header
+        :links_array=$links_page_header :regresar=$regresar_page_header lazy />
 
     <div class="page-body">
         <div class="container-xl">
 
             @if($modo_admin)
-            <livewire:components.info-alumnos-docentes :usuario="$usuario" :tipo_vista="$tipo_vista" lazy />
+            <livewire:components.curso.admin-info-usuario :usuario=$usuario :tipo_vista=$tipo_vista lazy />
             @endif
 
             <div class="row g-3">
@@ -123,42 +123,39 @@
 
                             @if ($usuario->esRolGestionAula('ALUMNO', $id_gestion_aula_usuario) && $tipo_vista ===
                             'cursos')
-                            @if($entrega_trabajo === false)
-                            <div class="card-footer d-flex justify-content-end align-items-center mt-4">
-                                <a class="btn btn-primary
-                                            {{ verificar_fecha_trabajo($trabajo_academico->fecha_inicio_trabajo_academico, $trabajo_academico->fecha_fin_trabajo_academico) ? '' : 'disabled' }}"
-                                    wire:click="abrir_modal_entrega_trabajo()">
-                                    Agregar entrega
-                                </a>
-                            </div>
-                            @else
-                            <div class="card-footer d-flex justify-content-end align-items-center mt-4">
-                                <span class="status status-{{ color_estado_trabajo_academico($trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico ?? 'No entregado') }}
-                                                px-3 py-2 h-100">
-                                    {{
-                                    $trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico
-                                    ?? 'No entregado' }}
-                                </span>
-                            </div>
-                            {{-- <div class="card-footer d-flex justify-content-end align-items-center mt-4">
-                                <a class="btn btn-primary" wire:click="abrir_modal_entrega_trabajo()">
-                                    Editar entrega
-                                </a>
-                            </div> --}}
-                            @endif
+                                @if($entrega_trabajo === false)
+                                    <div class="card-footer d-flex justify-content-end align-items-center mt-4">
+                                        <a class="btn btn-primary
+                                                    {{ verificar_fecha_trabajo($trabajo_academico->fecha_inicio_trabajo_academico, $trabajo_academico->fecha_fin_trabajo_academico) ? '' : 'disabled' }}"
+                                            wire:click="abrir_modal_entrega_trabajo()">
+                                            Agregar entrega
+                                        </a>
+                                    </div>
+                                @else
+                                    <div class="card-footer d-flex justify-content-end align-items-center mt-4">
+                                        <span class="status status-{{ color_estado_trabajo_academico($trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico ?? 'No entregado') }}
+                                                        px-3 py-2 h-100">
+                                            {{
+                                            $trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico
+                                            ?? 'No entregado' }}
+                                        </span>
+                                    </div>
+                                {{-- <div class="card-footer d-flex justify-content-end align-items-center mt-4">
+                                    <a class="btn btn-primary" wire:click="abrir_modal_entrega_trabajo()">
+                                        Editar entrega
+                                    </a>
+                                </div> --}}
+                                @endif
                             @endif
                         </div>
                     </div>
                 </div>
 
                 <div class="col-lg-4">
-                    @livewire('components.card-estado-trabajo', [
-                    'id_usuario_hash' => $id_usuario_hash,
-                    'tipo_vista' => $tipo_vista,
-                    'id_gestion_aula_usuario' => $id_gestion_aula_usuario,
-                    'trabajo_academico' => $trabajo_academico,
-                    'id_gestion_aula' => $id_gestion_aula,
-                    ])
+                    <livewire:components.trabajo-academico.card-estado-trabajo :id_usuario_hash=$id_usuario_hash
+                        :tipo_vista=$tipo_vista :id_gestion_aula_usuario=$id_gestion_aula_usuario
+                        :trabajo_academico=$trabajo_academico :id_gestion_aula=$id_gestion_aula
+                        :lista_alumnos=true lazy />
                 </div>
 
             </div>

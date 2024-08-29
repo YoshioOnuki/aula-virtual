@@ -243,43 +243,44 @@ class Index extends Component
 
 
     /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
-    public function obtener_datos_page_header()
-    {
-        if($this->tipo_vista === 'cursos')
-        {
-            $this->titulo_page_header = 'Mis Cursos';
-        } else {
-            $this->titulo_page_header = 'Carga Académica';
-        }
-
-        // Regresar
-
-        if($this->modo_admin)
+        public function obtener_datos_page_header()
         {
             if($this->tipo_vista === 'cursos')
             {
-                $this->regresar_page_header = [
-                    'route' => 'alumnos',
-                    'params' => []
-                ];
+                $this->titulo_page_header = 'Mis Cursos';
             } else {
-                $this->regresar_page_header = [
-                    'route' => 'docentes',
-                    'params' => []
-                ];
+                $this->titulo_page_header = 'Carga Académica';
             }
+
+            // Regresar
+
+            if($this->modo_admin)
+            {
+                if($this->tipo_vista === 'cursos')
+                {
+                    $this->regresar_page_header = [
+                        'route' => 'alumnos',
+                        'params' => []
+                    ];
+                } else {
+                    $this->regresar_page_header = [
+                        'route' => 'docentes',
+                        'params' => []
+                    ];
+                }
+            }
+
+            // Links --> Inicio
+            $this->links_page_header = [
+                [
+                    'name' => 'Inicio',
+                    'route' => 'inicio',
+                    'params' => []
+                ]
+            ];
+
         }
-
-        // Links --> Inicio
-        $this->links_page_header = [
-            [
-                'name' => 'Inicio',
-                'route' => 'inicio',
-                'params' => []
-            ]
-        ];
-
-    }
+    /* ===================================================================================== */
 
 
     public function mount($id_usuario, $tipo_vista)

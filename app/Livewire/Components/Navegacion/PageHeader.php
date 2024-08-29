@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Livewire\Components;
+namespace App\Livewire\Components\Navegacion;
 
 use Livewire\Component;
 
 class PageHeader extends Component
 {
+
     public $titulo_pasos;
     public $titulo;
     public $linksArray = [];
@@ -33,6 +34,6 @@ class PageHeader extends Component
 
     public function render()
     {
-        return view('livewire.components.page-header');
+        return view('livewire.components.navegacion.page-header');
     }
 }

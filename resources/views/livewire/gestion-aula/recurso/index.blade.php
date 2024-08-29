@@ -1,13 +1,13 @@
 <div>
 
-    <livewire:components.page-header :titulo_pasos="$titulo_page_header" :titulo="$titulo_page_header"
-        :links_array="$links_page_header" :regresar="$regresar_page_header" lazy />
+    <livewire:components.navegacion.page-header :titulo_pasos=$titulo_page_header :titulo=$titulo_page_header
+        :links_array=$links_page_header :regresar=$regresar_page_header lazy />
 
     <div class="page-body">
         <div class="container-xl">
 
             @if($modo_admin)
-            <livewire:components.info-alumnos-docentes :usuario="$usuario" :tipo_vista="$tipo_vista" lazy />
+            <livewire:components.curso.admin-info-usuario :usuario=$usuario :tipo_vista=$tipo_vista lazy />
             @endif
 
             <div class="row g-3">
@@ -84,7 +84,7 @@
                                 @endif
 
                                 @if ($cargando_recursos)
-                                {{-- @for ($i = 0; $i < $cantidad_recursos; $i++) --}} <div class="col-12">
+                                <div class="col-12">
                                     <div class="card placeholder-glow">
                                         <div class="card-body p-4">
                                             <div class="d-flex justify-content-between mb-5">
@@ -116,303 +116,308 @@
                                             </div>
                                         </div>
                                     </div>
-                            </div>
-                            {{-- @endfor --}}
-                            @else
-                            @forelse ($recursos as $item)
-                            <div class="col-12">
-                                @if (file_exists($item->archivo_recurso))
-                                <div class="card">
-                                    <div class="modal-status bg-{{ config('settings.color-border-card-recurso') }}">
-                                    </div>
-                                    <div class="card-body p-4">
-                                        <div class="d-flex justify-content-between">
-
-                                            <div>
-                                                <h5 class="card-title d-flex align-items-center">
-                                                    <img src="{{ obtener_icono_archivo($item->archivo_recurso) }}"
-                                                        alt="icono-recurso" class="w-6 h-6 me-2">
-                                                    <span class="fw-bold">
-                                                        {{ $item->nombre_recurso }}
-                                                    </span>
-                                                </h5>
-                                                <p class="card-text">
-                                                    <small class="text-muted">
-                                                        Publicado el {{ $item->created_at->format('d/m/Y') }}
-                                                    </small><br>
-                                                    <small class="text-muted">
-                                                        Tamaño del archivo: {{
-                                                        formato_tamano_archivo(filesize($item->archivo_recurso)) }}
-                                                    </small>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex justify-content-end align-items-end mt-2">
-                                            <div>
-                                                @if ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario))
-                                                <button class="btn btn-secondary d-none d-md-inline-block me-2"
-                                                    wire:click="abrir_modal_recurso_editar({{ $item->id_recurso }})">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                        <path
-                                                            d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                                        <path
-                                                            d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                                        <path d="M16 5l3 3" />
-                                                    </svg>
-                                                    Editar
-                                                </button>
-                                                <button class="btn btn-secondary d-md-none btn-icon me-2"
-                                                    wire:click="abrir_modal_recurso_editar({{ $item->id_recurso }})">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                        <path
-                                                            d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                                        <path
-                                                            d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                                        <path d="M16 5l3 3" />
-                                                    </svg>
-                                                </button>
-                                                @endif
-
-                                                <button class="btn btn-primary d-none d-md-inline-block"
-                                                    wire:click="descargar_recurso({{ $item->id_recurso }})">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-download">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                        <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
-                                                        <path d="M7 11l5 5l5 -5" />
-                                                        <path d="M12 4l0 12" />
-                                                    </svg>
-                                                    Descargar
-                                                </button>
-                                                <button class="btn btn-primary d-md-none btn-icon"
-                                                    wire:click="descargar_recurso({{ $item->id_recurso }})">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-download">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                        <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
-                                                        <path d="M7 11l5 5l5 -5" />
-                                                        <path d="M12 4l0 12" />
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                                 @else
-                                <div class="card">
-                                    <div class="card-body p-4">
-                                        <div class="d-flex justify-content-between">
-                                            <div>
-                                                <h5 class="card-title d-flex align-items-center">
-                                                    <img src="/media/icons/icon-archivo-generico2.webp" alt="Info"
-                                                        class="w-6 h-6 me-2">
-                                                    <span class="fw-bold">
-                                                        {{ $item->nombre_recurso }}
-                                                        <span class="text-danger ms-2">
-                                                            (Archivo no disponible)
+                                @forelse ($recursos as $item)
+                                <div class="col-12">
+                                    @if (file_exists($item->archivo_recurso))
+                                    <div class="card">
+                                        <div class="modal-status bg-{{ config('settings.color-border-card-recurso') }}">
+                                        </div>
+                                        <div class="card-body p-4">
+                                            <div class="d-flex justify-content-between">
+
+                                                <div>
+                                                    <h5 class="card-title d-flex align-items-center">
+                                                        <img src="{{ obtener_icono_archivo($item->archivo_recurso) }}"
+                                                            alt="icono-recurso" class="w-6 h-6 me-2">
+                                                        <span class="fw-bold">
+                                                            {{ $item->nombre_recurso }}
                                                         </span>
-                                                    </span>
-                                                </h5>
-                                                <p class="card-text">
-                                                    <small class="text-muted">
-                                                        Publicado el {{ $item->created_at->format('d/m/Y') }}
-                                                    </small><br>
-                                                    <small class="text-muted">
-                                                        Tamaño del archivo:
-                                                        <b>
-                                                            No disponible
-                                                        </b>
-                                                    </small>
-                                                </p>
+                                                    </h5>
+                                                    <p class="card-text">
+                                                        <small class="text-muted">
+                                                            Publicado el {{ $item->created_at->format('d/m/Y') }}
+                                                        </small><br>
+                                                        <small class="text-muted">
+                                                            Tamaño del archivo: {{
+                                                            formato_tamano_archivo(filesize($item->archivo_recurso)) }}
+                                                        </small>
+                                                    </p>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="d-flex justify-content-end align-items-end mt-2">
-                                            <div>
-                                                @if ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario))
-                                                <button class="btn btn-secondary d-none d-md-inline-block me-2"
-                                                    wire:click="abrir_modal_recurso_editar({{ $item->id_recurso }})">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                        <path
-                                                            d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                                        <path
-                                                            d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                                        <path d="M16 5l3 3" />
-                                                    </svg>
-                                                    Editar
-                                                </button>
-                                                <button class="btn btn-secondary d-md-none btn-icon me-2"
-                                                    wire:click="abrir_modal_recurso_editar({{ $item->id_recurso }})">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-edit"
+                                            <div class="d-flex justify-content-end align-items-end mt-2">
+                                                <div>
+                                                    @if ($usuario->esRolGestionAula('DOCENTE',
+                                                    $id_gestion_aula_usuario))
+                                                    <button class="btn btn-secondary d-none d-md-inline-block me-2"
                                                         wire:click="abrir_modal_recurso_editar({{ $item->id_recurso }})">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                        <path
-                                                            d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                                        <path
-                                                            d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                                        <path d="M16 5l3 3" />
-                                                    </svg>
-                                                </button>
-                                                @endif
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                            stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round"
+                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                            <path
+                                                                d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                                            <path
+                                                                d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                                            <path d="M16 5l3 3" />
+                                                        </svg>
+                                                        Editar
+                                                    </button>
+                                                    <button class="btn btn-secondary d-md-none btn-icon me-2"
+                                                        wire:click="abrir_modal_recurso_editar({{ $item->id_recurso }})">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                            stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round"
+                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                            <path
+                                                                d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                                            <path
+                                                                d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                                            <path d="M16 5l3 3" />
+                                                        </svg>
+                                                    </button>
+                                                    @endif
+
+                                                    <button class="btn btn-primary d-none d-md-inline-block"
+                                                        wire:click="descargar_recurso({{ $item->id_recurso }})">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                            stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round"
+                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-download">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                            <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                                                            <path d="M7 11l5 5l5 -5" />
+                                                            <path d="M12 4l0 12" />
+                                                        </svg>
+                                                        Descargar
+                                                    </button>
+                                                    <button class="btn btn-primary d-md-none btn-icon"
+                                                        wire:click="descargar_recurso({{ $item->id_recurso }})">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                            stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round"
+                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-download">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                            <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                                                            <path d="M7 11l5 5l5 -5" />
+                                                            <path d="M12 4l0 12" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
-                                        @if ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario))
-                                        <div class="alert alert-yellow bg-yellow-lt hover-shadow-sm animate__animated animate__fadeIn animate__faster mt-3"
-                                            role="alert">
-                                            <div class="d-flex">
+                                    </div>
+                                    @else
+                                    <div class="card">
+                                        <div class="card-body p-4">
+                                            <div class="d-flex justify-content-between">
                                                 <div>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon"
-                                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                        stroke="currentColor" fill="none" stroke-linecap="round"
-                                                        stroke-linejoin="round">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                        <path d="M12 9v4"></path>
-                                                        <path
-                                                            d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z">
-                                                        </path>
-                                                        <path d="M12 16h.01"></path>
-                                                    </svg>
-                                                </div>
-                                                <div>
-                                                    <h4 class="alert-title">
-                                                        Archivo no disponible, por favor suba el archivo nuevamente
-                                                    </h4>
+                                                    <h5 class="card-title d-flex align-items-center">
+                                                        <img src="/media/icons/icon-archivo-generico2.webp" alt="Info"
+                                                            class="w-6 h-6 me-2">
+                                                        <span class="fw-bold">
+                                                            {{ $item->nombre_recurso }}
+                                                            <span class="text-danger ms-2">
+                                                                (Archivo no disponible)
+                                                            </span>
+                                                        </span>
+                                                    </h5>
+                                                    <p class="card-text">
+                                                        <small class="text-muted">
+                                                            Publicado el {{ $item->created_at->format('d/m/Y') }}
+                                                        </small><br>
+                                                        <small class="text-muted">
+                                                            Tamaño del archivo:
+                                                            <b>
+                                                                No disponible
+                                                            </b>
+                                                        </small>
+                                                    </p>
                                                 </div>
                                             </div>
+                                            <div class="d-flex justify-content-end align-items-end mt-2">
+                                                <div>
+                                                    @if ($usuario->esRolGestionAula('DOCENTE',
+                                                    $id_gestion_aula_usuario))
+                                                    <button class="btn btn-secondary d-none d-md-inline-block me-2"
+                                                        wire:click="abrir_modal_recurso_editar({{ $item->id_recurso }})">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                            stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round"
+                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                            <path
+                                                                d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                                            <path
+                                                                d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                                            <path d="M16 5l3 3" />
+                                                        </svg>
+                                                        Editar
+                                                    </button>
+                                                    <button class="btn btn-secondary d-md-none btn-icon me-2"
+                                                        wire:click="abrir_modal_recurso_editar({{ $item->id_recurso }})">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                            stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round"
+                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-edit"
+                                                            wire:click="abrir_modal_recurso_editar({{ $item->id_recurso }})">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                            <path
+                                                                d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                                            <path
+                                                                d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                                            <path d="M16 5l3 3" />
+                                                        </svg>
+                                                    </button>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            @if ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario))
+                                            <div class="alert alert-yellow bg-yellow-lt hover-shadow-sm animate__animated animate__fadeIn animate__faster mt-3"
+                                                role="alert">
+                                                <div class="d-flex">
+                                                    <div>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon"
+                                                            width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                            stroke="currentColor" fill="none" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                            <path d="M12 9v4"></path>
+                                                            <path
+                                                                d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z">
+                                                            </path>
+                                                            <path d="M12 16h.01"></path>
+                                                        </svg>
+                                                    </div>
+                                                    <div>
+                                                        <h4 class="alert-title">
+                                                            Archivo no disponible, por favor suba el archivo nuevamente
+                                                        </h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @endif
                                         </div>
-                                        @endif
+                                    </div>
+                                    @endif
+
+                                </div>
+                                @empty
+                                @if ($tipo_vista === 'cursos')
+                                <div class="col-lg-12">
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <div class="text-muted">
+                                            No hay recursos disponibles
+                                        </div>
                                     </div>
                                 </div>
                                 @endif
+                                @endforelse
+                                @endif
 
                             </div>
-                            @empty
-                            @if ($tipo_vista === 'cursos')
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <livewire:components.curso.datos-curso :id_gestion_aula_usuario=$id_gestion_aula_usuario
+                        :tipo_vista=$tipo_vista lazy />
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div wire:ignore.self class="modal fade" id="modal-recursos" tabindex="-1" data-bs-backdrop="static">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        {{ $titulo_modal }}
+                    </h5>
+                    <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal"
+                        aria-label="Close" wire:click="cerrar_modal"></button>
+                </div>
+                <form autocomplete="off" wire:submit="guardar_recurso">
+                    <div class="modal-body">
+                        <div class="row g-3">
                             <div class="col-lg-12">
-                                <div class="d-flex justify-content-center align-items-center">
-                                    <div class="text-muted">
-                                        No hay recursos disponibles
-                                    </div>
+                                <label for="nombre_recurso" class="form-label required">
+                                    Nombre del Recurso
+                                </label>
+                                <input type="text" name="nombre_recurso"
+                                    class="form-control @error('nombre_recurso') is-invalid @elseif(strlen($nombre_recurso) > 0) is-valid @enderror"
+                                    id="nombre_recurso" wire:model.live="nombre_recurso"
+                                    placeholder="Ingrese su correo electrónico" />
+                                @error('nombre_recurso')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
                                 </div>
+                                @enderror
                             </div>
-                            @endif
-                            @endforelse
-                            @endif
-
+                            <div class="col-lg-12">
+                                <label for="archivo_recurso" class="form-label required">
+                                    Archivo
+                                </label>
+                                <input type="file" class="form-control @error('archivo_recurso') is-invalid @enderror"
+                                    id="archivo_recurso" wire:model.live="archivo_recurso"
+                                    accept=".pdf,.xls,.xlsx,.doc,.docx,.ppt,.pptx,.txt" />
+                                @error('archivo_recurso')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <div class="col-lg-4">
-                @livewire('components.datos-curso', [
-                'id_gestion_aula_usuario' => $id_gestion_aula_usuario,
-                'tipo_vista' => $tipo_vista
-                ])
-            </div>
-
-        </div>
-    </div>
-</div>
-
-
-<div wire:ignore.self class="modal fade" id="modal-recursos" tabindex="-1" data-bs-backdrop="static">
-    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">
-                    {{ $titulo_modal }}
-                </h5>
-                <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal" aria-label="Close"
-                    wire:click="cerrar_modal"></button>
-            </div>
-            <form autocomplete="off" wire:submit="guardar_recurso">
-                <div class="modal-body">
-                    <div class="row g-3">
-                        <div class="col-lg-12">
-                            <label for="nombre_recurso" class="form-label required">
-                                Nombre del Recurso
-                            </label>
-                            <input type="text" name="nombre_recurso"
-                                class="form-control @error('nombre_recurso') is-invalid @elseif(strlen($nombre_recurso) > 0) is-valid @enderror"
-                                id="nombre_recurso" wire:model.live="nombre_recurso"
-                                placeholder="Ingrese su correo electrónico" />
-                            @error('nombre_recurso')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-                        <div class="col-lg-12">
-                            <label for="archivo_recurso" class="form-label required">
-                                Archivo
-                            </label>
-                            <input type="file" class="form-control @error('archivo_recurso') is-invalid @enderror"
-                                id="archivo_recurso" wire:model.live="archivo_recurso"
-                                accept=".pdf,.xls,.xlsx,.doc,.docx,.ppt,.pptx,.txt" />
-                            @error('archivo_recurso')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="cerrar_modal">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-ban">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                <path d="M5.7 5.7l12.6 12.6" />
+                            </svg>
+                            Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-primary ms-auto">
+                            @if ($modo === 1)
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M12 5l0 14" />
+                                <path d="M5 12l14 0" />
+                            </svg>
+                            @else
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                <path d="M16 5l3 3" />
+                            </svg>
+                            @endif
+                            {{ $accion_estado }}
+                        </button>
                     </div>
-                </div>
-
-                <div class="modal-footer">
-                    <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="cerrar_modal">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="icon icon-tabler icons-tabler-outline icon-tabler-ban">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                            <path d="M5.7 5.7l12.6 12.6" />
-                        </svg>
-                        Cancelar
-                    </a>
-                    <button type="submit" class="btn btn-primary ms-auto">
-                        @if ($modo === 1)
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M12 5l0 14" />
-                            <path d="M5 12l14 0" />
-                        </svg>
-                        @else
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                            <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                            <path d="M16 5l3 3" />
-                        </svg>
-                        @endif
-                        {{ $accion_estado }}
-                    </button>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
 </div>

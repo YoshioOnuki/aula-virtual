@@ -1,13 +1,13 @@
 <div>
 
-    <livewire:components.page-header :titulo_pasos="$titulo_page_header" :titulo="$titulo_page_header"
-        :links_array="$links_page_header" :regresar="$regresar_page_header" lazy />
+    <livewire:components.navegacion.page-header :titulo_pasos=$titulo_page_header :titulo=$titulo_page_header
+        :links_array=$links_page_header :regresar=$regresar_page_header lazy />
 
     <div class="page-body">
         <div class="container-xl">
 
             @if($modo_admin)
-            <livewire:components.info-alumnos-docentes :usuario="$usuario" :tipo_vista="$tipo_vista" lazy />
+            <livewire:components.curso.admin-info-usuario :usuario=$usuario :tipo_vista=$tipo_vista lazy />
             @endif
 
             <div class="row g-3">

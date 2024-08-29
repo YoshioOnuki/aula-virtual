@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Components;
+namespace App\Livewire\Components\TrabajoAcademico;
 
 use App\Models\GestionAulaUsuario;
 use App\Models\TrabajoAcademico;
@@ -18,6 +18,7 @@ class CardEstadoTrabajo extends Component
     public $cantidad_alumnos_entregados;
     public $cantidad_alumnos_revisados;
     public $cantidad_alumnos_observados;
+    public bool $lista_alumnos;
 
     protected $listeners = ['actualizar_estado_trabajo' => 'actualizar_estado_trabajo'];
 
@@ -56,12 +57,91 @@ class CardEstadoTrabajo extends Component
     }
 
 
-    public function mount($id_usuario_hash, $tipo_vista, $id_gestion_aula_usuario, TrabajoAcademico $trabajo_academico, $id_gestion_aula)
+    public function placeholder()
+    {
+        return <<<'HTML'
+        <div class="card card-stacked placeholder-glow animate__animated animate__fadeIn animate__faster">
+            <div class="card-header {{ $tipo_vista === 'cursos' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
+                <div class="placeholder col-5 {{ $tipo_vista === 'cursos' ? 'bg-teal' : 'bg-orange' }}"
+                style="height: 1.5rem; width: 170.56px;"></div>
+            </div>
+            <div class="card-body row g-3 mb-0">
+                <table class="table table-striped table-vcenter">
+                    <tbody>
+                        <tr>
+                            <th scope="row">
+                                <div class="placeholder placeholder col-12"></div>
+                            </th>
+                            <td>
+                                <div class="placeholder placeholder col-12"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">
+                                <div class="placeholder placeholder col-12"></div>
+                            </th>
+                            <td>
+                                @if($tipo_vista === 'cursos')
+                                    <div class="placeholder placeholder col-12"></div>
+                                @else
+                                    <div class="mb-1">
+                                        <div class="placeholder placeholder col-12"></div>
+                                    </div>
+                                    <div>
+                                        <div class="placeholder placeholder col-12"></div>
+                                    </div>
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">
+                                <div class="placeholder placeholder col-12"></div>
+                            </th>
+                            <td>
+                                <div class="placeholder placeholder col-12"></div>
+                            </td>
+                        </tr>
+                        @if($tipo_vista === 'cursos')
+                            <tr>
+                                <th scope="row">
+                                <div class="placeholder placeholder col-12"></div>
+                                </th>
+                                <td>
+                                <div class="placeholder placeholder col-12"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                <div class="placeholder placeholder col-12"></div>
+                                </th>
+                                <td>
+                                    <a href="#">
+                                <div class="placeholder placeholder col-12"></div>
+                                    </a>
+                                </td>
+                            </tr>
+                        @endif
+                    </tbody>
+                </table>
+                @if($tipo_vista === 'carga-academica' && $lista_alumnos === true)
+                    <a href="#" tabindex="-1"
+                        class="btn btn-primary disabled placeholder col-12 d-block"
+                        aria-hidden="true"></a>
+                @endif
+            </div>
+        </div>
+        HTML;
+    }
+
+
+    public function mount($id_usuario_hash, $tipo_vista, $id_gestion_aula_usuario, TrabajoAcademico $trabajo_academico, $id_gestion_aula, $lista_alumnos)
     {
         $this->id_usuario_hash = $id_usuario_hash;
         $this->tipo_vista = $tipo_vista;
         $this->id_gestion_aula_usuario = $id_gestion_aula_usuario;
         $this->trabajo_academico = $trabajo_academico;
+        $this->lista_alumnos = $lista_alumnos;
+
         $this->trabajo_academico_alumno = TrabajoAcademicoAlumno::where('id_trabajo_academico', $this->trabajo_academico->id_trabajo_academico)
             ->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)
             ->first();
@@ -100,6 +180,6 @@ class CardEstadoTrabajo extends Component
 
     public function render()
     {
-        return view('livewire.components.card-estado-trabajo');
+        return view('livewire.components.trabajo-academico.card-estado-trabajo');
     }
 }

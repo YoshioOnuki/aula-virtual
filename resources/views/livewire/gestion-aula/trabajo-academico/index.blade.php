@@ -1,13 +1,13 @@
 <div>
 
-    <livewire:components.page-header :titulo_pasos="$titulo_page_header" :titulo="$titulo_page_header"
-        :links_array="$links_page_header" :regresar="$regresar_page_header" lazy />
+    <livewire:components.navegacion.page-header :titulo_pasos=$titulo_page_header :titulo=$titulo_page_header
+        :links_array=$links_page_header :regresar=$regresar_page_header lazy />
 
     <div class="page-body">
         <div class="container-xl">
 
             @if($modo_admin)
-            <livewire:components.info-alumnos-docentes :usuario="$usuario" :tipo_vista="$tipo_vista" lazy />
+            <livewire:components.curso.admin-info-usuario :usuario=$usuario :tipo_vista=$tipo_vista lazy />
             @endif
 
             <div class="row g-3">
@@ -51,7 +51,7 @@
                             @endif
                         </div>
                         <div class="card-body">
-                            <div class="row row-cards d-flex justify-content-start" wire:init="load_trabajos">
+                            <div class="row row-cards d-flex justify-content-start">
 
                                 @if ($tipo_vista === 'carga-academica' && $usuario->esRolGestionAula('DOCENTE',
                                 $id_gestion_aula_usuario))
@@ -85,54 +85,17 @@
                                 </div>
                                 @endif
 
-                                @if ($cargando_trabajos)
-                                <div class="col-12">
-                                    <div class="card placeholder-glow">
-                                        <div class="card-body p-4">
-                                            <div class="d-flex justify-content-between mb-5">
-                                                <div class="placeholder col-6" style="height: 1.5rem;"></div>
-                                                <div class="placeholder"></div>
-                                            </div>
-                                            <div>
-                                                <div class="col-12"></div>
-                                                <div class="placeholder placeholder-xs col-4 bg-secondary">
-                                                </div>
-                                                <div class="col-12"></div>
-                                                <div class="placeholder placeholder-xs col-4 bg-secondary">
-                                                </div>
-                                            </div>
-                                            <div class=" d-flex justify-content-end">
-                                                @if ($tipo_vista === 'carga-academica' &&
-                                                $usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario))
-                                                <a href="#" tabindex="-1"
-                                                    class="btn btn-secondary disabled placeholder col-sm-2 col-lg-3 col-xl-2 d-none d-md-inline-block"
-                                                    aria-hidden="true"></a>
-                                                <a href="#" tabindex="-1"
-                                                    class="btn btn-secondary disabled placeholder col-1 d-md-none btn-icon"
-                                                    aria-hidden="true"></a>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                @else
-                                @livewire('components.card-trabajo-academico', [
-                                'trabajos_academicos' => $trabajos_academicos,
-                                'tipo_vista' => $tipo_vista,
-                                'usuario' => $usuario,
-                                'id_gestion_aula_usuario' => $id_gestion_aula_usuario
-                                ])
-                                @endif
+                                <livewire:components.trabajo-academico.card-trabajo-academico :tipo_vista=$tipo_vista
+                                    :usuario=$usuario :id_gestion_aula_usuario=$id_gestion_aula_usuario lazy />
+
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-lg-4">
-                    @livewire('components.datos-curso', [
-                    'id_gestion_aula_usuario' => $id_gestion_aula_usuario,
-                    'tipo_vista' => $tipo_vista
-                    ])
+                    <livewire:components.curso.datos-curso :id_gestion_aula_usuario=$id_gestion_aula_usuario
+                        :tipo_vista=$tipo_vista lazy />
                 </div>
 
             </div>

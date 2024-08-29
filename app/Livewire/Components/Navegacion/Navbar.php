@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Livewire\Components;
+namespace App\Livewire\Components\Navegacion;
 
-use App\Models\UsuarioRol;
 use Livewire\Component;
 
 class Navbar extends Component
@@ -24,8 +23,9 @@ class Navbar extends Component
         $this->nombre = $this->persona->soloPrimerosNombres;
     }
 
+
     public function render()
     {
-        return view('livewire.components.navbar');
+        return view('livewire.components.navegacion.navbar');
     }
 }

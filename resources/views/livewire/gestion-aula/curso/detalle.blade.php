@@ -1,13 +1,13 @@
 <div>
 
-    <livewire:components.page-header :titulo_pasos="$titulo_page_header" :titulo="$titulo_page_header"
-        :links_array="$links_page_header" :regresar="$regresar_page_header" lazy />
+    <livewire:components.navegacion.page-header :titulo_pasos=$titulo_page_header :titulo=$titulo_page_header
+        :links_array=$links_page_header :regresar=$regresar_page_header lazy />
 
     <div class="page-body">
         <div class="container-xl">
 
             @if($modo_admin)
-            <livewire:components.info-alumnos-docentes :usuario="$usuario" :tipo_vista="$tipo_vista" lazy />
+            <livewire:components.curso.admin-info-usuario :usuario=$usuario :tipo_vista=$tipo_vista lazy />
             @endif
 
             <div class="row g-3">
@@ -417,15 +417,11 @@
 
                 <div class="col-lg-4">
 
-                    @livewire('components.info-docente', [
-                    'id_gestion_aula_usuario' => $id_gestion_aula_usuario,
-                    'tipo_vista' => $tipo_vista
-                    ])
+                    <livewire:components.curso.info-docente :id_gestion_aula_usuario=$id_gestion_aula_usuario
+                        :tipo_vista=$tipo_vista lazy />
 
-                    @livewire('components.datos-curso', [
-                    'id_gestion_aula_usuario' => $id_gestion_aula_usuario,
-                    'tipo_vista' => $tipo_vista
-                    ])
+                    <livewire:components.curso.datos-curso :id_gestion_aula_usuario=$id_gestion_aula_usuario
+                        :tipo_vista=$tipo_vista lazy />
 
                 </div>
 
