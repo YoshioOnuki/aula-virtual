@@ -24,7 +24,6 @@ class Index extends Component
     public $foto_docente = array();
 
     public $cargando = true;
-    public $cantidad_cursos = 1;
 
     public $modo_admin = false;// Modo admin, para saber si se esta en modo administrador
     public $tipo_vista; // Tipo de vista, para saber si es alumno o docente
@@ -216,31 +215,6 @@ class Index extends Component
         $this->cargando = false;
     }
 
-    public function calcular_cantidad_curso()
-    {
-        if($this->tipo_vista === 'cursos')
-        {
-            $this->cantidad_cursos = GestionAulaUsuario::with('rol')
-                ->where('id_usuario', $this->usuario->id_usuario)
-                ->where('estado_gestion_aula_usuario', 1)
-                ->whereHas('rol', function ($query) {
-                    $query->where('nombre_rol', 'ALUMNO');
-                })
-                ->count();
-
-
-        } elseif($this->tipo_vista === 'carga-academica') {
-            $this->cantidad_cursos = GestionAulaUsuario::with('rol')
-                ->where('id_usuario', $this->usuario->id_usuario)
-                ->where('estado_gestion_aula_usuario', 1)
-                ->whereHas('rol', function ($query) {
-                    $query->where('nombre_rol', 'DOCENTE');
-                })
-                ->count();
-        }
-        $this->cantidad_cursos === 0 ? $this->cantidad_cursos = 1 : $this->cantidad_cursos;
-    }
-
 
     /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
         public function obtener_datos_page_header()
@@ -298,8 +272,6 @@ class Index extends Component
         $id = Hashids::decode($id_usuario);
         $this->usuario = Usuario::find($id[0]);
 
-
-        $this->calcular_cantidad_curso();
         $this->obtener_datos_page_header();
 
     }

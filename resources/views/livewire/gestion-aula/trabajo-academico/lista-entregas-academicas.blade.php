@@ -12,7 +12,7 @@
 
             <div class="row g-3">
                 <div class="col-lg-8">
-                    {{-- <div class="card animate__animated animate__fadeIn animate__faster">
+                    <div class="card animate__animated animate__fadeIn animate__faster">
                         <div class="card-body border-bottom py-3">
                             <div class="d-flex align-items-center justify-content-between">
                                 <div class="text-secondary">
@@ -47,79 +47,78 @@
                                         <th class="w-1">No.</th>
                                         <th class="col-1">Código</th>
                                         <th>Alumno</th>
-                                        <th>Usuario</th>
-                                        <th>Última conexión</th>
+                                        <th class="col-2">Entrega</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @php
+                                    {{-- @php
                                     $i = $alumnos->count() ?? 0;
                                     @endphp
                                     @forelse ($alumnos as $item)
-                                    <tr
-                                        class="{{ $item->estado_gestion_aula_usuario === 0 ? 'bg-red text-white fw-bold' : '' }}">
-                                        <td>
-                                            <span
-                                                class="{{ $item->estado_gestion_aula_usuario === 0 ? 'text-white' : 'text-secondary' }}">
-                                                {{ $i-- }}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            {{ $item->usuario->persona->codigo_alumno_persona }}
-                                        </td>
-                                        <td>
-                                            <div class="d-flex py-1 align-items-center">
-                                                <img src="{{ asset($item->usuario->mostrarFoto('azure')) }}"
-                                                    alt="avatar" class="avatar rounded avatar-static me-2">
-                                                <div class="flex-fill">
-                                                    <div class="font-weight-medium">{{ $item->usuario->nombre_completo
-                                                        }}
-                                                    </div>
-                                                    <div
-                                                        class="{{ $item->estado_gestion_aula_usuario === 0 ? 'text-white' : 'text-secondary' }}">
-                                                        <a href="#" class="text-reset">
-                                                            {{ $item->usuario->persona->documento_persona }}
-                                                        </a>
+                                        <tr
+                                            class="{{ $item->estado_gestion_aula_usuario === 0 ? 'bg-red text-white fw-bold' : '' }}">
+                                            <td>
+                                                <span
+                                                    class="{{ $item->estado_gestion_aula_usuario === 0 ? 'text-white' : 'text-secondary' }}">
+                                                    {{ $i-- }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                {{ $item->usuario->persona->codigo_alumno_persona }}
+                                            </td>
+                                            <td>
+                                                <div class="d-flex py-1 align-items-center">
+                                                    <img src="{{ asset($item->usuario->mostrarFoto('azure')) }}"
+                                                        alt="avatar" class="avatar rounded avatar-static me-2">
+                                                    <div class="flex-fill">
+                                                        <div class="font-weight-medium">{{ $item->usuario->nombre_completo
+                                                            }}
+                                                        </div>
+                                                        <div
+                                                            class="{{ $item->estado_gestion_aula_usuario === 0 ? 'text-white' : 'text-secondary' }}">
+                                                            <a href="#" class="text-reset">
+                                                                {{ $item->usuario->persona->documento_persona }}
+                                                            </a>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            {{ $item->usuario->correo_usuario }}
-                                        </td>
-                                        <td>
-                                            {{ ultima_conexion('2024-06-23 12:18:17') }}
-                                        </td>
-                                    </tr>
+                                            </td>
+                                            <td>
+                                                {{ $item->usuario->correo_usuario }}
+                                            </td>
+                                            <td>
+                                                {{ ultima_conexion('2024-06-23 12:18:17') }}
+                                            </td>
+                                        </tr>
                                     @empty
-                                    @if ($alumnos->count() == 0 && $search != '')
-                                    <tr>
-                                        <td colspan="5">
-                                            <div class="text-center" style="padding-bottom: 2rem; padding-top: 2rem;">
-                                                <span class="text-secondary">
-                                                    No se encontraron resultados para
-                                                    "<strong>{{ $search }}</strong>"
-                                                </span>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @else
-                                    <tr>
-                                        <td colspan="5">
-                                            <div class="text-center" style="padding-bottom: 2rem; padding-top: 2rem;">
-                                                <span class="text-secondary">
-                                                    No hay alumnos matriculados
-                                                </span>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @endif
-                                    @endforelse
+                                        @if ($alumnos->count() == 0 && $search != '')
+                                        <tr>
+                                            <td colspan="5">
+                                                <div class="text-center" style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                    <span class="text-secondary">
+                                                        No se encontraron resultados para
+                                                        "<strong>{{ $search }}</strong>"
+                                                    </span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @else
+                                        <tr>
+                                            <td colspan="5">
+                                                <div class="text-center" style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                    <span class="text-secondary">
+                                                        No hay alumnos matriculados
+                                                    </span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @endif
+                                    @endforelse --}}
                                 </tbody>
                             </table>
                         </div>
 
-                        <div class="card-footer {{ $alumnos->hasPages() ? 'py-0' : '' }}">
+                        {{-- <div class="card-footer {{ $alumnos->hasPages() ? 'py-0' : '' }}">
                             @if ($alumnos->hasPages())
                             <div class="d-flex justify-content-between">
                                 <div class="d-flex align-items-center text-secondary">
@@ -138,15 +137,15 @@
                                 </div>
                             </div>
                             @endif
-                        </div>
-                    </div> --}}
+                        </div> --}}
+                    </div>
                 </div>
 
                 <div class="col-lg-4">
                     <livewire:components.trabajo-academico.card-estado-trabajo :id_usuario_hash=$id_usuario_hash
-                    :tipo_vista=$tipo_vista :id_gestion_aula_usuario=$id_gestion_aula_usuario
-                    :trabajo_academico=$trabajo_academico :id_gestion_aula=$id_gestion_aula
-                    :lista_alumnos=false lazy />
+                        :tipo_vista=$tipo_vista :id_gestion_aula_usuario=$id_gestion_aula_usuario
+                        :trabajo_academico=$trabajo_academico :id_gestion_aula=$id_gestion_aula :lista_alumnos=false
+                        lazy />
                 </div>
             </div>
         </div>

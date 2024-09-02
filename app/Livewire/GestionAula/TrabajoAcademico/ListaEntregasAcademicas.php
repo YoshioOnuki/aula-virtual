@@ -6,11 +6,21 @@ use App\Models\GestionAulaUsuario;
 use App\Models\TrabajoAcademico;
 use App\Models\TrabajoAcademicoAlumno;
 use App\Models\Usuario;
+use Livewire\Attributes\Url;
 use Livewire\Component;
+use Livewire\WithPagination;
 use Vinkla\Hashids\Facades\Hashids;
 
 class ListaEntregasAcademicas extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+
+    #[Url('mostrar')]
+    public $mostrar_paginate = 10;
+    #[Url('buscar')]
+    public $search = '';
+
     public $id_usuario_hash;
     public $usuario;
 
