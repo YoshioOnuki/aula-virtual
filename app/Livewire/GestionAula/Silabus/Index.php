@@ -19,6 +19,8 @@ class Index extends Component
     public $usuario;
     public $id_usuario_hash;
 
+    public $es_docente = false;
+
     public $id_gestion_aula_usuario_hash;
     public $id_gestion_aula_usuario;
     public $curso;
@@ -246,6 +248,8 @@ class Index extends Component
         {
             $this->modo_admin = true;
         }
+
+        $this->es_docente = $this->usuario->esRolGestionAula('DOCENTE', $this->id_gestion_aula_usuario);
 
         $this->obtener_datos_page_header();
 

@@ -239,7 +239,7 @@
                                         entradas
                                     </div>
                                     <div class="text-secondary row">
-                                        @if ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario) &&
+                                        @if ($es_docente &&
                                         $tipo_vista === 'carga-academica')
                                         <div class="col-lg-7 col-9">
                                             <div class="d-inline-block">
@@ -258,7 +258,7 @@
                                         </div>
                                         @endif
 
-                                        @if ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario) &&
+                                        @if ($es_docente &&
                                         $tipo_vista === 'carga-academica')
                                         <div class="col-lg-5 col-3 d-flex justify-content-end">
                                             <a class="btn btn-primary d-none d-md-inline-block"
@@ -315,10 +315,8 @@
                                             </td>
                                             <td>
                                                 Sesión de {{ $item->tipoAsistencia->nombre_tipo_asistencia }}
-                                                @if ($tipo_vista === 'carga-academica' &&
-                                                $usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario) &&
-                                                verificar_hora_actual($item->hora_inicio_asistencia,
-                                                $item->hora_fin_asistencia, $item->fecha_asistencia))
+                                                @if ($tipo_vista === 'carga-academica' && $es_docente &&
+                                                verificar_hora_actual($item->hora_inicio_asistencia, $item->hora_fin_asistencia, $item->fecha_asistencia))
                                                 <span class="badge bg-red ms-2 badge-blink"></span>
                                                 @endif
                                             </td>
@@ -439,9 +437,7 @@
                                                 @endforeach
                                                 @endif
                                             </td>
-                                            @elseif ($tipo_vista === 'carga-academica' &&
-                                            ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario) ||
-                                            $usuario->esRolGestionAula('DOCENTE INVITADO', $id_gestion_aula_usuario)))
+                                            @elseif ($tipo_vista === 'carga-academica' && ($es_docente || $es_docente_invitado))
                                             <td>
                                                 <div class="btn-list flex-nowrap">
                                                     <div class="dropdown">

@@ -86,6 +86,7 @@ class Detalle extends Component
         }
     /* ============================================================ */
 
+
     /* =============== FUNCIONES PARA EL MODAL DE  ENVIAR ASISTENCIAS =============== */
         public function abrir_modal_enviar_asistencia($id_gestion_aula_usuario)
         {

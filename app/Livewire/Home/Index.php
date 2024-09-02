@@ -26,7 +26,6 @@ class Index extends Component
     public $foto_docente = array();
 
     public $cargando = true;
-    public $cantidad_cursos = 1;
 
 
     public function calcular_progreso()
@@ -101,12 +100,12 @@ class Index extends Component
                     $query->where('nombre_rol', 'DOCENTE');
                 })
                 ->first();
-                if($docente) {
-                    $this->foto_docente[$curso->id_gestion_aula] = $docente->usuario->mostrarFoto('alumno');
-                }else{
-                    $this->foto_docente[$curso->id_gestion_aula] = '/media/avatar-none.webp';
-                }
+            if ($docente) {
+                $this->foto_docente[$curso->id_gestion_aula] = $docente->usuario->mostrarFoto('alumno');
+            } else {
+                $this->foto_docente[$curso->id_gestion_aula] = '/media/avatar-none.webp';
             }
+        }
     }
 
     public function mostrar_cursos()
@@ -147,7 +146,6 @@ class Index extends Component
             ->sortBy('gestionAula.curso.nombre_curso');
 
         $this->carga_academica = $favoritos->concat($noFavoritos);
-
     }
 
     public function curso_detalle($id)
@@ -158,7 +156,7 @@ class Index extends Component
                 $query->where('nombre_rol', 'DOCENTE');
             })
             ->first();
-        if($docente) {
+        if ($docente) {
             $id_curso = Hashids::encode($docente->id_gestion_aula_usuario);
             $id_usuario = Hashids::encode($this->usuario->id_usuario);
             return redirect()->route('cursos.detalle', ['id_usuario' => $id_usuario, 'tipo_vista' => 'cursos', 'id_curso' => $id_curso]);
@@ -179,7 +177,7 @@ class Index extends Component
                 $query->where('nombre_rol', 'DOCENTE');
             })
             ->first();
-        if($docente) {
+        if ($docente) {
             $id_curso = Hashids::encode($docente->id_gestion_aula_usuario);
             $id_usuario = Hashids::encode($this->usuario->id_usuario);
             return redirect()->route('carga-academica.detalle', ['id_usuario' => $id_usuario, 'tipo_vista' => 'carga-academica', 'id_curso' => $id_curso]);
@@ -202,23 +200,14 @@ class Index extends Component
         $this->cargando = false;
     }
 
-    public function calcular_cantidad_curso()
-    {
-            $this->cantidad_cursos = GestionAulaUsuario::where('id_usuario', auth()->user()->id_usuario)
-                ->where('estado_gestion_aula_usuario', 1)
-                ->count();
-    }
-
     public function mount()
     {
         $this->usuario = Usuario::find(auth()->id());
-
-        $this->calcular_cantidad_curso();
     }
 
     public function render()
     {
-        $autoridades_model = Autoridad::activo()->orderBy('id_cargo')
+        $autoridades_model = Autoridad::with('facultad', 'cargo')->activo()->orderBy('id_cargo')
             ->get();
 
         return view('livewire.home.index', [

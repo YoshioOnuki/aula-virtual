@@ -46,7 +46,7 @@
                                     <div>
                                         <h4 class="alert-title">El sílabus no está disponible en este momento.</h4>
                                         <div class="text-secondary">
-                                            @if ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario))
+                                            @if ($es_docente)
                                             Por favor, sube el sílabus del curso para que los alumnos puedan
                                             acceder a él.
                                             @else
@@ -270,8 +270,7 @@
                                         </div>
                                     </div>
 
-                                    @if ($tipo_vista === 'carga-academica' && $usuario->esRolGestionAula('DOCENTE',
-                                    $id_gestion_aula_usuario))
+                                    @if ($tipo_vista === 'carga-academica' && $es_docente)
                                     <hr class="mt-5 mb-2 hide-theme-dark">
                                     <hr class="mt-5 mb-2 hide-theme-light text-white">
 

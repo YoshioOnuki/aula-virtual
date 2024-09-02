@@ -27,6 +27,9 @@ class Index extends Component
     public $curso;
     public $recursos;
 
+    // Variables para saber si el usuario es docente
+    public $es_docente = false;
+
     // Variables para la carga de datos
     public $cargando_recursos = true;
     public $cargando_datos_curso = true;
@@ -307,6 +310,8 @@ class Index extends Component
         {
             $this->modo_admin = true;
         }
+
+        $this->es_docente = $this->usuario->esRolGestionAula('DOCENTE', $this->id_gestion_aula_usuario);
 
         $this->obtener_datos_page_header();
 

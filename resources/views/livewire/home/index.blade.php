@@ -1,6 +1,6 @@
 <div>
 
-    @livewire('components.page-header', [
+    @livewire('components.navegacion.page-header', [
         'titulo_pasos' => 'Inicio',
         'titulo' => 'Aula Virtual',
         'links_array' => [],
@@ -32,7 +32,7 @@
                             <div class="row row-cards d-flex justify-content-start" wire:init="load_cursos">
 
                                 @if ($cargando)
-                                    @for($i = 0; $i < $cantidad_cursos; $i++)
+                                    {{-- @for($i = 0; $i < $cantidad_cursos; $i++) --}}
                                         <div class="col-sm-6 col-lg-6 col-xl-4 p-xl-2 p-lg-1 p-2">
                                             <div class="card placeholder-glow">
                                                 <div class="ratio ratio-16x9 card-img-top placeholder"></div>
@@ -49,7 +49,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    @endfor
+                                    {{-- @endfor --}}
                                 @else
 
                                     @forelse ($cursos as $item)

@@ -35,6 +35,9 @@ class Index extends Component
     public $id_gestion_aula_usuario_hash;
     public $id_gestion_aula_usuario;
 
+    public $es_docente = false;
+    public $es_docente_invitado = false;
+
     // Variables para el modal de Asistencias
     public $modo_asistencias = 1; // Modo 1 = Agregar / 0 = Editar
     public $titulo_asistencias = 'Agregar Link de Clase';
@@ -495,6 +498,9 @@ class Index extends Component
         {
             $this->modo_admin = true;
         }
+
+        $this->es_docente = $this->usuario->esRolGestionAula('DOCENTE', $this->id_gestion_aula_usuario);
+        $this->es_docente_invitado = $this->usuario->esRolGestionAula('DOCENTE INVITADO', $this->id_gestion_aula_usuario);
 
         $this->obtener_datos_page_header();
 
