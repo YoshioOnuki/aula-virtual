@@ -51,69 +51,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{-- @php
-                                    $i = $alumnos->count() ?? 0;
-                                    @endphp
-                                    @forelse ($alumnos as $item)
-                                        <tr
-                                            class="{{ $item->estado_gestion_aula_usuario === 0 ? 'bg-red text-white fw-bold' : '' }}">
-                                            <td>
-                                                <span
-                                                    class="{{ $item->estado_gestion_aula_usuario === 0 ? 'text-white' : 'text-secondary' }}">
-                                                    {{ $i-- }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                {{ $item->usuario->persona->codigo_alumno_persona }}
-                                            </td>
-                                            <td>
-                                                <div class="d-flex py-1 align-items-center">
-                                                    <img src="{{ asset($item->usuario->mostrarFoto('azure')) }}"
-                                                        alt="avatar" class="avatar rounded avatar-static me-2">
-                                                    <div class="flex-fill">
-                                                        <div class="font-weight-medium">{{ $item->usuario->nombre_completo
-                                                            }}
-                                                        </div>
-                                                        <div
-                                                            class="{{ $item->estado_gestion_aula_usuario === 0 ? 'text-white' : 'text-secondary' }}">
-                                                            <a href="#" class="text-reset">
-                                                                {{ $item->usuario->persona->documento_persona }}
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                {{ $item->usuario->correo_usuario }}
-                                            </td>
-                                            <td>
-                                                {{ ultima_conexion('2024-06-23 12:18:17') }}
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        @if ($alumnos->count() == 0 && $search != '')
-                                        <tr>
-                                            <td colspan="5">
-                                                <div class="text-center" style="padding-bottom: 2rem; padding-top: 2rem;">
-                                                    <span class="text-secondary">
-                                                        No se encontraron resultados para
-                                                        "<strong>{{ $search }}</strong>"
-                                                    </span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        @else
-                                        <tr>
-                                            <td colspan="5">
-                                                <div class="text-center" style="padding-bottom: 2rem; padding-top: 2rem;">
-                                                    <span class="text-secondary">
-                                                        No hay alumnos matriculados
-                                                    </span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        @endif
-                                    @endforelse --}}
+                                    
                                 </tbody>
                             </table>
                         </div>
