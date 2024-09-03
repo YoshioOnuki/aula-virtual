@@ -260,8 +260,8 @@
                                             <span class="hide-theme-light">
                                                 <a class="dark-mode text-decoration-none text-white"
                                                     href="{{ $tipo_vista === 'cursos' ?
-                                                    route('cursos.detalle.asistencia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => Hashids::encode($id_gestion_aula_usuario)]) :
-                                                    route('carga-academica.detalle.asistencia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => Hashids::encode($id_gestion_aula_usuario)]) }}">
+                                                    route('cursos.detalle.trabajo-academico', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => Hashids::encode($id_gestion_aula_usuario)]) :
+                                                    route('carga-academica.detalle.trabajo-academico', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => Hashids::encode($id_gestion_aula_usuario)]) }}">
                                                     <div
                                                         class="image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-curso-por-internet.webp" alt="Info"

@@ -11,6 +11,7 @@ use App\Models\TrabajoAcademicoAlumno;
 use App\Models\Usuario;
 use DOMDocument;
 use DOMElement;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -357,7 +358,8 @@ class Detalle extends Component
         $id_usuario = Hashids::decode($id_usuario);
         $this->usuario = Usuario::find($id_usuario[0]);
 
-        $usuario_sesion = Usuario::find(auth()->user()->id_usuario);
+        $user = Auth::user();
+        $usuario_sesion = Usuario::find($user->id_usuario);
 
         if ($usuario_sesion->esRol('ADMINISTRADOR')) {
             $this->modo_admin = true;

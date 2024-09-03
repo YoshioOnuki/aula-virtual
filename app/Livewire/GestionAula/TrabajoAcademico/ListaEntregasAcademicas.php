@@ -6,6 +6,7 @@ use App\Models\GestionAulaUsuario;
 use App\Models\TrabajoAcademico;
 use App\Models\TrabajoAcademicoAlumno;
 use App\Models\Usuario;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -146,7 +147,8 @@ class ListaEntregasAcademicas extends Component
         $id_usuario = Hashids::decode($id_usuario);
         $this->usuario = Usuario::find($id_usuario[0]);
 
-        $usuario_sesion = Usuario::find(auth()->user()->id_usuario);
+        $user = Auth::user();
+        $usuario_sesion = Usuario::find($user->id_usuario);
 
         if ($usuario_sesion->esRol('ADMINISTRADOR')) {
             $this->modo_admin = true;

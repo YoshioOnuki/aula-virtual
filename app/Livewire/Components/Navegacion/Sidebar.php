@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Components\Navegacion;
 
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class Sidebar extends Component
@@ -14,13 +15,14 @@ class Sidebar extends Component
 
     public function logout()
     {
-        auth()->logout();
+        Auth::logout();
         return redirect()->route('login');
     }
 
     public function mount()
     {
-        $this->usuario = auth()->user();
+        $user = Auth::user();
+        $this->usuario = $user;
         $this->persona = $this->usuario->persona;
         $this->nombre = strtoupper($this->persona->soloPrimerosNombres);
     }

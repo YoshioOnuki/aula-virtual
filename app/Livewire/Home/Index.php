@@ -8,6 +8,7 @@ use App\Models\ForoRespuesta;
 use App\Models\GestionAulaUsuario;
 use App\Models\TrabajoAcademico;
 use App\Models\Usuario;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Vinkla\Hashids\Facades\Hashids;
@@ -110,9 +111,11 @@ class Index extends Component
 
     public function mostrar_cursos()
     {
+        $user = Auth::user();
+
         // Cursos
         $cursos = GestionAulaUsuario::with(['gestionAula.curso', 'rol'])
-            ->where('id_usuario', auth()->user()->id_usuario)
+            ->where('id_usuario', $user->id_usuario)
             ->where('estado_gestion_aula_usuario', 1)
             ->whereHas('rol', function ($query) {
                 $query->where('nombre_rol', 'ALUMNO');
@@ -131,7 +134,7 @@ class Index extends Component
 
         // Cargo academico
         $carga_academica = GestionAulaUsuario::with(['gestionAula.curso', 'rol'])
-            ->where('id_usuario', auth()->user()->id_usuario)
+            ->where('id_usuario', $user->id_usuario)
             ->where('estado_gestion_aula_usuario', 1)
             ->whereHas('rol', function ($query) {
                 $query->whereIn('nombre_rol', ['DOCENTE', 'DOCENTE INVITADO']);
@@ -202,7 +205,8 @@ class Index extends Component
 
     public function mount()
     {
-        $this->usuario = Usuario::find(auth()->id());
+        $user = Auth::user();
+        $this->usuario = Usuario::find($user->id_usuario);
     }
 
     public function render()

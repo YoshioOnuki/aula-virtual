@@ -4,6 +4,7 @@ namespace App\Livewire\GestionAula\Alumnos;
 
 use App\Models\GestionAulaUsuario;
 use App\Models\Usuario;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -189,7 +190,8 @@ class Index extends Component
         $id_usuario = Hashids::decode($id_usuario);
         $this->usuario = Usuario::find($id_usuario[0]);
 
-        $usuario_sesion = Usuario::find(auth()->user()->id_usuario);
+        $user = Auth::user();
+        $usuario_sesion = Usuario::find($user->id_usuario);
 
         if ($usuario_sesion->esRol('ADMINISTRADOR'))
         {

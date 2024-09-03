@@ -7,6 +7,7 @@ use App\Models\ForoRespuesta;
 use App\Models\GestionAulaUsuario;
 use App\Models\TrabajoAcademico;
 use App\Models\Usuario;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Vinkla\Hashids\Facades\Hashids;
@@ -16,6 +17,7 @@ class Index extends Component
 {
     public $id_usuario_hash;
     public $usuario;
+    public $usuario_sesion;
     public $cursos;
     public $favorito;
     public $numero_progreso = array();
@@ -62,7 +64,7 @@ class Index extends Component
             $id_curso = Hashids::encode($gestion_aula_usuario->id_gestion_aula_usuario);
             $id_usuario = Hashids::encode($this->usuario->id_usuario);
 
-            $usuario_sesion = Usuario::find(auth()->user()->id_usuario);
+            $usuario_sesion = Usuario::find($this->usuario_sesion->id_usuario);
             if ($usuario_sesion->esRol('ADMINISTRADOR'))
             {
                 $this->modo_admin = true;
@@ -261,9 +263,10 @@ class Index extends Component
     {
         $this->tipo_vista = $tipo_vista;
 
-        $usuario_sesion = Usuario::find(auth()->user()->id_usuario);
+        $user = Auth::user();
+        $this->usuario_sesion = Usuario::find($user->id_usuario);
 
-        if ($usuario_sesion->esRol('ADMINISTRADOR'))
+        if ($this->usuario_sesion->esRol('ADMINISTRADOR'))
         {
             $this->modo_admin = true;
         }
