@@ -139,9 +139,14 @@
                 <tr>
                     <td colspan="6">
                         <div class="text-center" style="padding-bottom: 2rem; padding-top: 2rem;">
-                            <span class="text-secondary">
-                                Busca un {{ $tipo_vista === 'cursos' ? 'Alumno' : 'Docente' }}...
-                            </span>
+                            <div wire:loading.remove>
+                                <span class="text-secondary">
+                                    Busca un {{ $tipo_vista === 'cursos' ? 'Alumno' : 'Docente' }}.
+                                </span>
+                            </div>
+                            <div wire:loading>
+                                <div class="spinner-border text-blue" role="status"></div>
+                            </div>
                         </div>
                     </td>
                 </tr>

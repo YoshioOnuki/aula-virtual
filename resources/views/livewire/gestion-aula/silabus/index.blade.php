@@ -295,7 +295,12 @@
                                     <div class="col-12">
                                         <a class="btn btn-primary w-100 mt-3" style="cursor: pointer;"
                                             wire:click="guardar_silabus">
-                                            Guardar Sílabus
+                                            <div wire:loading.remove>
+                                                <span>Guardar Sílabus</span>
+                                            </div>
+                                            <div wire:loading>
+                                                <div class="spinner-border spinner-border-sm" role="status"></div>
+                                            </div>
                                         </a>
                                     </div>
                                     @endif

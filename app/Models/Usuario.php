@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Usuario extends Authenticatable
 {
@@ -153,7 +154,8 @@ class Usuario extends Authenticatable
         return $this->persona->solo_primeros_nombres;
     }
 
-    public function scopeSearch($query, $search) {
+    public function scopeSearch($query, $search)
+    {
         if ($search == null) {
             return $query;
         }
@@ -164,12 +166,14 @@ class Usuario extends Authenticatable
                     $subQuery->where('nombres_persona', 'LIKE', '%' . $search . '%')
                         ->orWhere('apellido_paterno_persona', 'LIKE', '%' . $search . '%')
                         ->orWhere('apellido_materno_persona', 'LIKE', '%' . $search . '%')
-                        ->orWhere('documento_persona', 'LIKE', '%' . $search . '%');
+                        ->orWhere('documento_persona', 'LIKE', '%' . $search . '%')
+                        ->orWhere('codigo_alumno_persona', 'LIKE', '%' . $search . '%');
                 });
         });
     }
 
-    public function scopeSearchAlumno($query, $search) {
+    public function scopeSearchAlumno($query, $search)
+    {
         if ($search == null) {
             return $query;
         }
@@ -203,15 +207,15 @@ class Usuario extends Authenticatable
         parent::boot();
 
         static::creating(function ($usuario) {
-            $usuario->created_by = auth()->id();
+            $usuario->created_by = Auth::id();
         });
 
         static::updating(function ($usuario) {
-            $usuario->updated_by = auth()->id();
+            $usuario->updated_by = Auth::id();
         });
 
         static::deleting(function ($usuario) {
-            $usuario->deleted_by = auth()->id();
+            $usuario->deleted_by = Auth::id();
             $usuario->save();
         });
     }

@@ -47,35 +47,87 @@
                                         <th class="w-1">No.</th>
                                         <th class="col-1">Código</th>
                                         <th>Alumno</th>
+                                        <th>Hora de entrega</th>
                                         <th class="col-2">Entrega</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    
+                                    @forelse ($entregas_academicas as $item)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $item->usuario->persona->codigo_alumno_persona }}</td>
+                                        <td>{{ $item->usuario->nombre_completo }}</td>
+                                        <td>
+                                            @forelse ($item->trabajoAcademicoAlumno as $trabajo)
+                                                @if($trabajo->created_at > $trabajo_academico->fecha_fin_trabajo_academico)
+                                                    <span class="text-danger">
+                                                        {{-- Restar la diferencia de tiempo --}}
+                                                        {{ $trabajo->created_at->diff($trabajo_academico->fecha_fin_trabajo_academico) }} tarde
+                                                    </span>
+                                                @else
+                                                    {{ format_hora($trabajo->created_at) }}
+                                                @endif
+                                            @empty
+                                                <span class="text-secondary">Sin entrega</span>
+                                            @endforelse
+                                        </td>
+                                        <td>
+                                            @if(count($item->trabajoAcademicoAlumno) > 0)
+                                                <a href=""
+                                                    class="btn btn-sm btn-primary">Ver entrega</a>
+                                            @else
+                                                <span class="text-secondary">Sin entrega</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    @empty
+                                        @if ($entregas_academicas->count() == 0 && $search != '')
+                                        <tr>
+                                            <td colspan="4">
+                                                <div class="text-center" style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                    <span class="text-secondary">
+                                                        No se encontraron resultados para
+                                                        "<strong>{{ $search }}</strong>"
+                                                    </span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @else
+                                        <tr>
+                                            <td colspan="4">
+                                                <div class="text-center" style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                    <span class="text-secondary">
+                                                        No hay alumnos matriculados
+                                                    </span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @endif
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
 
-                        {{-- <div class="card-footer {{ $alumnos->hasPages() ? 'py-0' : '' }}">
-                            @if ($alumnos->hasPages())
+                        <div class="card-footer {{ $entregas_academicas->hasPages() ? 'py-0' : '' }}">
+                            @if ($entregas_academicas->hasPages())
                             <div class="d-flex justify-content-between">
                                 <div class="d-flex align-items-center text-secondary">
-                                    Mostrando {{ $alumnos->firstItem() }} - {{ $alumnos->lastItem() }} de
-                                    {{ $alumnos->total() }} registros
+                                    Mostrando {{ $entregas_academicas->firstItem() }} - {{ $entregas_academicas->lastItem() }} de
+                                    {{ $entregas_academicas->total() }} registros
                                 </div>
                                 <div class="mt-3">
-                                    {{ $alumnos->links() }}
+                                    {{ $entregas_academicas->links() }}
                                 </div>
                             </div>
                             @else
                             <div class="d-flex justify-content-between">
                                 <div class="d-flex align-items-center text-secondary">
-                                    Mostrando {{ $alumnos->firstItem() }} - {{ $alumnos->lastItem() }} de
-                                    {{ $alumnos->total() }} registros
+                                    Mostrando {{ $entregas_academicas->firstItem() }} - {{ $entregas_academicas->lastItem() }} de
+                                    {{ $entregas_academicas->total() }} registros
                                 </div>
                             </div>
                             @endif
-                        </div> --}}
+                        </div>
                     </div>
                 </div>
 

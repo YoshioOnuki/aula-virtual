@@ -160,20 +160,32 @@ class ListaEntregasAcademicas extends Component
 
     public function render()
     {
-        $trabajos_academicos_alumnos = TrabajoAcademicoAlumno::with([
-            'gestionAulaUsuario' => function ($query) {
-                $query->with(['usuario' => function ($query) {
-                    $query->with('persona');
-                }]);
+
+        $entregas_academicas = GestionAulaUsuario::with([
+            'usuario' => function ($query) {
+                $query->with('persona');
             },
-            'estadoTrabajoAcademico',
-            'archivoAlumno',
-            'comentarioTrabajoAcademico'
-        ])->where('id_trabajo_academico', $this->trabajo_academico->id_trabajo_academico)
-            ->get();
+            'trabajoAcademicoAlumno' => function ($query) {
+                $query->with('estadoTrabajoAcademico', 'archivoAlumno', 'comentarioTrabajoAcademico')
+                    ->where('id_trabajo_academico', $this->trabajo_academico->id_trabajo_academico)
+                    ->first();
+            },
+            'rol' => function ($query) {
+                $query->where('estado_rol', 1);
+            }
+        ])->where('id_gestion_aula', $this->id_gestion_aula)
+            ->whereHas('usuario', function ($query) {
+                $query->where('estado_usuario', 1);
+            })
+            ->whereHas('rol', function ($query) {
+                $query->where('nombre_rol', 'ALUMNO');
+            })
+            ->searchAlumno($this->search)
+            ->paginate($this->mostrar_paginate);
+
 
         return view('livewire.gestion-aula.trabajo-academico.lista-entregas-academicas',[
-            'trabajos_academicos_alumnos' => $trabajos_academicos_alumnos
+            'entregas_academicas' => $entregas_academicas
         ]);
     }
 }

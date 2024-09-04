@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class ArchivoAlumno extends Model
 {
@@ -30,13 +31,13 @@ class ArchivoAlumno extends Model
         parent::boot();
 
         static::creating(function ($archivo_alumno) {
-            $archivo_alumno->created_by = auth()->id();
+            $archivo_alumno->created_by = Auth::id();
         });
         static::updating(function ($archivo_alumno) {
-            $archivo_alumno->updated_by = auth()->id();
+            $archivo_alumno->updated_by = Auth::id();
         });
         static::deleting(function ($archivo_alumno) {
-            $archivo_alumno->deleted_by = auth()->id();
+            $archivo_alumno->deleted_by = Auth::id();
             $archivo_alumno->save();
         });
     }

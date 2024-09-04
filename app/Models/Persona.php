@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Persona extends Model
 {
@@ -44,7 +45,8 @@ class Persona extends Model
         return $this->usuario->first()->foto_usuario ?? '';
     }
 
-    public function scopeSearch($query, $search) {
+    public function scopeSearch($query, $search)
+    {
         if ($search == null) {
             return $query;
         }
@@ -61,15 +63,15 @@ class Persona extends Model
         parent::boot();
 
         static::creating(function ($persona) {
-            $persona->created_by = auth()->id();
+            $persona->created_by = Auth::id();
         });
 
         static::updating(function ($persona) {
-            $persona->updated_by = auth()->id();
+            $persona->updated_by = Auth::id();
         });
 
         static::deleting(function ($persona) {
-            $persona->deleted_by = auth()->id();
+            $persona->deleted_by = Auth::id();
             $persona->save();
         });
     }

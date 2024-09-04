@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Recurso extends Model
 {
@@ -30,13 +31,13 @@ class Recurso extends Model
         parent::boot();
 
         static::creating(function ($recurso) {
-            $recurso->created_by = auth()->id();
+            $recurso->created_by = Auth::id();
         });
         static::updating(function ($recurso) {
-            $recurso->updated_by = auth()->id();
+            $recurso->updated_by = Auth::id();
         });
         static::deleting(function ($recurso) {
-            $recurso->deleted_by = auth()->id();
+            $recurso->deleted_by = Auth::id();
             $recurso->save();
         });
     }

@@ -3,6 +3,7 @@
 namespace App\Livewire\Seguridad\Auth;
 
 use App\Models\Usuario;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -25,7 +26,7 @@ class Login extends Component
 
         $usuario = Usuario::activo()->correo($this->correo)->first();
         if($usuario && Hash::check($this->contrasenia, $usuario->contrasenia_usuario)){
-            auth()->login($usuario, false);
+            Auth::login($usuario, false);
             $usuario->ultima_accion_usuario = now();
             $usuario->id_accion_usuario = 1;
             $usuario->save();

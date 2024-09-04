@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Webgrafia extends Model
 {
@@ -25,7 +26,8 @@ class Webgrafia extends Model
         return $this->belongsTo(GestionAula::class, 'id_gestion_aula');
     }
 
-    public function scopeSearch($query, $search) {
+    public function scopeSearch($query, $search)
+    {
         if ($search == null) {
             return $query;
         }
@@ -39,13 +41,13 @@ class Webgrafia extends Model
         parent::boot();
 
         static::creating(function ($webgrafia) {
-            $webgrafia->created_by = auth()->id();
+            $webgrafia->created_by = Auth::id();
         });
         static::updating(function ($webgrafia) {
-            $webgrafia->updated_by = auth()->id();
+            $webgrafia->updated_by = Auth::id();
         });
         static::deleting(function ($webgrafia) {
-            $webgrafia->deleted_by = auth()->id();
+            $webgrafia->deleted_by = Auth::id();
             $webgrafia->save();
         });
     }

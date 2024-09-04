@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Foro extends Model
 {
@@ -37,13 +38,13 @@ class Foro extends Model
         parent::boot();
 
         static::creating(function ($foro) {
-            $foro->created_by = auth()->id();
+            $foro->created_by = Auth::id();
         });
         static::updating(function ($foro) {
-            $foro->updated_by = auth()->id();
+            $foro->updated_by = Auth::id();
         });
         static::deleting(function ($foro) {
-            $foro->deleted_by = auth()->id();
+            $foro->deleted_by = Auth::id();
             $foro->save();
         });
     }

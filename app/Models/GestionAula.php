@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class GestionAula extends Model
 {
@@ -82,15 +83,15 @@ class GestionAula extends Model
         parent::boot();
 
         static::creating(function ($gestion_aula) {
-            $gestion_aula->created_by = auth()->id();
+            $gestion_aula->created_by = Auth::id();
         });
 
         static::updating(function ($gestion_aula) {
-            $gestion_aula->updated_by = auth()->id();
+            $gestion_aula->updated_by = Auth::id();
         });
 
         static::deleting(function ($gestion_aula) {
-            $gestion_aula->deleted_by = auth()->id();
+            $gestion_aula->deleted_by = Auth::id();
             $gestion_aula->save();
         });
     }
