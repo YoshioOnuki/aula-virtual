@@ -1,7 +1,7 @@
 <div>
     <div class="row g-0 flex-fill">
-        <div class="col-12 col-lg-6 col-xl-4 border-top-wide border-teal 
-            d-flex flex-column justify-content-center animate__animated animate__fadeIn animate__faster">
+        <div class="col-12 col-lg-6 col-xl-4 border-top-wide border-teal
+            d-flex flex-column justify-content-center animate__animated animate__fadeIn  ">
             <div class="container container-tight my-5 px-lg-5">
                 <div class="text-center mb-4">
                     <a class="navbar-brand navbar-brand-autodark">
@@ -22,11 +22,10 @@
                         <label class="form-label required">
                             Correo
                         </label>
-                        <input id="correo" type="email"
-                            class="form-control @error('correo') is-invalid @enderror"
+                        <input id="correo" type="email" class="form-control @error('correo') is-invalid @enderror"
                             wire:model.live="correo" placeholder="example@gmail.com" autocomplete="off">
                         @error('correo')
-                            <span class="form-text text-danger">{{ $message }}</span>
+                        <span class="form-text text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="col-md-12">
@@ -35,14 +34,15 @@
                         </label>
                         <div class="input-group input-group-flat" x-data="{ modo_password: 'password' }">
                             <input id="contrasenia" x-bind:type="modo_password"
-                                class="form-control @error('contrasenia') is-invalid @enderror" wire:model.live="contrasenia"
-                                placeholder="********" autocomplete="off">
+                                class="form-control @error('contrasenia') is-invalid @enderror"
+                                wire:model.live="contrasenia" placeholder="********" autocomplete="off">
                             <span class="input-group-text @error('contrasenia') border border-danger @enderror">
                                 <a style="cursor: pointer;" class="link-secondary"
                                     x-on:click="modo_password == 'password' ? modo_password = 'text' : modo_password = 'password'">
-                                    <svg x-show="modo_password == 'text'" xmlns="http://www.w3.org/2000/svg" class="icon"
-                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <svg x-show="modo_password == 'text'" xmlns="http://www.w3.org/2000/svg"
+                                        class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                        stroke="currentColor" fill="none" stroke-linecap="round"
+                                        stroke-linejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                         <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
                                         <path
@@ -50,7 +50,8 @@
                                     </svg>
                                     <svg x-show="modo_password == 'password'" xmlns="http://www.w3.org/2000/svg"
                                         class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                        stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        stroke="currentColor" fill="none" stroke-linecap="round"
+                                        stroke-linejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                         <path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" />
                                         <path
@@ -61,7 +62,7 @@
                             </span>
                         </div>
                         @error('contrasenia')
-                            <span class="form-text text-danger">{{ $message }}</span>
+                        <span class="form-text text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="form-footer">

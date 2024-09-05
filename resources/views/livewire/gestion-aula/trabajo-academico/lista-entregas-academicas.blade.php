@@ -12,7 +12,7 @@
 
             <div class="row g-3">
                 <div class="col-lg-8">
-                    <div class="card animate__animated animate__fadeIn animate__faster">
+                    <div class="card animate__animated animate__fadeIn  ">
                         <div class="card-body border-bottom py-3">
                             <div class="d-flex align-items-center justify-content-between">
                                 <div class="text-secondary">
@@ -59,50 +59,51 @@
                                         <td>{{ $item->usuario->nombre_completo }}</td>
                                         <td>
                                             @forelse ($item->trabajoAcademicoAlumno as $trabajo)
-                                                @if($trabajo->created_at > $trabajo_academico->fecha_fin_trabajo_academico)
-                                                    <span class="text-danger">
-                                                        {{-- Restar la diferencia de tiempo --}}
-                                                        {{ $trabajo->created_at->diff($trabajo_academico->fecha_fin_trabajo_academico) }} tarde
-                                                    </span>
-                                                @else
-                                                    {{ format_hora($trabajo->created_at) }}
-                                                @endif
+                                            @if($trabajo->created_at > $trabajo_academico->fecha_fin_trabajo_academico)
+                                            <span class="text-danger">
+                                                {{-- Restar la diferencia de tiempo --}}
+                                                {{
+                                                $trabajo->created_at->diff($trabajo_academico->fecha_fin_trabajo_academico)
+                                                }} tarde
+                                            </span>
+                                            @else
+                                            {{ format_hora($trabajo->created_at) }}
+                                            @endif
                                             @empty
-                                                <span class="text-secondary">Sin entrega</span>
+                                            <span class="text-secondary">Sin entrega</span>
                                             @endforelse
                                         </td>
                                         <td>
                                             @if(count($item->trabajoAcademicoAlumno) > 0)
-                                                <a href=""
-                                                    class="btn btn-sm btn-primary">Ver entrega</a>
+                                            <a href="" class="btn btn-sm btn-primary">Ver entrega</a>
                                             @else
-                                                <span class="text-secondary">Sin entrega</span>
+                                            <span class="text-secondary">Sin entrega</span>
                                             @endif
                                         </td>
                                     </tr>
                                     @empty
-                                        @if ($entregas_academicas->count() == 0 && $search != '')
-                                        <tr>
-                                            <td colspan="4">
-                                                <div class="text-center" style="padding-bottom: 2rem; padding-top: 2rem;">
-                                                    <span class="text-secondary">
-                                                        No se encontraron resultados para
-                                                        "<strong>{{ $search }}</strong>"
-                                                    </span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        @else
-                                        <tr>
-                                            <td colspan="4">
-                                                <div class="text-center" style="padding-bottom: 2rem; padding-top: 2rem;">
-                                                    <span class="text-secondary">
-                                                        No hay alumnos matriculados
-                                                    </span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        @endif
+                                    @if ($entregas_academicas->count() == 0 && $search != '')
+                                    <tr>
+                                        <td colspan="4">
+                                            <div class="text-center" style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                <span class="text-secondary">
+                                                    No se encontraron resultados para
+                                                    "<strong>{{ $search }}</strong>"
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @else
+                                    <tr>
+                                        <td colspan="4">
+                                            <div class="text-center" style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                <span class="text-secondary">
+                                                    No hay alumnos matriculados
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endif
                                     @endforelse
                                 </tbody>
                             </table>
@@ -112,7 +113,8 @@
                             @if ($entregas_academicas->hasPages())
                             <div class="d-flex justify-content-between">
                                 <div class="d-flex align-items-center text-secondary">
-                                    Mostrando {{ $entregas_academicas->firstItem() }} - {{ $entregas_academicas->lastItem() }} de
+                                    Mostrando {{ $entregas_academicas->firstItem() }} - {{
+                                    $entregas_academicas->lastItem() }} de
                                     {{ $entregas_academicas->total() }} registros
                                 </div>
                                 <div class="mt-3">
@@ -122,7 +124,8 @@
                             @else
                             <div class="d-flex justify-content-between">
                                 <div class="d-flex align-items-center text-secondary">
-                                    Mostrando {{ $entregas_academicas->firstItem() }} - {{ $entregas_academicas->lastItem() }} de
+                                    Mostrando {{ $entregas_academicas->firstItem() }} - {{
+                                    $entregas_academicas->lastItem() }} de
                                     {{ $entregas_academicas->total() }} registros
                                 </div>
                             </div>

@@ -26,6 +26,7 @@ class Index extends Component
     public $id_gestion_aula_usuario;
     public $id_gestion_aula;
     public $gestion_aula_usuario;
+    public $ruta;
 
     // Variables para el modal de Trabajo Académico
     public $modo = 1; // Modo 1 = Agregar / 0 = Editar
@@ -340,6 +341,8 @@ class Index extends Component
         }
 
         $this->obtener_datos_page_header();
+
+        $this->ruta = request()->route()->getName();
 
     }
 

@@ -12,7 +12,7 @@
 
             <div class="row g-3">
                 <div class="col-12">
-                    <div class="card animate__animated animate__fadeIn animate__faster">
+                    <div class="card animate__animated animate__fadeIn  ">
                         <div class="card-body border-bottom py-3">
                             <div class="d-flex align-items-center justify-content-between">
                                 <div class="text-secondary">

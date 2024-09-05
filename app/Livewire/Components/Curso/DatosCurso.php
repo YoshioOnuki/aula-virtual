@@ -53,23 +53,6 @@ class DatosCurso extends Component
     /* ======================================================= */
 
 
-    /* =============== REDIRECCIONAR A LINK DE LA CLASE =============== */
-        public function redireccionar_link_clase()
-        {
-            if(!$this->gestion_aula_usuario->gestionAula->linkClase)
-            {
-                $this->dispatch(
-                    'toast-basico',
-                    mensaje: 'El link de la clase no está disponible',
-                    type: 'error'
-                );
-            }else{
-                $this->dispatch('redirectLink', $this->gestion_aula_usuario->gestionAula->linkClase->nombre_link_clase);
-            }
-        }
-    /* =============================================================== */
-
-
     public function placeholder()
     {
         return <<<'HTML'
@@ -179,15 +162,12 @@ class DatosCurso extends Component
     }
 
 
-    public function mount($id_gestion_aula_usuario, $tipo_vista)
+    public function mount($id_gestion_aula_usuario, $ruta, $tipo_vista)
     {
         $this->tipo_vista = $tipo_vista;
         $this->id_gestion_aula_usuario = $id_gestion_aula_usuario;
 
-        if(request()->routeIs('cursos.detalle') ||
-            request()->routeIs('carga-academica.detalle') ||
-            request()->routeIs('alumnos.cursos.detalle') ||
-            request()->routeIs('docentes.carga-academica.detalle'))
+        if($ruta == 'carga-academica.detalle' || $ruta == 'cursos.detalle')
         {
             $this->datos = true;
         }

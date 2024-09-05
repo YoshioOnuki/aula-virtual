@@ -1,7 +1,7 @@
 <div>
     <div class="mobile-message">
         <div class="d-flex justify-content-center align-items-center full-height">
-            <div class="container-tight animate__animated animate__fadeIn animate__faster">
+            <div class="container-tight animate__animated animate__fadeIn  ">
                 <div class="empty">
                     <div class="empty-img">
 
@@ -222,7 +222,7 @@
 
                 <div class="row g-3">
                     <div class="col-12">
-                        <div class="card animate__animated animate__fadeIn animate__faster">
+                        <div class="card animate__animated animate__fadeIn  ">
                             <div class="card-body border-bottom py-3">
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div class="text-secondary">
@@ -316,7 +316,8 @@
                                             <td>
                                                 Sesión de {{ $item->tipoAsistencia->nombre_tipo_asistencia }}
                                                 @if ($tipo_vista === 'carga-academica' && $es_docente &&
-                                                verificar_hora_actual($item->hora_inicio_asistencia, $item->hora_fin_asistencia, $item->fecha_asistencia))
+                                                verificar_hora_actual($item->hora_inicio_asistencia,
+                                                $item->hora_fin_asistencia, $item->fecha_asistencia))
                                                 <span class="badge bg-red ms-2 badge-blink"></span>
                                                 @endif
                                             </td>
@@ -437,7 +438,8 @@
                                                 @endforeach
                                                 @endif
                                             </td>
-                                            @elseif ($tipo_vista === 'carga-academica' && ($es_docente || $es_docente_invitado))
+                                            @elseif ($tipo_vista === 'carga-academica' && ($es_docente ||
+                                            $es_docente_invitado))
                                             <td>
                                                 <div class="btn-list flex-nowrap">
                                                     <div class="dropdown">
@@ -615,7 +617,8 @@
                                     @if ($modo_asistencias === 1)
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
+                                        stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                         <path d="M12 5l0 14" />
                                         <path d="M5 12l14 0" />
@@ -623,10 +626,12 @@
                                     @else
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                        stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                         <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                        <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                        <path
+                                            d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
                                         <path d="M16 5l3 3" />
                                     </svg>
                                     @endif
@@ -878,7 +883,7 @@
 
 </div>
 
-@push('scripts')
+@script
 
 <script src="{{ asset('js/mobile-detect/mobile-detect.min.js') }}"></script>
 <script>
@@ -903,4 +908,4 @@
     });
 
 </script>
-@endpush
+@endscript

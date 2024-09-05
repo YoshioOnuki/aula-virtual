@@ -27,6 +27,7 @@ class Index extends Component
     public $gestion_aula_usuario;
     public $curso;
     public $recursos;
+    public $ruta;
 
     // Variables para saber si el usuario es docente
     public $es_docente = false;
@@ -44,6 +45,7 @@ class Index extends Component
     #[Validate('required|file|mimes:pdf,xls,xlsx,doc,docx,ppt,pptx,txt|max:4096')]
     public $archivo_recurso;
     public $editar_recurso;
+    public $cerrar_modal = false;
 
     public $modo_admin = false;// Modo admin, para saber si se esta en modo administrador
 
@@ -116,7 +118,6 @@ class Index extends Component
         {
             $this->validate();
 
-
             try
             {
                 DB::beginTransaction();
@@ -163,6 +164,8 @@ class Index extends Component
 
         public function cerrar_modal()
         {
+            $this->cerrar_modal = true;
+            sleep(1);
             $this->limpiar_modal();
             $this->dispatch(
                 'modal',
@@ -181,6 +184,8 @@ class Index extends Component
             $this->reset('archivo_recurso');
             // Reiniciar errores
             $this->resetErrorBag();
+
+            $this->cerrar_modal = false;
         }
 
         public function descargar_recurso(Recurso $recurso)
@@ -316,6 +321,8 @@ class Index extends Component
         $this->es_docente = $this->usuario->esRolGestionAula('DOCENTE', $this->id_gestion_aula_usuario);
 
         $this->obtener_datos_page_header();
+
+        $this->ruta = request()->route()->getName();
 
     }
 

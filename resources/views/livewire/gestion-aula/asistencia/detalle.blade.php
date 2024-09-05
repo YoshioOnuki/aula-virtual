@@ -1,7 +1,7 @@
 <div>
     <div class="{{ config('settings.restringir_mobile') === true ? 'mobile-message' : 'd-none' }}">
         <div class="d-flex justify-content-center align-items-center full-height">
-            <div class="container-tight animate__animated animate__fadeIn animate__faster">
+            <div class="container-tight animate__animated animate__fadeIn  ">
                 <div class="empty">
                     <div class="empty-img">
 
@@ -222,7 +222,7 @@
 
                 <div class="row g-3">
                     <div class="col-12">
-                        <div class="card animate__animated animate__fadeIn animate__faster">
+                        <div class="card animate__animated animate__fadeIn  ">
                             <div class="card-body border-bottom py-3">
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div class="text-secondary">
@@ -547,7 +547,7 @@
 
 </div>
 
-@push('scripts')
+@script
 
 <script src="https://unpkg.com/@tabler/core@latest/dist/js/tabler.min.js"></script>
 <script src="{{ asset('js/mobile-detect/mobile-detect.min.js') }}"></script>
@@ -576,4 +576,4 @@
             });
         });
 </script>
-@endpush
+@endscript

@@ -1,4 +1,4 @@
-<div class="card animate__animated animate__fadeIn animate__faster">
+<div class="card animate__animated animate__fadeIn  ">
     <div class="card-body border-bottom py-3">
         <div class="alert alert-azure bg-azure-lt" role="alert">
             <div class="d-flex">
