@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class TrabajoAcademico extends Model
 {
@@ -46,13 +47,13 @@ class TrabajoAcademico extends Model
         parent::boot();
 
         static::creating(function ($trabajo_academico) {
-            $trabajo_academico->created_by = auth()->id();
+            $trabajo_academico->created_by = Auth::id();
         });
         static::updating(function ($trabajo_academico) {
-            $trabajo_academico->updated_by = auth()->id();
+            $trabajo_academico->updated_by = Auth::id();
         });
         static::deleting(function ($trabajo_academico) {
-            $trabajo_academico->deleted_by = auth()->id();
+            $trabajo_academico->deleted_by = Auth::id();
             $trabajo_academico->save();
         });
     }

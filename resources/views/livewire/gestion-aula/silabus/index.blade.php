@@ -13,8 +13,7 @@
             <div class="row g-3">
 
                 <div class="col-lg-8">
-                    <div class="card card-stacked animate__animated animate__fadeIn animate__faster"
-                        wire:init="load_silabus">
+                    <div class="card card-stacked animate__animated animate__fadeIn  " wire:init="load_silabus">
                         <div class="card-body p-0"
                             style="{{ $silabus_pdf && file_exists($silabus_pdf->archivo_silabus) ? '' : 'height: 625px' }}">
                             @if($cargando_silabus)
@@ -25,10 +24,10 @@
 
                             @if ($silabus_pdf && file_exists($silabus_pdf->archivo_silabus))
                             <embed src="{{ asset($silabus_pdf->archivo_silabus) }}"
-                                class="rounded animate__animated animate__fadeIn animate__faster" type="application/pdf"
-                                width="100%" height="625px" />
+                                class="rounded animate__animated animate__fadeIn  " type="application/pdf" width="100%"
+                                height="625px" />
                             @else
-                            <div class="alert alert-yellow bg-white-lt hover-shadow-sm animate__animated animate__fadeIn animate__faster m-3"
+                            <div class="alert alert-yellow bg-white-lt hover-shadow-sm animate__animated animate__fadeIn   m-3"
                                 role="alert">
                                 <div class="d-flex">
                                     <div>
@@ -169,7 +168,7 @@
                         </div>
                     </div>
                     @else
-                    <div class="card card-stacked animate__animated animate__fadeIn animate__faster">
+                    <div class="card card-stacked animate__animated animate__fadeIn  ">
                         <div class="card-header {{ $tipo_vista === 'cursos' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
                             <h3 class="card-title fw-semibold">
                                 Información del Curso
@@ -295,7 +294,12 @@
                                     <div class="col-12">
                                         <a class="btn btn-primary w-100 mt-3" style="cursor: pointer;"
                                             wire:click="guardar_silabus">
-                                            Guardar Sílabus
+                                            <div wire:loading.remove>
+                                                <span>Guardar Sílabus</span>
+                                            </div>
+                                            <div wire:loading>
+                                                <div class="spinner-border spinner-border-sm" role="status"></div>
+                                            </div>
                                         </a>
                                     </div>
                                     @endif

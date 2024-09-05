@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class AsistenciaAlumno extends Model
 {
@@ -40,13 +41,13 @@ class AsistenciaAlumno extends Model
         parent::boot();
 
         static::creating(function ($asistencia_alumno) {
-            $asistencia_alumno->created_by = auth()->id();
+            $asistencia_alumno->created_by = Auth::id();
         });
         static::updating(function ($asistencia_alumno) {
-            $asistencia_alumno->updated_by = auth()->id();
+            $asistencia_alumno->updated_by = Auth::id();
         });
         static::deleting(function ($asistencia_alumno) {
-            $asistencia_alumno->deleted_by = auth()->id();
+            $asistencia_alumno->deleted_by = Auth::id();
             $asistencia_alumno->save();
         });
     }

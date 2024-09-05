@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Proceso extends Model
 {
@@ -29,13 +30,13 @@ class Proceso extends Model
         parent::boot();
 
         static::creating(function ($proceso) {
-            $proceso->created_by = auth()->id();
+            $proceso->created_by = Auth::id();
         });
         static::updating(function ($proceso) {
-            $proceso->updated_by = auth()->id();
+            $proceso->updated_by = Auth::id();
         });
         static::deleting(function ($proceso) {
-            $proceso->deleted_by = auth()->id();
+            $proceso->deleted_by = Auth::id();
             $proceso->save();
         });
     }

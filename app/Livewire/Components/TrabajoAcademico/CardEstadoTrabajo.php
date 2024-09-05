@@ -60,7 +60,7 @@ class CardEstadoTrabajo extends Component
     public function placeholder()
     {
         return <<<'HTML'
-        <div class="card card-stacked placeholder-glow animate__animated animate__fadeIn animate__faster">
+        <div class="card card-stacked placeholder-glow">
             <div class="card-header {{ $tipo_vista === 'cursos' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
                 <div class="placeholder col-5 {{ $tipo_vista === 'cursos' ? 'bg-teal' : 'bg-orange' }}"
                 style="height: 1.5rem; width: 170.56px;"></div>
@@ -174,7 +174,6 @@ class CardEstadoTrabajo extends Component
             })
             ->where('estado_gestion_aula_usuario', 1)
             ->count();
-
     }
 
 

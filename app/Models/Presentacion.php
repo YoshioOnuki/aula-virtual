@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Presentacion extends Model
 {
@@ -29,13 +30,13 @@ class Presentacion extends Model
         parent::boot();
 
         static::creating(function ($presentacion) {
-            $presentacion->created_by = auth()->id();
+            $presentacion->created_by = Auth::id();
         });
         static::updating(function ($presentacion) {
-            $presentacion->updated_by = auth()->id();
+            $presentacion->updated_by = Auth::id();
         });
         static::deleting(function ($presentacion) {
-            $presentacion->deleted_by = auth()->id();
+            $presentacion->deleted_by = Auth::id();
             $presentacion->save();
         });
     }

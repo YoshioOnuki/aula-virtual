@@ -1,7 +1,7 @@
 <div>
     <div class="{{ config('settings.restringir_mobile') === true ? 'mobile-message' : 'd-none' }}">
         <div class="d-flex justify-content-center align-items-center full-height">
-            <div class="container-tight animate__animated animate__fadeIn animate__faster">
+            <div class="container-tight animate__animated animate__fadeIn  ">
                 <div class="empty">
                     <div class="empty-img">
 
@@ -222,7 +222,7 @@
 
                 <div class="row g-3">
                     <div class="col-12">
-                        <div class="card animate__animated animate__fadeIn animate__faster">
+                        <div class="card animate__animated animate__fadeIn  ">
                             <div class="card-body border-bottom py-3">
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div class="text-secondary">
@@ -516,17 +516,29 @@
                             </svg>
                             Cancelar
                         </a>
-                        <button type="submit" class="btn btn-teal ms-auto">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="icon icon-tabler icons-tabler-outline icon-tabler-checks">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M7 12l5 5l10 -10" />
-                                <path d="M2 12l5 5m5 -5l5 -5" />
-                            </svg>
-                            Enviar Asistencia
-                        </button>
+
+                        <div class="ms-auto">
+                            <div wire:loading.remove>
+                                <button type="submit" class="btn btn-teal">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-checks">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M7 12l5 5l10 -10" />
+                                        <path d="M2 12l5 5m5 -5l5 -5" />
+                                    </svg>
+                                    Enviar Asistencia
+                                </button>
+                            </div>
+                            <div wire:loading>
+                                <button type="submit" class="btn btn-teal" disabled>
+                                    <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                                    Cargando
+                                </button>
+                            </div>
+                        </div>
+
                     </div>
                 </form>
             </div>
@@ -535,7 +547,7 @@
 
 </div>
 
-@push('scripts')
+@script
 
 <script src="https://unpkg.com/@tabler/core@latest/dist/js/tabler.min.js"></script>
 <script src="{{ asset('js/mobile-detect/mobile-detect.min.js') }}"></script>
@@ -564,4 +576,4 @@
             });
         });
 </script>
-@endpush
+@endscript

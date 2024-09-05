@@ -1,4 +1,4 @@
-<div class="card animate__animated animate__fadeIn animate__faster">
+<div class="card animate__animated animate__fadeIn  ">
     <div class="card-body border-bottom py-3">
         <div class="alert alert-azure bg-azure-lt" role="alert">
             <div class="d-flex">
@@ -139,9 +139,14 @@
                 <tr>
                     <td colspan="6">
                         <div class="text-center" style="padding-bottom: 2rem; padding-top: 2rem;">
-                            <span class="text-secondary">
-                                Busca un {{ $tipo_vista === 'cursos' ? 'Alumno' : 'Docente' }}...
-                            </span>
+                            <div wire:loading.remove>
+                                <span class="text-secondary">
+                                    Busca un {{ $tipo_vista === 'cursos' ? 'Alumno' : 'Docente' }}.
+                                </span>
+                            </div>
+                            <div wire:loading>
+                                <div class="spinner-border text-blue" role="status"></div>
+                            </div>
                         </div>
                     </td>
                 </tr>

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class GestionAulaUsuario extends Model
 {
@@ -67,18 +68,28 @@ class GestionAulaUsuario extends Model
         }
     }
 
+    // Usar el search del scope de usuario para buscar alumnos
+    public function scopeSearchAlumno($query, $search)
+    {
+        if ($search) {
+            return $query->whereHas('usuario', function ($query) use ($search) {
+                $query->searchAlumno($search);
+            });
+        }
+    }
+
     protected static function boot()
     {
         parent::boot();
 
         static::creating(function ($gestion_aula_usuario) {
-            $gestion_aula_usuario->created_by = auth()->id();
+            $gestion_aula_usuario->created_by = Auth::id();
         });
         static::updating(function ($gestion_aula_usuario) {
-            $gestion_aula_usuario->updated_by = auth()->id();
+            $gestion_aula_usuario->updated_by = Auth::id();
         });
         static::deleting(function ($gestion_aula_usuario) {
-            $gestion_aula_usuario->deleted_by = auth()->id();
+            $gestion_aula_usuario->deleted_by = Auth::id();
             $gestion_aula_usuario->save();
         });
     }

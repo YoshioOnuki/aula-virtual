@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Curso extends Model
 {
@@ -50,13 +51,13 @@ class Curso extends Model
         parent::boot();
 
         static::creating(function ($curso) {
-            $curso->created_by = auth()->id();
+            $curso->created_by = Auth::id();
         });
         static::updating(function ($curso) {
-            $curso->updated_by = auth()->id();
+            $curso->updated_by = Auth::id();
         });
         static::deleting(function ($curso) {
-            $curso->deleted_by = auth()->id();
+            $curso->deleted_by = Auth::id();
             $curso->save();
         });
     }

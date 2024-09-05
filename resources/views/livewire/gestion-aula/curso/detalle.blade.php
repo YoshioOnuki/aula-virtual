@@ -17,8 +17,7 @@
                         @if($tipo_vista ==='cursos')
                         <div class="col-12" wire:init="load_orientaciones">
                             @if($cargando_orientaciones)
-                            <div
-                                class="card card-stacked placeholder-glow animate__animated animate__fadeIn animate__faster">
+                            <div class="card card-stacked placeholder-glow">
                                 <div class="card-header bg-teal-lt">
                                     <div class="placeholder col-5 bg-teal" style="height: 1.5rem; width: 217.16px;">
                                     </div>
@@ -32,7 +31,7 @@
                                 </div>
                             </div>
                             @else
-                            <div class="card card-stacked">
+                            <div class="card card-stacked animate__animated animate__fadeIn  animate__faster">
                                 <div class="card-header bg-teal-lt">
                                     <span class="text-teal me-2">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -67,7 +66,7 @@
                         @endif
 
                         <div class="col-12">
-                            <div class="card card-md card-stacked animate__animated animate__fadeIn animate__faster">
+                            <div class="card card-md card-stacked animate__animated animate__fadeIn ">
                                 <div class="card-stamp card-stamp-lg">
                                     @if ($tipo_vista ==='carga-academica')
                                     <div class="card-stamp-icon bg-orange">
@@ -420,7 +419,7 @@
                     <livewire:components.curso.info-docente :id_gestion_aula_usuario=$id_gestion_aula_usuario
                         :tipo_vista=$tipo_vista lazy />
 
-                    <livewire:components.curso.datos-curso :id_gestion_aula_usuario=$id_gestion_aula_usuario
+                    <livewire:components.curso.datos-curso :id_gestion_aula_usuario=$id_gestion_aula_usuario :ruta=$ruta
                         :tipo_vista=$tipo_vista lazy />
 
                 </div>
@@ -472,27 +471,42 @@
                             </svg>
                             Cancelar
                         </a>
-                        <button type="submit" class="btn btn-primary ms-auto">
-                            @if ($modo_link_clase === 1)
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M12 5l0 14" />
-                                <path d="M5 12l14 0" />
-                            </svg>
-                            @else
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                <path d="M16 5l3 3" />
-                            </svg>
-                            @endif
-                            {{ $accion_estado_link_clase }}
-                        </button>
+
+                        <div class="ms-auto">
+                            <div wire:loading.remove>
+                                <button type="submit" class="btn btn-primary">
+                                    @if ($modo_link_clase === 1)
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M12 5l0 14" />
+                                        <path d="M5 12l14 0" />
+                                    </svg>
+                                    @else
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                        <path
+                                            d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                        <path d="M16 5l3 3" />
+                                    </svg>
+                                    @endif
+                                    {{ $accion_estado_link_clase }}
+                                </button>
+                            </div>
+                            <div wire:loading>
+                                <button type="submit" class="btn btn-primary" disabled>
+                                    <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                                    Cargando
+                                </button>
+                            </div>
+                        </div>
+
                     </div>
                 </form>
             </div>
@@ -538,27 +552,42 @@
                             </svg>
                             Cancelar
                         </a>
-                        <button type="submit" class="btn btn-primary ms-auto">
-                            @if ($modo_orientaciones === 1)
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M12 5l0 14" />
-                                <path d="M5 12l14 0" />
-                            </svg>
-                            @else
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                <path d="M16 5l3 3" />
-                            </svg>
-                            @endif
-                            {{ $accion_estado_orientaciones }}
-                        </button>
+
+                        <div class="ms-auto">
+                            <div wire:loading.remove>
+                                <button type="submit" class="btn btn-primary">
+                                    @if ($modo_orientaciones === 1)
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M12 5l0 14" />
+                                        <path d="M5 12l14 0" />
+                                    </svg>
+                                    @else
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                        <path
+                                            d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                        <path d="M16 5l3 3" />
+                                    </svg>
+                                    @endif
+                                    {{ $accion_estado_orientaciones }}
+                                </button>
+                            </div>
+                            <div wire:loading>
+                                <button type="submit" class="btn btn-primary" disabled>
+                                    <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                                    Cargando
+                                </button>
+                            </div>
+                        </div>
+
                     </div>
                 </form>
             </div>
@@ -567,11 +596,7 @@
 
 </div>
 
-@push('styles')
-<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
-@endpush
-@push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+@script
 <script>
     $(function() {
             $('#descripcion_orientaciones').summernote({
@@ -616,4 +641,4 @@
             });
         })
 </script>
-@endpush
+@endscript

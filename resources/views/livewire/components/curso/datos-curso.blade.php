@@ -1,7 +1,6 @@
 <div>
-    <div class="card card-link card-stacked animate__animated animate__fadeIn animate__faster">
-        <div
-            class="card-header {{ $tipo_vista === 'cursos' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
+    <div class="card card-link card-stacked animate__animated animate__fadeIn  animate__fadeIn">
+        <div class="card-header {{ $tipo_vista === 'cursos' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
             <h3 class="card-title fw-semibold">
                 Información del Curso
             </h3>
@@ -102,22 +101,40 @@
                     </div>
 
                     @if($datos)
-                        <div class="col-12">
-                            <a class="btn btn-primary w-100 mt-1
-                                {{ !$gestion_aula_usuario->gestionAula->linkClase ? 'disabled' : '' }}"
-                                wire:click="redireccionar_link_clase">
+                    <div class="col-12">
+                        <div x-data="{
+                            linkClase: '{{ $gestion_aula_usuario->gestionAula->linkClase ? $gestion_aula_usuario->gestionAula->linkClase->nombre_link_clase : '' }}',
+                            handleClick() {
+                                if (!this.linkClase) {
+                                    this.$dispatch('toast-basico', {
+                                        mensaje: 'El link de la clase no está disponible',
+                                        type: 'error'
+                                    });
+                                } else {
+                                    window.open(this.linkClase, '_blank');
+                                }
+                            }
+                        }">
+                            <a class="btn btn-primary w-100 mt-1" :class="{ 'disabled': !linkClase }"
+                                @click="handleClick">
                                 Link de Clase
                             </a>
-                            @if(!$gestion_aula_usuario->gestionAula->linkClase)
-                                <div class="alert alert-azure bg-azure-lt mt-2 fw-bold animate__animated animate__fadeIn animate__faster">
-                                    @if($tipo_vista === 'carga-academica')
-                                        Por favor, cargue el link de la clase para que esté disponible para los estudiantes.
-                                    @else
-                                        Link de la clase pendiente. Consulte con el docente.
-                                    @endif
-                                </div>
+                        </div>
+                        {{-- <a class="btn btn-primary w-100 mt-1
+                                {{ !$gestion_aula_usuario->gestionAula->linkClase ? 'disabled' : '' }}"
+                            wire:click="redireccionar_link_clase">
+                            Link de Clase
+                        </a> --}}
+                        @if(!$gestion_aula_usuario->gestionAula->linkClase)
+                        <div class="alert alert-azure bg-azure-lt mt-2 fw-bold animate__animated animate__fadeIn  ">
+                            @if($tipo_vista === 'carga-academica')
+                            Por favor, cargue el link de la clase para que esté disponible para los estudiantes.
+                            @else
+                            Link de la clase pendiente. Consulte con el docente.
                             @endif
                         </div>
+                        @endif
+                    </div>
                     @endif
                 </div>
 
@@ -125,13 +142,3 @@
         </div>
     </div>
 </div>
-
-@push('scripts')
-<script>
-    document.addEventListener('livewire:navigated', () => {
-        Livewire.on('redirectLink', link => {
-            window.open(link, '_blank');
-        });
-    });
-</script>
-@endpush

@@ -157,11 +157,6 @@ class Index extends Component
         $this->resetErrorBag();
     }
 
-    public function redirect_link(Webgrafia $webgrafia)
-    {
-        $this->dispatch('redirectLink', $webgrafia->link_webgrafia);
-    }
-
 
     /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
     public function obtener_datos_page_header()
