@@ -10,7 +10,7 @@
             <livewire:components.curso.admin-info-usuario :usuario=$usuario :tipo_vista=$tipo_vista lazy />
             @endif
 
-            <div class="card card-md card-stacked animate__animated animate__fadeIn  ">
+            <div class="card card-md card-stacked animate__animated animate__fadeIn">
                 <div class="card-stamp card-stamp-lg">
                     @if ($tipo_vista === 'cursos')
                     <div class="card-stamp-icon bg-teal">
@@ -63,8 +63,8 @@
                         </div>
                         @else
                         @forelse ($cursos as $item)
-                        <div class="col-sm-4 col-lg-4 col-xl-3 p-xl-2 p-lg-1 p-2 animate__animated animate__zoomIn">
-                            <div class="card card-sm hover-shadow custom-card animate__animated animate__fadeIn  ">
+                        <div class="col-sm-4 col-lg-4 col-xl-3 p-xl-2 p-lg-1 p-2">
+                            <div class="card card-sm hover-shadow custom-card animate__animated animate__zoomIn">
                                 <div class="img-responsive img-responsive-16x9 card-img-top"
                                     style="background-image: url('{{ $item->gestionAula->fondo_gestion_aula ?? '/media/fondo-cursos/fondo-infor.webp' }}'); cursor: pointer;"
                                     wire:click="redirigir_curso_detalle({{ $item->gestionAula->id_gestion_aula }})">

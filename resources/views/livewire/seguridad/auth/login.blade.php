@@ -2,40 +2,37 @@
     <div class="row g-0 flex-fill">
         <div class="col-12 col-lg-6 col-xl-4 border-top-wide border-teal
             d-flex flex-column justify-content-center animate__animated animate__fadeIn  ">
-            <div class="container container-tight my-5 px-lg-5">
+            <div class="container container-tight my-5 px-lg-6">
                 <div class="text-center mb-4">
-                    <a class="navbar-brand navbar-brand-autodark">
-                        <img src="{{ asset('/media/logo-pg.webp') }}" height="200" alt="Logo"
+                    <a class="navbar-brand navbar-brand-autodark animate__animated animate__backInDown animate__slow">
+                        <img src="{{ asset('/media/logo-pg.webp') }}" height="160" alt="Logo"
                             class="rounded hide-theme-light">
-                        <img src="{{ asset('/media/logo-pg.webp') }}" height="200" alt="Logo"
+                        <img src="{{ asset('/media/logo-pg.webp') }}" height="160" alt="Logo"
                             class="rounded hide-theme-dark">
                     </a>
                 </div>
-                <h1 class="text-gray-800 text-center" style="font-weight: 700;">
+                <h2 class="h3 text-center mb-3 text-uppercase animate__animated animate__flipInX animate__delay-2s">
                     Bienvenido al Aula Virtual
-                </h1>
-                <h2 class="fs-2 text-center mb-5">
-                    Iniciar sesión
                 </h2>
-                <form wire:submit.prevent="iniciar_sesion" class="row g-3" autocomplete="off" novalidate>
+                <form wire:submit.prevent="iniciar_sesion" class="row g-3 animate__animated animate__fadeIn animate__slow animate__delay-1s" autocomplete="off" novalidate>
                     <div class="col-md-12">
                         <label class="form-label required">
                             Correo
                         </label>
                         <input id="correo" type="email" class="form-control @error('correo') is-invalid @enderror"
-                            wire:model.live="correo" placeholder="example@gmail.com" autocomplete="off">
+                            wire:model.lazy="correo" placeholder="example@gmail.com" autocomplete="off">
                         @error('correo')
                         <span class="form-text text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="col-md-12">
-                        <label class="form-label" for="contrasenia">
-                            Contraseña <span class="text-danger">*</span>
+                        <label class="form-label required" for="contrasenia">
+                            Contraseña
                         </label>
                         <div class="input-group input-group-flat" x-data="{ modo_password: 'password' }">
                             <input id="contrasenia" x-bind:type="modo_password"
                                 class="form-control @error('contrasenia') is-invalid @enderror"
-                                wire:model.live="contrasenia" placeholder="********" autocomplete="off">
+                                wire:model.lazy="contrasenia" placeholder="********" autocomplete="off">
                             <span class="input-group-text @error('contrasenia') border border-danger @enderror">
                                 <a style="cursor: pointer;" class="link-secondary"
                                     x-on:click="modo_password == 'password' ? modo_password = 'text' : modo_password = 'password'">
@@ -80,7 +77,7 @@
             </div>
         </div>
         <div class="col-12 col-lg-6 col-xl-8 d-none d-lg-block">
-            <div class="bg-cover h-100 min-vh-100" style="background-image: url({{ asset('/media/fondo-unu.webp') }})">
+            <div class="bg-cover h-100 min-vh-100 animate__animated animate__fadeIn animate__slow" style="background-image: url({{ asset('/media/fondo-unu.webp') }})">
             </div>
         </div>
     </div>
