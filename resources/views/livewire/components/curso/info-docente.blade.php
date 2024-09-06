@@ -1,7 +1,7 @@
 <div class="row g-3 mb-3">
 
     @forelse ($docente as $item)
-    <div class="col-12 animate__animated animate__fadeIn  animate__fadeIn">
+    <div class="col-12 animate__animated animate__fadeIn">
         <a class="card card-link card-stacked">
             <div class="card-cover card-cover-blurred text-center"
                 style="background-image: url({{ $tipo_vista === 'carga-academica' ? config('settings.fondo_detalle_doncente') : config('settings.fondo_detalle_alumno') }})">

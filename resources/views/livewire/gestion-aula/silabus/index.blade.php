@@ -13,56 +13,59 @@
             <div class="row g-3">
 
                 <div class="col-lg-8">
-                    <div class="card card-stacked animate__animated animate__fadeIn  " wire:init="load_silabus">
+                    <div class="card card-stacked animate__animated animate__fadeIn" wire:init="load_silabus">
                         <div class="card-body p-0"
                             style="{{ $silabus_pdf && file_exists($silabus_pdf->archivo_silabus) ? '' : 'height: 625px' }}">
                             @if($cargando_silabus)
-                            <div class="d-flex justify-content-center align-items-center w-100 h-100">
-                                <div class="spinner-border text-primary"></div>
-                            </div>
+                                <div class="d-flex justify-content-center align-items-center w-100 h-100">
+                                    <div class="spinner-border text-primary"></div>
+                                </div>
                             @else
 
-                            @if ($silabus_pdf && file_exists($silabus_pdf->archivo_silabus))
-                            <embed src="{{ asset($silabus_pdf->archivo_silabus) }}"
-                                class="rounded animate__animated animate__fadeIn  " type="application/pdf" width="100%"
-                                height="625px" />
-                            @else
-                            <div class="alert alert-yellow bg-white-lt hover-shadow-sm animate__animated animate__fadeIn   m-3"
-                                role="alert">
-                                <div class="d-flex">
-                                    <div>
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24"
-                                            height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                            fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                            <path d="M12 9v4"></path>
-                                            <path
-                                                d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z">
-                                            </path>
-                                            <path d="M12 16h.01"></path>
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        <h4 class="alert-title">El sílabus no está disponible en este momento.</h4>
-                                        <div class="text-secondary">
-                                            @if ($es_docente)
-                                            Por favor, sube el sílabus del curso para que los alumnos puedan
-                                            acceder a él.
-                                            @else
-                                            Por favor, verifica más tarde o contacta con el docente asignado para más
-                                            información.
-                                            @endif
+                                @if ($silabus_pdf && file_exists($silabus_pdf->archivo_silabus))
+                                    <embed src="{{ asset($silabus_pdf->archivo_silabus) }}"
+                                        class="rounded animate__animated animate__fadeIn  " type="application/pdf" width="100%"
+                                        height="625px" />
+                                @else
+                                    <div x-data="{ mostrarAlerta: true, salir: false }"
+                                        x-show="mostrarAlerta"
+                                        x-bind:class="salir ? 'animate__hinge' : 'animate__pulse animate__repeat-2 animate__delay-1s'"
+                                        class="alert alert-yellow alert-dismissible animate__animated m-3 bg-yellow-lt"
+                                        role="alert" style="display: none;">
+                                        <div class="d-flex">
+                                            <div>
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24"
+                                                    height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M12 9v4"></path>
+                                                    <path
+                                                        d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z">
+                                                    </path>
+                                                    <path d="M12 16h.01"></path>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <h4 class="alert-title">El sílabus no está disponible en este momento.</h4>
+                                                <div class="text-yellow">
+                                                    @if ($es_docente)
+                                                    Por favor, sube el sílabus del curso para que los alumnos puedan acceder a él.
+                                                    @else
+                                                    Por favor, verifica más tarde o contacta con el docente asignado para más información.
+                                                    @endif
+                                                </div>
+                                            </div>
                                         </div>
+                                        <!-- Botón de cerrar -->
+                                        <a class="btn-close icon-rotate-custom" @click="salir = true; setTimeout(() => mostrarAlerta = false, 2000);"></a>
                                     </div>
-                                </div>
-                            </div>
-                            @endif
+                                @endif
                             @endif
                         </div>
                     </div>
                 </div>
 
-                <div class="col-4" wire:init="load_datos_curso">
+                <div class="col-lg-4" wire:init="load_datos_curso">
                     @if($cargando_datos_curso)
                     <div class="card card-stacked placeholder-glow">
                         <div class="card-header {{ $tipo_vista === 'cursos' ? 'bg-teal-lt' : 'bg-orange-lt' }}">

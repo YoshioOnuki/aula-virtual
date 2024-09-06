@@ -279,8 +279,12 @@
                                                 </div>
                                             </div>
                                             @if ($es_docente)
-                                            <div class="alert alert-yellow bg-yellow-lt hover-shadow-sm animate__animated animate__fadeIn   mt-3"
-                                                role="alert">
+
+                                            <div x-data="{ mostrarAlerta: true, salir: false }"
+                                                x-show="mostrarAlerta"
+                                                x-bind:class="salir ? 'animate__hinge' : 'animate__pulse animate__repeat-2 animate__delay-1s'"
+                                                class="alert alert-yellow bg-yellow-lt animate__animated hover-shadow-sm alert-dismissible mt-3"
+                                                role="alert" style="display: none;">
                                                 <div class="d-flex">
                                                     <div>
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon"
@@ -301,7 +305,10 @@
                                                         </h4>
                                                     </div>
                                                 </div>
+                                                <!-- Botón de cerrar -->
+                                                <a class="btn-close icon-rotate-custom" @click="salir = true; setTimeout(() => mostrarAlerta = false, 2000);"></a>
                                             </div>
+
                                             @endif
                                         </div>
                                     </div>
