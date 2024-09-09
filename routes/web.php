@@ -34,178 +34,185 @@ Route::get('/validate-url', function(Request $request) {
     ]);
 });
 
-Route::redirect('/', '/inicio');
-
-Route::get('/login', Login::class)
-    ->middleware('guest')
-    ->name('login');
-
-Route::middleware(['auth'])->group(function () {
-
-    // Dashboard
-    Route::get('/dashboard', HomeIndex::class)
-        ->name('dashboard');
-
+Route::middleware(['throttle:100,1'])->group(function () {
     // Inicio
-    Route::get('/inicio', HomeIndex::class)
-        ->name('inicio');
+    Route::redirect('/', '/inicio');
+
+    // Login
+    Route::get('/login', Login::class)
+        ->middleware('guest')
+        ->name('login');
 
 
-    /* =============== SEGURIDAD Y CONFIGURACION =============== */
-        // Perfil
-        Route::get('/perfil', PerfilIndex::class)
-            ->name('perfil');
+    Route::middleware(['auth'])->group(function () {
 
-        // Usuarios
-        Route::get('/usuarios', UsuarioIndex::class)
-            ->name('usuarios');
+        // Dashboard
+        Route::get('/dashboard', HomeIndex::class)
+            ->name('dashboard');
 
-        // Registro de alumnos
-        Route::get('/registro-alumnos', UsuarioIndex::class)
-            ->name('registro-alumnos');
-
-        // Autoridades
-        Route::get('/autoridades', AutoridadesIndex::class)
-            ->name('autoridades');
-    /* ===============  =============== */
+        // Inicio
+        Route::get('/inicio', HomeIndex::class)
+            ->name('inicio');
 
 
-    /* =============== ESTRUCTURA ACADEMICA =============== */
-        Route::prefix('estructura-academica')->group(function () {
-            // Nivel academico
-            Route::get('/nivel-academico', HomeIndex::class)
-                ->name('estructura-academica.nivel-academico');
-            // Tipo programa
-            Route::get('/tipo-programa', HomeIndex::class)
-                ->name('estructura-academica.tipo-programa');
-            // Facultad
-            Route::get('/facultad', HomeIndex::class)
-                ->name('estructura-academica.facultad');
-            // Programa
-            Route::get('/programa', HomeIndex::class)
-                ->name('estructura-academica.programa');
-        });
-    /* ===============  =============== */
+        /* =============== SEGURIDAD Y CONFIGURACION =============== */
+            // Perfil
+            Route::get('/perfil', PerfilIndex::class)
+                ->name('perfil');
+
+            // Usuarios
+            Route::get('/usuarios', UsuarioIndex::class)
+                ->name('usuarios');
+
+            // Registro de alumnos
+            Route::get('/registro-alumnos', UsuarioIndex::class)
+                ->name('registro-alumnos');
+
+            // Autoridades
+            Route::get('/autoridades', AutoridadesIndex::class)
+                ->name('autoridades');
+        /* ===============  =============== */
 
 
-    /* =============== GESTION DEL CURSO =============== */
-        Route::prefix('gestion-curso')->group(function () {
+        /* =============== ESTRUCTURA ACADEMICA =============== */
+            Route::prefix('estructura-academica')->group(function () {
+                // Nivel academico
+                Route::get('/nivel-academico', HomeIndex::class)
+                    ->name('estructura-academica.nivel-academico');
+                // Tipo programa
+                Route::get('/tipo-programa', HomeIndex::class)
+                    ->name('estructura-academica.tipo-programa');
+                // Facultad
+                Route::get('/facultad', HomeIndex::class)
+                    ->name('estructura-academica.facultad');
+                // Programa
+                Route::get('/programa', HomeIndex::class)
+                    ->name('estructura-academica.programa');
+            });
+        /* ===============  =============== */
+
+
+        /* =============== GESTION DEL CURSO =============== */
+            Route::prefix('gestion-curso')->group(function () {
+                // Plan de estudio
+                Route::get('/plan-estudio', PlanEstudioIndex::class)
+                    ->name('gestion-curso.plan-estudio');
+                // Ciclo
+                Route::get('/ciclo', HomeIndex::class)
+                    ->name('gestion-curso.ciclo');
+                // Proceso
+                Route::get('/proceso', PerfilIndex::class)
+                    ->name('gestion-curso.proceso');
+                // Curso
+                Route::get('/curso', CursoIndex::class)
+                    ->name('gestion-curso.curso');
+            });
+        /* ===============  =============== */
+
+
+        /* =============== GESTION DEL AULA =============== */
+            Route::prefix('gestion-aula')->group(function () {
+                //------ BUSQUEDA DE ALUMNOS Y DOCENTES ------//
+                    // Busqueda de alumnos
+                    Route::get('/alumnos', AlumnosDocentesIndex::class)
+                    ->name('alumnos');
+
+                    // Busqueda de docentes
+                    Route::get('/docentes', AlumnosDocentesIndex::class)
+                        ->name('docentes');
+                //------  ------//
+
+                //------ ALUMNO ------//
+                    // Cursos
+                    Route::get('/alumno/{id_usuario}/{tipo_vista}', CursoIndex::class)
+                    ->name('cursos');
+                    // Detalle del curso
+                    Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/detalle', CursoDetalle::class)
+                        ->name('cursos.detalle');
+                    // Silabus
+                    Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/silabus', SilabusIndex::class)
+                        ->name('cursos.detalle.silabus');
+                    // Lectura
+                    Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/recursos', RecursoIndex::class)
+                        ->name('cursos.detalle.recursos');
+                    // Foro
+                    Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/foro', ForoIndex::class)
+                        ->name('cursos.detalle.foro');
+                    // Asistencia
+                    Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/asistencia', AsistenciaIndex::class)
+                        ->name('cursos.detalle.asistencia');
+                    // Detalle de asistencia
+                    Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/asistencia/{id_asistencia}', AsistenciaDetalle::class)
+                        ->name('cursos.detalle.asistencia.detalle');
+                    // Trabajos academicos
+                    Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/trabajo-academico', TrabajoAcademicoIndex::class)
+                        ->name('cursos.detalle.trabajo-academico');
+                    // Detalle de trabajo academico
+                    Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/trabajo-academico/{id_trabajo_academico}', TrabajoAcademicoDetalle::class)
+                        ->name('cursos.detalle.trabajo-academico.detalle');
+                    // Webgrafía
+                    Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/webgrafia', WebgrafiaIndex::class)
+                        ->name('cursos.detalle.webgrafia');
+                //------  ------//
+
+                //------ DOCENTE ------//
+                    // Carga academico
+                    Route::get('/docente/{id_usuario}/{tipo_vista}', CursoIndex::class)
+                        ->name('carga-academica');
+                    // Detalle de la carga academica
+                    Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/detalle', CursoDetalle::class)
+                        ->name('carga-academica.detalle');
+                    // Silabus
+                    Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/silabus', SilabusIndex::class)
+                        ->name('carga-academica.detalle.silabus');
+                    // Lectura
+                    Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/recursos', RecursoIndex::class)
+                        ->name('carga-academica.detalle.recursos');
+                    // Foro
+                    Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/foro', ForoIndex::class)
+                        ->name('carga-academica.detalle.foro');
+                    // Asistencia
+                    Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/asistencia', AsistenciaIndex::class)
+                        ->name('carga-academica.detalle.asistencia');
+                    // Detalle de asistencia
+                    Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/asistencia/{id_asistencia}', AsistenciaDetalle::class)
+                        ->name('carga-academica.detalle.asistencia.detalle');
+                    // Trabajos academicos
+                    Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/trabajo-academico', TrabajoAcademicoIndex::class)
+                        ->name('carga-academica.detalle.trabajo-academico');
+                    // Detalle de trabajo academico
+                    Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/trabajo-academico/{id_trabajo_academico}', TrabajoAcademicoDetalle::class)
+                        ->name('carga-academica.detalle.trabajo-academico.detalle');
+                    // Lista de entregas de trabajos academicos de los alumnos
+                    Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/trabajo-academico/{id_trabajo_academico}/alumnos', ListaEntregasAcademicas::class)
+                        ->name('carga-academica.detalle.trabajo-academico.alumnos');
+                    // Webgrafía
+                    Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/webgrafia', WebgrafiaIndex::class)
+                        ->name('carga-academica.detalle.webgrafia');
+                    // Alumnos
+                    Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/alumnos', AlumnoIndex::class)
+                        ->name('carga-academica.detalle.alumnos');
+                //------  ------//
+            });
+        /* ===============  =============== */
+
+
+        /* =============== EXTRAS =============== */
+            // Calificaciones
+            Route::get('/calificaciones', HomeIndex::class)
+                ->name('calificaciones');
+
             // Plan de estudio
             Route::get('/plan-estudio', PlanEstudioIndex::class)
-                ->name('gestion-curso.plan-estudio');
-            // Ciclo
-            Route::get('/ciclo', HomeIndex::class)
-                ->name('gestion-curso.ciclo');
-            // Proceso
-            Route::get('/proceso', PerfilIndex::class)
-                ->name('gestion-curso.proceso');
-            // Curso
-            Route::get('/curso', CursoIndex::class)
-                ->name('gestion-curso.curso');
-        });
-    /* ===============  =============== */
+                ->name('plan-estudio');
+
+            // Manuales
+            Route::get('/manuales', ManualesIndex::class)
+                ->name('manuales');
+        /* ===============  =============== */
 
 
-    /* =============== GESTION DEL AULA =============== */
-        Route::prefix('gestion-aula')->group(function () {
-            //------ BUSQUEDA DE ALUMNOS Y DOCENTES ------//
-                // Busqueda de alumnos
-                Route::get('/alumnos', AlumnosDocentesIndex::class)
-                ->name('alumnos');
-
-                // Busqueda de docentes
-                Route::get('/docentes', AlumnosDocentesIndex::class)
-                    ->name('docentes');
-            //------  ------//
-
-            //------ ALUMNO ------//
-                // Cursos
-                Route::get('/alumno/{id_usuario}/{tipo_vista}', CursoIndex::class)
-                ->name('cursos');
-                // Detalle del curso
-                Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/detalle', CursoDetalle::class)
-                    ->name('cursos.detalle');
-                // Silabus
-                Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/silabus', SilabusIndex::class)
-                    ->name('cursos.detalle.silabus');
-                // Lectura
-                Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/recursos', RecursoIndex::class)
-                    ->name('cursos.detalle.recursos');
-                // Foro
-                Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/foro', ForoIndex::class)
-                    ->name('cursos.detalle.foro');
-                // Asistencia
-                Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/asistencia', AsistenciaIndex::class)
-                    ->name('cursos.detalle.asistencia');
-                // Detalle de asistencia
-                Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/asistencia/{id_asistencia}', AsistenciaDetalle::class)
-                    ->name('cursos.detalle.asistencia.detalle');
-                // Trabajos academicos
-                Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/trabajo-academico', TrabajoAcademicoIndex::class)
-                    ->name('cursos.detalle.trabajo-academico');
-                // Detalle de trabajo academico
-                Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/trabajo-academico/{id_trabajo_academico}', TrabajoAcademicoDetalle::class)
-                    ->name('cursos.detalle.trabajo-academico.detalle');
-                // Webgrafía
-                Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/webgrafia', WebgrafiaIndex::class)
-                    ->name('cursos.detalle.webgrafia');
-            //------  ------//
-
-            //------ DOCENTE ------//
-                // Carga academico
-                Route::get('/docente/{id_usuario}/{tipo_vista}', CursoIndex::class)
-                    ->name('carga-academica');
-                // Detalle de la carga academica
-                Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/detalle', CursoDetalle::class)
-                    ->name('carga-academica.detalle');
-                // Silabus
-                Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/silabus', SilabusIndex::class)
-                    ->name('carga-academica.detalle.silabus');
-                // Lectura
-                Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/recursos', RecursoIndex::class)
-                    ->name('carga-academica.detalle.recursos');
-                // Foro
-                Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/foro', ForoIndex::class)
-                    ->name('carga-academica.detalle.foro');
-                // Asistencia
-                Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/asistencia', AsistenciaIndex::class)
-                    ->name('carga-academica.detalle.asistencia');
-                // Detalle de asistencia
-                Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/asistencia/{id_asistencia}', AsistenciaDetalle::class)
-                    ->name('carga-academica.detalle.asistencia.detalle');
-                // Trabajos academicos
-                Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/trabajo-academico', TrabajoAcademicoIndex::class)
-                    ->name('carga-academica.detalle.trabajo-academico');
-                // Detalle de trabajo academico
-                Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/trabajo-academico/{id_trabajo_academico}', TrabajoAcademicoDetalle::class)
-                    ->name('carga-academica.detalle.trabajo-academico.detalle');
-                // Lista de entregas de trabajos academicos de los alumnos
-                Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/trabajo-academico/{id_trabajo_academico}/alumnos', ListaEntregasAcademicas::class)
-                    ->name('carga-academica.detalle.trabajo-academico.alumnos');
-                // Webgrafía
-                Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/webgrafia', WebgrafiaIndex::class)
-                    ->name('carga-academica.detalle.webgrafia');
-                // Alumnos
-                Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/alumnos', AlumnoIndex::class)
-                    ->name('carga-academica.detalle.alumnos');
-            //------  ------//
-        });
-    /* ===============  =============== */
-
-
-    /* =============== EXTRAS =============== */
-        // Calificaciones
-        Route::get('/calificaciones', HomeIndex::class)
-            ->name('calificaciones');
-
-        // Plan de estudio
-        Route::get('/plan-estudio', PlanEstudioIndex::class)
-            ->name('plan-estudio');
-
-        // Manuales
-        Route::get('/manuales', ManualesIndex::class)
-            ->name('manuales');
-    /* ===============  =============== */
-
+    });
 
 });
+

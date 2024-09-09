@@ -27,8 +27,6 @@
             font-feature-settings: "cv03", "cv04", "cv11";
         }
     </style>
-    <script src="{{ asset('assets/dist/libs/jsvectormap/dist/maps/world.js?1695847769') }}" defer></script>
-    <script src="{{ asset('assets/dist/libs/jsvectormap/dist/maps/world-merc.js?1684106062') }}" defer></script>
     <script src="{{ asset('assets/dist/js/tabler.min.js?1684106062') }}" defer></script>
     <script src="{{ asset('assets/dist/js/demo.min.js?1684106062') }}" defer></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
@@ -42,34 +40,49 @@
 
     <script>
         document.addEventListener('livewire:navigated', () => {
-            var notyf = new Notyf();
-            window.addEventListener('toast-basico', event => {
-                if (event.detail.type == 'success') {
-                    notyf.success({
-                        message: event.detail.mensaje,
-                        duration: 5000,
-                        position: {
-                            x: 'center',
-                            y: 'top',
-                        },
-                        dismissible: true
-                    });
-                } else {
-                    notyf.error({
-                        message: event.detail.mensaje,
-                        duration: 5000,
-                        position: {
-                            x: 'center',
-                            y: 'top',
-                        },
-                        dismissible: true
-                    });
+            // Configuración inicial de Notyf
+            var notyf = new Notyf({
+                duration: 6000, // Duración predeterminada de la notificación
+                position: {x: 'center', y: 'top'}, // Posición predeterminada
+                dismissible: true, // Hacer todas las notificaciones descartables
+                types: [
+                {
+                    type: 'info',
+                    background: '#4299e1', // Color personalizado para info
+                    icon: {
+                        tagName: 'i',
+                        text: ''
+                    }
+                },
+                {
+                    type: 'warning',
+                    background: '#f59f00', // Color personalizado para warning
+                    icon: {
+                        tagName: 'i',
+                        text: ''
+                    }
                 }
-            })
+            ]
+            });
 
-            window.addEventListener('modal', event => {
-                $(event.detail.modal).modal(event.detail.action)
-            })
+            // Función para mostrar notificaciones
+            function mostrarNotificacion(tipo, mensaje) {
+                if (tipo === 'success') {
+                    notyf.success({message: mensaje});
+                } else if (tipo === 'error') {
+                    notyf.error({message: mensaje});
+                } else if (tipo === 'info') {
+                    notyf.open({type: 'info', message: mensaje});
+                } else if (tipo === 'warning') {
+                    notyf.open({type: 'warning', message: mensaje});
+                }
+            }
+
+            // Listener para eventos de notificación
+            window.addEventListener('toast-basico', event => {
+                notyf.dismissAll();
+                mostrarNotificacion(event.detail.type, event.detail.mensaje);
+            });
         })
     </script>
 </body>

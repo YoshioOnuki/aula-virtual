@@ -7,7 +7,7 @@
                     <a class="navbar-brand navbar-brand-autodark animate__animated animate__backInDown animate__slow">
                         <img src="{{ asset('/media/logo-pg.webp') }}" height="160" alt="Logo"
                             class="rounded hide-theme-light">
-                        <img src="{{ asset('/media/logo-pg.webp') }}" height="160" alt="Logo"
+                        <img src="{{ asset('/media/logo-pg.webp') }}" height="160   " alt="Logo"
                             class="rounded hide-theme-dark">
                     </a>
                 </div>
@@ -15,12 +15,51 @@
                     Bienvenido al Aula Virtual
                 </h2>
                 <form wire:submit.prevent="iniciar_sesion" class="row g-3 animate__animated animate__fadeIn animate__slow animate__delay-1s" autocomplete="off" novalidate>
+
+                    @if($estado_bloqueo)
+                        <div class="text-end mt-4 position-relative" wire:poll.1000ms="updateTimeRemaining" wire:ignore>
+                            <span class="badge bg-red-lt p-2 text-center fw-bold animate__animated"
+                                x-data="{
+                                    tiempo_restante: @js($tiempo_restante),
+                                    interval: null,
+                                    visible: true,
+                                    startCountdown() {
+                                        if (this.tiempo_restante > 0) {
+                                            this.interval = setInterval(() => {
+                                                if (this.tiempo_restante > 1) {
+                                                    this.tiempo_restante--; // Disminuye el tiempo restante
+                                                } else {
+                                                    this.triggerOutAnimation();
+                                                }
+                                            }, 1000);
+                                        } else {
+                                            this.triggerOutAnimation();
+                                        }
+                                    },
+                                    triggerOutAnimation() {
+                                        this.visible = false;  // Desactiva `animate__bounceIn`
+                                        this.tiempo_restante--; // Pasa de 1 a 0 para que se ejecute la animación `bounceOut`
+                                        clearInterval(this.interval); // Detiene el intervalo
+                                        setTimeout(() => {
+                                            this.$el.style.display = 'none'; // Oculta el badge después de la animación
+                                        }, 1000); // Duración de la animación `bounceOut`
+                                    }
+                                }"
+                                :class="visible ? 'animate__bounceIn' : 'animate__bounceOut'"
+                                x-show="true"
+                                x-init="startCountdown()">
+                                Tiempo restante:
+                                <span x-text="`${Math.floor(tiempo_restante / 60)}:${('0' + (tiempo_restante % 60)).slice(-2)}`"></span>
+                            </span>
+                        </div>
+                    @endif
+
                     <div class="col-md-12">
                         <label class="form-label required">
                             Correo
                         </label>
                         <input id="correo" type="email" class="form-control @error('correo') is-invalid @enderror"
-                            wire:model.lazy="correo" placeholder="example@gmail.com" autocomplete="off">
+                            wire:model.lazy="correo" placeholder="example@unu.edu.pe" autocomplete="off">
                         @error('correo')
                         <span class="form-text text-danger">{{ $message }}</span>
                         @enderror
@@ -59,22 +98,29 @@
                             </span>
                         </div>
                         @error('contrasenia')
-                        <span class="form-text text-danger">{{ $message }}</span>
+                            <span class="form-text text-danger">{{ $message }}</span>
                         @enderror
+
+                        <div class="form-text text-end mt-2">
+                            <a href="" class="link-primary">
+                                ¿Olvidaste tu contraseña?
+                            </a>
+                        </div>
                     </div>
+
                     <div class="form-footer">
-                        <button type="submit" class="btn btn-teal w-100">
-                            <div wire:loading.remove>
-                                Ingresar
-                            </div>
-                            <div wire:loading>
+                        <button class="btn btn-teal w-100" type="submit"
+                            wire:loading.attr="disabled" wire:target="iniciar_sesion" {{ $tiempo_restante !== null ? 'disabled' : '' }}>
+                            <span wire:loading.remove wire:target="iniciar_sesion">Iniciar Sesión</span>
+                            <span wire:loading wire:target="iniciar_sesion">
                                 <div class="spinner-border spinner-border-sm" role="status"></div>
-                            </div>
+                            </span>
                         </button>
                     </div>
 
                 </form>
             </div>
+
         </div>
         <div class="col-12 col-lg-6 col-xl-8 d-none d-lg-block">
             <div class="bg-cover h-100 min-vh-100 animate__animated animate__fadeIn animate__slow" style="background-image: url({{ asset('/media/fondo-unu.webp') }})">
