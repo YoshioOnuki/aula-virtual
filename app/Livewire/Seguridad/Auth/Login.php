@@ -24,7 +24,7 @@ class Login extends Component
     public $tiempo_restante = null;
     public $estado_bloqueo = false;
     protected $max_intentos = 5; // Máximos intentos permitidos
-    protected $tiempo_bloqueo = 1; // Tiempo de bloqueo en minutos
+    protected $tiempo_bloqueo = 5; // Tiempo de bloqueo en minutos
 
 
     public function iniciar_sesion()
@@ -47,7 +47,7 @@ class Login extends Component
                 return redirect()->intended(route('inicio'));
             }
 
-            RateLimiter::hit($key, $this->tiempo_bloqueo * 10); // Incrementar el contador de intentos fallidos
+            RateLimiter::hit($key, $this->tiempo_bloqueo * 60); // Incrementar el contador de intentos fallidos
 
             $this->addError('correo', 'Estas credenciales son incorrectas.');
             $this->addError('contrasenia', 'Estas credenciales son incorrectas.');
