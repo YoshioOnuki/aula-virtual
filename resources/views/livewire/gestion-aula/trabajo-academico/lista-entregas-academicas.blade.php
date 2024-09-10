@@ -61,10 +61,7 @@
                                             @forelse ($item->trabajoAcademicoAlumno as $trabajo)
                                             @if($trabajo->created_at > $trabajo_academico->fecha_fin_trabajo_academico)
                                             <span class="text-danger">
-                                                {{-- Restar la diferencia de tiempo --}}
-                                                {{
-                                                $trabajo->created_at->diff($trabajo_academico->fecha_fin_trabajo_academico)
-                                                }} tarde
+                                                {{ $trabajo->created_at->diff($trabajo_academico->fecha_fin_trabajo_academico) }} tarde
                                             </span>
                                             @else
                                             {{ format_hora($trabajo->created_at) }}
@@ -75,7 +72,20 @@
                                         </td>
                                         <td>
                                             @if(count($item->trabajoAcademicoAlumno) > 0)
-                                            <a href="" class="btn btn-sm btn-primary">Ver entrega</a>
+
+                                            <a href="{{ route('carga-academica.detalle.trabajo-academico.alumnos.entrega',
+                                                ['id_usuario' => $id_usuario_hash, 'tipo_vista' => $tipo_vista, 
+                                                'id_curso' => Hashids::encode($id_gestion_aula_usuario), 
+                                                'id_trabajo_academico' => Hashids::encode($trabajo_academico->id_trabajo_academico),
+                                                'id_trabajo_academico_alumno' => Hashids::encode($item->trabajoAcademicoAlumno[0]->id_trabajo_academico_alumno)
+                                                ]) }}"
+                                                class="btn btn-sm btn-primary">
+                                                @if($item->trabajoAcademicoAlumno[0]->estadoTrabajoAcademico->nombre_estado_trabajo_academico === 'Entregado')
+                                                    Revisar entrega
+                                                @else
+                                                    Ver entrega
+                                                @endif
+                                            </a>
                                             @else
                                             <span class="text-secondary">Sin entrega</span>
                                             @endif

@@ -7,21 +7,11 @@ use App\Models\TrabajoAcademico;
 use App\Models\TrabajoAcademicoAlumno;
 use App\Models\Usuario;
 use Illuminate\Support\Facades\Auth;
-use Livewire\Attributes\Url;
 use Livewire\Component;
-use Livewire\WithPagination;
 use Vinkla\Hashids\Facades\Hashids;
 
-class ListaEntregasAcademicas extends Component
+class EntregaAcademica extends Component
 {
-    use WithPagination;
-    protected $paginationTheme = 'bootstrap';
-
-    #[Url('mostrar')]
-    public $mostrar_paginate = 10;
-    #[Url('buscar')]
-    public $search = '';
-
     public $id_usuario_hash;
     public $usuario;
 
@@ -29,6 +19,7 @@ class ListaEntregasAcademicas extends Component
     public $id_gestion_aula_usuario;
     public $id_gestion_aula;
     public $trabajo_academico;
+    public $trabajo_academico_alumno;
 
     public $modo_admin = false; // Modo admin, para saber si se esta en modo administrador
 
@@ -40,23 +31,17 @@ class ListaEntregasAcademicas extends Component
     public $tipo_vista;
 
 
+
     /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
         public function obtener_datos_page_header()
         {
-            $this->titulo_page_header = 'Lista de entregas académicas';
+            $this->titulo_page_header = 'Entrega Académica';
 
             // Regresar
-            if ($this->tipo_vista === 'cursos') {
-                $this->regresar_page_header = [
-                    'route' => 'cursos.detalle.trabajo-academico.detalle',
-                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash, 'id_trabajo_academico' => Hashids::encode($this->trabajo_academico->id_trabajo_academico)]
-                ];
-            } else {
-                $this->regresar_page_header = [
-                    'route' => 'carga-academica.detalle.trabajo-academico.detalle',
-                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash, 'id_trabajo_academico' => Hashids::encode($this->trabajo_academico->id_trabajo_academico)]
-                ];
-            }
+            $this->regresar_page_header = [
+                'route' => 'carga-academica.detalle.trabajo-academico.alumnos',
+                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash, 'id_trabajo_academico' => Hashids::encode($this->trabajo_academico->id_trabajo_academico)]
+            ];
 
             // Links --> Inicio
             $this->links_page_header = [
@@ -126,16 +111,28 @@ class ListaEntregasAcademicas extends Component
                     'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash, 'id_trabajo_academico' => Hashids::encode($this->trabajo_academico->id_trabajo_academico)]
                 ];
             }
+
+            // Links --> Lista de entregas académicas
+
+            $this->links_page_header[] = [
+                'name' => 'Lista de entregas académicas',
+                'route' => 'carga-academica.detalle.trabajo-academico.alumnos',
+                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash, 'id_trabajo_academico' => Hashids::encode($this->trabajo_academico->id_trabajo_academico)]
+            ];
         }
     /* ==================================================================================== */
 
 
-    public function mount($id_usuario, $tipo_vista, $id_curso, $id_trabajo_academico)
+
+    public function mount($id_usuario, $tipo_vista, $id_curso, $id_trabajo_academico, $id_trabajo_academico_alumno)
     {
         $this->tipo_vista = $tipo_vista;
 
         $id_trabajo_academico = Hashids::decode($id_trabajo_academico);
-        $this->trabajo_academico = TrabajoAcademico::with('archivoDocente')->find($id_trabajo_academico[0]);
+        $this->trabajo_academico = TrabajoAcademico::find($id_trabajo_academico[0]);
+
+        $id_trabajo_academico_alumno = Hashids::decode($id_trabajo_academico_alumno);
+        $this->trabajo_academico_alumno = TrabajoAcademicoAlumno::find($id_trabajo_academico_alumno[0]);
 
         $this->id_gestion_aula_usuario_hash = $id_curso;
         $id_gestion_aula_usuario = Hashids::decode($this->id_gestion_aula_usuario_hash);
@@ -160,32 +157,6 @@ class ListaEntregasAcademicas extends Component
 
     public function render()
     {
-
-        $entregas_academicas = GestionAulaUsuario::with([
-            'usuario' => function ($query) {
-                $query->with('persona');
-            },
-            'trabajoAcademicoAlumno' => function ($query) {
-                $query->with('estadoTrabajoAcademico', 'archivoAlumno', 'comentarioTrabajoAcademico')
-                    ->where('id_trabajo_academico', $this->trabajo_academico->id_trabajo_academico)
-                    ->first();
-            },
-            'rol' => function ($query) {
-                $query->where('estado_rol', 1);
-            }
-        ])->where('id_gestion_aula', $this->id_gestion_aula)
-            ->whereHas('usuario', function ($query) {
-                $query->where('estado_usuario', 1);
-            })
-            ->whereHas('rol', function ($query) {
-                $query->where('nombre_rol', 'ALUMNO');
-            })
-            ->searchAlumno($this->search)
-            ->paginate($this->mostrar_paginate);
-
-
-        return view('livewire.gestion-aula.trabajo-academico.lista-entregas-academicas',[
-            'entregas_academicas' => $entregas_academicas
-        ]);
+        return view('livewire.gestion-aula.trabajo-academico.entrega-academica');
     }
 }

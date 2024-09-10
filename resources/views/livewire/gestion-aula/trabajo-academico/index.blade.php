@@ -12,7 +12,7 @@
 
             <div class="row g-3">
                 <div class="col-lg-8">
-                    <div class="card card-md card-stacked animate__animated animate__fadeIn  ">
+                    <div class="card card-md card-stacked animate__animated animate__fadeIn">
                         <div class="card-stamp card-stamp-lg">
                             @if ($tipo_vista === 'cursos')
                             <div class="card-stamp-icon bg-teal">

@@ -1,8 +1,8 @@
 <div>
     @forelse ($trabajos_academicos ?? [] as $item)
 
-    <div class="col-lg-12 mb-3" wire:key="{{ $item->id_trabajo_academico }}">
-        <a class="card d-block card-trabajo-academico animate__animated animate__zoomIn"
+    <div class="col-lg-12 mb-3 animate__animated animate__zoomIn" wire:key="{{ $item->id_trabajo_academico }}">
+        <a class="card d-block card-trabajo-academico"
             href="{{ $tipo_vista === 'cursos' ?
             route('cursos.detalle.trabajo-academico.detalle', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => Hashids::encode($id_gestion_aula_usuario), 'id_trabajo_academico' => Hashids::encode($item->id_trabajo_academico)]) :
             route('carga-academica.detalle.trabajo-academico.detalle', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => Hashids::encode($id_gestion_aula_usuario), 'id_trabajo_academico' => Hashids::encode($item->id_trabajo_academico)]) }}">
