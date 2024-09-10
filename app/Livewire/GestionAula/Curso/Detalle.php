@@ -268,8 +268,6 @@ class Detalle extends Component
                 'descripcion_orientaciones',
                 'nombre_link_clase'
             ]);
-            // Limpiar el texarea de las orientaciones, ya que estoy usando un editor de texto
-            $this->dispatch('limpiar-orientaciones');
 
             // Reiniciar errores
             $this->resetErrorBag();

@@ -24,7 +24,7 @@ class Login extends Component
     public $tiempo_restante = null;
     public $estado_bloqueo = false;
     protected $max_intentos = 5; // Máximos intentos permitidos
-    protected $tiempo_bloqueo = 5; // Tiempo de bloqueo en minutos
+    protected $tiempo_bloqueo = 1; // Tiempo de bloqueo en minutos
 
 
     public function iniciar_sesion()
@@ -47,7 +47,7 @@ class Login extends Component
                 return redirect()->intended(route('inicio'));
             }
 
-            RateLimiter::hit($key, $this->tiempo_bloqueo * 60); // Incrementar el contador de intentos fallidos
+            RateLimiter::hit($key, $this->tiempo_bloqueo * 10); // Incrementar el contador de intentos fallidos
 
             $this->addError('correo', 'Estas credenciales son incorrectas.');
             $this->addError('contrasenia', 'Estas credenciales son incorrectas.');
@@ -67,22 +67,29 @@ class Login extends Component
     }
 
 
-    public function updateTimeRemaining()
+    public function update_tiempo_restante()
     {
         $key = request()->ip();
 
         if (RateLimiter::tooManyAttempts($key, $this->max_intentos)) {
             $this->tiempo_restante = RateLimiter::availableIn($key);
             $this->estado_bloqueo = true;
-        } else {
+        } else if ($this->estado_bloqueo === true && $this->tiempo_restante !== null) {
             $this->tiempo_restante = null;
+            // Manda un dispatch para cambiar el estado del bloqueo
+            $this->dispatch('estado-bloqueo');
         }
     }
 
 
+    public function cerrar_bloqueo()
+    {
+        $this->estado_bloqueo = false;
+    }
+
     public function mount()
     {
-        $this->updateTimeRemaining();
+        $this->update_tiempo_restante();
         // RateLimiter::clear(request()->ip());
     }
 

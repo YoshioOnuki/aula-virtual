@@ -17,39 +17,10 @@
                 <form wire:submit.prevent="iniciar_sesion" class="row g-3 animate__animated animate__fadeIn animate__slow animate__delay-1s" autocomplete="off" novalidate>
 
                     @if($estado_bloqueo)
-                        <div class="text-end mt-4 position-relative" wire:poll.1000ms="updateTimeRemaining" wire:ignore>
-                            <span class="badge bg-red-lt p-2 text-center fw-bold animate__animated"
-                                x-data="{
-                                    tiempo_restante: @js($tiempo_restante),
-                                    interval: null,
-                                    visible: true,
-                                    startCountdown() {
-                                        if (this.tiempo_restante > 0) {
-                                            this.interval = setInterval(() => {
-                                                if (this.tiempo_restante > 1) {
-                                                    this.tiempo_restante--; // Disminuye el tiempo restante
-                                                } else {
-                                                    this.triggerOutAnimation();
-                                                }
-                                            }, 1000);
-                                        } else {
-                                            this.triggerOutAnimation();
-                                        }
-                                    },
-                                    triggerOutAnimation() {
-                                        this.visible = false;  // Desactiva `animate__bounceIn`
-                                        this.tiempo_restante--; // Pasa de 1 a 0 para que se ejecute la animación `bounceOut`
-                                        clearInterval(this.interval); // Detiene el intervalo
-                                        setTimeout(() => {
-                                            this.$el.style.display = 'none'; // Oculta el badge después de la animación
-                                        }, 1000); // Duración de la animación `bounceOut`
-                                    }
-                                }"
-                                :class="visible ? 'animate__bounceIn' : 'animate__bounceOut'"
-                                x-show="true"
-                                x-init="startCountdown()">
+                        <div class="text-end mt-4 position-relative" wire:poll.1000ms="update_tiempo_restante">
+                            <span class="badge bg-red-lt p-2 text-center fw-bold animate__animated {{ $tiempo_restante === 0 || $tiempo_restante === null ? 'animate__bounceOut' : 'animate__bounceIn' }}">
                                 Tiempo restante:
-                                <span x-text="`${Math.floor(tiempo_restante / 60)}:${('0' + (tiempo_restante % 60)).slice(-2)}`"></span>
+                                    {{ floor($tiempo_restante / 60) }}:{{ $tiempo_restante % 60 < 10 ? '0' : '' }}{{ $tiempo_restante % 60 }}
                             </span>
                         </div>
                     @endif
@@ -128,3 +99,16 @@
         </div>
     </div>
 </div>
+
+@scripts
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Livewire.on('estado-bloqueo', () => {
+                setTimeout(() => {
+                    @this.call('cerrar_bloqueo');
+                    console.log('Actualizando tiempo restante');
+                }, 1000);
+            });
+        });
+    </script>
+@endscripts
