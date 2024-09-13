@@ -532,7 +532,7 @@
                                     Orientaciones Generales
                                 </label>
                                 <div wire:ignore>
-                                    <textarea class="form-control" wire:model="descripcion_orientaciones"
+                                    <textarea class="form-control" wire:model.lazy="descripcion_orientaciones"
                                         id="descripcion_orientaciones">
                                         {{ $descripcion_orientaciones }}
                                     </textarea>
@@ -597,8 +597,8 @@
 </div>
 
 @script
-<script>
-    $(function() {
+    <script>
+        $(function() {
             $('#descripcion_orientaciones').summernote({
                 placeholder: 'Ingrese la descripcion de las orientaciones',
                 height: 300,
@@ -640,5 +640,5 @@
                 },
             });
         })
-</script>
+    </script>
 @endscript

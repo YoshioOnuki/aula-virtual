@@ -2,42 +2,115 @@
     <div class="card card-link card-stacked animate__animated animate__fadeIn ">
         <div class="card-header {{ $tipo_vista === 'cursos' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
             <h3 class="card-title fw-semibold">
-                Estado del Trabajo Académico
+                Revisión del Trabajo Académico
             </h3>
         </div>
         <div class="card-body row g-3">
-            <div class="table-responsive">
-                <table class="table table-striped table-vcenter">
-                    <tbody>
-                        {{-- Formulario para ingresar nota y un comentario para la observacion --}}
-                        <tr>
-                            <td class="text-nowrap">
-                                <label class="form-label">
-                                    Nota
-                                </label>
-                            </td>
-                            <td>
-                                <input type="number" class="form-control" placeholder="Nota">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-nowrap">
-                                <label class="form-label">
-                                    Observación
-                                </label>
-                            </td>
-                            <td>
-                                <textarea class="form-control" rows="3" placeholder="Observación"></textarea>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                @if($tipo_vista === 'carga-academica')
-                    <button class="btn btn-primary col-12 mt-4 mb-2">
-                        Revisar Trabajo
+            <form autocomplete="off" wire:submit="revisar_trabajo_academico">
+                <tbody>
+                    <div class="row g-3">
+                        <div class="col-lg-12">
+                            <label for="nota_trabajo_academico" class="form-label">
+                                Nota
+                            </label>
+                            @if ($trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico !== 'Entregado')
+                                <input type="number" class="form-control {{ $nota_trabajo_academico === null || $nota_trabajo_academico === '' ? 'bg-gray-400' : '' }}
+                                    {{ $nota_trabajo_academico >= 11 ? 'border-success' : 'border-danger' }}"
+                                    id="nota_trabajo_academico" disabled wire:model="nota_trabajo_academico">
+                            @else
+                                <input type="number" class="form-control @error('nota_trabajo_academico') is-invalid @elseif(strlen($nota_trabajo_academico) > 0) is-valid @enderror"
+                                    wire:model.lazy="nota_trabajo_academico" id="nota_trabajo_academico"
+                                    placeholder="0.00">
+                                @error('nota_trabajo_academico')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            @endif
+                        </div>
+                        <div class="col-lg-12">
+                            <label for="descripcion_comentario_trabajo_academico" class="form-label">
+                                Observación del Trabajo Académico
+                            </label>
+                            @if ($trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico !== 'Entregado')
+                                @if ($descripcion_comentario_trabajo_academico === null || $descripcion_comentario_trabajo_academico === '')
+                                    <textarea class="form-control" disabled>Sin observaciones</textarea>
+                                @else
+                                    <span class="form-control text-muted bg-gray-400">
+                                        {!! $descripcion_comentario_trabajo_academico !!}
+                                    </span>
+                                @endif
+                            @else
+                                <div wire:ignore>
+                                    <textarea class="form-control"
+                                        wire:model.live="descripcion_comentario_trabajo_academico"
+                                        id="descripcion_comentario_trabajo_academico">
+                                    </textarea>
+                                </div>
+                                @error('descripcion_comentario_trabajo_academico')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            @endif
+                        </div>
+                    </div>
+                </tbody>
+                <div class="form-footer">
+                    <button class="btn btn-primary w-100" type="submit"
+                        wire:loading.attr="disabled" wire:target="revisar_trabajo_academico">
+                        <span wire:loading.remove wire:target="revisar_trabajo_academico">Revisar Trabajo Académico</span>
+                        <span wire:loading wire:target="revisar_trabajo_academico">
+                            <div class="spinner-border spinner-border-sm" role="status"></div>
+                        </span>
                     </button>
-                @endif
-            </div>
+                </div>
+
+            </form>
         </div>
     </div>
 </div>
+
+@script
+    <script>
+        $(function() {
+            $('#descripcion_comentario_trabajo_academico').summernote({
+                placeholder: 'Ingrese la observación del trabajo académico',
+                height: 200,
+                tabsize: 2,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol']],
+                    ['view', ['codeview']]
+                ],
+                callbacks: {
+                    // Evitar cualquier tipo de archivo de imagen (png, jpg, jpeg, gif, etc.)
+                    onImageUpload: function(files) {
+                        window.dispatchEvent(new CustomEvent('toast-basico', {
+                            detail: {
+                                type: 'error',
+                                mensaje: 'No se permite la subida de archivos en este campo.'
+                            }
+                        }));
+                        return;
+                    },
+                    // Evitar cualquier tipo de archivo
+                    onFileUpload: function(files) {
+                        window.dispatchEvent(new CustomEvent('toast-basico', {
+                            detail: {
+                                type: 'error',
+                                mensaje: 'No se permite la subida de archivos en este campo.'
+                            }
+                        }));
+                        return;
+                    },
+                    onChange: function(contents, $editable) {
+                        @this.set('descripcion_comentario_trabajo_academico', contents);
+                    }
+                },
+            });
+        });
+    </script>
+@endscript

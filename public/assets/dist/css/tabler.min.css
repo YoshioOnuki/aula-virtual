@@ -25775,7 +25775,3 @@ img {
 
 }
 
-#loadingOverlay {
-    background-color: rgba(122, 122, 122, 0.214); /* Fondo semi-transparente */
-    backdrop-filter: blur(2px); /* Efecto de desenfoque */
-}

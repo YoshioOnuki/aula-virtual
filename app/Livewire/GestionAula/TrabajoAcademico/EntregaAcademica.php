@@ -7,8 +7,11 @@ use App\Models\TrabajoAcademico;
 use App\Models\TrabajoAcademicoAlumno;
 use App\Models\Usuario;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Vinkla\Hashids\Facades\Hashids;
+
+#[Layout('components.layouts.app')]
 
 class EntregaAcademica extends Component
 {
@@ -132,7 +135,10 @@ class EntregaAcademica extends Component
         $this->trabajo_academico = TrabajoAcademico::find($id_trabajo_academico[0]);
 
         $id_trabajo_academico_alumno = Hashids::decode($id_trabajo_academico_alumno);
-        $this->trabajo_academico_alumno = TrabajoAcademicoAlumno::find($id_trabajo_academico_alumno[0]);
+        $this->trabajo_academico_alumno = TrabajoAcademicoAlumno::with([
+            'estadoTrabajoAcademico',
+            'comentarioTrabajoAcademico'
+        ])->find($id_trabajo_academico_alumno[0]);
 
         $this->id_gestion_aula_usuario_hash = $id_curso;
         $id_gestion_aula_usuario = Hashids::decode($this->id_gestion_aula_usuario_hash);

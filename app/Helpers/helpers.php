@@ -649,3 +649,34 @@ if (!function_exists('eliminar_archivos_editor')) {
         return $deletedFiles; // Retornar los archivos eliminados para referencia
     }
 }
+
+
+// Funcion para verificar si el contenido es vacio
+if (!function_exists('contenido_vacio')) {
+    function contenido_vacio($contenido)
+    {
+        // Si solo hay espacios, eliminarlos (&nbsp;)
+        $contenido = str_replace('&nbsp;', '', $contenido);
+        $contenido = trim($contenido);
+
+        if ($contenido === '<p><br></p>' ||
+            $contenido === '<h1><br></h1>' ||
+            $contenido === '<h2><br></h2>' ||
+            $contenido === '<h3><br></h3>' ||
+            $contenido === '<h4><br></h4>' ||
+            $contenido === '<h5><br></h5>' ||
+            $contenido === '<h6><br></h6>' ||
+            $contenido === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><p><br></p>' ||
+            $contenido === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><h1><br></h1>' ||
+            $contenido === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><h2><br></h2>' ||
+            $contenido === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><h3><br></h3>' ||
+            $contenido === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><h4><br></h4>' ||
+            $contenido === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><h5><br></h5>' ||
+            $contenido === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><h6><br></h6>' ||
+            $contenido === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><p></p>' ||
+            $contenido === '<p></p>') {
+            return '';
+        }
+        return $contenido;
+    }
+}

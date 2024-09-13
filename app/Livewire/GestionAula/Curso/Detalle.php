@@ -159,9 +159,18 @@ class Detalle extends Component
         public function guardar_orientaciones()
         {
             if ($this->descripcion_orientaciones === '<p><br></p>' || $this->descripcion_orientaciones === '<h1><br></h1>' ||
-            $this->descripcion_orientaciones === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><h1><br></h1>' ||
+            $this->descripcion_orientaciones === '<h2><br></h2>' ||
+            $this->descripcion_orientaciones === '<h3><br></h3>' ||
+            $this->descripcion_orientaciones === '<h4><br></h4>' ||
+            $this->descripcion_orientaciones === '<h5><br></h5>' ||
+            $this->descripcion_orientaciones === '<h6><br></h6>' ||
             $this->descripcion_orientaciones === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><p><br></p>' ||
             $this->descripcion_orientaciones === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><h1><br></h1>' ||
+            $this->descripcion_orientaciones === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><h2><br></h2>' ||
+            $this->descripcion_orientaciones === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><h3><br></h3>' ||
+            $this->descripcion_orientaciones === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><h4><br></h4>' ||
+            $this->descripcion_orientaciones === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><h5><br></h5>' ||
+            $this->descripcion_orientaciones === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><h6><br></h6>' ||
             $this->descripcion_orientaciones === '<p></p>' || $this->descripcion_orientaciones === '' ||
             $this->descripcion_orientaciones === null) {
                 $this->dispatch(

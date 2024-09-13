@@ -1,13 +1,15 @@
 <div>
 
     <livewire:components.navegacion.page-header :titulo_pasos=$titulo_page_header :titulo=$titulo_page_header
-        :links_array=$links_page_header :regresar=$regresar_page_header lazy />
+        :links_array=$links_page_header :regresar=$regresar_page_header lazy
+        wire:key="page-header-{{ $titulo_page_header }}" />
 
     <div class="page-body">
         <div class="container-xl">
 
             @if($modo_admin)
-                <livewire:components.curso.admin-info-usuario :usuario=$usuario :tipo_vista=$tipo_vista lazy />
+                <livewire:components.curso.admin-info-usuario :usuario=$usuario :tipo_vista=$tipo_vista lazy
+                    wire:key="admin-info-usuario-{{ $usuario->id_usuario }}" />
             @endif
 
             <div class="row g-3">
@@ -53,15 +55,27 @@
                         <div class="card-body">
                             {{-- Titulo de la tarea --}}
                             <h3 class="card-title fw-semibold">
-                                Entrega Académica
+                                ENTREGA ACADÉMICA
                             </h3>
 
-                            {{-- Descripcion de la tarea --}}
-                            <p class="card-text">
-                                <small class="text-muted d-none d-sm-block">
-                                    {!! $trabajo_academico_alumno->descripcion_trabajo_academico_alumno !!}
-                                </small>
-                            </p>
+                            @if($trabajo_academico_alumno->descripcion_trabajo_academico_alumno !== null ||
+                            $trabajo_academico_alumno->descripcion_trabajo_academico_alumno !== '')
+                                {{-- Descripción de la tarea --}}
+                                <div class="hr-text hr-text-center">
+                                    <span>
+                                        Descripción del Trabajo Académico
+                                    </span>
+                                </div>
+
+                                {{-- Descripcion de la tarea --}}
+                                <p class="card-text">
+                                    <span>
+                                        {!! $trabajo_academico_alumno->descripcion_trabajo_academico_alumno !!}
+                                        {{-- {!! $trabajo_academico_alumno->descripcion_trabajo_academico_alumno !!} --}}
+                                        {{-- {{ $trabajo_academico_alumno->descripcion_trabajo_academico_alumno }} --}}
+                                    </span>
+                                </p>
+                            @endif
 
                             @if($trabajo_academico->archivoDocente->count() > 0)
                                 {{-- Archivos adjuntos --}}
@@ -86,8 +100,7 @@
                                                                 {{ Str::limit($archivo->nombre_archivo_alumno, 20) }}
                                                             </h5>
                                                             <small class="text-muted d-block mt-1 fw-light">
-                                                                {{ formato_tamano_archivo(filesize($archivo->archivo_alumno))
-                                                                }}
+                                                                {{ formato_tamano_archivo(filesize($archivo->archivo_alumno)) }}
                                                             </small>
                                                         </div>
                                                     </div>
@@ -122,7 +135,8 @@
                 <div class="col-lg-4">
                     <livewire:components.trabajo-academico.card-revisar-trabajo :tipo_vista=$tipo_vista
                         :usuario=$usuario :id_gestion_aula_usuario=$id_gestion_aula_usuario
-                        lazy />
+                        :trabajo_academico_alumno=$trabajo_academico_alumno
+                        lazy wire:key="card-revisar-trabajo-{{ $trabajo_academico_alumno->id_trabajo_academico_alumno }}" />
                 </div>
             </div>
         </div>

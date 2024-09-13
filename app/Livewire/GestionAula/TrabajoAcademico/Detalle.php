@@ -209,10 +209,20 @@ class Detalle extends Component
 
         public function guardar_entrega_trabajo()
         {
-            if (($this->descripcion_trabajo_academico_alumno === '<p><br></p>' || $this->descripcion_trabajo_academico_alumno === '<h1><br></h1>' ||
-            $this->descripcion_trabajo_academico_alumno === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><h1><br></h1>' ||
+            if (($this->descripcion_trabajo_academico_alumno === '<p><br></p>'
+            || $this->descripcion_trabajo_academico_alumno === '<h1><br></h1>' ||
+            $this->descripcion_trabajo_academico_alumno === '<h2><br></h2>' ||
+            $this->descripcion_trabajo_academico_alumno === '<h3><br></h3>' ||
+            $this->descripcion_trabajo_academico_alumno === '<h4><br></h4>' ||
+            $this->descripcion_trabajo_academico_alumno === '<h5><br></h5>' ||
+            $this->descripcion_trabajo_academico_alumno === '<h6><br></h6>' ||
             $this->descripcion_trabajo_academico_alumno === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><p><br></p>' ||
             $this->descripcion_trabajo_academico_alumno === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><h1><br></h1>' ||
+            $this->descripcion_trabajo_academico_alumno === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><h2><br></h2>' ||
+            $this->descripcion_trabajo_academico_alumno === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><h3><br></h3>' ||
+            $this->descripcion_trabajo_academico_alumno === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><h4><br></h4>' ||
+            $this->descripcion_trabajo_academico_alumno === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><h5><br></h5>' ||
+            $this->descripcion_trabajo_academico_alumno === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><h6><br></h6>' ||
             $this->descripcion_trabajo_academico_alumno === '<p></p>' || $this->descripcion_trabajo_academico_alumno === '' ||
             $this->descripcion_trabajo_academico_alumno === null) && count($this->archivos_trabajo_alumno) <= 0) {
                 $this->dispatch(
