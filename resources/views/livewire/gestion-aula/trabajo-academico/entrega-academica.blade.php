@@ -71,7 +71,9 @@
                                 <p class="card-text">
                                     <span>
                                         {!! $trabajo_academico_alumno->descripcion_trabajo_academico_alumno !!}
-                                        {{-- {!! $trabajo_academico_alumno->descripcion_trabajo_academico_alumno !!} --}}
+                                        {{-- <div class="container">
+                                            {!! clean($trabajo_academico_alumno->descripcion_trabajo_academico_alumno) !!}
+                                        </div> --}}
                                         {{-- {{ $trabajo_academico_alumno->descripcion_trabajo_academico_alumno }} --}}
                                     </span>
                                 </p>
@@ -136,7 +138,8 @@
                     <livewire:components.trabajo-academico.card-revisar-trabajo :tipo_vista=$tipo_vista
                         :usuario=$usuario :id_gestion_aula_usuario=$id_gestion_aula_usuario
                         :trabajo_academico_alumno=$trabajo_academico_alumno
-                        lazy wire:key="card-revisar-trabajo-{{ $trabajo_academico_alumno->id_trabajo_academico_alumno }}" />
+                        wire:key="card-revisar-trabajo-{{ $trabajo_academico_alumno->id_trabajo_academico_alumno }}"
+                        lazy />
                 </div>
             </div>
         </div>

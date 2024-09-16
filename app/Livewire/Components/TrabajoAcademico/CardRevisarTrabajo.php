@@ -17,12 +17,16 @@ class CardRevisarTrabajo extends Component
     public $id_usuario_hash;
     public $id_gestion_aula_usuario;
     public $trabajo_academico_alumno;
+    public $validar_entrega = false;
+    public $editar_entrega = false;
 
     // Variables para la revisión de trabajos
     #[Validate('required|numeric|min:0|max:20')]
     public $nota_trabajo_academico;
     #[Validate('required')]
     public $descripcion_comentario_trabajo_academico;
+
+    protected $listeners = ['actualizar_estado_entrega_alumno' => 'actualizar_estado_entrega_alumno'];
 
 
     public function revisar_trabajo_academico()
@@ -37,7 +41,8 @@ class CardRevisarTrabajo extends Component
 
             $this->descripcion_comentario_trabajo_academico = contenido_vacio($this->descripcion_comentario_trabajo_academico);
 
-            if ($this->descripcion_comentario_trabajo_academico !== '') {
+            if ($this->descripcion_comentario_trabajo_academico !== '')
+            {
                 // Crear comentario nuevo
                 $comentario_trabajo_academico = new ComentarioTrabajoAcademico();
                 $comentario_trabajo_academico->descripcion_comentario_trabajo_academico = $this->descripcion_comentario_trabajo_academico;
@@ -64,7 +69,7 @@ class CardRevisarTrabajo extends Component
                 type: 'success'
             );
 
-            $this->cargar_datos();
+            $this->dispatch('actualizar_estado_entrega');
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -88,36 +93,48 @@ class CardRevisarTrabajo extends Component
         }
     }
 
+
+    public function validar_entrega()
+    {
+        $this->trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico === 'Entregado' ? $this->validar_entrega = true : $this->validar_entrega = false;
+    }
+
+
+    public function editar_trabajo_academico()
+    {
+        $this->editar_entrega = true;
+    }
+
+
+    public function actualizar_estado_entrega_alumno()
+    {
+        $this->trabajo_academico_alumno = TrabajoAcademicoAlumno::find($this->trabajo_academico_alumno->id_trabajo_academico_alumno);
+        $this->cargar_datos();
+        $this->validar_entrega();
+    }
+
+
     public function placeholder()
     {
         return <<<'HTML'
-        <div class="col-12">
-            <div class="card placeholder-glow">
-                <div class="card-body p-4">
-                    <div class="d-flex justify-content-between mb-5">
-                        <div class="placeholder col-6" style="height: 1.5rem;"></div>
-                        <div class="placeholder"></div>
-                    </div>
-                    <div>
-                        <div class="col-12"></div>
-                        <div class="placeholder placeholder-xs col-4 bg-secondary">
-                        </div>
-                        <div class="col-12"></div>
-                        <div class="placeholder placeholder-xs col-4 bg-secondary">
-                        </div>
-                    </div>
-                    <div class=" d-flex justify-content-end">
-                        @if ($tipo_vista === 'carga-academica' &&
-                        $usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario))
+        <div class="card card-stacked placeholder-glow">
+            <div class="card-header bg-orange-lt">
+                <div class="placeholder col-8 bg-orange"
+                style="height: 1.5rem;"></div>
+            </div>
+            <div class="card-body row g-3">
+                <table class="table table-striped table-vcenter">
+                    <tbody>
+                        <div class="placeholder placeholder-xs col-2 mt-4"></div>
+                        <div class="placeholder placeholder-lg col-12 bg-secondary" style="height: 1.6rem;"></div>
+                        <div class="placeholder placeholder-xs col-8 mt-4"></div>
+                        <div class="placeholder placeholder-lg col-12 bg-secondary" style="height: 10rem;"></div>
+
                         <a href="#" tabindex="-1"
-                            class="btn btn-secondary disabled placeholder col-sm-2 col-lg-3 col-xl-2 d-none d-md-inline-block"
+                            class="btn btn-primary disabled placeholder col-12 d-block mt-5"
                             aria-hidden="true"></a>
-                        <a href="#" tabindex="-1"
-                            class="btn btn-secondary disabled placeholder col-1 d-md-none btn-icon"
-                            aria-hidden="true"></a>
-                        @endif
-                    </div>
-                </div>
+                    </tbody>
+                </table>
             </div>
         </div>
         HTML;
@@ -134,6 +151,7 @@ class CardRevisarTrabajo extends Component
         $this->trabajo_academico_alumno = $trabajo_academico_alumno;
 
         $this->cargar_datos();
+        $this->validar_entrega();
     }
 
 

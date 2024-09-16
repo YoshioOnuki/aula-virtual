@@ -33,6 +33,8 @@ class EntregaAcademica extends Component
 
     public $tipo_vista;
 
+    // Listener para actualizar la vista actualizar_estado_entrega
+    protected $listeners = ['actualizar_estado_entrega' => 'actualizar_estado_entrega'];
 
 
     /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
@@ -125,6 +127,12 @@ class EntregaAcademica extends Component
         }
     /* ==================================================================================== */
 
+
+    public function actualizar_estado_entrega()
+    {
+        // Actualizar el estado de la entrega académica de otro componente
+        $this->dispatch('actualizar_estado_entrega_alumno');
+    }
 
 
     public function mount($id_usuario, $tipo_vista, $id_curso, $id_trabajo_academico, $id_trabajo_academico_alumno)

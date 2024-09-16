@@ -6,16 +6,16 @@
             </h3>
         </div>
         <div class="card-body row g-3">
-            <form autocomplete="off" wire:submit="revisar_trabajo_academico">
+            <form autocomplete="off" wire:submit="revisar_trabajo_academico" novalidate>
                 <tbody>
                     <div class="row g-3">
                         <div class="col-lg-12">
                             <label for="nota_trabajo_academico" class="form-label">
                                 Nota
                             </label>
-                            @if ($trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico !== 'Entregado')
+                            @if (!$validar_entrega)
                                 <input type="number" class="form-control {{ $nota_trabajo_academico === null || $nota_trabajo_academico === '' ? 'bg-gray-400' : '' }}
-                                    {{ $nota_trabajo_academico >= 11 ? 'border-success' : 'border-danger' }}"
+                                    {{ $nota_trabajo_academico >= 11 ? 'border-teal' : 'border-danger' }}"
                                     id="nota_trabajo_academico" disabled wire:model="nota_trabajo_academico">
                             @else
                                 <input type="number" class="form-control @error('nota_trabajo_academico') is-invalid @elseif(strlen($nota_trabajo_academico) > 0) is-valid @enderror"
@@ -32,7 +32,7 @@
                             <label for="descripcion_comentario_trabajo_academico" class="form-label">
                                 Observación del Trabajo Académico
                             </label>
-                            @if ($trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico !== 'Entregado')
+                            @if (!$validar_entrega)
                                 @if ($descripcion_comentario_trabajo_academico === null || $descripcion_comentario_trabajo_academico === '')
                                     <textarea class="form-control" disabled>Sin observaciones</textarea>
                                 @else
@@ -43,32 +43,38 @@
                             @else
                                 <div wire:ignore>
                                     <textarea class="form-control"
-                                        wire:model.live="descripcion_comentario_trabajo_academico"
+                                        wire:model.lazy="descripcion_comentario_trabajo_academico"
                                         id="descripcion_comentario_trabajo_academico">
+                                        {{ $descripcion_comentario_trabajo_academico }}
                                     </textarea>
                                 </div>
-                                @error('descripcion_comentario_trabajo_academico')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
                             @endif
                         </div>
                     </div>
                 </tbody>
-                <div class="form-footer">
-                    <button class="btn btn-primary w-100" type="submit"
-                        wire:loading.attr="disabled" wire:target="revisar_trabajo_academico">
-                        <span wire:loading.remove wire:target="revisar_trabajo_academico">Revisar Trabajo Académico</span>
-                        <span wire:loading wire:target="revisar_trabajo_academico">
-                            <div class="spinner-border spinner-border-sm" role="status"></div>
-                        </span>
-                    </button>
-                </div>
-
+                @if ($validar_entrega || $editar_entrega === true)
+                    <div class="form-footer">
+                        <button class="btn btn-primary w-100" type="submit"
+                            wire:loading.attr="disabled" wire:target="revisar_trabajo_academico">
+                            <span wire:loading.remove wire:target="revisar_trabajo_academico">Revisar Trabajo Académico</span>
+                            <span wire:loading wire:target="revisar_trabajo_academico">
+                                <div class="spinner-border spinner-border-sm" role="status"></div>
+                            </span>
+                        </button>
+                    </div>
+                {{-- @else
+                    <div class="form-footer">
+                        <button class="btn btn-secondary w-100" wire:click="editar_trabajo_academico" type="button">
+                            <span>Editar Revisión</span>
+                        </button>
+                    </div> --}}
+                @endif
             </form>
         </div>
     </div>
+
+
+
 </div>
 
 @script
@@ -83,7 +89,7 @@
                     ['font', ['bold', 'underline', 'clear']],
                     ['color', ['color']],
                     ['para', ['ul', 'ol']],
-                    ['view', ['codeview']]
+                    // ['view', ['codeview']]
                 ],
                 callbacks: {
                     // Evitar cualquier tipo de archivo de imagen (png, jpg, jpeg, gif, etc.)

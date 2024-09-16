@@ -36,7 +36,7 @@ class CardEstadoTrabajo extends Component
         $this->cantidad_alumnos_revisados = TrabajoAcademicoAlumno::with('estadoTrabajoAcademico')
             ->where('id_trabajo_academico', $this->trabajo_academico->id_trabajo_academico)
             ->whereHas('estadoTrabajoAcademico', function ($query) {
-                $query->where('nombre_estado_trabajo_academico', 'Revisado');
+                $query->where('nombre_estado_trabajo_academico', '!=', 'Entregado');
             })
             ->count();
 
@@ -154,7 +154,7 @@ class CardEstadoTrabajo extends Component
         $this->cantidad_alumnos_revisados = TrabajoAcademicoAlumno::with('estadoTrabajoAcademico')
             ->where('id_trabajo_academico', $this->trabajo_academico->id_trabajo_academico)
             ->whereHas('estadoTrabajoAcademico', function ($query) {
-                $query->where('nombre_estado_trabajo_academico', 'Revisado');
+                $query->where('nombre_estado_trabajo_academico',  '!=', 'Entregado');
             })
             ->count();
 
