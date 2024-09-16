@@ -32,7 +32,6 @@ class Index extends Component
 
     public $id_usuario_hash;
     public $usuario;
-
     public $id_gestion_aula_usuario_hash;
     public $id_gestion_aula_usuario;
 
