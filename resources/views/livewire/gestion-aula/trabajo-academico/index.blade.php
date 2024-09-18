@@ -85,17 +85,27 @@
                                 </div>
                                 @endif
 
+                                @forelse($trabajos_academicos as $item)
                                 <livewire:components.trabajo-academico.card-trabajo-academico :tipo_vista=$tipo_vista
-                                    :usuario=$usuario :id_gestion_aula_usuario=$id_gestion_aula_usuario lazy />
-
+                                    :usuario=$usuario :id_gestion_aula_usuario=$id_gestion_aula_usuario
+                                    :trabajo_academico=$item wire:key="{{ $item->id_trabajo_academico }}" lazy />
+                                @empty
+                                <div class="col-lg-12">
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <div class="text-muted">
+                                            No hay trabajos académicos registrados
+                                        </div>
+                                    </div>
+                                </div>
+                                @endforelse
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-lg-4">
-                    <livewire:components.curso.datos-curso :id_gestion_aula_usuario=$id_gestion_aula_usuario :ruta=$ruta
-                        :tipo_vista=$tipo_vista lazy />
+                    <livewire:components.curso.datos-curso :id_gestion_aula_usuario=$id_gestion_aula_usuario
+                        :ruta_pagina=$ruta_pagina :tipo_vista=$tipo_vista lazy />
                 </div>
 
             </div>
@@ -104,7 +114,7 @@
 
 
     <div wire:ignore.self class="modal fade" id="modal-trabajo-academico" tabindex="-1" data-bs-backdrop="static">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">

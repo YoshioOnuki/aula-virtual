@@ -27,7 +27,7 @@ class Index extends Component
     public $gestion_aula_usuario;
     public $curso;
     public $recursos;
-    public $ruta;
+    public $ruta_pagina;
 
     // Variables para saber si el usuario es docente
     public $es_docente = false;
@@ -322,7 +322,7 @@ class Index extends Component
 
         $this->obtener_datos_page_header();
 
-        $this->ruta = request()->route()->getName();
+        $this->ruta_pagina = request()->route()->getName();
 
     }
 

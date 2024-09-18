@@ -1,34 +1,19 @@
 <?php
 
-namespace App\Livewire\Components\TrabajoAcademico;
+namespace App\Livewire\Components\Foro;
 
-use App\Models\GestionAulaUsuario;
-use App\Models\TrabajoAcademico;
+use App\Models\Foro;
 use Livewire\Component;
 use Vinkla\Hashids\Facades\Hashids;
 
-class CardTrabajoAcademico extends Component
+class CardForo extends Component
 {
     public $tipo_vista;
     public $usuario;
-    public $id_gestion_aula_usuario;
-    public $trabajo_academico;
-
     public $id_usuario_hash;
+    public $id_gestion_aula_usuario;
+    public $foro;
 
-    protected $listeners = ['actualizar-trabajos-academicos' => 'mostrar_trabajos'];
-
-
-    public function abrir_modal($id_trabajo_academico)
-    {
-        $this->dispatch('abrir-modal-editar', $id_trabajo_academico);
-    }
-
-
-    public function mostrar_trabajos()
-    {
-        $this->mount($this->tipo_vista, $this->usuario, $this->id_gestion_aula_usuario, $this->trabajo_academico);
-    }
 
     public function placeholder()
     {
@@ -66,25 +51,28 @@ class CardTrabajoAcademico extends Component
     }
 
 
-    public function mount($tipo_vista, $usuario, $id_gestion_aula_usuario, $trabajo_academico)
+    public function mount($tipo_vista, $usuario, $id_gestion_aula_usuario, $foro)
     {
         $this->tipo_vista = $tipo_vista;
         $this->usuario = $usuario;
         $this->id_gestion_aula_usuario = $id_gestion_aula_usuario;
         $this->id_usuario_hash = Hashids::encode($usuario->id_usuario);
-        $this->trabajo_academico = TrabajoAcademico::with([
-            'trabajoAcademicoAlumno' => function ($query) {
-                $query->with('estadoTrabajoAcademico')
-                    ->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)
-                    ->first();
-            }
-        ])->find($trabajo_academico->id_trabajo_academico);
-        // dd($this->trabajo_academico);
+        if ($this->usuario->esRolGestionAula('DOCENTE', $this->id_gestion_aula_usuario)) {
+            $this->foro = $foro;
+        }else{
+            $this->foro = Foro::with([
+                'foroRespuesta' => function ($query) {
+                    $query->orderBy('created_at', 'asc')
+                        ->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario);
+                }
+            ])->find($foro->id_foro);
+            // dd($this->foro->foroRespuesta);
+        }
     }
 
 
     public function render()
     {
-        return view('livewire.components.trabajo-academico.card-trabajo-academico');
+        return view('livewire.components.foro.card-foro');
     }
 }

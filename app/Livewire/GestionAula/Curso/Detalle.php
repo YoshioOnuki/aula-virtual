@@ -21,7 +21,7 @@ class Detalle extends Component
     public $id_gestion_aula_usuario;
     public $curso;
     public $gestion_aula_usuario;
-    public $ruta;
+    public $ruta_pagina;
 
     public $nombre_curso;
     public $grupo_gestion_aula;
@@ -445,7 +445,7 @@ class Detalle extends Component
         $this->mostrar_orientaciones();
         $this->descripcion_orientaciones = $this->orientaciones_generales->descripcion_presentacion ?? '';
 
-        $this->ruta = request()->route()->getName();
+        $this->ruta_pagina = request()->route()->getName();
 
     }
 

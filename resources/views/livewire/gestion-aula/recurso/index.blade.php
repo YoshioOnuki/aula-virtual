@@ -14,6 +14,7 @@
                 <div class="col-lg-8">
                     <div class="card card-md card-stacked ">
                         <div class="card-stamp card-stamp-lg">
+                            {{-- Icono de la tarjeta (Lado derecho de la esquina superior) --}}
                             @if ($tipo_vista === 'cursos')
                             <div class="card-stamp-icon bg-teal">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -52,6 +53,7 @@
                             <div class="row row-cards d-flex justify-content-start" wire:init="load_recursos">
 
                                 @if ($tipo_vista === 'carga-academica' && $es_docente)
+                                {{-- Agregar recurso --}}
                                 <div class="col-lg-12">
                                     <a class="card cursor-pointer" wire:click="abrir_modal_recurso_agregar()">
                                         <div class="card-body text-secondary">
@@ -280,33 +282,34 @@
                                             </div>
                                             @if ($es_docente)
 
-                                                <div x-data="{ mostrarAlerta: true, salir: false }"
-                                                    x-show="mostrarAlerta"
-                                                    x-bind:class="salir ? 'animate__hinge' : 'animate__pulse animate__repeat-2 animate__delay-1s'"
-                                                    class="alert alert-yellow bg-yellow-lt animate__animated hover-shadow-sm alert-dismissible mt-3"
-                                                    role="alert" style="display: none;">
-                                                    <div class="d-flex">
-                                                        <div>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24"
-                                                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                                                fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                <path d="M12 9v4"></path>
-                                                                <path
-                                                                    d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z">
-                                                                </path>
-                                                                <path d="M12 16h.01"></path>
-                                                            </svg>
-                                                        </div>
-                                                        <div>
-                                                            <h4 class="alert-title">
-                                                                Archivo no disponible, por favor suba el archivo nuevamente
-                                                            </h4>
-                                                        </div>
+                                            <div x-data="{ mostrarAlerta: true, salir: false }" x-show="mostrarAlerta"
+                                                x-bind:class="salir ? 'animate__hinge' : 'animate__pulse animate__repeat-2 animate__delay-1s'"
+                                                class="alert alert-yellow bg-yellow-lt animate__animated hover-shadow-sm alert-dismissible mt-3"
+                                                role="alert" style="display: none;">
+                                                <div class="d-flex">
+                                                    <div>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon"
+                                                            width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                            stroke="currentColor" fill="none" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                            <path d="M12 9v4"></path>
+                                                            <path
+                                                                d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z">
+                                                            </path>
+                                                            <path d="M12 16h.01"></path>
+                                                        </svg>
                                                     </div>
-                                                    <!-- Botón de cerrar -->
-                                                    <a class="btn-close icon-rotate-custom" @click="salir = true; setTimeout(() => mostrarAlerta = false, 2000);"></a>
+                                                    <div>
+                                                        <h4 class="alert-title">
+                                                            Archivo no disponible, por favor suba el archivo nuevamente
+                                                        </h4>
+                                                    </div>
                                                 </div>
+                                                <!-- Botón de cerrar -->
+                                                <a class="btn-close icon-rotate-custom"
+                                                    @click="salir = true; setTimeout(() => mostrarAlerta = false, 2000);"></a>
+                                            </div>
 
                                             @endif
                                         </div>
@@ -333,8 +336,8 @@
                 </div>
 
                 <div class="col-lg-4">
-                    <livewire:components.curso.datos-curso :id_gestion_aula_usuario=$id_gestion_aula_usuario :ruta=$ruta
-                        :tipo_vista=$tipo_vista lazy />
+                    <livewire:components.curso.datos-curso :id_gestion_aula_usuario=$id_gestion_aula_usuario
+                        :ruta_pagina=$ruta_pagina :tipo_vista=$tipo_vista lazy />
                 </div>
 
             </div>
@@ -343,7 +346,7 @@
 
 
     <div wire:ignore.self class="modal fade" id="modal-recursos" tabindex="-1" data-bs-backdrop="static">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">

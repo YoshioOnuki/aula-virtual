@@ -47,6 +47,8 @@
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
     <script src="{{ asset('assets/dist/libs/tom-select/dist/js/tom-select.base.min.js?1684106062') }}" defer></script>
+    <script src="{{ asset('js/mobile-detect/mobile-detect.min.js') }}"></script>
+
 
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 

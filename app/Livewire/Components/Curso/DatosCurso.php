@@ -162,12 +162,12 @@ class DatosCurso extends Component
     }
 
 
-    public function mount($id_gestion_aula_usuario, $ruta, $tipo_vista)
+    public function mount($id_gestion_aula_usuario, $ruta_pagina, $tipo_vista)
     {
         $this->tipo_vista = $tipo_vista;
         $this->id_gestion_aula_usuario = $id_gestion_aula_usuario;
 
-        if($ruta == 'carga-academica.detalle' || $ruta == 'cursos.detalle')
+        if($ruta_pagina == 'carga-academica.detalle' || $ruta_pagina == 'cursos.detalle')
         {
             $this->datos = true;
         }

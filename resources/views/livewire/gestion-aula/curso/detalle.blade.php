@@ -31,7 +31,7 @@
                                 </div>
                             </div>
                             @else
-                            <div class="card card-stacked animate__animated animate__fadeIn  animate__faster">
+                            <div class="card card-stacked animate__animated animate__fadeIn">
                                 <div class="card-header bg-teal-lt">
                                     <span class="text-teal me-2">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -419,8 +419,8 @@
                     <livewire:components.curso.info-docente :id_gestion_aula_usuario=$id_gestion_aula_usuario
                         :tipo_vista=$tipo_vista lazy />
 
-                    <livewire:components.curso.datos-curso :id_gestion_aula_usuario=$id_gestion_aula_usuario :ruta=$ruta
-                        :tipo_vista=$tipo_vista lazy />
+                    <livewire:components.curso.datos-curso :id_gestion_aula_usuario=$id_gestion_aula_usuario
+                        :ruta_pagina=$ruta_pagina :tipo_vista=$tipo_vista lazy />
 
                 </div>
 
@@ -431,7 +431,7 @@
 
     {{-- Modal Link de Clase --}}
     <div wire:ignore.self class="modal fade" id="modal-link-clase" tabindex="-1" data-bs-backdrop="static">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
@@ -515,7 +515,7 @@
 
     {{-- Modal Orientaciones --}}
     <div wire:ignore.self class="modal fade" id="modal-orientaciones" tabindex="-1" data-bs-backdrop="static">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
@@ -597,8 +597,8 @@
 </div>
 
 @script
-    <script>
-        $(function() {
+<script>
+    $(function() {
             $('#descripcion_orientaciones').summernote({
                 placeholder: 'Ingrese la descripcion de las orientaciones',
                 height: 300,
@@ -640,5 +640,5 @@
                 },
             });
         })
-    </script>
+</script>
 @endscript

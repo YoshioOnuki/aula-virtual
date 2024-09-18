@@ -24,6 +24,7 @@ return [
 
     'color-trabajo-academico-entregado' => 'teal',
     'color-trabajo-academico-no-entregado' => 'red',
+    'color-trabajo-academico-observado' => 'warning',
     'color-trabajo-academico-revisado' => 'primary',
 
     'color-border-card-trabajo-academico' => 'blue',

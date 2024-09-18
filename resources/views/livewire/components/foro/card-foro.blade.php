@@ -1,43 +1,44 @@
 <div>
     <div class="col-lg-12 mb-3 animate__animated animate__zoomIn animate__faster">
-        <a class="card d-block card-trabajo-academico"
-            href="{{ $tipo_vista === 'cursos' ?
+        <a class="card d-block card-trabajo-academico" href=""
+            {{-- href="{{ $tipo_vista === 'cursos' ?
             route('cursos.detalle.trabajo-academico.detalle', [
-            'id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 
-            'id_curso' => Hashids::encode($id_gestion_aula_usuario), 
+            'id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista,
+            'id_curso' => Hashids::encode($id_gestion_aula_usuario),
             'id_trabajo_academico' => Hashids::encode($trabajo_academico->id_trabajo_academico)]) :
             route('carga-academica.detalle.trabajo-academico.detalle', [
-            'id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 
-            'id_curso' => Hashids::encode($id_gestion_aula_usuario), 
-            'id_trabajo_academico' => Hashids::encode($trabajo_academico->id_trabajo_academico)]) }}">
+            'id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista,
+            'id_curso' => Hashids::encode($id_gestion_aula_usuario),
+            'id_trabajo_academico' => Hashids::encode($trabajo_academico->id_trabajo_academico)]) }}" --}}
+            >
 
-            <div class="modal-status bg-{{ config('settings.color-border-card-trabajo-academico') }}"></div>
+            <div class="modal-status bg-{{ config('settings.color-border-card-foro') }}"></div>
             <div class="card-body p-4">
                 <div class="d-flex justify-content-between align-items-end">
                     <div>
                         <h5 class="card-title d-flex align-items-center">
-                            <img src="{{ asset('/media/icons/icon-trabajo-academico-3.webp') }}"
-                                alt="icono-trabajo-academico" class="w-6 h-6 me-2">
+                            <img src="{{ asset('/media/icons/icon-foro.webp') }}"
+                                alt="icono-foro" class="w-6 h-6 me-2">
                             <span class="fw-bold card-titulo">
-                                {{ $trabajo_academico->titulo_trabajo_academico }}
+                                {{ $foro->titulo_foro }}
                             </span>
                         </h5>
                         <p class="card-text">
                             <small class="text-muted d-none d-sm-block">
-                                Fecha de inicio: {{ format_fecha($trabajo_academico->fecha_inicio_trabajo_academico) }}
-                                - {{ format_hora($trabajo_academico->fecha_inicio_trabajo_academico) }}
+                                Fecha de inicio: {{ format_fecha($foro->fecha_inicio_foro) }}
+                                - {{ format_hora($foro->fecha_inicio_foro) }}
                             </small>
                             <small class="text-muted d-none d-sm-block mt-2">
-                                Fecha de fin: {{ format_fecha($trabajo_academico->fecha_fin_trabajo_academico) }} - {{
-                                format_hora($trabajo_academico->fecha_fin_trabajo_academico) }}
+                                Fecha de fin: {{ format_fecha($foro->fecha_fin_foro) }} - {{
+                                format_hora($foro->fecha_fin_foro) }}
                             </small>
                         </p>
                     </div>
                     <div>
                         @if ($tipo_vista === 'carga-academica' && $usuario->esRolGestionAula('DOCENTE',
                         $id_gestion_aula_usuario))
-                        <button class="btn btn-secondary d-none d-md-inline-block"
-                            wire:click.prevent="abrir_modal({{ $trabajo_academico->id_trabajo_academico }})">
+                        <button class="btn btn-secondary d-none d-md-inline-block">
+                            {{-- wire:click.prevent="abrir_modal({{ $trabajo_academico->id_trabajo_academico }})"> --}}
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
@@ -48,8 +49,8 @@
                             </svg>
                             Editar
                         </button>
-                        <button class="btn btn-secondary d-md-none btn-icon"
-                            wire:click.prevent="abrir_modal({{ $trabajo_academico->id_trabajo_academico }})">
+                        <button class="btn btn-secondary d-md-none btn-icon">
+                            {{-- wire:click.prevent="abrir_modal({{ $foro->id_foro }})"> --}}
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
@@ -61,16 +62,9 @@
                         </button>
                         @endif
                         @if ($usuario->esRolGestionAula('ALUMNO', $id_gestion_aula_usuario) && $tipo_vista === 'cursos')
-                            @forelse ($trabajo_academico->trabajoAcademicoAlumno as $trabajo_academico_alumno)
-                                <span class="status status-{{ color_estado_trabajo_academico($trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico) }}
-                                    px-3 py-2 h-100">
-                                    {{ $trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico }}
-                                </span>
-                            @empty
-                                <span class="status status-red px-3 py-2 h-100">
-                                    No entregado
-                                </span>
-                            @endforelse
+                        <span class="status status-{{ $foro->foroRespuesta ? 'primary' : 'red' }} px-3 py-2 h-100">
+                            {{ $foro->foroRespuesta ? 'Respondido' : 'Sin responder' }}
+                        </span>
                         @endif
                     </div>
                 </div>

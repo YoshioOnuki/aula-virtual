@@ -26,7 +26,8 @@ class Index extends Component
     public $id_gestion_aula_usuario;
     public $id_gestion_aula;
     public $gestion_aula_usuario;
-    public $ruta;
+    public $ruta_pagina;
+    public $trabajos_academicos;
 
     // Variables para el modal de Trabajo Académico
     public $modo = 1; // Modo 1 = Agregar / 0 = Editar
@@ -319,6 +320,56 @@ class Index extends Component
     /* ==================================================================================== */
 
 
+        /* =============== OBTENER DATOS PARA MOSTRAR LOS TRABAJOS =============== */
+        public function mostrar_trabajos()
+        {
+            $gestion_aula_usuario = GestionAulaUsuario::with([
+                'gestionAula' => function ($query) {
+                    $query->with([
+                        'curso' => function ($query) {
+                            $query->with([
+                                'ciclo',
+                                'planEstudio',
+                                'programa' => function ($query) {
+                                    $query->with([
+                                        'facultad',
+                                        'tipoPrograma'
+                                    ])->select('id_programa', 'nombre_programa', 'mencion_programa', 'id_tipo_programa', 'id_facultad');
+                                }
+                            ])->select('id_curso', 'codigo_curso', 'nombre_curso', 'creditos_curso', 'horas_lectivas_curso', 'id_programa', 'id_plan_estudio', 'id_ciclo');
+                        },
+                        'trabajoAcademico' => function ($query) {
+                            $query->with([
+                                'archivoDocente' => function ($query) {
+                                    $query->get();
+                                },
+                                'trabajoAcademicoAlumno' => function ($query) {
+                                    $query->with([
+                                        'archivoAlumno' => function ($query) {
+                                            $query->get();
+                                        },
+                                        'estadoTrabajoAcademico' => function ($query) {
+                                            $query->first();
+                                        },
+                                        'comentarioTrabajoAcademico' => function ($query) {
+                                            $query->get();
+                                        }
+                                    ])->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)->get();
+                                },
+                            ])->orderBy('fecha_inicio_trabajo_academico', 'DESC')
+                                ->get();
+                        }
+                    ])->select('id_gestion_aula', 'grupo_gestion_aula', 'id_curso');
+                }
+            ])->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)
+                ->first();
+
+            if ($gestion_aula_usuario) {
+                $this->trabajos_academicos = $gestion_aula_usuario->gestionAula->trabajoAcademico;
+            }
+        }
+    /* ======================================================================= */
+
     public function mount($id_usuario, $tipo_vista, $id_curso)
     {
         $this->tipo_vista = $tipo_vista;
@@ -342,7 +393,9 @@ class Index extends Component
 
         $this->obtener_datos_page_header();
 
-        $this->ruta = request()->route()->getName();
+        $this->ruta_pagina = request()->route()->getName();
+
+        $this->mostrar_trabajos();
 
     }
 

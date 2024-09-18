@@ -449,7 +449,7 @@
 
 
     <div wire:ignore.self class="modal fade" id="modal-enviar-asistencia" tabindex="-1" data-bs-backdrop="static">
-        <div class="modal-dialog modal-md modal-dialog-scrollable" role="document">
+        <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
@@ -548,11 +548,8 @@
 </div>
 
 @script
-
-<script src="https://unpkg.com/@tabler/core@latest/dist/js/tabler.min.js"></script>
-<script src="{{ asset('js/mobile-detect/mobile-detect.min.js') }}"></script>
-<script>
-    document.addEventListener('livewire:navigated', () => {
+    <script>
+        document.addEventListener('livewire:navigated', () => {
             const asistencias = document.querySelector('.asistencias');
             const mobileMessage = document.querySelector('.mobile-message');
             const md = new MobileDetect(window.navigator.userAgent);
@@ -571,9 +568,13 @@
             toggleContent();
             window.addEventListener("resize", toggleContent);
 
+            // Asegúrate de que el checkbox existe antes de intentar usarlo
             var checkbox = document.getElementById('myCheckbox');
+            if (checkbox) {
                 checkbox.indeterminate = true;
-            });
+            } else {
+                console.warn('El checkbox con ID myCheckbox no existe en el DOM.');
+            }
         });
-</script>
+    </script>
 @endscript

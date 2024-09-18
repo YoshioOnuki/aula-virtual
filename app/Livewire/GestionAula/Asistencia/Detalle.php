@@ -9,11 +9,13 @@ use App\Models\GestionAulaUsuario;
 use App\Models\Usuario;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Vinkla\Hashids\Facades\Hashids;
 
+#[Layout('components.layouts.app')]
 class Detalle extends Component
 {
     use WithPagination;

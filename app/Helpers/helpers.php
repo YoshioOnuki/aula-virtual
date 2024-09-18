@@ -535,6 +535,8 @@ if (!function_exists('color_estado_trabajo_academico')) {
                 return config('settings.color-trabajo-academico-revisado');
             case 'No entregado':
                 return config('settings.color-trabajo-academico-no-entregado');
+            case 'Observado':
+                return config('settings.color-trabajo-academico-observado');
         }
     }
 }

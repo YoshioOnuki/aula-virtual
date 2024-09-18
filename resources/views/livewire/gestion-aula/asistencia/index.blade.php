@@ -1,4 +1,5 @@
 <div>
+
     <div class="mobile-message">
         <div class="d-flex justify-content-center align-items-center full-height">
             <div class="container-tight animate__animated animate__fadeIn  ">
@@ -239,23 +240,22 @@
                                         entradas
                                     </div>
                                     <div class="text-secondary row">
-                                        @if ($es_docente &&
-                                        $tipo_vista === 'carga-academica')
-                                        <div class="col-lg-7 col-9">
-                                            <div class="d-inline-block">
-                                                <input type="text" class="form-control"
-                                                    wire:model.live.debounce.500ms="search" aria-label="Search invoice"
-                                                    placeholder="Buscar">
+                                        @if ($es_docente && $tipo_vista === 'carga-academica')
+                                            <div class="col-lg-7 col-9">
+                                                <div class="d-inline-block">
+                                                    <input type="text" class="form-control"
+                                                        wire:model.live.debounce.500ms="search" aria-label="Buscar asistencia"
+                                                        placeholder="Buscar">
+                                                </div>
                                             </div>
-                                        </div>
                                         @else
-                                        <div class="col-lg-12">
-                                            <div class="d-inline-block">
-                                                <input type="text" class="form-control"
-                                                    wire:model.live.debounce.500ms="search" aria-label="Search invoice"
-                                                    placeholder="Buscar">
+                                            <div class="col-lg-12">
+                                                <div class="d-inline-block">
+                                                    <input type="text" class="form-control"
+                                                        wire:model.live.debounce.500ms="search" aria-label="Buscar asistencia"
+                                                        placeholder="Buscar">
+                                                </div>
                                             </div>
-                                        </div>
                                         @endif
 
                                         @if ($es_docente &&
@@ -526,7 +526,7 @@
 
 
     <div wire:ignore.self class="modal fade" id="modal-asistencias" tabindex="-1" data-bs-backdrop="static">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
@@ -785,7 +785,7 @@
     </div>
 
     <div wire:ignore.self class="modal fade" id="modal-enviar-asistencia" tabindex="-1" data-bs-backdrop="static">
-        <div class="modal-dialog modal-md modal-dialog-scrollable" role="document">
+        <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
@@ -884,28 +884,26 @@
 </div>
 
 @script
+    <script>
+        document.addEventListener('livewire:navigated', () => {
+            const asistencias = document.querySelector('.asistencias');
+            const mobileMessage = document.querySelector('.mobile-message');
+            const md = new MobileDetect(window.navigator.userAgent);
 
-<script src="{{ asset('js/mobile-detect/mobile-detect.min.js') }}"></script>
-<script>
-    document.addEventListener('livewire:navigated', () => {
-        const asistencias = document.querySelector('.asistencias');
-        const mobileMessage = document.querySelector('.mobile-message');
-        const md = new MobileDetect(window.navigator.userAgent);
+            function isMobileDevice() {
+                return md.mobile() !== null;
+            }
 
-        function isMobileDevice() {
-            return md.mobile() !== null;
-        }
+            function toggleContent() {
+                const isMobile = isMobileDevice();
+                const isNarrowScreen = window.innerWidth < 768;
+                asistencias.style.display = (isMobile || isNarrowScreen) ? 'none' : 'block';
+                mobileMessage.style.display = (isMobile || isNarrowScreen) ? 'block' : 'none';
+            }
 
-        function toggleContent() {
-            const isMobile = isMobileDevice();
-            const isNarrowScreen = window.innerWidth < 768;
-            asistencias.style.display = (isMobile || isNarrowScreen) ? 'none' : 'block';
-            mobileMessage.style.display = (isMobile || isNarrowScreen) ? 'block' : 'none';
-        }
+            toggleContent();
+            window.addEventListener("resize", toggleContent);
+        });
 
-        toggleContent();
-        window.addEventListener("resize", toggleContent);
-    });
-
-</script>
+    </script>
 @endscript
