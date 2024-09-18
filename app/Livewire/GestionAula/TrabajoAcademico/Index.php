@@ -51,7 +51,7 @@ class Index extends Component
     public $nombre_archivo_trabajo_academico = [];
     public $iteration = 1;
 
-    protected $listeners = ['abrir-modal-editar' => 'abrir_modal_editar_trabajo'];
+    protected $listeners = ['abrir-modal-trabajo-editar' => 'abrir_modal_editar_trabajo'];
 
     public $modo_admin = false; // Modo admin, para saber si se esta en modo administrador
 

@@ -49,7 +49,7 @@
     <div class="d-flex justify-content-center align-items-center full-height">
         <div class="container-tight py-4">
             <div class="empty">
-                <div class="animate__animated animate__zoomInDown">
+                <div class="animate__animated animate__zoomInDown animate__faster">
                     <div class="empty-header text-teal">
                         429
                     </div>

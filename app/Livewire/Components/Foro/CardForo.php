@@ -15,6 +15,12 @@ class CardForo extends Component
     public $foro;
 
 
+    public function abrir_modal($id_foro)
+    {
+        $this->dispatch('abrir-modal-foro-editar', $id_foro);
+    }
+
+
     public function placeholder()
     {
         return <<<'HTML'
@@ -66,7 +72,6 @@ class CardForo extends Component
                         ->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario);
                 }
             ])->find($foro->id_foro);
-            // dd($this->foro->foroRespuesta);
         }
     }
 

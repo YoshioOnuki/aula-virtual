@@ -49,7 +49,7 @@
     <div class="d-flex justify-content-center align-items-center full-height">
         <div class="container-tight py-4">
             <div class="empty">
-                <div class="animate__animated animate__zoomInDown">
+                <div class="animate__animated animate__zoomInDown animate__faster">
                     <div class="empty-img">
                         <svg width="450" viewBox="0 0 1023 786" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g clip-path="url(#clip0_1601_104)">
@@ -239,7 +239,7 @@
                         Lo sentimos pero nuestro servidor encontró un error interno
                     </p>
                 </div>
-                <div class="empty-action animate__animated animate__flipInX animate__delay-1s">
+                <div class="empty-action animate__animated animate__flipInX">
                     <a href="{{ route('inicio') }}" class="btn btn-secondary" id="backButton">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>

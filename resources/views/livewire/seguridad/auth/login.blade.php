@@ -4,17 +4,17 @@
             d-flex flex-column justify-content-center animate__animated animate__fadeIn  ">
             <div class="container container-tight my-5 px-lg-6">
                 <div class="text-center mb-4">
-                    <a class="navbar-brand navbar-brand-autodark animate__animated animate__backInDown animate__slow">
+                    <a class="navbar-brand navbar-brand-autodark animate__animated animate__backInDown ">
                         <img src="{{ asset('/media/logo-pg.webp') }}" height="160" alt="Logo"
                             class="rounded hide-theme-light">
                         <img src="{{ asset('/media/logo-pg.webp') }}" height="160   " alt="Logo"
                             class="rounded hide-theme-dark">
                     </a>
                 </div>
-                <h2 class="h3 text-center mb-3 text-uppercase animate__animated animate__flipInX animate__delay-2s">
+                <h2 class="h3 text-center mb-3 text-uppercase animate__animated animate__flipInX animate__delay-1s">
                     Bienvenido al Aula Virtual
                 </h2>
-                <form wire:submit.prevent="iniciar_sesion" class="row g-3 animate__animated animate__fadeIn animate__slow animate__delay-1s" autocomplete="off" novalidate>
+                <form wire:submit.prevent="iniciar_sesion" class="row g-3 animate__animated animate__fadeIn animate__slow" autocomplete="off" novalidate>
 
                     @if($estado_bloqueo)
                         <div class="text-end mt-4 position-relative" wire:poll.1000ms="update_tiempo_restante">

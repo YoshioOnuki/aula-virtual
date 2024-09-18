@@ -8,6 +8,7 @@ use App\Models\GestionAulaUsuario;
 use App\Models\Usuario;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Vinkla\Hashids\Facades\Hashids;
 
@@ -22,6 +23,25 @@ class Index extends Component
     public $ruta_pagina;
     public $foros;
 
+    // Variables para el modal de Foros
+    public $modo = 1; // Modo 1 = Agregar / 0 = Editar
+    public $titulo_modal = 'Agregar Foro';
+    public $accion_modal = 'Agregar';
+    #[Validate('required')]
+    public $titulo_foro;
+    #[Validate('nullable')]
+    public $descripcion_foro;
+    #[Validate('required')]
+    public $fecha_inicio_foro;
+    #[Validate('required')]
+    public $fecha_fin_foro;
+    #[Validate('required')]
+    public $hora_inicio_foro;
+    #[Validate('required')]
+    public $hora_fin_foro;
+
+    protected $listeners = ['abrir-modal-foro-editar' => 'abrir_modal_editar_foro'];
+
     public $modo_admin = false; // Modo admin, para saber si se esta en modo administrador
     public $tipo_vista; // Tipo de vista, para saber si es alumno o docente
 
@@ -32,12 +52,72 @@ class Index extends Component
 
 
 
+    /* =============== FUNCIONES PARA EL MODAL DE TRABAJO ACADEMICO - AGREGAR =============== */
+        public function abrir_modal_agregar_foro()
+        {
+            $this->limpiar_modal();
+            $this->modo = 1;
+            $this->titulo_modal = 'Agregar Foro';
+            $this->accion_modal = 'Agregar';
 
-    public function abrir_modal_agregar_foro()
-    {
-        dd('abrir_modal_agregar_foro');
-    }
+            $this->dispatch(
+                'modal',
+                modal: '#modal-foro',
+                action: 'show'
+            );
+        }
 
+        public function abrir_modal_editar_foro($id_foro)
+        {
+            $this->limpiar_modal();
+            $this->modo = 0;
+            $this->titulo_modal = 'Editar Foro';
+            $this->accion_modal = 'Editar';
+
+            // $this->editar_trabajo_academico = TrabajoAcademico::find($id_trabajo_academico);
+            // $this->nombre_trabajo_academico = $this->editar_trabajo_academico->titulo_trabajo_academico;
+            // $this->descripcion_trabajo_academico = $this->editar_trabajo_academico->descripcion_trabajo_academico;
+            // $this->fecha_inicio_trabajo_academico = date('Y-m-d', strtotime($this->editar_trabajo_academico->fecha_inicio_trabajo_academico));
+            // $this->fecha_fin_trabajo_academico = date('Y-m-d', strtotime($this->editar_trabajo_academico->fecha_fin_trabajo_academico));
+            // $this->hora_inicio_trabajo_academico = date('H:i', strtotime($this->editar_trabajo_academico->fecha_inicio_trabajo_academico));
+            // $this->hora_fin_trabajo_academico = date('H:i', strtotime($this->editar_trabajo_academico->fecha_fin_trabajo_academico));
+
+            $this->dispatch(
+                'modal',
+                modal: '#modal-foro',
+                action: 'show'
+            );
+        }
+
+
+        public function cerrar_modal()
+        {
+            $this->limpiar_modal();
+            $this->dispatch(
+                'modal',
+                modal: '#modal-foro',
+                action: 'hide'
+            );
+        }
+
+        public function limpiar_modal()
+        {
+            $this->modo = 1;
+            $this->titulo_modal = 'Agregar Foro';
+            $this->accion_modal = 'Agregar';
+            $this->reset([
+                'titulo_foro',
+                'descripcion_foro',
+                'fecha_inicio_foro',
+                'fecha_fin_foro',
+                'hora_inicio_foro',
+                'hora_fin_foro'
+            ]);
+
+            // Reiniciar errores
+            $this->resetErrorBag();
+        }
+/* ====================================================================================== */
 
     public function obtener_foros()
     {

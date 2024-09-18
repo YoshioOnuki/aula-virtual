@@ -47,7 +47,7 @@
     <div class="d-flex justify-content-center align-items-center full-height">
         <div class="container-tight py-4">
             <div class="empty">
-                <div class="animate__animated animate__zoomInDown">
+                <div class="animate__animated animate__zoomInDown animate__faster">
                     <div class="empty-img">
                         <svg class="img" xmlns="http://www.w3.org/2000/svg" height="256" fill="none" viewBox="0 0 800 600">
                             <path d="M649.951 544.225C649.951 547.416 541.744 550 408.158 550C274.571 550 166.365 547.416 166.365 544.225C166.365 541.034 274.571 538.45 408.158 538.45C541.744 538.45 649.951 541.034 649.951 544.225Z" fill="#A6A9B3" class="tblr-illustrations-not-found-a"></path>
@@ -113,7 +113,7 @@
                         Lo sentimos pero no se encontró la página que estás buscando
                     </p>
                 </div>
-                <div class="empty-action animate__animated animate__flipInX animate__delay-1s">
+                <div class="empty-action animate__animated animate__flipInX">
                     <a href="{{ url()->previous() }}" class="btn btn-secondary" id="backButton">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>

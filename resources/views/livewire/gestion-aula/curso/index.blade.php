@@ -64,7 +64,7 @@
                         @else
                         @forelse ($cursos as $item)
                         <div class="col-sm-4 col-lg-4 col-xl-3 p-xl-2 p-lg-1 p-2">
-                            <div class="card card-sm hover-shadow custom-card animate__animated animate__zoomIn">
+                            <div class="card card-sm hover-shadow custom-card animate__animated animate__zoomIn animate__faster">
                                 <div class="img-responsive img-responsive-16x9 card-img-top"
                                     style="background-image: url('{{ $item->gestionAula->fondo_gestion_aula ?? '/media/fondo-cursos/fondo-infor.webp' }}'); cursor: pointer;"
                                     wire:click="redirigir_curso_detalle({{ $item->gestionAula->id_gestion_aula }})">

@@ -122,7 +122,7 @@
                                 @forelse ($recursos as $item)
                                 <div class="col-12">
                                     @if (file_exists($item->archivo_recurso))
-                                    <div class="card animate__animated animate__zoomIn">
+                                    <div class="card animate__animated animate__zoomIn animate__faster">
                                         <div class="modal-status bg-{{ config('settings.color-border-card-recurso') }}">
                                         </div>
                                         <div class="card-body p-4">
@@ -215,7 +215,7 @@
                                         </div>
                                     </div>
                                     @else
-                                    <div class="card animate__animated animate__zoomIn">
+                                    <div class="card animate__animated animate__zoomIn animate__faster">
                                         <div class="card-body p-4">
                                             <div class="d-flex justify-content-between">
                                                 <div>
