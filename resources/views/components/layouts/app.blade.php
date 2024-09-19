@@ -64,11 +64,17 @@
 
         <livewire:components.navegacion.navbar />
 
-        <div class="page-wrapper">
+        <div class="page-wrapper"
+            style="
+                background-image: url('{{ asset('/media/fondo-aula-virtual.webp') }}');
+                background-size: cover;
+                background-position: center;
+                background-attachment: fixed;
+            ">
 
             {{ $slot }}
 
-            <footer class="footer footer-transparent border-top d-print-none py-3">
+            <footer class="footer border-top d-print-none py-3">
                 <div class="container-xl">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>

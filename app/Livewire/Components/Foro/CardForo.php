@@ -14,10 +14,19 @@ class CardForo extends Component
     public $id_gestion_aula_usuario;
     public $foro;
 
+    protected $listeners = ['actualizar-foros' => '$actualizar_foros'];
+
 
     public function abrir_modal($id_foro)
     {
         $this->dispatch('abrir-modal-foro-editar', $id_foro);
+    }
+
+
+    public function actualizar_foros()
+    {
+        dd('actualizar_foros');
+        $this->mount($this->tipo_vista, $this->usuario, $this->id_gestion_aula_usuario, $this->foro);
     }
 
 
@@ -64,7 +73,7 @@ class CardForo extends Component
         $this->id_gestion_aula_usuario = $id_gestion_aula_usuario;
         $this->id_usuario_hash = Hashids::encode($usuario->id_usuario);
         if ($this->usuario->esRolGestionAula('DOCENTE', $this->id_gestion_aula_usuario)) {
-            $this->foro = $foro;
+            $this->foro = Foro::find($foro->id_foro);
         }else{
             $this->foro = Foro::with([
                 'foroRespuesta' => function ($query) {

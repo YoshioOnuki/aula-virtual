@@ -7,6 +7,7 @@ use App\Models\ForoRespuesta;
 use App\Models\GestionAulaUsuario;
 use App\Models\Usuario;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -27,6 +28,7 @@ class Index extends Component
     public $modo = 1; // Modo 1 = Agregar / 0 = Editar
     public $titulo_modal = 'Agregar Foro';
     public $accion_modal = 'Agregar';
+    public $editar_foro;
     #[Validate('required')]
     public $titulo_foro;
     #[Validate('nullable')]
@@ -89,6 +91,64 @@ class Index extends Component
             );
         }
 
+        public function guardar_foro()
+        {
+            $this->validate([
+                'titulo_foro' => 'required',
+                'descripcion_foro' => 'nullable',
+                'fecha_inicio_foro' => 'required|before_or_equal:fecha_fin_foro|date',
+                'fecha_fin_foro' => 'required|after_or_equal:fecha_inicio_foro|date',
+                'hora_inicio_foro' => 'required|date_format:H:i|before_or_equal:hora_fin_foro',
+                'hora_fin_foro' => 'required|date_format:H:i|after_or_equal:hora_inicio_foro',
+            ]);
+
+            try {
+                DB::beginTransaction();
+
+                if($this->modo === 1)// Modo agregar
+                {
+                    $foro = new Foro();
+                    $foro->titulo_foro = $this->titulo_foro;
+                    $foro->descripcion_foro = $this->descripcion_foro;
+                    $foro->fecha_inicio_foro = $this->fecha_inicio_foro . ' ' . $this->hora_inicio_foro;
+                    $foro->fecha_fin_foro = $this->fecha_fin_foro . ' ' . $this->hora_fin_foro;
+                    $id_gestion_aula = GestionAulaUsuario::find($this->id_gestion_aula_usuario)->id_gestion_aula;
+                    $foro->id_gestion_aula = $id_gestion_aula;
+                    $foro->save();
+
+                }else{// Modo editar
+                    $foro = Foro::find($this->editar_foro->id_foro);
+                    $foro->titulo_foro = $this->titulo_foro;
+                    $foro->descripcion_foro = $this->descripcion_foro;
+                    $foro->fecha_inicio_foro = $this->fecha_inicio_foro . ' ' . $this->hora_inicio_foro;
+                    $foro->fecha_fin_foro = $this->fecha_fin_foro . ' ' . $this->hora_fin_foro;
+                    $foro->save();
+                }
+
+                DB::commit();
+
+                $this->dispatch(
+                    'toast-basico',
+                    mensaje: 'El foro se ha guardado correctamente',
+                    type: 'success'
+                );
+
+                $this->cerrar_modal();
+                // Evento para actualizar la lista de foros
+                $this->dispatch('actualizar-foros');
+
+            } catch (\Exception $e) {
+                DB::rollBack();
+
+                dd($e);
+                $this->cerrar_modal();
+                $this->dispatch(
+                    'toast-basico',
+                    mensaje: 'Ha ocurrido un error al guardar el trabajo academico',
+                    type: 'error'
+                );
+            }
+        }
 
         public function cerrar_modal()
         {

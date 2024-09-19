@@ -18,6 +18,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+
     <style>
         :root {
             --tblr-font-sans-serif: 'Inter', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
@@ -36,7 +37,18 @@
 <body class="d-flex flex-column">
     <script src="{{ asset('assets/dist/js/demo-theme.min.js?1684106062') }}"></script>
 
-    {{ $slot }}
+    <div class="page">
+        <div class="page-wrapper"
+            style="
+            background-image: url('{{ asset('/media/fondo-aula-virtual.webp') }}');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;">
+
+            {{ $slot }}
+
+        </div>
+    </div>
 
     <script>
         document.addEventListener('livewire:navigated', () => {
@@ -85,6 +97,9 @@
             });
         })
     </script>
+
+    @stack('scripts')
+
 </body>
 
 </html>

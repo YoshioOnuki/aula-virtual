@@ -71,29 +71,28 @@
                 @forelse ($usuarios as $item)
                 <tr>
                     @if($tipo_vista === 'cursos')
-                    <td>
-                        {{ $item->persona->codigo_alumno_persona ?? 'N/A'}}
-                    </td>
+                        <td>
+                            {{ $item->persona->codigo_alumno_persona ?? 'N/A'}}
+                        </td>
                     @endif
                     <td>
                         <div class="d-flex py-1 align-items-center">
                             @if($tipo_vista === 'cursos')
-                            <img src="{{ asset($item->mostrarFoto('alumno')) }}" alt="avatar" class="avatar me-2">
+                                <img src="{{ asset($item->mostrarFoto('alumno')) }}" alt="avatar" class="avatar me-2 rounded avatar-static">
                             @else
-                            <img src="{{ asset($item->mostrarFoto('docente')) }}" alt="avatar" class="avatar me-2">
+                                <img src="{{ asset($item->mostrarFoto('docente')) }}" alt="avatar" class="avatar me-2 rounded avatar-static">
                             @endif
                             <div class="flex-fill">
                                 <div class="font-weight-medium">
                                     {{ $item->nombre_completo }}
                                 </div>
-                                <div>
-                                    <a href="#" class="text-reset">
-                                        {{ $item->persona->documento_persona }}
-                                    </a>
+                                <div class="text-secondary"><a href="#" class="text-reset">{{
+                                        $item->persona->documento_persona }}</a>
                                 </div>
                             </div>
                         </div>
                     </td>
+
                     <td>
                         {{ $item->correo_usuario }}
                     </td>

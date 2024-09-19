@@ -1,7 +1,7 @@
 <div>
     <div class="row g-0 flex-fill">
         <div class="col-12 col-lg-6 col-xl-4 border-top-wide border-teal
-            d-flex flex-column justify-content-center animate__animated animate__fadeIn  ">
+            d-flex flex-column justify-content-center animate__animated animate__fadeIn">
             <div class="container container-tight my-5 px-lg-6">
                 <div class="text-center mb-4">
                     <a class="navbar-brand navbar-brand-autodark animate__animated animate__backInDown ">
@@ -14,15 +14,17 @@
                 <h2 class="h3 text-center mb-3 text-uppercase animate__animated animate__flipInX animate__delay-1s">
                     Bienvenido al Aula Virtual
                 </h2>
-                <form wire:submit.prevent="iniciar_sesion" class="row g-3 animate__animated animate__fadeIn animate__slow" autocomplete="off" novalidate>
+                <form wire:submit.prevent="iniciar_sesion"
+                    class="row g-3 animate__animated animate__fadeIn animate__slow" autocomplete="off" novalidate>
 
                     @if($estado_bloqueo)
-                        <div class="text-end mt-4 position-relative" wire:poll.1000ms="update_tiempo_restante">
-                            <span class="badge bg-red-lt p-2 text-center fw-bold animate__animated {{ $tiempo_restante === 0 || $tiempo_restante === null ? 'animate__bounceOut' : 'animate__bounceIn' }}">
-                                Tiempo restante:
-                                    {{ floor($tiempo_restante / 60) }}:{{ $tiempo_restante % 60 < 10 ? '0' : '' }}{{ $tiempo_restante % 60 }}
-                            </span>
-                        </div>
+                    <div class="text-end mt-4 position-relative" wire:poll.1000ms="update_tiempo_restante">
+                        <span
+                            class="badge bg-red-lt p-2 text-center fw-bold animate__animated {{ $tiempo_restante === 0 || $tiempo_restante === null ? 'animate__bounceOut' : 'animate__bounceIn' }}">
+                            Tiempo restante:
+                            {{ floor($tiempo_restante / 60) }}:{{ $tiempo_restante % 60 < 10 ? '0' : '' }}{{
+                                $tiempo_restante % 60 }} </span>
+                    </div>
                     @endif
 
                     <div class="col-md-12">
@@ -69,7 +71,7 @@
                             </span>
                         </div>
                         @error('contrasenia')
-                            <span class="form-text text-danger">{{ $message }}</span>
+                        <span class="form-text text-danger">{{ $message }}</span>
                         @enderror
 
                         <div class="form-text text-end mt-2">
@@ -80,8 +82,8 @@
                     </div>
 
                     <div class="form-footer">
-                        <button class="btn btn-teal w-100" type="submit"
-                            wire:loading.attr="disabled" wire:target="iniciar_sesion" {{ $tiempo_restante !== null ? 'disabled' : '' }}>
+                        <button class="btn btn-teal w-100" type="submit" wire:loading.attr="disabled"
+                            wire:target="iniciar_sesion" {{ $tiempo_restante !==null ? 'disabled' : '' }}>
                             <span wire:loading.remove wire:target="iniciar_sesion">Iniciar Sesión</span>
                             <span wire:loading wire:target="iniciar_sesion">
                                 <div class="spinner-border spinner-border-sm" role="status"></div>
@@ -94,15 +96,16 @@
 
         </div>
         <div class="col-12 col-lg-6 col-xl-8 d-none d-lg-block">
-            <div class="bg-cover h-100 min-vh-100 animate__animated animate__fadeIn animate__slow" style="background-image: url({{ asset('/media/fondo-unu.webp') }})">
+            <div class="bg-cover h-100 min-vh-100 animate__animated animate__fadeIn animate__slow"
+                style="background-image: url({{ asset('/media/fondo-unu.webp') }})">
             </div>
         </div>
     </div>
 </div>
 
-@scripts
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
             Livewire.on('estado-bloqueo', () => {
                 setTimeout(() => {
                     @this.call('cerrar_bloqueo');
@@ -110,5 +113,5 @@
                 }, 1000);
             });
         });
-    </script>
-@endscripts
+</script>
+@endpush

@@ -206,9 +206,9 @@
                             <div class="d-flex justify-content-center align-items-center">
                                 <div class="text-muted">
                                     @if ($tipo_vista === 'cursos')
-                                    No tiene cursos asignados.
+                                        No tiene cursos asignados.
                                     @elseif($tipo_vista === 'carga-academica')
-                                    No tiene carga académica.
+                                        No tiene carga académica.
                                     @endif
                                 </div>
                             </div>

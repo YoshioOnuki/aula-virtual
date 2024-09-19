@@ -71,15 +71,11 @@
                                 <p class="card-text">
                                     <span>
                                         {!! $trabajo_academico_alumno->descripcion_trabajo_academico_alumno !!}
-                                        {{-- <div class="container">
-                                            {!! clean($trabajo_academico_alumno->descripcion_trabajo_academico_alumno) !!}
-                                        </div> --}}
-                                        {{-- {{ $trabajo_academico_alumno->descripcion_trabajo_academico_alumno }} --}}
                                     </span>
                                 </p>
                             @endif
 
-                            @if($trabajo_academico->archivoDocente->count() > 0)
+                            @if($trabajo_academico_alumno->archivoAlumno->count() > 0)
                                 {{-- Archivos adjuntos --}}
                                 <div class="">
                                     <div class="hr-text hr-text-center ">
