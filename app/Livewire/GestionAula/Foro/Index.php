@@ -203,62 +203,62 @@ class Index extends Component
 
 
     /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
-    public function obtener_datos_page_header()
-    {
-        $this->titulo_page_header = 'Foro';
+        public function obtener_datos_page_header()
+        {
+            $this->titulo_page_header = 'Foro';
 
-        // Regresar
-        if ($this->tipo_vista === 'cursos') {
-            $this->regresar_page_header = [
-                'route' => 'cursos.detalle',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+            // Regresar
+            if ($this->tipo_vista === 'cursos') {
+                $this->regresar_page_header = [
+                    'route' => 'cursos.detalle',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            } else {
+                $this->regresar_page_header = [
+                    'route' => 'carga-academica.detalle',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            }
+
+            // Links --> Inicio
+            $this->links_page_header = [
+                [
+                    'name' => 'Inicio',
+                    'route' => 'inicio',
+                    'params' => []
+                ]
             ];
-        } else {
-            $this->regresar_page_header = [
-                'route' => 'carga-academica.detalle',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-            ];
+
+            // Links --> Cursos o Carga Académica
+            if ($this->tipo_vista === 'cursos') {
+                $this->links_page_header[] = [
+                    'name' => 'Mis Cursos',
+                    'route' => 'cursos',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista]
+                ];
+            } else {
+                $this->links_page_header[] = [
+                    'name' => 'Carga Académica',
+                    'route' => 'carga-academica',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista]
+                ];
+            }
+
+            // Links --> Detalle del curso o carga académica
+            if ($this->tipo_vista === 'cursos') {
+                $this->links_page_header[] = [
+                    'name' => 'Detalle',
+                    'route' => 'cursos.detalle',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            } else {
+                $this->links_page_header[] = [
+                    'name' => 'Detalle',
+                    'route' => 'carga-academica.detalle',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            }
         }
-
-        // Links --> Inicio
-        $this->links_page_header = [
-            [
-                'name' => 'Inicio',
-                'route' => 'inicio',
-                'params' => []
-            ]
-        ];
-
-        // Links --> Cursos o Carga Académica
-        if ($this->tipo_vista === 'cursos') {
-            $this->links_page_header[] = [
-                'name' => 'Mis Cursos',
-                'route' => 'cursos',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista]
-            ];
-        } else {
-            $this->links_page_header[] = [
-                'name' => 'Carga Académica',
-                'route' => 'carga-academica',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista]
-            ];
-        }
-
-        // Links --> Detalle del curso o carga académica
-        if ($this->tipo_vista === 'cursos') {
-            $this->links_page_header[] = [
-                'name' => 'Detalle',
-                'route' => 'cursos.detalle',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-            ];
-        } else {
-            $this->links_page_header[] = [
-                'name' => 'Detalle',
-                'route' => 'carga-academica.detalle',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-            ];
-        }
-    }
     /* ==================================================================================== */
 
 

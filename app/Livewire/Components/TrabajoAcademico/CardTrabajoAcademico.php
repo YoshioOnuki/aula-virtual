@@ -2,11 +2,12 @@
 
 namespace App\Livewire\Components\TrabajoAcademico;
 
-use App\Models\GestionAulaUsuario;
 use App\Models\TrabajoAcademico;
+use Livewire\Attributes\Lazy;
 use Livewire\Component;
 use Vinkla\Hashids\Facades\Hashids;
 
+#[Lazy(isolate: false)]
 class CardTrabajoAcademico extends Component
 {
     public $tipo_vista;

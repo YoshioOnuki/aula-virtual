@@ -25,7 +25,6 @@ class CardForo extends Component
 
     public function actualizar_foros()
     {
-        dd('actualizar_foros');
         $this->mount($this->tipo_vista, $this->usuario, $this->id_gestion_aula_usuario, $this->foro);
     }
 
@@ -40,7 +39,7 @@ class CardForo extends Component
                         <div class="placeholder col-6" style="height: 1.5rem;"></div>
                         <div class="placeholder"></div>
                     </div>
-                    <div>
+                    <div class="d-none d-sm-block">
                         <div class="col-12"></div>
                         <div class="placeholder placeholder-xs col-4 bg-secondary">
                         </div>

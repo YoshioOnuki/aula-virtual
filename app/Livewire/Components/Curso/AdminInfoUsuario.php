@@ -3,8 +3,10 @@
 namespace App\Livewire\Components\Curso;
 
 use App\Models\Usuario;
+use Livewire\Attributes\Lazy;
 use Livewire\Component;
 
+#[Lazy(isolate: false)]
 class AdminInfoUsuario extends Component
 {
     public $usuario;

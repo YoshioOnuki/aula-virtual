@@ -5,10 +5,12 @@
             <div class="container container-tight my-5 px-lg-6">
                 <div class="text-center mb-4">
                     <a class="navbar-brand navbar-brand-autodark animate__animated animate__backInDown ">
-                        <img src="{{ asset('/media/logo-pg.webp') }}" height="160" alt="Logo"
-                            class="rounded hide-theme-light">
-                        <img src="{{ asset('/media/logo-pg.webp') }}" height="160   " alt="Logo"
-                            class="rounded hide-theme-dark">
+                        <picture>
+                            <img src="{{ asset('/media/logo-pg.webp') }}" height="160" alt="Logo"
+                                class="rounded hide-theme-light">
+                            <img src="{{ asset('/media/logo-pg.webp') }}" height="160   " alt="Logo"
+                                class="rounded hide-theme-dark">
+                        </picture>
                     </a>
                 </div>
                 <h2 class="h3 text-center mb-3 text-uppercase animate__animated animate__flipInX animate__delay-1s">
@@ -96,9 +98,11 @@
 
         </div>
         <div class="col-12 col-lg-6 col-xl-8 d-none d-lg-block">
-            <div class="bg-cover h-100 min-vh-100 animate__animated animate__fadeIn animate__slow"
-                style="background-image: url({{ asset('/media/fondo-unu.webp') }})">
-            </div>
+            <picture>
+                <div class="bg-cover h-100 min-vh-100 animate__animated animate__fadeIn animate__slow"
+                    style="background-image: url({{ asset('/media/fondo-unu.webp') }})">
+                </div>
+            </picture>
         </div>
     </div>
 </div>
