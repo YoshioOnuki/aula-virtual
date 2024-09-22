@@ -294,8 +294,7 @@
                     ['color', ['color']],
                     ['para', ['ul', 'ol', 'paragraph']],
                     ['table', ['table']],
-                    ['insert', ['link', 'picture']],
-                    ['view', ['codeview']]
+                    ['insert', ['link', 'picture']]
                 ],
                 callbacks: {
                     onImageUpload: function(files) {

@@ -88,8 +88,7 @@
                     ['style', ['style']],
                     ['font', ['bold', 'underline', 'clear']],
                     ['color', ['color']],
-                    ['para', ['ul', 'ol']],
-                    // ['view', ['codeview']]
+                    ['para', ['ul', 'ol']]
                 ],
                 callbacks: {
                     // Evitar cualquier tipo de archivo de imagen (png, jpg, jpeg, gif, etc.)
