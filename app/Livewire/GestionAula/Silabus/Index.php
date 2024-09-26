@@ -91,7 +91,7 @@ class Index extends Component
 
             } catch (\Exception $e) {
                 DB::rollBack();
-                dd($e);
+                // dd($e);
                 $this->dispatch(
                     'toast-basico',
                     mensaje: 'Ha ocurrido un error al guardar el silabus: '.$e->getMessage(),
@@ -208,7 +208,7 @@ class Index extends Component
                 ];
             } else {
                 $this->links_page_header[] = [
-                    'name' => 'Detalle',
+                    'name' => $curso->gestionAula->curso->nombre_curso,
                     'route' => 'carga-academica.detalle',
                     'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
                 ];

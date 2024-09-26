@@ -81,11 +81,32 @@
                                                             <div class="font-weight-medium">{{ $item->usuario->nombre_completo
                                                                 }}
                                                             </div>
-                                                            <div
-                                                                class="{{ $item->estado_gestion_aula_usuario === 0 ? 'text-white' : 'text-secondary' }}">
-                                                                <a href="#" class="text-reset">
+
+                                                            <div x-data="{ isCopied: false }" class="col-auto {{ $item->estado_gestion_aula_usuario === 0 ? 'text-white' : 'text-secondary' }}">
+                                                                <a class="text-reset cursor-pointer copy-to-clipboard" @click="navigator.clipboard.writeText('{{ $item->usuario->persona->documento_persona }}')
+                                                                        .then(() => {
+                                                                            isCopied = true;
+                                                                            setTimeout(() => isCopied = false, 1000);
+                                                                        }).catch(err => console.error('Error al copiar al portapapeles: ', err))"
+                                                                    x-show="!isCopied">
                                                                     {{ $item->usuario->persona->documento_persona }}
                                                                 </a>
+
+                                                                <span x-show="isCopied" class="text-primary">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-copy-check">
+                                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                        <path stroke="none" d="M0 0h24v24H0z" />
+                                                                        <path
+                                                                            d="M7 9.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" />
+                                                                        <path
+                                                                            d="M4.012 16.737a2 2 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" />
+                                                                        <path d="M11 14l2 2l4 -4" />
+                                                                    </svg>
+                                                                    Copiado
+                                                                </span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -150,7 +171,7 @@
                     </div>
                 </div>
             </div>
-            
+
         </div>
     </div>
 

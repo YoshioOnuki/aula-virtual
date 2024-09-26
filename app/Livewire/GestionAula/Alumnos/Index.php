@@ -109,7 +109,7 @@ class Index extends Component
 
         } catch (\Exception $e) {
             DB::rollBack();
-
+            // dd($e);
             $this->dispatch(
                 'toast-basico',
                 mensaje: 'Ocurrió un error al actualizar el estado del alummno'.$e->getMessage(),
@@ -166,9 +166,11 @@ class Index extends Component
             'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista]
         ];
 
+        $curso = GestionAulaUsuario::with('gestionAula.curso')->find($this->id_gestion_aula_usuario);
+
         // Links --> Detalle del curso o carga académica
         $this->links_page_header[] = [
-            'name' => 'Detalle',
+            'name' => $curso->gestionAula->curso->nombre_curso,
             'route' => 'carga-academica.detalle',
             'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
         ];

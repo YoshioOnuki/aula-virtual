@@ -56,7 +56,6 @@ class Detalle extends Component
 
     // Variables para page-header
     public $titulo_page_header = 'Detalle';
-    public $titulo_pasos_header = 'Detalle';
     public $links_page_header = [];
     public $regresar_page_header;
 
@@ -373,7 +372,6 @@ class Detalle extends Component
     /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
         public function obtener_datos_page_header()
         {
-            $this->titulo_pasos_header = 'Detalle';
             $this->titulo_page_header = $this->nombre_curso . ' GRUPO ' . $this->grupo_gestion_aula;
 
             // Regresar
