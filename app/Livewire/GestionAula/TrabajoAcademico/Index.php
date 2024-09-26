@@ -26,7 +26,6 @@ class Index extends Component
     public $id_gestion_aula_usuario;
     public $id_gestion_aula;
     public $gestion_aula_usuario;
-    public $ruta_pagina;
     public $trabajos_academicos;
 
     // Variables para el modal de Trabajo Académico
@@ -218,7 +217,7 @@ class Index extends Component
                     $this->eliminar_archivo_trabajo($nombres_bd);
                 }
 
-                dd($e);
+                // dd($e);
                 $this->cerrar_modal();
                 $this->dispatch(
                     'toast-basico',
@@ -392,8 +391,6 @@ class Index extends Component
         }
 
         $this->obtener_datos_page_header();
-
-        $this->ruta_pagina = request()->route()->getName();
 
         $this->mostrar_trabajos();
 

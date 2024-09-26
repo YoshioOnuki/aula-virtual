@@ -35,8 +35,7 @@
                         </p>
                     </div>
                     <div>
-                        @if ($tipo_vista === 'carga-academica' && $usuario->esRolGestionAula('DOCENTE',
-                        $id_gestion_aula_usuario))
+                        @if ($tipo_vista === 'carga-academica' && $usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario))
                         <button class="btn btn-secondary d-none d-md-inline-block"
                             wire:click.prevent="abrir_modal({{ $foro->id_foro }})">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"

@@ -196,11 +196,13 @@ class Index extends Component
                 ];
             }
 
+            $curso = GestionAulaUsuario::with('gestionAula.curso')->find($this->id_gestion_aula_usuario);
+
             // Links --> Detalle del curso o carga académica
             if ($this->tipo_vista === 'cursos')
             {
                 $this->links_page_header[] = [
-                    'name' => 'Detalle',
+                    'name' => $curso->gestionAula->curso->nombre_curso,
                     'route' => 'cursos.detalle',
                     'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
                 ];
@@ -214,21 +216,6 @@ class Index extends Component
 
         }
     /* ==================================================================================== */
-
-
-    /* =============== HACER EL LLAMADO DE LA CARGA DE DATOS PARA CAMBIAR EL ESTADO DEL PLACEHOLDER =============== */
-        public function load_datos_curso()
-        {
-            $this->mostrar_datos_curso();
-            $this->cargando_datos_curso = false;
-        }
-
-        public function load_silabus()
-        {
-            $this->mostrar_silabus();
-            $this->cargando_silabus = false;
-        }
-    /* ============================================================================================================ */
 
 
     public function mount($id_usuario, $tipo_vista, $id_curso)
@@ -253,6 +240,8 @@ class Index extends Component
 
         $this->es_docente = $this->usuario->esRolGestionAula('DOCENTE', $this->id_gestion_aula_usuario);
 
+        $this->mostrar_datos_curso();
+        $this->mostrar_silabus();
         $this->obtener_datos_page_header();
 
     }

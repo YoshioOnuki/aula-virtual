@@ -21,7 +21,6 @@ class Index extends Component
     public $usuario;
     public $id_gestion_aula_usuario_hash;
     public $id_gestion_aula_usuario;
-    public $ruta_pagina;
     public $foros;
 
     // Variables para el modal de Foros
@@ -279,8 +278,6 @@ class Index extends Component
         if ($usuario_sesion->esRol('ADMINISTRADOR')) {
             $this->modo_admin = true;
         }
-
-        $this->ruta_pagina = request()->route()->getName();
 
         $this->obtener_datos_page_header();
         $this->obtener_foros();

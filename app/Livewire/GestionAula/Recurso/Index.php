@@ -27,7 +27,6 @@ class Index extends Component
     public $gestion_aula_usuario;
     public $curso;
     public $recursos;
-    public $ruta_pagina;
 
     // Variables para saber si el usuario es docente
     public $es_docente = false;
@@ -226,11 +225,6 @@ class Index extends Component
             }
         }
 
-        public function load_recursos()
-        {
-            $this->mostrar_recursos();
-            $this->cargando_recursos = false;
-        }
     /* ======================================================================= */
 
 
@@ -278,11 +272,13 @@ class Index extends Component
                 ];
             }
 
+            $curso = GestionAulaUsuario::with('gestionAula.curso')->find($this->id_gestion_aula_usuario);
+
             // Links --> Detalle del curso o carga académica
             if ($this->tipo_vista === 'cursos')
             {
                 $this->links_page_header[] = [
-                    'name' => 'Detalle',
+                    'name' => $curso->gestionAula->curso->nombre_curso,
                     'route' => 'cursos.detalle',
                     'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
                 ];
@@ -321,8 +317,7 @@ class Index extends Component
         $this->es_docente = $this->usuario->esRolGestionAula('DOCENTE', $this->id_gestion_aula_usuario);
 
         $this->obtener_datos_page_header();
-
-        $this->ruta_pagina = request()->route()->getName();
+        $this->mostrar_recursos();
 
     }
 

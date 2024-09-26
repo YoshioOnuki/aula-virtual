@@ -5,40 +5,47 @@
 
     <div class="page-body">
         <div class="container-xl">
+            <div class="row row-cards d-flex justify-content-between">
+                <div class="col-lg-2 d-none d-lg-block">
+                    <livewire:components.navegacion.navegacion-curso />
+                    {{-- <livewire:components.navegacion.navegacion-curso :tipo_vista=$tipo_vista :usuario=$usuario
+                    :id_gestion_aula_usuario=$id_gestion_aula_usuario /> --}}
+                </div>
 
-            @if($modo_admin)
-                <livewire:components.curso.admin-info-usuario :usuario=$usuario :tipo_vista=$tipo_vista lazy />
-            @endif
+                <div class="col-lg-10 col-md-12 col-sm-12">
+                    @if($modo_admin)
+                        <livewire:components.curso.admin-info-usuario :usuario=$usuario :tipo_vista=$tipo_vista lazy />
+                    @endif
 
-            <div class="row g-3">
-                <div class="col-lg-8">
                     <div class="card card-md card-stacked animate__animated animate__fadeIn">
                         <div class="card-stamp card-stamp-lg">
                             {{-- Icono --}}
                             @if ($tipo_vista === 'cursos')
-                                <div class="card-stamp-icon bg-teal">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                        class="icon icon-tabler icons-tabler-outline icon-tabler-bubble-text">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M7 10h10" />
-                                        <path d="M9 14h5" />
-                                        <path
-                                            d="M12.4 3a5.34 5.34 0 0 1 4.906 3.239a5.333 5.333 0 0 1 -1.195 10.6a4.26 4.26 0 0 1 -5.28 1.863l-3.831 2.298v-3.134a2.668 2.668 0 0 1 -1.795 -3.773a4.8 4.8 0 0 1 2.908 -8.933a5.33 5.33 0 0 1 4.287 -2.16" />
-                                    </svg>
-                                </div>
+                            <div class="card-stamp-icon bg-teal">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-bubble-text">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M7 10h10" />
+                                    <path d="M9 14h5" />
+                                    <path
+                                        d="M12.4 3a5.34 5.34 0 0 1 4.906 3.239a5.333 5.333 0 0 1 -1.195 10.6a4.26 4.26 0 0 1 -5.28 1.863l-3.831 2.298v-3.134a2.668 2.668 0 0 1 -1.795 -3.773a4.8 4.8 0 0 1 2.908 -8.933a5.33 5.33 0 0 1 4.287 -2.16" />
+                                </svg>
+                            </div>
                             @elseif($tipo_vista === 'carga-academica')
-                                <div class="card-stamp-icon bg-orange">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                        class="icon icon-tabler icons-tabler-outline icon-tabler-bubble-text">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M7 10h10" />
-                                        <path d="M9 14h5" />
-                                        <path
-                                            d="M12.4 3a5.34 5.34 0 0 1 4.906 3.239a5.333 5.333 0 0 1 -1.195 10.6a4.26 4.26 0 0 1 -5.28 1.863l-3.831 2.298v-3.134a2.668 2.668 0 0 1 -1.795 -3.773a4.8 4.8 0 0 1 2.908 -8.933a5.33 5.33 0 0 1 4.287 -2.16" />
-                                    </svg>
-                                </div>
+                            <div class="card-stamp-icon bg-orange">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-bubble-text">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M7 10h10" />
+                                    <path d="M9 14h5" />
+                                    <path
+                                        d="M12.4 3a5.34 5.34 0 0 1 4.906 3.239a5.333 5.333 0 0 1 -1.195 10.6a4.26 4.26 0 0 1 -5.28 1.863l-3.831 2.298v-3.134a2.668 2.668 0 0 1 -1.795 -3.773a4.8 4.8 0 0 1 2.908 -8.933a5.33 5.33 0 0 1 4.287 -2.16" />
+                                </svg>
+                            </div>
                             @endif
                         </div>
                         <div class="card-body">
@@ -77,29 +84,23 @@
                                     </div>
                                 @endif
 
-                            @forelse($foros as $item)
-                                <livewire:components.foro.card-foro :tipo_vista=$tipo_vista :usuario=$usuario
-                                    :id_gestion_aula_usuario=$id_gestion_aula_usuario :foro=$item
-                                    wire:key="{{ $item->id_foro }}" lazy />
-                            @empty
-                                <div class="col-lg-12">
-                                    <div class="d-flex justify-content-center align-items-center">
-                                        <div class="text-muted">
-                                            No hay foros registrados
+                                @forelse($foros as $item)
+                                    <livewire:components.foro.card-foro :tipo_vista=$tipo_vista :usuario=$usuario
+                                        :id_gestion_aula_usuario=$id_gestion_aula_usuario :foro=$item
+                                        wire:key="{{ $item->id_foro }}" lazy />
+                                @empty
+                                    <div class="col-lg-12">
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <div class="text-muted">
+                                                No hay foros registrados
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            @endforelse
+                                @endforelse
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="col-lg-4">
-                    <livewire:components.curso.datos-curso :id_gestion_aula_usuario=$id_gestion_aula_usuario :ruta_pagina=$ruta_pagina
-                        :tipo_vista=$tipo_vista lazy />
-                </div>
-
             </div>
         </div>
     </div>
@@ -155,8 +156,7 @@
                                 </label>
                                 <input type="date" name="fecha_inicio_foro"
                                     class="form-control @error('fecha_inicio_foro') is-invalid @elseif(strlen($fecha_inicio_foro) > 0) is-valid @enderror"
-                                    id="fecha_inicio_foro"
-                                    wire:model.live="fecha_inicio_foro" />
+                                    id="fecha_inicio_foro" wire:model.live="fecha_inicio_foro" />
                                 @error('fecha_inicio_foro')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -170,8 +170,7 @@
                                 </label>
                                 <input type="time" name="hora_inicio_foro"
                                     class="form-control @error('hora_inicio_foro') is-invalid @elseif(strlen($hora_inicio_foro) > 0) is-valid @enderror"
-                                    id="hora_inicio_foro"
-                                    wire:model.live="hora_inicio_foro" />
+                                    id="hora_inicio_foro" wire:model.live="hora_inicio_foro" />
                                 @error('hora_inicio_foro')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -223,29 +222,29 @@
                         </a>
 
                         <div class="ms-auto">
-                            <button class="btn btn-primary w-100" type="submit"
-                                wire:loading.attr="disabled" wire:target="guardar_foro">
+                            <button class="btn btn-primary w-100" type="submit" wire:loading.attr="disabled"
+                                wire:target="guardar_foro">
                                 <span wire:loading.remove wire:target="guardar_foro">
                                     @if ($modo === 1)
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M12 5l0 14" />
-                                            <path d="M5 12l14 0" />
-                                        </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M12 5l0 14" />
+                                        <path d="M5 12l14 0" />
+                                    </svg>
                                     @else
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                            <path
-                                                d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                            <path d="M16 5l3 3" />
-                                        </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                        <path
+                                            d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                        <path d="M16 5l3 3" />
+                                    </svg>
                                     @endif
                                     {{ $accion_modal }}
                                 </span>

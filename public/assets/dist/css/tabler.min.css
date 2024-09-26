@@ -16739,7 +16739,7 @@ body {
     }
     .navbar-expand-xl.navbar-vertical ~ .navbar,
     .navbar-expand-xl.navbar-vertical ~ .page-wrapper {
-        margin-left: 15rem;
+        margin-left: 14rem;
     }
     .navbar-expand-xl.navbar-vertical.navbar-right ~ .navbar,
     .navbar-expand-xl.navbar-vertical.navbar-right ~ .page-wrapper {
@@ -17463,7 +17463,7 @@ body {
 }
 @media (min-width: 1200px) {
     .navbar-vertical.navbar-expand-xl {
-        width: 15rem;
+        width: 14rem;
         position: fixed;
         top: 0;
         left: 0;

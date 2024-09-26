@@ -216,233 +216,242 @@
         <div class="page-body">
             <div class="container-xl">
 
-                @if($modo_admin)
-                <livewire:components.curso.admin-info-usuario :usuario=$usuario :tipo_vista=$tipo_vista lazy />
-                @endif
+                <div class="row row-cards d-flex justify-content-between">
+                    <div class="col-lg-2 d-none d-lg-block">
+                        <livewire:components.navegacion.navegacion-curso />
+                    </div>
 
-                <div class="row g-3">
-                    <div class="col-12">
-                        <div class="card animate__animated animate__fadeIn  ">
-                            <div class="card-body border-bottom py-3">
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <div class="text-secondary">
-                                        Mostrar
-                                        <div class="mx-2 d-inline-block">
-                                            <select wire:model.live="mostrar_paginate" class="form-select">
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="5">5</option>
-                                                <option value="10">10</option>
-                                                <option value="20">20</option>
-                                            </select>
-                                        </div>
-                                        entradas
-                                    </div>
+                    <div class="col-lg-10 col-md-12 col-sm-12">
+                        @if($modo_admin)
+                        <livewire:components.curso.admin-info-usuario :usuario=$usuario :tipo_vista=$tipo_vista lazy />
+                        @endif
 
-                                    <div class="text-secondary row">
-                                        @if (in_array(true, $this->check_alumno))
-                                        <div class="col-lg-7 col-9">
-                                            <div class="d-inline-block">
-                                                <input type="text" class="form-control"
-                                                    wire:model.live.debounce.500ms="search" aria-label="Search invoice"
-                                                    placeholder="Buscar">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <div class="card animate__animated animate__fadeIn  ">
+                                    <div class="card-body border-bottom py-3">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="text-secondary">
+                                                Mostrar
+                                                <div class="mx-2 d-inline-block">
+                                                    <select wire:model.live="mostrar_paginate" class="form-select">
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="5">5</option>
+                                                        <option value="10">10</option>
+                                                        <option value="20">20</option>
+                                                    </select>
+                                                </div>
+                                                entradas
                                             </div>
-                                        </div>
-                                        @else
-                                        <div class="col-lg-12">
-                                            <div class="d-inline-block">
-                                                <input type="text" class="form-control"
-                                                    wire:model.live.debounce.500ms="search" aria-label="Search invoice"
-                                                    placeholder="Buscar">
-                                            </div>
-                                        </div>
-                                        @endif
 
-                                        @if (in_array(true, $this->check_alumno))
-                                        <div class="col-lg-5 col-3 d-flex justify-content-end">
-                                            <a class="btn btn-outline-primary d-none d-md-inline-block"
-                                                wire:click="abrir_modal_enviar_asistencias">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                    class="icon icon-tabler icons-tabler-outline icon-tabler-checks">
-                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                    <path d="M7 12l5 5l10 -10" />
-                                                    <path d="M2 12l5 5m5 -5l5 -5" />
-                                                </svg>
-                                                Enviar Asistencias
-                                            </a>
-                                            <a class="btn btn-outline-primary d-md-none btn-icon"
-                                                wire:click="abrir_modal_enviar_asistencias">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                    class="icon icon-tabler icons-tabler-outline icon-tabler-checks">
-                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                    <path d="M7 12l5 5l10 -10" />
-                                                    <path d="M2 12l5 5m5 -5l5 -5" />
-                                                </svg>
-                                            </a>
-                                        </div>
-                                        @endif
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <div class="table-responsive">
-                                <table class="table card-table table-vcenter text-nowrap table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th class="w-1">
-                                                <input class="form-check-input" type="checkbox"
-                                                    wire:model.live="check_all">
-                                            </th>
-                                            <th class="w-1">No.</th>
-                                            <th class="col-1">Código</th>
-                                            <th class="">Alumno</th>
-                                            <th class="col-3">Fecha de asistencia</th>
-                                            <th class="col-2 text-center">Estado</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @php
-                                        $i = $alumnos->count() ?? 0;
-                                        @endphp
-                                        @forelse ($alumnos as $item)
-                                        <tr
-                                            class="{{ $item->estado_gestion_aula_usuario === 0 ? 'bg-red text-white fw-bold' : '' }}">
-                                            <td>
-                                                <input class="form-check-input" type="checkbox"
-                                                    wire:model.live="check_alumno.{{ $item->id_gestion_aula_usuario }}"
-                                                    {{ $item->estado_gestion_aula_usuario === 0 ||
-                                                !$item->asistenciaAlumno->isEmpty() ? 'disabled' : '' }}>
-                                            </td>
-                                            <td>
-                                                <span
-                                                    class="{{ $item->estado_gestion_aula_usuario === 0 ? 'text-white' : 'text-secondary' }}">
-                                                    {{ $i-- }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                {{ $item->usuario->persona->codigo_alumno_persona }}
-                                            </td>
-
-                                            <td>
-                                                <div class="d-flex py-1 align-items-center">
-                                                    <img src="{{ $item->usuario->mostrarFoto('azure') }}" alt="avatar"
-                                                        class="avatar rounded avatar-static me-2">
-                                                    <div class="flex-fill">
-                                                        <div class="font-weight-medium">{{
-                                                            $item->usuario->nombre_completo }}
-                                                        </div>
-                                                        <div
-                                                            class="{{ $item->estado_gestion_aula_usuario === 0 ? 'text-white' : 'text-secondary' }}">
-                                                            <a href="#" class="text-reset">
-                                                                {{ $item->usuario->persona->documento_persona }}
-                                                            </a>
-                                                        </div>
+                                            <div class="text-secondary row">
+                                                @if (in_array(true, $this->check_alumno))
+                                                <div class="col-lg-7 col-9">
+                                                    <div class="d-inline-block">
+                                                        <input type="text" class="form-control"
+                                                            wire:model.live.debounce.500ms="search" aria-label="Search invoice"
+                                                            placeholder="Buscar">
                                                     </div>
                                                 </div>
-                                            </td>
-                                            <td>
-                                                @forelse ($item->asistenciaAlumno as $asistencias)
-                                                {{ format_fecha_horas($asistencias->created_at) }}
-                                                @if(tiempo_transcurrido($asistencias->created_at,
-                                                $asistencias->asistencia->fecha_asistencia,
-                                                $asistencias->asistencia->hora_inicio_asistencia,
-                                                $asistencias->asistencia->hora_fin_asistencia) !== '')
-                                                <span class="text-red ms-2">
-                                                    <br>
-                                                    {{ tiempo_transcurrido($asistencias->created_at,
-                                                    $asistencias->asistencia->fecha_asistencia,
-                                                    $asistencias->asistencia->hora_inicio_asistencia,
-                                                    $asistencias->asistencia->hora_fin_asistencia) }}
-                                                    tarde.
-                                                </span>
+                                                @else
+                                                <div class="col-lg-12">
+                                                    <div class="d-inline-block">
+                                                        <input type="text" class="form-control"
+                                                            wire:model.live.debounce.500ms="search" aria-label="Search invoice"
+                                                            placeholder="Buscar">
+                                                    </div>
+                                                </div>
                                                 @endif
-                                                @empty
-                                                <span class="text-secondary">
-                                                    Sin asistencia
-                                                </span>
-                                                @endforelse
-                                            </td>
-                                            <td class="text-center">
-                                                @forelse ($item->asistenciaAlumno as $alumno)
-                                                <span wire:key="{{ $alumno->id_asistencia_alumno }}"
-                                                    class="status status-{{ color_estado_asistencia($alumno->estadoAsistencia->nombre_estado_asistencia) }} px-3 py-2">
-                                                    {{ $alumno->estadoAsistencia->nombre_estado_asistencia }}
-                                                </span>
-                                                @empty
-                                                <button type="button"
-                                                    class="btn btn-outline-primary btn-sm {{ in_array(true, $this->check_alumno) ? 'disabled' : '' }}"
-                                                    wire:click="abrir_modal_enviar_asistencia({{ $item->id_gestion_aula_usuario }})">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-checks">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                        <path d="M7 12l5 5l10 -10" />
-                                                        <path d="M2 12l5 5m5 -5l5 -5" />
-                                                    </svg>
-                                                    Enviar Asistencia
-                                                </button>
-                                                @endforelse
-                                            </td>
-                                        </tr>
-                                        @empty
-                                        @if ($alumnos->count() == 0 && $search != '')
-                                        <tr>
-                                            <td colspan="4">
-                                                <div class="text-center"
-                                                    style="padding-bottom: 2rem; padding-top: 2rem;">
-                                                    <span class="text-secondary">
-                                                        No se encontraron resultados para
-                                                        "<strong>{{ $search }}</strong>"
-                                                    </span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        @else
-                                        <tr>
-                                            <td colspan="4">
-                                                <div class="text-center"
-                                                    style="padding-bottom: 2rem; padding-top: 2rem;">
-                                                    <span class="text-secondary">
-                                                        No hay alumnos matriculados
-                                                    </span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        @endif
-                                        @endforelse
-                                    </tbody>
-                                </table>
-                            </div>
 
-                            <div class="card-footer {{ $alumnos->hasPages() ? 'py-0' : '' }}">
-                                @if ($alumnos->hasPages())
-                                <div class="d-flex justify-content-between">
-                                    <div class="d-flex align-items-center text-secondary">
-                                        Mostrando {{ $alumnos->firstItem() }} - {{ $alumnos->lastItem() }} de
-                                        {{ $alumnos->total() }} registros
+                                                @if (in_array(true, $this->check_alumno))
+                                                <div class="col-lg-5 col-3 d-flex justify-content-end">
+                                                    <a class="btn btn-outline-primary d-none d-md-inline-block"
+                                                        wire:click="abrir_modal_enviar_asistencias">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-checks">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                            <path d="M7 12l5 5l10 -10" />
+                                                            <path d="M2 12l5 5m5 -5l5 -5" />
+                                                        </svg>
+                                                        Enviar Asistencias
+                                                    </a>
+                                                    <a class="btn btn-outline-primary d-md-none btn-icon"
+                                                        wire:click="abrir_modal_enviar_asistencias">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-checks">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                            <path d="M7 12l5 5l10 -10" />
+                                                            <path d="M2 12l5 5m5 -5l5 -5" />
+                                                        </svg>
+                                                    </a>
+                                                </div>
+                                                @endif
+                                            </div>
+
+                                        </div>
                                     </div>
-                                    <div class="mt-3">
-                                        {{ $alumnos->links() }}
+
+                                    <div class="table-responsive">
+                                        <table class="table card-table table-vcenter text-nowrap table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th class="w-1">
+                                                        <input class="form-check-input" type="checkbox"
+                                                            wire:model.live="check_all">
+                                                    </th>
+                                                    <th class="w-1">No.</th>
+                                                    <th class="col-1">Código</th>
+                                                    <th class="">Alumno</th>
+                                                    <th class="col-3">Fecha de asistencia</th>
+                                                    <th class="col-2 text-center">Estado</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @php
+                                                $i = $alumnos->count() ?? 0;
+                                                @endphp
+                                                @forelse ($alumnos as $item)
+                                                <tr
+                                                    class="{{ $item->estado_gestion_aula_usuario === 0 ? 'bg-red text-white fw-bold' : '' }}">
+                                                    <td>
+                                                        <input class="form-check-input" type="checkbox"
+                                                            wire:model.live="check_alumno.{{ $item->id_gestion_aula_usuario }}"
+                                                            {{ $item->estado_gestion_aula_usuario === 0 ||
+                                                        !$item->asistenciaAlumno->isEmpty() ? 'disabled' : '' }}>
+                                                    </td>
+                                                    <td>
+                                                        <span
+                                                            class="{{ $item->estado_gestion_aula_usuario === 0 ? 'text-white' : 'text-secondary' }}">
+                                                            {{ $i-- }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        {{ $item->usuario->persona->codigo_alumno_persona }}
+                                                    </td>
+
+                                                    <td>
+                                                        <div class="d-flex py-1 align-items-center">
+                                                            <img src="{{ $item->usuario->mostrarFoto('azure') }}" alt="avatar"
+                                                                class="avatar rounded avatar-static me-2">
+                                                            <div class="flex-fill">
+                                                                <div class="font-weight-medium">{{
+                                                                    $item->usuario->nombre_completo }}
+                                                                </div>
+                                                                <div
+                                                                    class="{{ $item->estado_gestion_aula_usuario === 0 ? 'text-white' : 'text-secondary' }}">
+                                                                    <a href="#" class="text-reset">
+                                                                        {{ $item->usuario->persona->documento_persona }}
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        @forelse ($item->asistenciaAlumno as $asistencias)
+                                                        {{ format_fecha_horas($asistencias->created_at) }}
+                                                        @if(tiempo_transcurrido($asistencias->created_at,
+                                                        $asistencias->asistencia->fecha_asistencia,
+                                                        $asistencias->asistencia->hora_inicio_asistencia,
+                                                        $asistencias->asistencia->hora_fin_asistencia) !== '')
+                                                        <span class="text-red ms-2">
+                                                            <br>
+                                                            {{ tiempo_transcurrido($asistencias->created_at,
+                                                            $asistencias->asistencia->fecha_asistencia,
+                                                            $asistencias->asistencia->hora_inicio_asistencia,
+                                                            $asistencias->asistencia->hora_fin_asistencia) }}
+                                                            tarde.
+                                                        </span>
+                                                        @endif
+                                                        @empty
+                                                        <span class="text-secondary">
+                                                            Sin asistencia
+                                                        </span>
+                                                        @endforelse
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @forelse ($item->asistenciaAlumno as $alumno)
+                                                        <span wire:key="{{ $alumno->id_asistencia_alumno }}"
+                                                            class="status status-{{ color_estado_asistencia($alumno->estadoAsistencia->nombre_estado_asistencia) }} px-3 py-2">
+                                                            {{ $alumno->estadoAsistencia->nombre_estado_asistencia }}
+                                                        </span>
+                                                        @empty
+                                                        <button type="button"
+                                                            class="btn btn-outline-primary btn-sm {{ in_array(true, $this->check_alumno) ? 'disabled' : '' }}"
+                                                            wire:click="abrir_modal_enviar_asistencia({{ $item->id_gestion_aula_usuario }})">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                                class="icon icon-tabler icons-tabler-outline icon-tabler-checks">
+                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                <path d="M7 12l5 5l10 -10" />
+                                                                <path d="M2 12l5 5m5 -5l5 -5" />
+                                                            </svg>
+                                                            Enviar Asistencia
+                                                        </button>
+                                                        @endforelse
+                                                    </td>
+                                                </tr>
+                                                @empty
+                                                @if ($alumnos->count() == 0 && $search != '')
+                                                <tr>
+                                                    <td colspan="4">
+                                                        <div class="text-center"
+                                                            style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                            <span class="text-secondary">
+                                                                No se encontraron resultados para
+                                                                "<strong>{{ $search }}</strong>"
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                @else
+                                                <tr>
+                                                    <td colspan="4">
+                                                        <div class="text-center"
+                                                            style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                            <span class="text-secondary">
+                                                                No hay alumnos matriculados
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                @endif
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="card-footer {{ $alumnos->hasPages() ? 'py-0' : '' }}">
+                                        @if ($alumnos->hasPages())
+                                        <div class="d-flex justify-content-between">
+                                            <div class="d-flex align-items-center text-secondary">
+                                                Mostrando {{ $alumnos->firstItem() }} - {{ $alumnos->lastItem() }} de
+                                                {{ $alumnos->total() }} registros
+                                            </div>
+                                            <div class="mt-3">
+                                                {{ $alumnos->links() }}
+                                            </div>
+                                        </div>
+                                        @else
+                                        <div class="d-flex justify-content-between">
+                                            <div class="d-flex align-items-center text-secondary">
+                                                Mostrando {{ $alumnos->firstItem() }} - {{ $alumnos->lastItem() }} de
+                                                {{ $alumnos->total() }} registros
+                                            </div>
+                                        </div>
+                                        @endif
                                     </div>
                                 </div>
-                                @else
-                                <div class="d-flex justify-content-between">
-                                    <div class="d-flex align-items-center text-secondary">
-                                        Mostrando {{ $alumnos->firstItem() }} - {{ $alumnos->lastItem() }} de
-                                        {{ $alumnos->total() }} registros
-                                    </div>
-                                </div>
-                                @endif
                             </div>
                         </div>
                     </div>
                 </div>
+                
             </div>
         </div>
     </div>

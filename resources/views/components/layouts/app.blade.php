@@ -40,6 +40,22 @@
         .empty {
             text-align: center;
         }
+
+        /* Para fondo claro */
+        .page-wrapper.light-mode {
+            background-image: url('{{ asset('/media/fondo-aula-virtual.webp') }}');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        /* Para fondo oscuro */
+        .page-wrapper.dark-mode {
+            background-image: url('{{ asset('/media/fondo-aula-virtual-dark.webp') }}');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
     </style>
     <!-- Tabler Core -->
     <script src="{{ asset('assets/dist/js/tabler.min.js?1684106062') }}" defer></script>
