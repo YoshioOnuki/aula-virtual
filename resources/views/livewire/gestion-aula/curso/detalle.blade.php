@@ -311,7 +311,8 @@
                                         {{-- Link de Clases --}}
                                         <div class="col-6 col-md-2 col-lg-4 col-xl-3" wire:init="obtener_link_clase">
                                             <span class="hide-theme-dark">
-                                                <div class="" wire:click="abrir_modal_link_clase">
+                                                <div class="" wire:click="abrir_modal_link_clase"
+                                                    data-bs-toggle="modal" data-bs-target="#modal-link-clase">
                                                     <div class="image-button image-button-docente position-relative">
                                                         <img src="/media/icons/icon-link-hipervinculo.webp" alt="Info"
                                                             style="width: 80px; height: 80px;">
@@ -326,7 +327,8 @@
                                                 </div>
                                             </span>
                                             <span class="hide-theme-light">
-                                                <div class="dark-mode" wire:click="abrir_modal_link_clase">
+                                                <div class="dark-mode" wire:click="abrir_modal_link_clase"
+                                                    data-bs-toggle="modal" data-bs-target="#modal-link-clase">
                                                     <div class="image-button image-button-docente position-relative">
                                                         <img src="/media/icons/icon-link-hipervinculo.webp" alt="Info"
                                                             style="width: 80px; height: 80px;">
@@ -345,7 +347,8 @@
                                         {{-- Orientaciones --}}
                                         <div class="col-6 col-md-2 col-lg-4 col-xl-3" wire:init="load_orientaciones">
                                             <span class="hide-theme-dark">
-                                                <div class="" wire:click="abrir_modal_orientaciones">
+                                                <div class="" wire:click="abrir_modal_orientaciones"
+                                                    data-bs-toggle="modal" data-bs-target="#modal-orientaciones">
                                                     <div class="image-button image-button-docente position-relative"
                                                         style="z-index: 1;">
                                                         <img src="/media/icons/icon-orien-presentacion2.webp" alt="Info"
@@ -361,7 +364,8 @@
                                                 </div>
                                             </span>
                                             <span class="hide-theme-light">
-                                                <div class="dark-mode" wire:click="abrir_modal_orientaciones">
+                                                <div class="dark-mode" wire:click="abrir_modal_orientaciones"
+                                                    data-bs-toggle="modal" data-bs-target="#modal-orientaciones">
                                                     <div class="image-button image-button-docente position-relative">
                                                         <img src="/media/icons/icon-orien-presentacion2.webp" alt="Info"
                                                             style="width: 80px; height: 80px;">

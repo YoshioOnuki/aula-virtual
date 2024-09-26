@@ -65,12 +65,6 @@ class Index extends Component
         $this->editar_webgrafia = Webgrafia::find($webgrafia->id_webgrafia);
         $this->descripcion_webgrafia = $this->editar_webgrafia->descripcion_webgrafia;
         $this->link_webgrafia = $this->editar_webgrafia->link_webgrafia;
-
-        $this->dispatch(
-            'modal',
-            modal: '#modal-webgrafia',
-            action: 'show'
-        );
     }
 
     public function abrir_modal_webgrafia_agregar()
@@ -80,12 +74,6 @@ class Index extends Component
         $this->modo = 1;
         $this->titulo_modal = 'Agregar webgrafia';
         $this->accion_estado = 'Agregar';
-
-        $this->dispatch(
-            'modal',
-            modal: '#modal-webgrafia',
-            action: 'show'
-        );
     }
 
     public function guardar_webgrafia()
@@ -139,11 +127,6 @@ class Index extends Component
     public function cerrar_modal()
     {
         $this->limpiar_modal();
-        $this->dispatch(
-            'modal',
-            modal: '#modal-webgrafia',
-            action: 'hide'
-        );
     }
 
     public function limpiar_modal()

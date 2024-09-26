@@ -75,12 +75,6 @@ class Detalle extends Component
                 $this->accion_estado_link_clase = 'Editar';
                 $this->nombre_link_clase = $this->link_clase->nombre_link_clase;
             }
-
-            $this->dispatch(
-                'modal',
-                modal: '#modal-link-clase',
-                action: 'show'
-            );
         }
 
         public function abrir_modal_orientaciones()
@@ -99,11 +93,6 @@ class Detalle extends Component
                 $this->descripcion_orientaciones = $this->orientaciones_generales->descripcion_presentacion;
             }
 
-            $this->dispatch(
-                'modal',
-                modal: '#modal-orientaciones',
-                action: 'show'
-            );
         }
 
         public function guardar_link_clase()
@@ -248,16 +237,6 @@ class Detalle extends Component
         public function cerrar_modal()
         {
             $this->limpiar_modal();
-            $this->dispatch(
-                'modal',
-                modal: '#modal-link-clase',
-                action: 'hide'
-            );
-            $this->dispatch(
-                'modal',
-                modal: '#modal-orientaciones',
-                action: 'hide'
-            );
         }
 
         public function limpiar_modal()

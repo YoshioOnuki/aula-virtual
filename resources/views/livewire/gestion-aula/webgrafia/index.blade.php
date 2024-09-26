@@ -56,7 +56,8 @@
                                             @if ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario) && $tipo_vista === 'carga-academica')
                                                 <div class="col-lg-5 col-3 d-flex justify-content-end">
                                                     <a class="btn btn-primary d-none d-md-inline-block"
-                                                        wire:click="abrir_modal_webgrafia_agregar()">
+                                                        wire:click="abrir_modal_webgrafia_agregar()"
+                                                        data-bs-toggle="modal" data-bs-target="#modal-webgrafia">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                                                             stroke-linecap="round" stroke-linejoin="round">
@@ -67,7 +68,8 @@
                                                         Agregar Webgrafía
                                                     </a>
                                                     <a class="btn btn-primary d-md-none btn-icon"
-                                                        wire:click="abrir_modal_webgrafia_agregar()">
+                                                        wire:click="abrir_modal_webgrafia_agregar()"
+                                                        data-bs-toggle="modal" data-bs-target="#modal-webgrafia">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                                                             stroke-linecap="round" stroke-linejoin="round">
@@ -122,7 +124,8 @@
                                                                         Ir al link
                                                                     </a>
                                                                     <a class="dropdown-item" style="cursor: pointer;"
-                                                                        wire:click="abrir_modal_webgrafia_editar({{ $item->id_webgrafia }})">
+                                                                        wire:click="abrir_modal_webgrafia_editar({{ $item->id_webgrafia }})"
+                                                                        data-bs-toggle="modal" data-bs-target="#modal-webgrafia">
                                                                         Editar
                                                                     </a>
                                                                 </div>

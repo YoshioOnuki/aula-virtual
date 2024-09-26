@@ -61,11 +61,6 @@ class Index extends Component
             $this->titulo_modal = 'Agregar Foro';
             $this->accion_modal = 'Agregar';
 
-            $this->dispatch(
-                'modal',
-                modal: '#modal-foro',
-                action: 'show'
-            );
         }
 
         public function abrir_modal_editar_foro($id_foro)
@@ -83,11 +78,6 @@ class Index extends Component
             // $this->hora_inicio_trabajo_academico = date('H:i', strtotime($this->editar_trabajo_academico->fecha_inicio_trabajo_academico));
             // $this->hora_fin_trabajo_academico = date('H:i', strtotime($this->editar_trabajo_academico->fecha_fin_trabajo_academico));
 
-            $this->dispatch(
-                'modal',
-                modal: '#modal-foro',
-                action: 'show'
-            );
         }
 
         public function guardar_foro()
@@ -152,11 +142,6 @@ class Index extends Component
         public function cerrar_modal()
         {
             $this->limpiar_modal();
-            $this->dispatch(
-                'modal',
-                modal: '#modal-foro',
-                action: 'hide'
-            );
         }
 
         public function limpiar_modal()

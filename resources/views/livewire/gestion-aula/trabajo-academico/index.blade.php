@@ -64,7 +64,8 @@
                                         @if ($tipo_vista === 'carga-academica' && $usuario->esRolGestionAula('DOCENTE',
                                         $id_gestion_aula_usuario))
                                             <div class="col-lg-12">
-                                                <a class="card card-link cursor-pointer" wire:click="abrir_modal_agregar_trabajo()">
+                                                <a class="card card-link cursor-pointer" wire:click="abrir_modal_agregar_trabajo()"
+                                                    data-bs-toggle="modal" data-bs-target="#modal-trabajo-academico">
                                                     <div class="card-body text-secondary">
                                                         <div class="row g-2">
                                                             <div

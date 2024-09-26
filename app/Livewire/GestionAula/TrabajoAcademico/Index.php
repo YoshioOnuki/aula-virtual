@@ -68,12 +68,6 @@ class Index extends Component
             $this->modo = 1;
             $this->titulo_modal = 'Agregar Trabajo Académico';
             $this->accion_modal = 'Agregar';
-
-            $this->dispatch(
-                'modal',
-                modal: '#modal-trabajo-academico',
-                action: 'show'
-            );
         }
 
         public function abrir_modal_editar_trabajo($id_trabajo_academico)
@@ -90,12 +84,6 @@ class Index extends Component
             $this->fecha_fin_trabajo_academico = date('Y-m-d', strtotime($this->editar_trabajo_academico->fecha_fin_trabajo_academico));
             $this->hora_inicio_trabajo_academico = date('H:i', strtotime($this->editar_trabajo_academico->fecha_inicio_trabajo_academico));
             $this->hora_fin_trabajo_academico = date('H:i', strtotime($this->editar_trabajo_academico->fecha_fin_trabajo_academico));
-
-            $this->dispatch(
-                'modal',
-                modal: '#modal-trabajo-academico',
-                action: 'show'
-            );
         }
 
         public function subir_archivo_trabajo()
@@ -230,11 +218,6 @@ class Index extends Component
         public function cerrar_modal()
         {
             $this->limpiar_modal();
-            $this->dispatch(
-                'modal',
-                modal: '#modal-trabajo-academico',
-                action: 'hide'
-            );
         }
 
         public function limpiar_modal()

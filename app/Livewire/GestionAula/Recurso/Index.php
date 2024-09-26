@@ -68,11 +68,6 @@ class Index extends Component
             $this->editar_recurso = Recurso::find($recurso->id_recurso);
             $this->nombre_recurso = $this->editar_recurso->nombre_recurso;
 
-            $this->dispatch(
-                'modal',
-                modal: '#modal-recursos',
-                action: 'show'
-            );
         }
 
         public function abrir_modal_recurso_agregar()
@@ -82,12 +77,6 @@ class Index extends Component
             $this->modo = 1;
             $this->titulo_modal = 'Agregar Recurso';
             $this->accion_estado = 'Agregar';
-
-            $this->dispatch(
-                'modal',
-                modal: '#modal-recursos',
-                action: 'show'
-            );
 
         }
 
@@ -163,14 +152,7 @@ class Index extends Component
 
         public function cerrar_modal()
         {
-            $this->cerrar_modal = true;
-            sleep(1);
             $this->limpiar_modal();
-            $this->dispatch(
-                'modal',
-                modal: '#modal-recursos',
-                action: 'hide'
-            );
         }
 
         public function limpiar_modal()
@@ -183,8 +165,6 @@ class Index extends Component
             $this->reset('archivo_recurso');
             // Reiniciar errores
             $this->resetErrorBag();
-
-            $this->cerrar_modal = false;
         }
 
         public function descargar_recurso(Recurso $recurso)

@@ -58,83 +58,6 @@ class Detalle extends Component
     public $tipo_vista;
 
 
-    /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
-        public function obtener_datos_page_header()
-        {
-            $this->titulo_page_header = 'Detalle del Trabajo Académico';
-
-            // Regresar
-            if ($this->tipo_vista === 'cursos') {
-                $this->regresar_page_header = [
-                    'route' => 'cursos.detalle.trabajo-academico',
-                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-                ];
-            } else {
-                $this->regresar_page_header = [
-                    'route' => 'carga-academica.detalle.trabajo-academico',
-                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-                ];
-            }
-
-            // Links --> Inicio
-            $this->links_page_header = [
-                [
-                    'name' => 'Inicio',
-                    'route' => 'inicio',
-                    'params' => []
-                ]
-            ];
-
-            // Links --> Cursos o Carga Académica
-            if ($this->tipo_vista === 'cursos') {
-                $this->links_page_header[] = [
-                    'name' => 'Mis Cursos',
-                    'route' => 'cursos',
-                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista]
-                ];
-            } else {
-                $this->links_page_header[] = [
-                    'name' => 'Carga Académica',
-                    'route' => 'carga-academica',
-                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista]
-                ];
-            }
-
-            $curso = GestionAulaUsuario::with('gestionAula.curso')->find($this->id_gestion_aula_usuario);
-
-            // Links --> Detalle del curso o carga académica
-            if ($this->tipo_vista === 'cursos') {
-                $this->links_page_header[] = [
-                    'name' => $curso->gestionAula->curso->nombre_curso,
-                    'route' => 'cursos.detalle',
-                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-                ];
-            } else {
-                $this->links_page_header[] = [
-                    'name' => $curso->gestionAula->curso->nombre_curso,
-                    'route' => 'carga-academica.detalle',
-                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-                ];
-            }
-
-            // Links --> Trabajos académicos
-            if ($this->tipo_vista === 'cursos') {
-                $this->links_page_header[] = [
-                    'name' => 'Trabajos académicos',
-                    'route' => 'cursos.detalle.trabajo-academico',
-                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-                ];
-            } else {
-                $this->links_page_header[] = [
-                    'name' => 'Trabajos académicos',
-                    'route' => 'carga-academica.detalle.trabajo-academico',
-                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
-                ];
-            }
-        }
-    /* ==================================================================================== */
-
-
     /* =============== FUNCIONES PARA EL MODAL DE DETALLE DE TRABAJO ACADEMICO - CREAR, EDITAR Y DESCARGAR =============== */
         public function abrir_modal_entrega_trabajo()
         {
@@ -143,13 +66,6 @@ class Detalle extends Component
             $this->modo = 1;
             $this->titulo_modal = 'Agregar Entrega de Trabajo Académico';
             $this->accion_modal = 'Agregar';
-
-            $this->dispatch(
-                'modal',
-                modal: '#modal-entrega',
-                action: 'show'
-            );
-
         }
 
         public function subir_archivo_entrega()
@@ -323,11 +239,6 @@ class Detalle extends Component
         public function cerrar_modal()
         {
             $this->limpiar_modal();
-            $this->dispatch(
-                'modal',
-                modal: '#modal-entrega',
-                action: 'hide'
-            );
         }
 
         public function limpiar_modal()
@@ -350,6 +261,83 @@ class Detalle extends Component
             $ruta = $archivo->archivo_docente;
             return response()->download($ruta, $archivo->nombre_archivo_docente.'.'.pathinfo($ruta, PATHINFO_EXTENSION));
 
+        }
+    /* ==================================================================================== */
+
+
+    /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
+        public function obtener_datos_page_header()
+        {
+            $this->titulo_page_header = 'Detalle del Trabajo Académico';
+
+            // Regresar
+            if ($this->tipo_vista === 'cursos') {
+                $this->regresar_page_header = [
+                    'route' => 'cursos.detalle.trabajo-academico',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            } else {
+                $this->regresar_page_header = [
+                    'route' => 'carga-academica.detalle.trabajo-academico',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            }
+
+            // Links --> Inicio
+            $this->links_page_header = [
+                [
+                    'name' => 'Inicio',
+                    'route' => 'inicio',
+                    'params' => []
+                ]
+            ];
+
+            // Links --> Cursos o Carga Académica
+            if ($this->tipo_vista === 'cursos') {
+                $this->links_page_header[] = [
+                    'name' => 'Mis Cursos',
+                    'route' => 'cursos',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista]
+                ];
+            } else {
+                $this->links_page_header[] = [
+                    'name' => 'Carga Académica',
+                    'route' => 'carga-academica',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista]
+                ];
+            }
+
+            $curso = GestionAulaUsuario::with('gestionAula.curso')->find($this->id_gestion_aula_usuario);
+
+            // Links --> Detalle del curso o carga académica
+            if ($this->tipo_vista === 'cursos') {
+                $this->links_page_header[] = [
+                    'name' => $curso->gestionAula->curso->nombre_curso,
+                    'route' => 'cursos.detalle',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            } else {
+                $this->links_page_header[] = [
+                    'name' => $curso->gestionAula->curso->nombre_curso,
+                    'route' => 'carga-academica.detalle',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            }
+
+            // Links --> Trabajos académicos
+            if ($this->tipo_vista === 'cursos') {
+                $this->links_page_header[] = [
+                    'name' => 'Trabajos académicos',
+                    'route' => 'cursos.detalle.trabajo-academico',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            } else {
+                $this->links_page_header[] = [
+                    'name' => 'Trabajos académicos',
+                    'route' => 'carga-academica.detalle.trabajo-academico',
+                    'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                ];
+            }
         }
     /* ==================================================================================== */
 

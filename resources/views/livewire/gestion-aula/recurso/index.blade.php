@@ -61,7 +61,8 @@
                                         @if ($tipo_vista === 'carga-academica' && $es_docente)
                                             {{-- Agregar recurso --}}
                                             <div class="col-lg-12">
-                                                <a class="card cursor-pointer" wire:click="abrir_modal_recurso_agregar()">
+                                                <a class="card cursor-pointer" wire:click="abrir_modal_recurso_agregar()"
+                                                    data-bs-toggle="modal" data-bs-target="#modal-recursos">
                                                     <div class="card-body text-secondary">
                                                         <div class="row g-2">
                                                             <div
@@ -157,7 +158,8 @@
                                                                 <div>
                                                                     @if ($es_docente)
                                                                     <button class="btn btn-secondary d-none d-md-inline-block me-2"
-                                                                        wire:click="abrir_modal_recurso_editar({{ $item->id_recurso }})">
+                                                                        wire:click="abrir_modal_recurso_editar({{ $item->id_recurso }})"
+                                                                        data-bs-toggle="modal" data-bs-target="#modal-recursos">
                                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                                             stroke-width="2" stroke-linecap="round"
@@ -173,7 +175,8 @@
                                                                         Editar
                                                                     </button>
                                                                     <button class="btn btn-secondary d-md-none btn-icon me-2"
-                                                                        wire:click="abrir_modal_recurso_editar({{ $item->id_recurso }})">
+                                                                        wire:click="abrir_modal_recurso_editar({{ $item->id_recurso }})"
+                                                                        data-bs-toggle="modal" data-bs-target="#modal-recursos">
                                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                                             stroke-width="2" stroke-linecap="round"
@@ -252,7 +255,8 @@
                                                                 <div>
                                                                     @if ($es_docente)
                                                                     <button class="btn btn-secondary d-none d-md-inline-block me-2"
-                                                                        wire:click="abrir_modal_recurso_editar({{ $item->id_recurso }})">
+                                                                        wire:click="abrir_modal_recurso_editar({{ $item->id_recurso }})"
+                                                                        data-bs-toggle="modal" data-bs-target="#modal-recursos">
                                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                                             stroke-width="2" stroke-linecap="round"
@@ -268,13 +272,13 @@
                                                                         Editar
                                                                     </button>
                                                                     <button class="btn btn-secondary d-md-none btn-icon me-2"
-                                                                        wire:click="abrir_modal_recurso_editar({{ $item->id_recurso }})">
+                                                                        wire:click="abrir_modal_recurso_editar({{ $item->id_recurso }})"
+                                                                        data-bs-toggle="modal" data-bs-target="#modal-recursos">
                                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                                             stroke-width="2" stroke-linecap="round"
                                                                             stroke-linejoin="round"
-                                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-edit"
-                                                                            wire:click="abrir_modal_recurso_editar({{ $item->id_recurso }})">
+                                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
                                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                                                             <path
                                                                                 d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />

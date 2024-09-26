@@ -100,11 +100,6 @@ class Index extends Component
             $this->titulo_asistencias = 'Agregar Asistencia';
             $this->accion_asistencias = 'Agregar';
 
-            $this->dispatch(
-                'modal',
-                modal: '#modal-asistencias',
-                action: 'show'
-            );
         }
 
         public function abrir_modal_asistencias_editar(Asistencia $asistencia)
@@ -122,11 +117,6 @@ class Index extends Component
             $this->hora_inicio_asistencia = Carbon::createFromFormat('H:i:s', $asistencia->hora_inicio_asistencia)->format('H:i');
             $this->hora_fin_asistencia = Carbon::createFromFormat('H:i:s', $asistencia->hora_fin_asistencia)->format('H:i');
 
-            $this->dispatch(
-                'modal',
-                modal: '#modal-asistencias',
-                action: 'show'
-            );
         }
 
         public function guardar_asistencias()
@@ -225,11 +215,6 @@ class Index extends Component
         public function cerrar_modal()
         {
             $this->limpiar_modal();
-            $this->dispatch(
-                'modal',
-                modal: '#modal-asistencias',
-                action: 'hide'
-            );
         }
 
         public function limpiar_modal()
@@ -252,12 +237,6 @@ class Index extends Component
     /* =============== FUNCIONES PARA EL MODAL DE ELIMINAR ASISTENCIA =============== */
         public function abrir_modal_eliminar(Asistencia $asistencia)
         {
-            $this->dispatch(
-                'modal',
-                modal: '#modal-eliminar',
-                action: 'show'
-            );
-
             $this->id_asistencia_a_eliminar = $asistencia->id_asistencia;
             $this->tipo_asistencia_a_eliminar = $asistencia->tipoAsistencia->nombre_tipo_asistencia;
             $this->fecha_asistencia_a_eliminar = $asistencia->fecha_asistencia;
@@ -302,11 +281,6 @@ class Index extends Component
             $this->hora_inicio_asistencia_a_eliminar = '';
             $this->hora_fin_asistencia_a_eliminar = '';
 
-            $this->dispatch(
-                'modal',
-                modal: '#modal-eliminar',
-                action: 'hide'
-            );
         }
     /* ============================================================================== */
 
@@ -316,11 +290,6 @@ class Index extends Component
         public function abrir_modal_enviar_asistencia(Asistencia $asistencia)
         {
             $this->limpiar_modal_enviar();
-            $this->dispatch(
-                'modal',
-                modal: '#modal-enviar-asistencia',
-                action: 'show'
-            );
 
             $this->id_asistencia_enviar = $asistencia->id_asistencia;
             $this->estados = EstadoAsistencia::where('estado_estado_asistencia', 1)->get();
@@ -381,11 +350,6 @@ class Index extends Component
         public function cerrar_modal_enviar()
         {
             $this->limpiar_modal_enviar();
-            $this->dispatch(
-                'modal',
-                modal: '#modal-enviar-asistencia',
-                action: 'hide'
-            );
         }
 
         public function limpiar_modal_enviar()
