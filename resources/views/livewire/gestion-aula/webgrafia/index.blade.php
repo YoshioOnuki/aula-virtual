@@ -8,7 +8,8 @@
 
             <div class="row row-cards d-flex justify-content-between">
                 <div class="col-lg-2 d-none d-lg-block">
-                    <livewire:components.navegacion.navegacion-curso />
+                    <livewire:components.navegacion.navegacion-curso :tipo_vista=$tipo_vista
+                        :id_usuario=$id_usuario_hash :id_gestion_aula_usuario=$id_gestion_aula_usuario />
                 </div>
 
                 <div class="col-lg-10 col-md-12 col-sm-12">
@@ -35,50 +36,54 @@
                                             entradas
                                         </div>
                                         <div class="text-secondary row">
-                                            @if ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario) && $tipo_vista === 'carga-academica')
-                                                <div class="col-lg-7 col-9">
-                                                    <div class="d-inline-block">
-                                                        <input type="text" class="form-control"
-                                                            wire:model.live.debounce.500ms="search" aria-label="Search invoice"
-                                                            placeholder="Buscar">
-                                                    </div>
+                                            @if ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario) &&
+                                            $tipo_vista === 'carga-academica')
+                                            <div class="col-lg-7 col-9">
+                                                <div class="d-inline-block">
+                                                    <input type="text" class="form-control"
+                                                        wire:model.live.debounce.500ms="search"
+                                                        aria-label="Search invoice" placeholder="Buscar">
                                                 </div>
+                                            </div>
                                             @else
-                                                <div class="col-lg-12">
-                                                    <div class="d-inline-block">
-                                                        <input type="text" class="form-control"
-                                                            wire:model.live.debounce.500ms="search" aria-label="Search invoice"
-                                                            placeholder="Buscar">
-                                                    </div>
+                                            <div class="col-lg-12">
+                                                <div class="d-inline-block">
+                                                    <input type="text" class="form-control"
+                                                        wire:model.live.debounce.500ms="search"
+                                                        aria-label="Search invoice" placeholder="Buscar">
                                                 </div>
+                                            </div>
                                             @endif
 
-                                            @if ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario) && $tipo_vista === 'carga-academica')
-                                                <div class="col-lg-5 col-3 d-flex justify-content-end">
-                                                    <a class="btn btn-primary d-none d-md-inline-block"
-                                                        wire:click="abrir_modal_webgrafia_agregar()"
-                                                        data-bs-toggle="modal" data-bs-target="#modal-webgrafia">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                                            stroke-linecap="round" stroke-linejoin="round">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                            <path d="M12 5l0 14" />
-                                                            <path d="M5 12l14 0" />
-                                                        </svg>
-                                                        Agregar Webgrafía
-                                                    </a>
-                                                    <a class="btn btn-primary d-md-none btn-icon"
-                                                        wire:click="abrir_modal_webgrafia_agregar()"
-                                                        data-bs-toggle="modal" data-bs-target="#modal-webgrafia">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                                            stroke-linecap="round" stroke-linejoin="round">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                            <path d="M12 5l0 14" />
-                                                            <path d="M5 12l14 0" />
-                                                        </svg>
-                                                    </a>
-                                                </div>
+                                            @if ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario) &&
+                                            $tipo_vista === 'carga-academica')
+                                            <div class="col-lg-5 col-3 d-flex justify-content-end">
+                                                <a class="btn btn-primary d-none d-md-inline-block"
+                                                    wire:click="abrir_modal_webgrafia_agregar()" data-bs-toggle="modal"
+                                                    data-bs-target="#modal-webgrafia">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                                                        height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                        stroke="currentColor" fill="none" stroke-linecap="round"
+                                                        stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                        <path d="M12 5l0 14" />
+                                                        <path d="M5 12l14 0" />
+                                                    </svg>
+                                                    Agregar Webgrafía
+                                                </a>
+                                                <a class="btn btn-primary d-md-none btn-icon"
+                                                    wire:click="abrir_modal_webgrafia_agregar()" data-bs-toggle="modal"
+                                                    data-bs-target="#modal-webgrafia">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                                                        height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                        stroke="currentColor" fill="none" stroke-linecap="round"
+                                                        stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                        <path d="M12 5l0 14" />
+                                                        <path d="M5 12l14 0" />
+                                                    </svg>
+                                                </a>
+                                            </div>
                                             @endif
                                         </div>
                                     </div>
@@ -96,45 +101,47 @@
                                         </thead>
                                         <tbody>
                                             @php
-                                                $i = 1;
+                                            $i = 1;
                                             @endphp
                                             @forelse ($webgrafias as $item)
-                                                <tr>
-                                                    <td>
-                                                        <span class="text-secondary">{{ $i++ }}</span>
-                                                    </td>
-                                                    <td>
-                                                        {{ $item->descripcion_webgrafia }}
-                                                    </td>
-                                                    <td>
-                                                        {{ $item->link_webgrafia }}
-                                                    </td>
-                                                    <td>
-                                                        @if ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario) &&
-                                                        $tipo_vista === 'carga-academica')
-                                                        <div class="btn-list flex-nowrap">
-                                                            <div class="dropdown">
-                                                                <button class="btn dropdown-toggle align-text-top"
-                                                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                                                    Acciones
-                                                                </button>
-                                                                <div class="dropdown-menu dropdown-menu-end">
-                                                                    <a class="dropdown-item" style="cursor: pointer;"
-                                                                        wire:click="redirect_link({{ $item->id_webgrafia }})">
-                                                                        Ir al link
-                                                                    </a>
-                                                                    <a class="dropdown-item" style="cursor: pointer;"
-                                                                        wire:click="abrir_modal_webgrafia_editar({{ $item->id_webgrafia }})"
-                                                                        data-bs-toggle="modal" data-bs-target="#modal-webgrafia">
-                                                                        Editar
-                                                                    </a>
-                                                                </div>
+                                            <tr>
+                                                <td>
+                                                    <span class="text-secondary">{{ $i++ }}</span>
+                                                </td>
+                                                <td>
+                                                    {{ $item->descripcion_webgrafia }}
+                                                </td>
+                                                <td>
+                                                    {{ $item->link_webgrafia }}
+                                                </td>
+                                                <td>
+                                                    @if ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario)
+                                                    &&
+                                                    $tipo_vista === 'carga-academica')
+                                                    <div class="btn-list flex-nowrap">
+                                                        <div class="dropdown">
+                                                            <button class="btn dropdown-toggle align-text-top"
+                                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                                Acciones
+                                                            </button>
+                                                            <div class="dropdown-menu dropdown-menu-end">
+                                                                <a class="dropdown-item" style="cursor: pointer;"
+                                                                    wire:click="redirect_link({{ $item->id_webgrafia }})">
+                                                                    Ir al link
+                                                                </a>
+                                                                <a class="dropdown-item" style="cursor: pointer;"
+                                                                    wire:click="abrir_modal_webgrafia_editar({{ $item->id_webgrafia }})"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#modal-webgrafia">
+                                                                    Editar
+                                                                </a>
                                                             </div>
                                                         </div>
-                                                        @else
+                                                    </div>
+                                                    @else
 
-                                                        <div x-data="{ link: '{{ $item->link_webgrafia }}' }">
-                                                            <div x-data="{
+                                                    <div x-data="{ link: '{{ $item->link_webgrafia }}' }">
+                                                        <div x-data="{
                                                             link: '{{ $item->link_webgrafia ? $item->link_webgrafia : '' }}',
                                                             handleClick() {
                                                                 if (!this.link) {
@@ -147,50 +154,52 @@
                                                                 }
                                                             }
                                                         }">
-                                                                <button type="button" class="btn btn-outline-primary"
-                                                                    @click="handleClick">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                                        stroke-width="2" stroke-linecap="round"
-                                                                        stroke-linejoin="round"
-                                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-link">
-                                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                        <path d="M9 15l6 -6" />
-                                                                        <path
-                                                                            d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464" />
-                                                                        <path
-                                                                            d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463" />
-                                                                    </svg>
-                                                                    Ir al link
-                                                                </button>
-                                                            </div>
+                                                            <button type="button" class="btn btn-outline-primary"
+                                                                @click="handleClick">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                    height="24" viewBox="0 0 24 24" fill="none"
+                                                                    stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round"
+                                                                    class="icon icon-tabler icons-tabler-outline icon-tabler-link">
+                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                    <path d="M9 15l6 -6" />
+                                                                    <path
+                                                                        d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464" />
+                                                                    <path
+                                                                        d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463" />
+                                                                </svg>
+                                                                Ir al link
+                                                            </button>
+                                                        </div>
 
-                                                            @endif
-                                                    </td>
-                                                </tr>
+                                                        @endif
+                                                </td>
+                                            </tr>
                                             @empty
-                                                @if ($webgrafias->count() == 0 && $search != '')
-                                                    <tr>
-                                                        <td colspan="4">
-                                                            <div class="text-center" style="padding-bottom: 2rem; padding-top: 2rem;">
-                                                                <span class="text-secondary">
-                                                                    No se encontraron resultados para
-                                                                    "<strong>{{ $search }}</strong>"
-                                                                </span>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                @else
-                                                    <tr>
-                                                        <td colspan="4">
-                                                            <div class="text-center" style="padding-bottom: 2rem; padding-top: 2rem;">
-                                                                <span class="text-secondary">
-                                                                    No hay webgrafias registradas
-                                                                </span>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                @endif
+                                            @if ($webgrafias->count() == 0 && $search != '')
+                                            <tr>
+                                                <td colspan="4">
+                                                    <div class="text-center"
+                                                        style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                        <span class="text-secondary">
+                                                            No se encontraron resultados para
+                                                            "<strong>{{ $search }}</strong>"
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            @else
+                                            <tr>
+                                                <td colspan="4">
+                                                    <div class="text-center"
+                                                        style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                        <span class="text-secondary">
+                                                            No hay webgrafias registradas
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            @endif
                                             @endforelse
                                         </tbody>
                                     </table>
@@ -198,22 +207,22 @@
 
                                 <div class="card-footer {{ $webgrafias->hasPages() ? 'py-0' : '' }}">
                                     @if ($webgrafias->hasPages())
-                                        <div class="d-flex justify-content-between">
-                                            <div class="d-flex align-items-center text-secondary">
-                                                Mostrando {{ $webgrafias->firstItem() }} - {{ $webgrafias->lastItem() }} de
-                                                {{ $webgrafias->total() }} registros
-                                            </div>
-                                            <div class="mt-3">
-                                                {{ $webgrafias->links() }}
-                                            </div>
+                                    <div class="d-flex justify-content-between">
+                                        <div class="d-flex align-items-center text-secondary">
+                                            Mostrando {{ $webgrafias->firstItem() }} - {{ $webgrafias->lastItem() }} de
+                                            {{ $webgrafias->total() }} registros
                                         </div>
+                                        <div class="mt-3">
+                                            {{ $webgrafias->links() }}
+                                        </div>
+                                    </div>
                                     @else
-                                        <div class="d-flex justify-content-between">
-                                            <div class="d-flex align-items-center text-secondary">
-                                                Mostrando {{ $webgrafias->firstItem() }} - {{ $webgrafias->lastItem() }} de
-                                                {{ $webgrafias->total() }} registros
-                                            </div>
+                                    <div class="d-flex justify-content-between">
+                                        <div class="d-flex align-items-center text-secondary">
+                                            Mostrando {{ $webgrafias->firstItem() }} - {{ $webgrafias->lastItem() }} de
+                                            {{ $webgrafias->total() }} registros
                                         </div>
+                                    </div>
                                     @endif
                                 </div>
 

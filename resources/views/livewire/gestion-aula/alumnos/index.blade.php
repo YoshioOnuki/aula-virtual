@@ -8,7 +8,8 @@
 
             <div class="row row-cards d-flex justify-content-between">
                 <div class="col-lg-2 d-none d-lg-block">
-                    <livewire:components.navegacion.navegacion-curso />
+                    <livewire:components.navegacion.navegacion-curso :tipo_vista=$tipo_vista
+                        :id_usuario=$id_usuario_hash :id_gestion_aula_usuario=$id_gestion_aula_usuario />
                 </div>
 
                 <div class="col-lg-10 col-md-12 col-sm-12">
@@ -38,8 +39,8 @@
                                             <div class="">
                                                 <div class="d-inline-block">
                                                     <input type="text" class="form-control"
-                                                        wire:model.live.debounce.500ms="search" aria-label="Search invoice"
-                                                        placeholder="Buscar">
+                                                        wire:model.live.debounce.500ms="search"
+                                                        aria-label="Search invoice" placeholder="Buscar">
                                                 </div>
                                             </div>
                                         </div>
@@ -78,12 +79,15 @@
                                                         <img src="{{ asset($item->usuario->mostrarFoto('azure')) }}"
                                                             alt="avatar" class="avatar rounded avatar-static me-2">
                                                         <div class="flex-fill">
-                                                            <div class="font-weight-medium">{{ $item->usuario->nombre_completo
+                                                            <div class="font-weight-medium">{{
+                                                                $item->usuario->nombre_completo
                                                                 }}
                                                             </div>
 
-                                                            <div x-data="{ isCopied: false }" class="col-auto {{ $item->estado_gestion_aula_usuario === 0 ? 'text-white' : 'text-secondary' }}">
-                                                                <a class="text-reset cursor-pointer copy-to-clipboard" @click="navigator.clipboard.writeText('{{ $item->usuario->persona->documento_persona }}')
+                                                            <div x-data="{ isCopied: false }"
+                                                                class="col-auto {{ $item->estado_gestion_aula_usuario === 0 ? 'text-white' : 'text-secondary' }}">
+                                                                <a class="text-reset cursor-pointer copy-to-clipboard"
+                                                                    @click="navigator.clipboard.writeText('{{ $item->usuario->persona->documento_persona }}')
                                                                         .then(() => {
                                                                             isCopied = true;
                                                                             setTimeout(() => isCopied = false, 1000);
@@ -93,11 +97,13 @@
                                                                 </a>
 
                                                                 <span x-show="isCopied" class="text-primary">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                                        stroke-linejoin="round"
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                        height="24" viewBox="0 0 24 24" fill="none"
+                                                                        stroke="currentColor" stroke-width="2"
+                                                                        stroke-linecap="round" stroke-linejoin="round"
                                                                         class="icon icon-tabler icons-tabler-outline icon-tabler-copy-check">
-                                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                        <path stroke="none" d="M0 0h24v24H0z"
+                                                                            fill="none" />
                                                                         <path stroke="none" d="M0 0h24v24H0z" />
                                                                         <path
                                                                             d="M7 9.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" />
@@ -122,7 +128,8 @@
                                             @if ($alumnos->count() == 0 && $search != '')
                                             <tr>
                                                 <td colspan="5">
-                                                    <div class="text-center" style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                    <div class="text-center"
+                                                        style="padding-bottom: 2rem; padding-top: 2rem;">
                                                         <span class="text-secondary">
                                                             No se encontraron resultados para
                                                             "<strong>{{ $search }}</strong>"
@@ -133,7 +140,8 @@
                                             @else
                                             <tr>
                                                 <td colspan="5">
-                                                    <div class="text-center" style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                    <div class="text-center"
+                                                        style="padding-bottom: 2rem; padding-top: 2rem;">
                                                         <span class="text-secondary">
                                                             No hay alumnos matriculados
                                                         </span>

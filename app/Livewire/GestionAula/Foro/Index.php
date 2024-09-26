@@ -3,7 +3,6 @@
 namespace App\Livewire\GestionAula\Foro;
 
 use App\Models\Foro;
-use App\Models\ForoRespuesta;
 use App\Models\GestionAulaUsuario;
 use App\Models\Usuario;
 use Illuminate\Support\Facades\Auth;
@@ -52,7 +51,6 @@ class Index extends Component
     public $regresar_page_header;
 
 
-
     /* =============== FUNCIONES PARA EL MODAL DE TRABAJO ACADEMICO - AGREGAR =============== */
         public function abrir_modal_agregar_foro()
         {
@@ -60,7 +58,6 @@ class Index extends Component
             $this->modo = 1;
             $this->titulo_modal = 'Agregar Foro';
             $this->accion_modal = 'Agregar';
-
         }
 
         public function abrir_modal_editar_foro($id_foro)
@@ -77,7 +74,6 @@ class Index extends Component
             // $this->fecha_fin_trabajo_academico = date('Y-m-d', strtotime($this->editar_trabajo_academico->fecha_fin_trabajo_academico));
             // $this->hora_inicio_trabajo_academico = date('H:i', strtotime($this->editar_trabajo_academico->fecha_inicio_trabajo_academico));
             // $this->hora_fin_trabajo_academico = date('H:i', strtotime($this->editar_trabajo_academico->fecha_fin_trabajo_academico));
-
         }
 
         public function guardar_foro()

@@ -8,12 +8,13 @@
 
             <div class="row row-cards d-flex justify-content-between">
                 <div class="col-lg-2 d-none d-lg-block">
-                    <livewire:components.navegacion.navegacion-curso />
+                    <livewire:components.navegacion.navegacion-curso :tipo_vista=$tipo_vista
+                        :id_usuario=$id_usuario_hash :id_gestion_aula_usuario=$id_gestion_aula_usuario />
                 </div>
 
                 <div class="col-lg-10 col-md-12 col-sm-12">
                     @if($modo_admin)
-                        <livewire:components.curso.admin-info-usuario :usuario=$usuario :tipo_vista=$tipo_vista lazy />
+                    <livewire:components.curso.admin-info-usuario :usuario=$usuario :tipo_vista=$tipo_vista lazy />
                     @endif
 
                     <div class="row g-3">
@@ -21,39 +22,39 @@
                             <div class="card card-md card-stacked animate__animated animate__fadeIn  ">
                                 <div class="card-stamp card-stamp-lg">
                                     @if ($tipo_vista === 'cursos')
-                                        <div class="card-stamp-icon bg-teal">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                class="icon icon-tabler icons-tabler-outline icon-tabler-list-details">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path d="M13 5h8" />
-                                                <path d="M13 9h5" />
-                                                <path d="M13 15h8" />
-                                                <path d="M13 19h5" />
-                                                <path
-                                                    d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
-                                                <path
-                                                    d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
-                                            </svg>
-                                        </div>
+                                    <div class="card-stamp-icon bg-teal">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-list-details">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M13 5h8" />
+                                            <path d="M13 9h5" />
+                                            <path d="M13 15h8" />
+                                            <path d="M13 19h5" />
+                                            <path
+                                                d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+                                            <path
+                                                d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+                                        </svg>
+                                    </div>
                                     @elseif($tipo_vista === 'carga-academica')
-                                        <div class="card-stamp-icon bg-orange">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                class="icon icon-tabler icons-tabler-outline icon-tabler-list-details">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path d="M13 5h8" />
-                                                <path d="M13 9h5" />
-                                                <path d="M13 15h8" />
-                                                <path d="M13 19h5" />
-                                                <path
-                                                    d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
-                                                <path
-                                                    d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
-                                            </svg>
-                                        </div>
+                                    <div class="card-stamp-icon bg-orange">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-list-details">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M13 5h8" />
+                                            <path d="M13 9h5" />
+                                            <path d="M13 15h8" />
+                                            <path d="M13 19h5" />
+                                            <path
+                                                d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+                                            <path
+                                                d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+                                        </svg>
+                                    </div>
                                     @endif
                                 </div>
                                 <div class="card-body">
@@ -66,13 +67,15 @@
                                     <p class="card-text">
                                         <small class="text-muted
                                             d-none d-sm-block">
-                                            Fecha de inicio: {{ format_fecha($trabajo_academico->fecha_inicio_trabajo_academico)
+                                            Fecha de inicio: {{
+                                            format_fecha($trabajo_academico->fecha_inicio_trabajo_academico)
                                             }}
                                             - {{ format_hora($trabajo_academico->fecha_inicio_trabajo_academico) }}
                                         </small>
                                         <small class="text-muted
                                             d-none d-sm-block mt-2">
-                                            Fecha de fin: {{ format_fecha($trabajo_academico->fecha_fin_trabajo_academico) }} -
+                                            Fecha de fin: {{
+                                            format_fecha($trabajo_academico->fecha_fin_trabajo_academico) }} -
                                             {{
                                             format_hora($trabajo_academico->fecha_fin_trabajo_academico) }}
                                         </small>
@@ -93,86 +96,88 @@
                                     </div>
 
                                     @if($trabajo_academico->archivoDocente->count() > 0)
-                                        {{-- Archivos adjuntos --}}
-                                        <div class="">
+                                    {{-- Archivos adjuntos --}}
+                                    <div class="">
 
-                                            <div class="hr-text hr-text-center ">
-                                                <span>
-                                                    Archivos adjuntos
-                                                </span>
-                                            </div>
-
-                                            <div class="row g-2">
-                                                @foreach ($trabajo_academico->archivoDocente as $archivo)
-                                                    @if (file_exists($archivo->archivo_docente))
-                                                        <div class="col-6 col-md-3 col-lg-4 col-xl-4">
-                                                            <a class="card p-3 mb-3 text-decoration-none cursor-pointer"
-                                                                wire:click="descargar_archivo({{ $archivo->id_archivo_docente }})">
-                                                                <div class="d-flex align-items-center">
-                                                                    <img src="{{ obtener_icono_archivo($archivo->archivo_docente) }}"
-                                                                        alt="icono-recurso" class="me-2" width="40">
-                                                                    <div>
-                                                                        <h5 class="mb-0">
-                                                                            {{ Str::limit($archivo->nombre_archivo_docente, 20) }}
-                                                                        </h5>
-                                                                        <small class="text-muted d-block mt-1 fw-light">
-                                                                            {{ formato_tamano_archivo(filesize($archivo->archivo_docente))
-                                                                            }}
-                                                                        </small>
-                                                                    </div>
-                                                                </div>
-                                                            </a>
-                                                        </div>
-                                                    @else
-                                                        <div class="col-6 col-md-3 col-lg-4 col-xl-4">
-                                                            <div class="card p-3 mb-3 background-gray">
-                                                                <div class="d-flex align-items-center">
-                                                                    <img src="/media/icons/icon-archivo-generico2.webp" alt="icono-recurso"
-                                                                        class="me-2" width="40">
-                                                                    <div>
-                                                                        <h5 class="mb-0 text-danger">
-                                                                            {{ Str::limit("Archivo no disponible", 20) }}
-                                                                        </h5>
-                                                                        <small class="text-muted d-block mt-1 fw-light">
-                                                                            No disponible
-                                                                        </small>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    @endif
-                                                @endforeach
-                                            </div>
+                                        <div class="hr-text hr-text-center ">
+                                            <span>
+                                                Archivos adjuntos
+                                            </span>
                                         </div>
+
+                                        <div class="row g-2">
+                                            @foreach ($trabajo_academico->archivoDocente as $archivo)
+                                            @if (file_exists($archivo->archivo_docente))
+                                            <div class="col-6 col-md-3 col-lg-4 col-xl-4">
+                                                <a class="card p-3 mb-3 text-decoration-none cursor-pointer"
+                                                    wire:click="descargar_archivo({{ $archivo->id_archivo_docente }})">
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="{{ obtener_icono_archivo($archivo->archivo_docente) }}"
+                                                            alt="icono-recurso" class="me-2" width="40">
+                                                        <div>
+                                                            <h5 class="mb-0">
+                                                                {{ Str::limit($archivo->nombre_archivo_docente, 20) }}
+                                                            </h5>
+                                                            <small class="text-muted d-block mt-1 fw-light">
+                                                                {{
+                                                                formato_tamano_archivo(filesize($archivo->archivo_docente))
+                                                                }}
+                                                            </small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                            @else
+                                            <div class="col-6 col-md-3 col-lg-4 col-xl-4">
+                                                <div class="card p-3 mb-3 background-gray">
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="/media/icons/icon-archivo-generico2.webp"
+                                                            alt="icono-recurso" class="me-2" width="40">
+                                                        <div>
+                                                            <h5 class="mb-0 text-danger">
+                                                                {{ Str::limit("Archivo no disponible", 20) }}
+                                                            </h5>
+                                                            <small class="text-muted d-block mt-1 fw-light">
+                                                                No disponible
+                                                            </small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @endif
+                                            @endforeach
+                                        </div>
+                                    </div>
                                     @endif
 
-                                    @if ($usuario->esRolGestionAula('ALUMNO', $id_gestion_aula_usuario) && $tipo_vista ===
+                                    @if ($usuario->esRolGestionAula('ALUMNO', $id_gestion_aula_usuario) && $tipo_vista
+                                    ===
                                     'cursos')
-                                        @if($entrega_trabajo === false)
-                                            <div class="card-footer d-flex justify-content-end align-items-center mt-4">
-                                                <a class="btn btn-primary
+                                    @if($entrega_trabajo === false)
+                                    <div class="card-footer d-flex justify-content-end align-items-center mt-4">
+                                        <a class="btn btn-primary
                                                     {{ verificar_fecha_trabajo($trabajo_academico->fecha_inicio_trabajo_academico, $trabajo_academico->fecha_fin_trabajo_academico) ? '' : 'disabled' }}"
-                                                    wire:click="abrir_modal_entrega_trabajo()"
-                                                    data-bs-toggle="modal" data-bs-target="#modal-entrega">
-                                                    Agregar entrega
-                                                </a>
-                                            </div>
-                                        @else
-                                            <div class="card-footer d-flex justify-content-end align-items-center mt-4">
-                                                <span class="status status-{{ color_estado_trabajo_academico($trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico ?? 'No entregado') }}
+                                            wire:click="abrir_modal_entrega_trabajo()" data-bs-toggle="modal"
+                                            data-bs-target="#modal-entrega">
+                                            Agregar entrega
+                                        </a>
+                                    </div>
+                                    @else
+                                    <div class="card-footer d-flex justify-content-end align-items-center mt-4">
+                                        <span class="status status-{{ color_estado_trabajo_academico($trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico ?? 'No entregado') }}
                                                                         px-3 py-2 h-100">
-                                                    {{
-                                                    $trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico
-                                                    ?? 'No entregado' }}
-                                                </span>
-                                            </div>
-                                            {{-- <div class="card-footer d-flex justify-content-end align-items-center mt-4">
-                                                <a class="btn btn-primary" wire:click="abrir_modal_entrega_trabajo()"
-                                                    data-bs-toggle="modal" data-bs-target="#modal-entrega">
-                                                    Editar entrega
-                                                </a>
-                                            </div> --}}
-                                        @endif
+                                            {{
+                                            $trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico
+                                            ?? 'No entregado' }}
+                                        </span>
+                                    </div>
+                                    {{-- <div class="card-footer d-flex justify-content-end align-items-center mt-4">
+                                        <a class="btn btn-primary" wire:click="abrir_modal_entrega_trabajo()"
+                                            data-bs-toggle="modal" data-bs-target="#modal-entrega">
+                                            Editar entrega
+                                        </a>
+                                    </div> --}}
+                                    @endif
                                     @endif
                                 </div>
                             </div>
@@ -181,8 +186,8 @@
                         <div class="col-lg-4">
                             <livewire:components.trabajo-academico.card-estado-trabajo :id_usuario_hash=$id_usuario_hash
                                 :tipo_vista=$tipo_vista :id_gestion_aula_usuario=$id_gestion_aula_usuario
-                                :trabajo_academico=$trabajo_academico :id_gestion_aula=$id_gestion_aula :lista_alumnos=true
-                                lazy />
+                                :trabajo_academico=$trabajo_academico :id_gestion_aula=$id_gestion_aula
+                                :lista_alumnos=true lazy />
                         </div>
 
                     </div>
@@ -251,29 +256,29 @@
                         </a>
 
                         <div class="ms-auto">
-                            <button class="btn btn-primary" type="submit"
-                                wire:loading.attr="disabled" wire:target="guardar_entrega_trabajo">
+                            <button class="btn btn-primary" type="submit" wire:loading.attr="disabled"
+                                wire:target="guardar_entrega_trabajo">
                                 <span wire:loading.remove wire:target="guardar_entrega_trabajo">
                                     @if ($modo === 1)
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M12 5l0 14" />
-                                            <path d="M5 12l14 0" />
-                                        </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M12 5l0 14" />
+                                        <path d="M5 12l14 0" />
+                                    </svg>
                                     @else
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                            <path
-                                                d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                            <path d="M16 5l3 3" />
-                                        </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                        <path
+                                            d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                        <path d="M16 5l3 3" />
+                                    </svg>
                                     @endif
                                     {{ $accion_modal }}
                                 </span>
@@ -293,8 +298,8 @@
 </div>
 
 @script
-    <script>
-        $(function() {
+<script>
+    $(function() {
                 $('#descripcion_trabajo_academico_alumno').summernote({
                     placeholder: 'Ingrese la descripción del trabajo académico a entregar',
                     height: 200,
@@ -335,5 +340,5 @@
                     },
                 });
             })
-    </script>
+</script>
 @endscript

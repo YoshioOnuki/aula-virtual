@@ -3,34 +3,22 @@
         <h4 class="card-title fw-semibold">Navegación</h4>
     </div>
     <div class="list-group list-group-flush fs-4">
-        <a href="#" class="list-group-item list-group-item-action" aria-current="false">
-            Detalle del Curso
+
+        <a href="{{ $tipo_vista === 'cursos' ?
+                route('cursos.detalle', ['id_usuario' => $id_usuario_hash, 'tipo_vista' => $tipo_vista, 'id_curso' => $id_gestion_aula_usuario_hash] ) :
+                route('carga-academica.detalle', ['id_usuario' => $id_usuario_hash, 'tipo_vista' => $tipo_vista, 'id_curso' => $id_gestion_aula_usuario_hash] ) }}"
+            class="list-group-item list-group-item-action {{ request()->routeIs('cursos.detalle') ? 'active' : '' }}"
+            aria-current="{{ request()->routeIs('cursos.show') ? 'true' : 'false' }}">
+            Detalle del curso
         </a>
-        <a href="#" class="list-group-item list-group-item-action" aria-current="false">
-            Silabus
-        </a>
-        <a href="#" class="list-group-item list-group-item-action" aria-current="false">
-            Recursos
-        </a>
-        <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
-            Foro
-        </a>
-        <a href="#" class="list-group-item list-group-item-action" aria-current="false">
-            Asistencia
-        </a>
-        <a href="#" class="list-group-item list-group-item-action" aria-current="false">
-            Trabajos Académicos
-        </a>
-        <a href="#" class="list-group-item list-group-item-action" aria-current="false">
-            Webgrafía
-        </a>
-        {{-- @if ($tipo_vista === 'carga-academica' &&
-            ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario) ||
-            $usuario->esRolGestionAula('DOCENTE INVITADO', $id_gestion_aula_usuario))) --}}
-            <a href="#" class="list-group-item list-group-item-action" aria-current="false">
-                Alumnos
+
+        @foreach ($links_array as $item)
+            <a href="{{ route($item['route'], $item['params']) }}"
+                class="list-group-item list-group-item-action {{ request()->routeIs($item['route'] . '*') ? 'active' : '' }}"
+                aria-current="{{ request()->routeIs($item['route'] . '*') ? 'true' : 'false' }}">
+                {{ $item['name'] }}
             </a>
-        {{-- @endif --}}
+        @endforeach
 
     </div>
 </div>

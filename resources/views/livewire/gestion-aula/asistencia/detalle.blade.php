@@ -218,7 +218,8 @@
 
                 <div class="row row-cards d-flex justify-content-between">
                     <div class="col-lg-2 d-none d-lg-block">
-                        <livewire:components.navegacion.navegacion-curso />
+                        <livewire:components.navegacion.navegacion-curso :tipo_vista=$tipo_vista
+                            :id_usuario=$id_usuario_hash :id_gestion_aula_usuario=$id_gestion_aula_usuario />
                     </div>
 
                     <div class="col-lg-10 col-md-12 col-sm-12">
@@ -250,16 +251,16 @@
                                                 <div class="col-lg-7 col-9">
                                                     <div class="d-inline-block">
                                                         <input type="text" class="form-control"
-                                                            wire:model.live.debounce.500ms="search" aria-label="Search invoice"
-                                                            placeholder="Buscar">
+                                                            wire:model.live.debounce.500ms="search"
+                                                            aria-label="Search invoice" placeholder="Buscar">
                                                     </div>
                                                 </div>
                                                 @else
                                                 <div class="col-lg-12">
                                                     <div class="d-inline-block">
                                                         <input type="text" class="form-control"
-                                                            wire:model.live.debounce.500ms="search" aria-label="Search invoice"
-                                                            placeholder="Buscar">
+                                                            wire:model.live.debounce.500ms="search"
+                                                            aria-label="Search invoice" placeholder="Buscar">
                                                     </div>
                                                 </div>
                                                 @endif
@@ -270,7 +271,8 @@
                                                         wire:click="abrir_modal_enviar_asistencias">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round"
                                                             class="icon icon-tabler icons-tabler-outline icon-tabler-checks">
                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                                             <path d="M7 12l5 5l10 -10" />
@@ -282,7 +284,8 @@
                                                         wire:click="abrir_modal_enviar_asistencias">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round"
                                                             class="icon icon-tabler icons-tabler-outline icon-tabler-checks">
                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                                             <path d="M7 12l5 5l10 -10" />
@@ -336,8 +339,8 @@
 
                                                     <td>
                                                         <div class="d-flex py-1 align-items-center">
-                                                            <img src="{{ $item->usuario->mostrarFoto('azure') }}" alt="avatar"
-                                                                class="avatar rounded avatar-static me-2">
+                                                            <img src="{{ $item->usuario->mostrarFoto('azure') }}"
+                                                                alt="avatar" class="avatar rounded avatar-static me-2">
                                                             <div class="flex-fill">
                                                                 <div class="font-weight-medium">{{
                                                                     $item->usuario->nombre_completo }}
@@ -383,9 +386,10 @@
                                                         <button type="button"
                                                             class="btn btn-outline-primary btn-sm {{ in_array(true, $this->check_alumno) ? 'disabled' : '' }}"
                                                             wire:click="abrir_modal_enviar_asistencia({{ $item->id_gestion_aula_usuario }})">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round"
                                                                 class="icon icon-tabler icons-tabler-outline icon-tabler-checks">
                                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                                                 <path d="M7 12l5 5l10 -10" />
@@ -451,7 +455,7 @@
                         </div>
                     </div>
                 </div>
-                
+
             </div>
         </div>
     </div>
@@ -557,8 +561,8 @@
 </div>
 
 @script
-    <script>
-        document.addEventListener('livewire:navigated', () => {
+<script>
+    document.addEventListener('livewire:navigated', () => {
             const asistencias = document.querySelector('.asistencias');
             const mobileMessage = document.querySelector('.mobile-message');
             const md = new MobileDetect(window.navigator.userAgent);
@@ -585,5 +589,5 @@
                 console.warn('El checkbox con ID myCheckbox no existe en el DOM.');
             }
         });
-    </script>
+</script>
 @endscript
