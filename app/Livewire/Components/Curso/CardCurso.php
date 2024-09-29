@@ -27,6 +27,7 @@ class CardCurso extends Component
 
     public $modo_admin = false;// Modo admin, para saber si se esta en modo administrador
     public $tipo_vista; // Tipo de vista, para saber si es alumno o docente
+    public $ruta_vista;
 
 
     public function redirigir_curso_detalle($id)
@@ -166,7 +167,7 @@ class CardCurso extends Component
 
 
     // Mount
-    public function mount($tipo_vista, $usuario, $gestion_aula)
+    public function mount($tipo_vista, $usuario, $gestion_aula, $ruta_vista)
     {
         $this->tipo_vista = $tipo_vista;
         $this->gestion_aula_usuario = GestionAulaUsuario::with('rol', 'gestionAula.curso')
@@ -183,6 +184,7 @@ class CardCurso extends Component
         {
             $this->modo_admin = true;
         }
+        $this->ruta_vista = $ruta_vista;
 
         $this->mostrar_foto_docente();
         $this->calcular_progreso();

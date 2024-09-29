@@ -16,90 +16,157 @@
                         <livewire:components.curso.admin-info-usuario :usuario=$usuario :tipo_vista=$tipo_vista lazy />
                     @endif
 
-                    <div class="card card-md card-stacked animate__animated animate__fadeIn">
-                        <div class="card-stamp card-stamp-lg">
-                            {{-- Icono --}}
-                            @if ($tipo_vista === 'cursos')
-                            <div class="card-stamp-icon bg-teal">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="icon icon-tabler icons-tabler-outline icon-tabler-bubble-text">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path d="M7 10h10" />
-                                    <path d="M9 14h5" />
-                                    <path
-                                        d="M12.4 3a5.34 5.34 0 0 1 4.906 3.239a5.333 5.333 0 0 1 -1.195 10.6a4.26 4.26 0 0 1 -5.28 1.863l-3.831 2.298v-3.134a2.668 2.668 0 0 1 -1.795 -3.773a4.8 4.8 0 0 1 2.908 -8.933a5.33 5.33 0 0 1 4.287 -2.16" />
-                                </svg>
-                            </div>
-                            @elseif($tipo_vista === 'carga-academica')
-                            <div class="card-stamp-icon bg-orange">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="icon icon-tabler icons-tabler-outline icon-tabler-bubble-text">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path d="M7 10h10" />
-                                    <path d="M9 14h5" />
-                                    <path
-                                        d="M12.4 3a5.34 5.34 0 0 1 4.906 3.239a5.333 5.333 0 0 1 -1.195 10.6a4.26 4.26 0 0 1 -5.28 1.863l-3.831 2.298v-3.134a2.668 2.668 0 0 1 -1.795 -3.773a4.8 4.8 0 0 1 2.908 -8.933a5.33 5.33 0 0 1 4.287 -2.16" />
-                                </svg>
-                            </div>
-                            @endif
-                        </div>
-                        <div class="card-body">
-                            <div class="row row-cards d-flex justify-content-start">
-
-                                {{-- Bnoton de agregar --}}
-                                @if ($tipo_vista === 'carga-academica' && $usuario->esRolGestionAula('DOCENTE',
-                                $id_gestion_aula_usuario))
-                                    <div class="col-lg-12">
-                                        <a class="card card-link cursor-pointer" wire:click="abrir_modal_agregar_foro()"
-                                            data-bs-toggle="modal" data-bs-target="#modal-foro">
-                                            <div class="card-body text-secondary">
-                                                <div class="row g-2">
-                                                    <div
-                                                        class="col-12 d-flex justify-content-center align-items-center mt-3">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-library-plus svg-medium">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                            <path
-                                                                d="M7 3m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" />
-                                                            <path
-                                                                d="M4.012 7.26a2.005 2.005 0 0 0 -1.012 1.737v10c0 1.1 .9 2 2 2h10c.75 0 1.158 -.385 1.5 -1" />
-                                                            <path d="M11 10h6" />
-                                                            <path d="M14 7v6" />
-                                                        </svg>
-                                                    </div>
-                                                    <div class="col-12 d-flex justify-content-center align-items-center">
-                                                        <span class="text-muted fs-5">
-                                                            Agregar Foro
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
+                    <div class="card animate__animated animate__fadeIn  ">
+                        <div class="card-body border-bottom py-3">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="text-secondary">
+                                    Mostrar
+                                    <div class="mx-2 d-inline-block">
+                                        <select wire:model.live="mostrar_paginate" class="form-select">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="5">5</option>
+                                            <option value="10">10</option>
+                                            <option value="20">20</option>
+                                        </select>
                                     </div>
-                                @endif
-
-                                @forelse($foros as $item)
-                                    <livewire:components.foro.card-foro :tipo_vista=$tipo_vista :usuario=$usuario
-                                        :id_gestion_aula_usuario=$id_gestion_aula_usuario :foro=$item
-                                        wire:key="{{ $item->id_foro }}" lazy />
-                                @empty
-                                    <div class="col-lg-12">
-                                        <div class="d-flex justify-content-center align-items-center">
-                                            <div class="text-muted">
-                                                No hay foros registrados
-                                            </div>
+                                    entradas
+                                </div>
+                                <div class="text-secondary">
+                                    <div class="">
+                                        <div class="d-inline-block">
+                                            <input type="text" class="form-control"
+                                                wire:model.live.debounce.500ms="search"
+                                                aria-label="Search invoice" placeholder="Buscar">
                                         </div>
                                     </div>
-                                @endforelse
+                                </div>
                             </div>
                         </div>
+
+                        <div class="table-responsive">
+                            <table class="table card-table table-vcenter text-nowrap table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Título del foro</th>
+                                        <th class="col-2">Última respuesta</th>
+                                        <th class="col-1 text-center">Respuestas</th>
+                                        @if($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario) || $usuario->esRolGestionAula('DOCENTE INVITADO', $id_gestion_aula_usuario))
+                                            <th class="w-1 text-center"></th>
+                                        @endif
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($foros as $item)
+                                        <tr>
+                                            <td>
+                                                <a href="" class="text-reset">
+                                                    {{ $item->titulo_foro }}
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex py-1 align-items-center">
+                                                    <img src="{{ asset($item->foroRespuesta->first()->gestionAulaUsuario->usuario->mostrarFoto('alumno')) }}" alt="avatar"
+                                                        class="avatar me-2 rounded avatar-static">
+                                                    <div class="flex-fill">
+                                                        <div class="font-weight-medium">
+                                                            {{ Str::limit($item->foroRespuesta->first()->gestionAulaUsuario->usuario->nombre_completo, 18) }}
+                                                        </div>
+                                                        <div class="text-secondary">
+                                                            <a href="#" class="text-reset">
+                                                                {{-- Validar si la fecha es hoy --}}
+                                                                @if($item->foroRespuesta->first()->created_at->isToday())
+                                                                Hoy {{ $item->foroRespuesta->first()->created_at->diffForHumans() }}
+                                                                @else
+                                                                    {{ format_fecha_string($item->foroRespuesta->first()->created_at) }}
+                                                                @endif
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                {{ $item->foro_respuesta_count }}
+                                            </td>
+                                            @if($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario) || $usuario->esRolGestionAula('DOCENTE INVITADO', $id_gestion_aula_usuario))
+                                                <td class="text-center">
+                                                    <div class="dropdown">
+                                                        <a href="#" class=" text-dark" data-bs-toggle="dropdown">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                                class="icon icon-tabler icons-tabler-outline icon-tabler-dots-vertical">
+                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                                                <path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                                                <path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                                            </svg>
+                                                        </a>
+                                                        <div class="dropdown-menu">
+                                                            <a class="dropdown-item" href="#">Editar</a>
+                                                            <a class="dropdown-item" href="#">Duplicar</a>
+                                                            <a class="dropdown-item" href="#">Eliminar</a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            @endif
+                                        </tr>
+                                    @empty
+                                        @if ($foros->count() == 0 && $search != '')
+                                            <tr>
+                                                <td colspan="4">
+                                                    <div class="text-center"
+                                                        style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                        <span class="text-secondary">
+                                                            No se encontraron resultados para
+                                                            "<strong>{{ $search }}</strong>"
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @else
+                                            <tr>
+                                                <td colspan="4">
+                                                    <div class="text-center"
+                                                        style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                        <span class="text-secondary">
+                                                            No hay alumnos matriculados
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endif
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="card-footer {{ $foros->hasPages() ? 'py-0' : '' }}">
+                            @if ($foros->hasPages())
+                                <div class="d-flex justify-content-between">
+                                    <div class="d-flex align-items-center text-secondary">
+                                        Mostrando {{ $foros->firstItem() }} - {{
+                                        $foros->lastItem() }} de
+                                        {{ $foros->total() }} registros
+                                    </div>
+                                    <div class="mt-3">
+                                        {{ $foros->links() }}
+                                    </div>
+                                </div>
+                            @else
+                                <div class="d-flex justify-content-between">
+                                    <div class="d-flex align-items-center text-secondary">
+                                        Mostrando {{ $foros->firstItem() }} - {{
+                                        $foros->lastItem() }} de
+                                        {{ $foros->total() }} registros
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+
                     </div>
+
+
+
                 </div>
             </div>
         </div>

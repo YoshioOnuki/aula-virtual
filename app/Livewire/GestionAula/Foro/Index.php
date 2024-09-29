@@ -8,19 +8,28 @@ use App\Models\Usuario;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Url;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Livewire\WithPagination;
 use Vinkla\Hashids\Facades\Hashids;
 
 #[Layout('components.layouts.app')]
 class Index extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+
+    #[Url('mostrar')]
+    public $mostrar_paginate = 10;
+    #[Url('buscar')]
+    public $search = '';
 
     public $id_usuario_hash;
     public $usuario;
     public $id_gestion_aula_usuario_hash;
     public $id_gestion_aula_usuario;
-    public $foros;
+    public $id_gestion_aula;
 
     // Variables para el modal de Foros
     public $modo = 1; // Modo 1 = Agregar / 0 = Editar
@@ -157,29 +166,7 @@ class Index extends Component
             // Reiniciar errores
             $this->resetErrorBag();
         }
-/* ====================================================================================== */
-
-    public function obtener_foros()
-    {
-        $id_gestion_aula = GestionAulaUsuario::find($this->id_gestion_aula_usuario)->id_gestion_aula;
-        $this->foros = Foro::where('id_gestion_aula', $id_gestion_aula)
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        // foreach ($foros as $foro) {
-        //     $foro->id_foro_hash = Hashids::encode($foro->id_foro);
-        //     $foro->id_usuario_hash = Hashids::encode($foro->id_usuario);
-        //     $foro->usuario = Usuario::find($foro->id_usuario);
-        //     $foro->respuestas = ForoRespuesta::where('id_foro', $foro->id_foro)
-        //         ->orderBy('created_at', 'asc')
-        //         ->get();
-        //     foreach ($foro->respuestas as $respuesta) {
-        //         $respuesta->id_foro_respuesta_hash = Hashids::encode($respuesta->id_foro_respuesta);
-        //         $respuesta->id_usuario_hash = Hashids::encode($respuesta->id_usuario);
-        //         $respuesta->usuario = Usuario::find($respuesta->id_usuario);
-        //     }
-        // }
-    }
+    /* ====================================================================================== */
 
 
     /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
@@ -251,10 +238,12 @@ class Index extends Component
 
         $id_gestion_aula_usuario = Hashids::decode($id_curso);
         $this->id_gestion_aula_usuario = $id_gestion_aula_usuario[0];
+        $this->id_gestion_aula = GestionAulaUsuario::find($this->id_gestion_aula_usuario)->id_gestion_aula;
 
         $this->id_usuario_hash = $id_usuario;
         $id_usuario = Hashids::decode($id_usuario);
         $this->usuario = Usuario::find($id_usuario[0]);
+        // dd($this->usuario->esRol('DOCENTE'));
 
         $user = Auth::user();
         $usuario_sesion = Usuario::find($user->id_usuario);
@@ -263,12 +252,31 @@ class Index extends Component
         }
 
         $this->obtener_datos_page_header();
-        $this->obtener_foros();
     }
 
 
     public function render()
     {
-        return view('livewire.gestion-aula.foro.index');
+        // $foros = Foro::with('foroRespuesta.gestionAulaUsuario.usuario')
+        //     ->where('id_gestion_aula', $this->id_gestion_aula)
+        //     ->orderBy('created_at', 'desc')
+        //     ->paginate(10);
+
+        $foros = Foro::with([
+                'foroRespuesta.gestionAulaUsuario.usuario',
+            ])
+            ->withCount('foroRespuesta') // Cuenta la cantidad de respuestas
+            ->with([
+                'foroRespuesta' => function ($query) {
+                    $query->orderBy('created_at', 'desc')->first(); // Última respuesta ordenada por fecha
+                }
+            ])
+            ->where('id_gestion_aula', $this->id_gestion_aula)
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+        // dd($foros);
+        return view('livewire.gestion-aula.foro.index', [
+            'foros' => $foros
+        ]);
     }
 }

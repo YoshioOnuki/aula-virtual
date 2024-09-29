@@ -16,7 +16,6 @@
                     <img src="{{ asset($usuario->mostrarFoto('docente')) }}" alt="avatar"
                         class="avatar avatar-md avatar-thumb rounded">
                     @endif
-                    {{-- <span class="avatar avatar-md" style="background-image: url(...)"></span> --}}
                 </div>
                 <div class="col">
                     <h2 class="page-title">

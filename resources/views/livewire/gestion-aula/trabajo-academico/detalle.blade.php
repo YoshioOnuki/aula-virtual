@@ -164,11 +164,10 @@
                                     </div>
                                     @else
                                     <div class="card-footer d-flex justify-content-end align-items-center mt-4">
-                                        <span class="status status-{{ color_estado_trabajo_academico($trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico ?? 'No entregado') }}
-                                                                        px-3 py-2 h-100">
-                                            {{
-                                            $trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico
-                                            ?? 'No entregado' }}
+                                        <span class="status 
+                                            status-{{ color_estado_trabajo_academico($trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico ?? 'No entregado') }}
+                                            px-3 py-2 h-100">
+                                            {{ $trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico ?? 'No entregado' }}
                                         </span>
                                     </div>
                                     {{-- <div class="card-footer d-flex justify-content-end align-items-center mt-4">

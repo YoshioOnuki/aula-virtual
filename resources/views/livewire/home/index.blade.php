@@ -10,7 +10,7 @@
     <div class="page-body">
         <div class="container-xl">
             <div class="row">
-                <div class="col col-md-8 col-lg-8 col-xl-8 col-sm-12 col-12">
+                <div class="col col-xl-9  col-lg-9 col-md-12 col-sm-12 col-12">
                     <div class="card card-stacked animate__animated animate__fadeIn   mb-3">
                         <div class="card-header d-flex justify-content-center align-items-center"
                         style=" background:rgb(12, 166, 120);">
@@ -34,7 +34,7 @@
 
                                 @forelse ($cursos as $item)
                                     <livewire:components.curso.card-curso :tipo_vista=$vista_curso
-                                        :usuario=$usuario :gestion_aula=$item
+                                        :usuario=$usuario :gestion_aula=$item :ruta_vista=$ruta_vista
                                         wire:key="cursos-{{ $item->id_gestion_aula_usuario }}" lazy />
                                 @empty
                                     @if($usuario->esRol('ALUMNO'))
@@ -50,7 +50,7 @@
 
                                 @forelse ($carga_academica as $item)
                                     <livewire:components.curso.card-curso :tipo_vista=$vista_carga
-                                        :usuario=$usuario :gestion_aula=$item
+                                        :usuario=$usuario :gestion_aula=$item :ruta_vista=$ruta_vista
                                         wire:key="cargas-{{ $item->id_gestion_aula_usuario }}" lazy />
                                 @empty
                                     @if($usuario->esRol('DOCENTE') || $usuario->esRol('DOCENTE INVITADO'))
@@ -68,7 +68,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col col-md-4 col-lg-4 col-xl-4 col-sm-12 col-12">
+                <div class="col col-xl-3  col-lg-3 col-md-12 col-sm-12 col-12">
                     <div class="card card-stacked mb-3 animate__animated animate__fadeIn">
                         <div class="card-header d-flex justify-content-center align-items-center"
                             style="background: rgb(12, 166, 120);">

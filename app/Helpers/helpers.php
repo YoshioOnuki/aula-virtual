@@ -23,6 +23,18 @@ if (!function_exists('format_fecha'))
     }
 }
 
+// Funcion para obtener la fecha actual en formato 12 marzo 2021, con el mes abrebiado
+if (!function_exists('format_fecha_string'))
+{
+    function format_fecha_string($fecha)
+    {
+        $dia = date('d', strtotime($fecha));
+        $mes = date('m', strtotime($fecha));
+        $anio = date('Y', strtotime($fecha));
+        return $dia . ' ' . Str::limit(format_mes($mes), 3, '') . ' ' . $anio;
+    }
+}
+
 if(!function_exists('format_hora'))
 {
     function format_hora($hora)

@@ -18,6 +18,8 @@ class Index extends Component
     public $vista_curso = "cursos";
     public $vista_carga = "carga-academica";
 
+    public $ruta_vista;
+
 
     public function mostrar_cursos()
     {
@@ -54,6 +56,7 @@ class Index extends Component
     {
         $user = Auth::user();
         $this->usuario = Usuario::find($user->id_usuario);
+        $this->ruta_vista = request()->route()->getName();
 
         $this->mostrar_cursos();
     }

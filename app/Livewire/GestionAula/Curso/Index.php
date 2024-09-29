@@ -23,6 +23,7 @@ class Index extends Component
 
     public $modo_admin = false;// Modo admin, para saber si se esta en modo administrador
     public $tipo_vista; // Tipo de vista, para saber si es alumno o docente
+    public $ruta_vista;
 
     // Variables para page-header
     public $titulo_page_header;
@@ -120,6 +121,8 @@ class Index extends Component
         $this->id_usuario_hash = $id_usuario;
         $id = Hashids::decode($id_usuario);
         $this->usuario = Usuario::find($id[0]);
+
+        $this->ruta_vista = request()->route()->getName();
 
         $this->obtener_datos_page_header();
         $this->mostrar_cursos();
