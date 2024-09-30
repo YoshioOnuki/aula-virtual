@@ -16,10 +16,5 @@ class Accion extends Model
         'nombre_accion',
     ];
 
-    public function accionUsuario()
-    {
-        return $this->hasMany(AccionUsuario::class, 'id_accion');
-    }
-
     public $timestamps = false;
 }

@@ -123,4 +123,15 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | jenssegers/agent
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    Jenssegers\Agent\AgentServiceProvider::class,
+    'Agent' => Jenssegers\Agent\Facades\Agent::class,
+
+
 ];

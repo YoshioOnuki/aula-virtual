@@ -1,22 +1,23 @@
 <?php
 
-use App\Models\GestionAulaUsuario;
+use App\Models\Accion;
+use App\Models\AccionUsuario;
+use App\Models\GestionAula;
 use Illuminate\Support\Str;
+use Vinkla\Hashids\Facades\Hashids;
 
-const METHOD="AES-256-CBC";
-const SECRET_KEY='$AULA@2024';
-const SECRET_IV='010524';
+const METHOD = "AES-256-CBC";
+const SECRET_KEY = '$AULA@2024';
+const SECRET_IV = '010524';
 
-if (!function_exists('format_fecha_horas'))
-{
+if (!function_exists('format_fecha_horas')) {
     function format_fecha_horas($fecha)
     {
         return date('h:i A d/m/Y', strtotime($fecha));
     }
 }
 
-if (!function_exists('format_fecha'))
-{
+if (!function_exists('format_fecha')) {
     function format_fecha($fecha)
     {
         return date('d/m/Y', strtotime($fecha));
@@ -24,8 +25,7 @@ if (!function_exists('format_fecha'))
 }
 
 // Funcion para obtener la fecha actual en formato 12 marzo 2021, con el mes abrebiado
-if (!function_exists('format_fecha_string'))
-{
+if (!function_exists('format_fecha_string')) {
     function format_fecha_string($fecha)
     {
         $dia = date('d', strtotime($fecha));
@@ -35,16 +35,14 @@ if (!function_exists('format_fecha_string'))
     }
 }
 
-if(!function_exists('format_hora'))
-{
+if (!function_exists('format_hora')) {
     function format_hora($hora)
     {
         return date('h:i A', strtotime($hora));
     }
 }
 
-if (!function_exists('format_dia_semana'))
-{
+if (!function_exists('format_dia_semana')) {
     function format_dia_semana($fecha)
     {
         $dia = date('w', strtotime($fecha));
@@ -67,8 +65,7 @@ if (!function_exists('format_dia_semana'))
     }
 }
 
-if (!function_exists('format_mes'))
-{
+if (!function_exists('format_mes')) {
     function format_mes($mes)
     {
         switch ($mes) {
@@ -103,8 +100,7 @@ if (!function_exists('format_mes'))
 }
 
 // Función para obtener la última vez que se conectó un usuario
-if (!function_exists('ultima_conexion'))
-{
+if (!function_exists('ultima_conexion')) {
     function ultima_conexion($fecha)
     {
         $fecha_actual = date('Y-m-d');
@@ -120,8 +116,7 @@ if (!function_exists('ultima_conexion'))
 }
 
 // Funcion para verificar si la hora actual está entre la hora de inicio y fin en la fecha actual
-if (!function_exists('verificar_hora_actual'))
-{
+if (!function_exists('verificar_hora_actual')) {
     function verificar_hora_actual($hora_inicio, $hora_fin, $fecha)
     {
         $hora_actual = date('H:i:s');
@@ -138,8 +133,7 @@ if (!function_exists('verificar_hora_actual'))
 }
 
 // Funcion para verificar si la hora actual está entre la fecha de inicio y fin en la fecha actual (datetime)
-if (!function_exists('verificar_fecha_trabajo'))
-{
+if (!function_exists('verificar_fecha_trabajo')) {
     function verificar_fecha_trabajo($fecha_inicio, $fecha_fin)
     {
         $fecha_actual = date('Y-m-d H:i:s');
@@ -151,8 +145,7 @@ if (!function_exists('verificar_fecha_trabajo'))
 }
 
 // Funcion para verificar si la hora ingresada está entre la hora de inicio y fin en la fecha ingresada en formato Y-m-d H:i:s
-if (!function_exists('verificar_hora'))
-{
+if (!function_exists('verificar_hora')) {
     function verificar_hora($hora_inicio, $hora_fin, $fecha, $fecha_comparar)
     {
         $hora_actual = date('H:i:s', strtotime($fecha_comparar));
@@ -169,12 +162,10 @@ if (!function_exists('verificar_hora'))
 }
 
 // funcion para verificar cuanto tiempo paso desde la fecha ingresada en formato Y-m-d H:i:s, y si no a pasado el tiempo establecido, que no muestre nada
-if (!function_exists('tiempo_transcurrido'))
-{
+if (!function_exists('tiempo_transcurrido')) {
     function tiempo_transcurrido($fecha_comparacion, $fecha, $hora_inicio, $hora_fin)
     {
-        if(verificar_hora($hora_inicio, $hora_fin, $fecha, $fecha_comparacion))
-        {
+        if (verificar_hora($hora_inicio, $hora_fin, $fecha, $fecha_comparacion)) {
             return '';
         }
 
@@ -202,13 +193,11 @@ if (!function_exists('tiempo_transcurrido'))
         }
 
         return $mensaje;
-
     }
 }
 
 // Funcion para retornar el color de acuerdo al porcentaje conseguido para el proceso
-if (!function_exists('color_porcentaje'))
-{
+if (!function_exists('color_porcentaje')) {
     function color_porcentaje($porcentaje)
     {
         if ($porcentaje >= 0 && $porcentaje <= 15) {
@@ -223,8 +212,7 @@ if (!function_exists('color_porcentaje'))
     }
 }
 
-if (!function_exists('numero_a_romano'))
-{
+if (!function_exists('numero_a_romano')) {
     function numero_a_romano($numero)
     {
         if (!is_int($numero)) {
@@ -232,9 +220,18 @@ if (!function_exists('numero_a_romano'))
         }
 
         $map = [
-            1000 => 'M', 900 => 'CM', 500 => 'D', 400 => 'CD',
-            100 => 'C', 90 => 'XC', 50 => 'L', 40 => 'XL',
-            10 => 'X', 9 => 'IX', 5 => 'V', 4 => 'IV',
+            1000 => 'M',
+            900 => 'CM',
+            500 => 'D',
+            400 => 'CD',
+            100 => 'C',
+            90 => 'XC',
+            50 => 'L',
+            40 => 'XL',
+            10 => 'X',
+            9 => 'IX',
+            5 => 'V',
+            4 => 'IV',
             1 => 'I'
         ];
         $returnValue = '';
@@ -251,78 +248,72 @@ if (!function_exists('numero_a_romano'))
 }
 
 // Funcion para limpiar cadenas
-if (!function_exists('limpiar_cadena'))
-{
+if (!function_exists('limpiar_cadena')) {
     function limpiar_cadena($cadena)
     {
         $tilde = ['á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú'];
         $dieresis = ['ä', 'ë', 'ï', 'ö', 'ü', 'Ä', 'Ë', 'Ï', 'Ö', 'Ü'];
         $reemplazo = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'];
-        $cadena=trim($cadena);
-        $cadena=stripslashes($cadena);
-        $cadena=str_ireplace("<script>", "", $cadena);
-        $cadena=str_ireplace("</script>", "", $cadena);
-        $cadena=str_ireplace("<script src", "", $cadena);
-        $cadena=str_ireplace("<script type=", "", $cadena);
-        $cadena=str_ireplace("SELECT * FROM", "", $cadena);
-        $cadena=str_ireplace("DELETE FROM", "", $cadena);
-        $cadena=str_ireplace("INSERT INTO", "", $cadena);
-        $cadena=str_ireplace("DROP TABLE", "", $cadena);
-        $cadena=str_ireplace("DROP DATABASE", "", $cadena);
-        $cadena=str_ireplace("TRUNCATE TABLE", "", $cadena);
-        $cadena=str_ireplace("SHOW TABLES", "", $cadena);
-        $cadena=str_ireplace("SHOW DATABASES", "", $cadena);
-        $cadena=str_ireplace("<?php", "", $cadena);
-        $cadena=str_ireplace("?>", "", $cadena);
-        $cadena=str_ireplace("--", "", $cadena);
-        $cadena=str_ireplace(">", "", $cadena);
-        $cadena=str_ireplace("<", "", $cadena);
-        $cadena=str_ireplace("[", "", $cadena);
-        $cadena=str_ireplace("]", "", $cadena);
-        $cadena=str_ireplace("^", "", $cadena);
-        $cadena=str_ireplace("==", "", $cadena);
-        $cadena=str_ireplace(";", "", $cadena);
-        $cadena=str_ireplace("::", "", $cadena);
-        $cadena=stripslashes($cadena);
-        $cadena=str_replace($tilde, $reemplazo, $cadena);
-        $cadena=str_replace($dieresis, $reemplazo, $cadena);
-        $cadena=trim($cadena);
+        $cadena = trim($cadena);
+        $cadena = stripslashes($cadena);
+        $cadena = str_ireplace("<script>", "", $cadena);
+        $cadena = str_ireplace("</script>", "", $cadena);
+        $cadena = str_ireplace("<script src", "", $cadena);
+        $cadena = str_ireplace("<script type=", "", $cadena);
+        $cadena = str_ireplace("SELECT * FROM", "", $cadena);
+        $cadena = str_ireplace("DELETE FROM", "", $cadena);
+        $cadena = str_ireplace("INSERT INTO", "", $cadena);
+        $cadena = str_ireplace("DROP TABLE", "", $cadena);
+        $cadena = str_ireplace("DROP DATABASE", "", $cadena);
+        $cadena = str_ireplace("TRUNCATE TABLE", "", $cadena);
+        $cadena = str_ireplace("SHOW TABLES", "", $cadena);
+        $cadena = str_ireplace("SHOW DATABASES", "", $cadena);
+        $cadena = str_ireplace("<?php", "", $cadena);
+        $cadena = str_ireplace("?>", "", $cadena);
+        $cadena = str_ireplace("--", "", $cadena);
+        $cadena = str_ireplace(">", "", $cadena);
+        $cadena = str_ireplace("<", "", $cadena);
+        $cadena = str_ireplace("[", "", $cadena);
+        $cadena = str_ireplace("]", "", $cadena);
+        $cadena = str_ireplace("^", "", $cadena);
+        $cadena = str_ireplace("==", "", $cadena);
+        $cadena = str_ireplace(";", "", $cadena);
+        $cadena = str_ireplace("::", "", $cadena);
+        $cadena = stripslashes($cadena);
+        $cadena = str_replace($tilde, $reemplazo, $cadena);
+        $cadena = str_replace($dieresis, $reemplazo, $cadena);
+        $cadena = trim($cadena);
         // $cadena=strtoupper($cadena);
         return $cadena;
     }
 }
 
 // Funcion para encriptar
-if (!function_exists('encriptar'))
-{
+if (!function_exists('encriptar')) {
     function encriptar($string)
     {
-        $output=FALSE;
-        $key=hash('sha256', SECRET_KEY);
-        $iv=substr(hash('sha256', SECRET_IV), 0, 16);
-        $output=openssl_encrypt($string, METHOD, $key, 0, $iv);
-        $output=base64_encode($output);
+        $output = FALSE;
+        $key = hash('sha256', SECRET_KEY);
+        $iv = substr(hash('sha256', SECRET_IV), 0, 16);
+        $output = openssl_encrypt($string, METHOD, $key, 0, $iv);
+        $output = base64_encode($output);
         return $output;
     }
-
 }
 
 // Funcion para desencriptar
-if (!function_exists('desencriptar'))
-{
+if (!function_exists('desencriptar')) {
     function desencriptar($string)
     {
-        $key=hash('sha256', SECRET_KEY);
-        $iv=substr(hash('sha256', SECRET_IV), 0, 16);
-        $output=openssl_decrypt(base64_decode($string), METHOD, $key, 0, $iv);
+        $key = hash('sha256', SECRET_KEY);
+        $iv = substr(hash('sha256', SECRET_IV), 0, 16);
+        $output = openssl_decrypt(base64_decode($string), METHOD, $key, 0, $iv);
         return $output;
     }
-
 }
 
 // Funcion para subir un archivo del curso
-if (!function_exists('subir_archivo'))
-{
+if (!function_exists('subir_archivo')) {
     function subir_archivo($archivo, $url_archiv, $carpetas, $extencion_archivo)
     {
         if (file_exists($url_archiv)) {
@@ -349,8 +340,7 @@ if (!function_exists('subir_archivo'))
 }
 
 // Funcion para asignar permisos a los directorios
-if (!function_exists('asignar_permiso_rutas'))
-{
+if (!function_exists('asignar_permiso_rutas')) {
     function asignar_permiso_rutas($base_path, $rutas)
     {
         $path = $base_path;
@@ -370,51 +360,47 @@ if (!function_exists('asignar_permiso_rutas'))
 }
 
 // Funcion para obtener la ruta base para un archivo
-if (!function_exists('obtener_ruta_base'))
-{
-    function obtener_ruta_base($id_gestion_aula_usuario)
+if (!function_exists('obtener_ruta_base')) {
+    function obtener_ruta_base($id_gestion_aula)
     {
-        $curso = GestionAulaUsuario::with([
-            'gestionAula' => function ($query) {
+        $curso = GestionAula::with([
+            'curso' => function ($query) {
                 $query->with([
-                    'curso' => function ($query) {
+                    'programa' => function ($query) {
                         $query->with([
-                            'programa' => function ($query) {
+                            'tipoPrograma' => function ($query) {
                                 $query->with([
-                                    'tipoPrograma' => function ($query) {
-                                        $query->with([
-                                            'nivelAcademico' => function ($query) {
-                                                $query->select('id_nivel_academico', 'nombre_nivel_academico');
-                                            }
-                                        ])->select('id_tipo_programa', 'nombre_tipo_programa', 'id_nivel_academico');
+                                    'nivelAcademico' => function ($query) {
+                                        $query->select('id_nivel_academico', 'nombre_nivel_academico');
                                     }
-                                ])->select('id_programa', 'nombre_programa', 'mencion_programa', 'id_tipo_programa');
-                            },
-                            'ciclo' => function ($query) {
-                                $query->select('id_ciclo', 'nombre_ciclo');
+                                ])->select('id_tipo_programa', 'nombre_tipo_programa', 'id_nivel_academico');
                             }
-                        ])
-                        ->select('id_curso', 'id_programa', 'nombre_curso', 'id_ciclo');
+                        ])->select('id_programa', 'nombre_programa', 'mencion_programa', 'id_tipo_programa');
                     },
-                    'proceso' => function ($query) {
-                        $query->select('id_proceso', 'nombre_proceso');
+                    'ciclo' => function ($query) {
+                        $query->select('id_ciclo', 'nombre_ciclo');
                     }
-                ])->select('id_gestion_aula', 'grupo_gestion_aula', 'id_curso', 'id_proceso');
+                ])
+                    ->select('id_curso', 'id_programa', 'nombre_curso', 'id_ciclo');
+            },
+            'proceso' => function ($query) {
+                $query->select('id_proceso', 'nombre_proceso');
             }
-        ])->where('id_gestion_aula_usuario', $id_gestion_aula_usuario)->first();
+        ])
+            ->select('id_gestion_aula', 'id_curso', 'id_proceso')
+            ->find($id_gestion_aula);
 
 
-        $nombre_curso = $curso->gestionAula->curso->nombre_curso.' - '.$curso->gestionAula->grupo_gestion_aula;
-        $proceso = $curso->gestionAula->proceso->nombre_proceso;
-        if($curso->gestionAula->curso->programa->mencion_programa)
-        {
-            $nombre_programa = $curso->gestionAula->curso->programa->nombre_programa.' - '.$curso->gestionAula->curso->programa->mencion_programa;
-        }else{
-            $nombre_programa = $curso->gestionAula->curso->nombre_programa;
+        $nombre_curso = $curso->curso->nombre_curso . ' - ' . $curso->grupo_gestion_aula;
+        $proceso = $curso->proceso->nombre_proceso;
+        if ($curso->curso->programa->mencion_programa) {
+            $nombre_programa = $curso->curso->programa->nombre_programa . ' - ' . $curso->curso->programa->mencion_programa;
+        } else {
+            $nombre_programa = $curso->curso->nombre_programa;
         }
-        $ciclo = $curso->gestionAula->curso->ciclo->nombre_ciclo;
-        $tipo_programa = $curso->gestionAula->curso->programa->tipoPrograma->nombre_tipo_programa;
-        $nivel_academico = $curso->gestionAula->curso->programa->tipoPrograma->nivelAcademico->nombre_nivel_academico;
+        $ciclo = $curso->curso->ciclo->nombre_ciclo;
+        $tipo_programa = $curso->curso->programa->tipoPrograma->nombre_tipo_programa;
+        $nivel_academico = $curso->curso->programa->tipoPrograma->nivelAcademico->nombre_nivel_academico;
 
         $carpetas = [
             Str::slug($nivel_academico),
@@ -426,13 +412,11 @@ if (!function_exists('obtener_ruta_base'))
         ];
 
         return $carpetas;
-
     }
 }
 
 // Funcion para eliminar un archivo con el nombre del archivo y la ruta
-if (!function_exists('eliminar_archivo'))
-{
+if (!function_exists('eliminar_archivo')) {
     function eliminar_archivo($ruta)
     {
         if (file_exists($ruta)) {
@@ -561,8 +545,8 @@ if (!function_exists('subir_archivo_editor')) {
         $mensaje = $descripcion;
         // dd($mensaje);
         // if ($this->modo_orientaciones === 0) {
-            $mensaje = preg_replace('/<meta http-equiv="Content-Type" content="text\/html; charset=utf-8">/', '', $mensaje);
-            $mensaje = preg_replace('/\n/', '', $mensaje);
+        $mensaje = preg_replace('/<meta http-equiv="Content-Type" content="text\/html; charset=utf-8">/', '', $mensaje);
+        $mensaje = preg_replace('/\n/', '', $mensaje);
         // }
         $mensaje = '<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head><body>' . $mensaje . '</body></html>';
 
@@ -575,7 +559,7 @@ if (!function_exists('subir_archivo_editor')) {
         $images = $dom->getElementsByTagName('img');
 
         foreach ($images as $img) {
-            if ($img instanceof DOMElement) {// Verificar si es una instancia de DOMElement
+            if ($img instanceof DOMElement) { // Verificar si es una instancia de DOMElement
                 $data = $img->getAttribute('src');
                 if (preg_match('/^data:image\/(\w+);base64,/', $data, $type)) {
                     // Extraer el tipo de imagen y los datos
@@ -673,7 +657,8 @@ if (!function_exists('contenido_vacio')) {
         $contenido = str_replace('&nbsp;', '', $contenido);
         $contenido = trim($contenido);
 
-        if ($contenido === '<p><br></p>' ||
+        if (
+            $contenido === '<p><br></p>' ||
             $contenido === '<h1><br></h1>' ||
             $contenido === '<h2><br></h2>' ||
             $contenido === '<h3><br></h3>' ||
@@ -688,9 +673,29 @@ if (!function_exists('contenido_vacio')) {
             $contenido === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><h5><br></h5>' ||
             $contenido === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><h6><br></h6>' ||
             $contenido === '<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><p></p>' ||
-            $contenido === '<p></p>') {
+            $contenido === '<p></p>'
+        ) {
             return '';
         }
         return $contenido;
+    }
+}
+
+
+// Funcion para obtener el id_accion de la accion del usuario
+if (!function_exists('obtener_id_accion')) {
+    function obtener_id_accion($accion)
+    {
+        return Accion::where('nombre_accion', $accion)->first()->id_accion;
+    }
+}
+
+// Funcion para obtener la url con los parametros deshasheados
+if (!function_exists('obtener_url')) {
+    function obtener_url()
+    {
+        $url = request()->route()->getName();
+
+        dd($url);
     }
 }

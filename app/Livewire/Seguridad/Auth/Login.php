@@ -6,6 +6,7 @@ use App\Models\Usuario;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Route;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
@@ -38,9 +39,6 @@ class Login extends Component
 
             if ($usuario && Hash::check($this->contrasenia, $usuario->contrasenia_usuario)) {
                 Auth::login($usuario, false);
-                $usuario->ultima_accion_usuario = now();
-                $usuario->id_accion_usuario = 1;
-                $usuario->save();
 
                 RateLimiter::clear($key); // Limpiar intentos después del inicio de sesión exitoso
 
