@@ -17,6 +17,10 @@ class TipoAsistencia extends Model
         'estado_tipo_asistencia',
     ];
 
+    protected $casts = [
+        'estado_tipo_asistencia' => 'boolean',
+    ];
+
     public function asistencia()
     {
         return $this->hasMany(Asistencia::class, 'id_tipo_asistencia');

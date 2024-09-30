@@ -21,6 +21,10 @@ class LinkClase extends Model
         'id_gestion_aula',
     ];
 
+    protected $casts = [
+        'estado_link_clase' => 'boolean',
+    ];
+
     public function gestionAula()
     {
         return $this->belongsTo(GestionAula::class, 'id_gestion_aula');

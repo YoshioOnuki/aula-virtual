@@ -35,7 +35,7 @@ class Index extends Component
         $this->id_usuario = $usuario->id_usuario;
         $this->nombres_persona = $usuario->nombre_completo;
         $this->correo_usuario = $usuario->correo_usuario;
-        $this->rol_usuario = $usuario->mostrarRol();
+        $this->rol_usuario = $usuario->mostrarRoles();
 
         if ($modo === 1) {
             $this->modo = 1;

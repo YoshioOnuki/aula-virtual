@@ -18,7 +18,7 @@ class AsistenciaAlumno extends Model
         'id_asistencia_alumno',
         'id_asistencia',
         'id_estado_asistencia',
-        'id_gestion_aula_usuario',
+        'id_gestion_aula_alumno',
     ];
 
     public function asistencia()
@@ -31,9 +31,9 @@ class AsistenciaAlumno extends Model
         return $this->belongsTo(EstadoAsistencia::class, 'id_estado_asistencia');
     }
 
-    public function gestionAulaUsuario()
+    public function gestionAulaAlumno()
     {
-        return $this->belongsTo(GestionAulaUsuario::class, 'id_gestion_aula_usuario');
+        return $this->belongsTo(GestionAulaAlumno::class, 'id_gestion_aula_alumno');
     }
 
     protected static function boot()

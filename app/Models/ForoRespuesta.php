@@ -18,7 +18,7 @@ class ForoRespuesta extends Model
         'id_foro_respuesta',
         'descripcion_foro_respuesta',
         'id_foro',
-        'id_gestion_aula_usuario',
+        'id_gestion_aula_alumno',
     ];
 
     public function foro()
@@ -26,9 +26,9 @@ class ForoRespuesta extends Model
         return $this->belongsTo(Foro::class, 'id_foro');
     }
 
-    public function gestionAulaUsuario()
+    public function gestionAulaAlumno()
     {
-        return $this->belongsTo(GestionAulaUsuario::class, 'id_gestion_aula_usuario');
+        return $this->belongsTo(GestionAulaAlumno::class, 'id_gestion_aula_alumno');
     }
 
     protected static function boot()

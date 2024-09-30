@@ -20,6 +20,10 @@ class Proceso extends Model
         'estado_proceso',
     ];
 
+    protected $casts = [
+        'estado_proceso' => 'boolean',
+    ];
+
     public function gestionAula()
     {
         return $this->hasMany(GestionAula::class, 'id_proceso');

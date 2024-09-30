@@ -18,6 +18,10 @@ class PlanEstudio extends Model
         'estado_plan_estudio',
     ];
 
+    protected $casts = [
+        'estado_plan_estudio' => 'boolean',
+    ];
+
     public function curso()
     {
         return $this->hasMany(Curso::class, 'id_plan_estudio');

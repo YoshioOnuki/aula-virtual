@@ -20,12 +20,23 @@ class Foro extends Model
         'descripcion_foro',
         'fecha_inicio_foro',
         'fecha_fin_foro',
+        'id_gestion_aula_docente',
         'id_gestion_aula',
+    ];
+
+    protected $casts = [
+        'fecha_inicio_foro' => 'datetime',
+        'fecha_fin_foro' => 'datetime',
     ];
 
     public function gestionAula()
     {
         return $this->belongsTo(GestionAula::class, 'id_gestion_aula');
+    }
+
+    public function gestionAulaDocente()
+    {
+        return $this->belongsTo(GestionAulaDocente::class, 'id_gestion_aula_docente');
     }
 
     public function foroRespuesta()

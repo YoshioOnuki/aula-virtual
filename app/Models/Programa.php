@@ -20,6 +20,10 @@ class Programa extends Model
         'id_tipo_programa',
     ];
 
+    protected $casts = [
+        'estado_programa' => 'boolean',
+    ];
+
     public function facultad()
     {
         return $this->belongsTo(Facultad::class, 'id_facultad');

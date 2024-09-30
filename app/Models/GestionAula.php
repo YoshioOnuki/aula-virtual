@@ -23,6 +23,10 @@ class GestionAula extends Model
         'id_proceso',
     ];
 
+    protected $casts = [
+        'estado_gestion_aula' => 'boolean',
+    ];
+
     public function curso()
     {
         return $this->belongsTo(Curso::class, 'id_curso');
@@ -38,9 +42,14 @@ class GestionAula extends Model
         return $this->hasMany(Asistencia::class, 'id_gestion_aula');
     }
 
-    public function gestionAulaUsuario()
+    public function gestionAulaAlumno()
     {
-        return $this->hasMany(GestionAulaUsuario::class, 'id_gestion_aula');
+        return $this->hasMany(GestionAulaAlumno::class, 'id_gestion_aula');
+    }
+
+    public function gestionAulaDocente()
+    {
+        return $this->hasMany(GestionAulaDocente::class, 'id_gestion_aula');
     }
 
     public function recurso()

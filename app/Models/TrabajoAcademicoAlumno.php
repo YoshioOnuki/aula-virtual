@@ -20,7 +20,7 @@ class TrabajoAcademicoAlumno extends Model
         'nota_trabajo_academico_alumno',
         'id_estado_trabajo_academico',
         'id_trabajo_academico',
-        'id_gestion_aula_usuario',
+        'id_gestion_aula_alumno',
     ];
 
     protected $casts = [
@@ -37,9 +37,9 @@ class TrabajoAcademicoAlumno extends Model
         return $this->belongsTo(TrabajoAcademico::class, 'id_trabajo_academico');
     }
 
-    public function gestionAulaUsuario()
+    public function gestionAulaAlumno()
     {
-        return $this->belongsTo(GestionAulaUsuario::class, 'id_gestion_aula_usuario');
+        return $this->belongsTo(GestionAulaAlumno::class, 'id_gestion_aula_alumno');
     }
 
     public function comentarioTrabajoAcademico()

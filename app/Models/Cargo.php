@@ -17,6 +17,10 @@ class Cargo extends Model
         'estado_cargo',
     ];
 
+    protected $casts = [
+        'estado_cargo' => 'boolean',
+    ];
+
     public function autoridad()
     {
         return $this->hasMany(Autoridad::class, 'id_cargo');

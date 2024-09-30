@@ -48,7 +48,7 @@
                 </span>
                 <div class="mt-3 w-full ps-3">
                     <span class="badge bg-teal-lt px-3 py-2 w-100">
-                        {{ $usuario->mostrarRol() }}
+                        {{ $usuario->mostrarRoles() }}
                     </span>
                 </div>
             </div>

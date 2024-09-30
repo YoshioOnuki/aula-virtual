@@ -18,11 +18,15 @@ class Ciclo extends Model
         'estado_ciclo',
     ];
 
+    protected $casts = [
+        'estado_ciclo' => 'boolean',
+    ];
+
     public function curso()
     {
         return $this->hasMany(Curso::class, 'id_ciclo');
     }
 
     public $timestamps = false;
-    
+
 }

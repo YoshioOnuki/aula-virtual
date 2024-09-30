@@ -20,6 +20,10 @@ class Autoridad extends Model
         'id_facultad',
     ];
 
+    protected $casts = [
+        'estado_autoridad' => 'boolean',
+    ];
+
     public function cargo()
     {
         return $this->belongsTo(Cargo::class, 'id_cargo');

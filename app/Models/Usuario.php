@@ -22,9 +22,10 @@ class Usuario extends Authenticatable
         'foto_usuario',
         'estado_usuario',
         'id_persona',
-        'ultima_accion_usuario',
-        'id_accion_usuario',
-        'accion_usuario',
+    ];
+
+    protected $casts = [
+        'estado_usuario' => 'boolean',
     ];
 
     public function persona()
@@ -41,13 +42,12 @@ class Usuario extends Authenticatable
         return $this->belongsToMany(Rol::class, 'usuario_rol', 'id_usuario', 'id_rol');
     }
 
-    public function accionUsuario()
-    {
-        return $this->belongsTo(AccionUsuario::class, 'id_accion_usuario');
+    public function gestionAulaAlumno(){
+        return $this->hasMany(GestionAulaAlumno::class, 'id_usuario');
     }
 
-    public function gestionAulaUsuario(){
-        return $this->hasMany(GestionAulaUsuario::class, 'id_usuario');
+    public function gestionAulaDocente(){
+        return $this->hasMany(GestionAulaDocente::class, 'id_usuario');
     }
 
     // Validar que rol es, mandando como parametro el nombre del rol
@@ -61,33 +61,32 @@ class Usuario extends Authenticatable
         return false;
     }
 
-    // Validar que rol pertenece a la gestion de aula
-    public function esRolGestionAula($nombreRol, $idGestionAulaUsuario)
-    {
-        $idGestionAula = GestionAulaUsuario::find($idGestionAulaUsuario)->id_gestion_aula;
-        $gestionAulaUsuario = GestionAulaUsuario::with([
-            'gestionAula' => function ($query) {
-                $query->select('id_gestion_aula');
-            },
-            'rol' => function ($query) {
-                $query->select('id_rol', 'nombre_rol');
-            }
-        ])->whereHas('rol', function ($query) use ($nombreRol) {
-            $query->where('nombre_rol', $nombreRol);
-        })->where('id_usuario', $this->id_usuario)
-        ->where('id_gestion_aula', $idGestionAula)->first();
+    // public function esRolGestionAula($nombreRol, $idGestionAulaUsuario)
+    // {
+    //     $idGestionAula = GestionAulaUsuario::find($idGestionAulaUsuario)->id_gestion_aula;
+    //     $gestionAulaUsuario = GestionAulaUsuario::with([
+    //         'gestionAula' => function ($query) {
+    //             $query->select('id_gestion_aula');
+    //         },
+    //         'rol' => function ($query) {
+    //             $query->select('id_rol', 'nombre_rol');
+    //         }
+    //     ])->whereHas('rol', function ($query) use ($nombreRol) {
+    //         $query->where('nombre_rol', $nombreRol);
+    //     })->where('id_usuario', $this->id_usuario)
+    //     ->where('id_gestion_aula', $idGestionAula)->first();
 
-        if ($gestionAulaUsuario) {
-            return true;
-        }
+    //     if ($gestionAulaUsuario) {
+    //         return true;
+    //     }
 
-        return false;
-    }
+    //     return false;
+    // }
 
-    public function getRolUsuaAttribute()
-    {
-        return $this->roles->first()->nombre_rol;
-    }
+    // public function getRolUsuaAttribute()
+    // {
+    //     return $this->roles->first()->nombre_rol;
+    // }
 
     public function MostrarFoto($tipo)
     {
@@ -130,18 +129,13 @@ class Usuario extends Authenticatable
     }
 
     //Mostrar el rol, si tiene mas de un rol, concatenar
-    public function mostrarRol()
+    public function mostrarRoles()
     {
         $roles = '';
         foreach ($this->roles as $rol) {
             $roles .= $rol->nombre_rol . ', ';
         }
         return substr($roles, 0, -2);
-    }
-
-    public function mostrarRolCollection()
-    {
-
     }
 
     public function getNombreCompletoAttribute()
@@ -186,6 +180,23 @@ class Usuario extends Authenticatable
                         ->orWhere('apellido_materno_persona', 'LIKE', '%' . $search . '%')
                         ->orWhere('documento_persona', 'LIKE', '%' . $search . '%')
                         ->orWhere('codigo_alumno_persona', 'LIKE', '%' . $search . '%');
+                });
+        });
+    }
+
+    public function scopeSearchDocente($query, $search)
+    {
+        if ($search == null) {
+            return $query;
+        }
+
+        return $query->where(function($query) use ($search) {
+            $query->where('correo_usuario', 'LIKE', '%' . $search . '%')
+                ->orWhereHas('persona', function ($subQuery) use ($search) {
+                    $subQuery->where('nombres_persona', 'LIKE', '%' . $search . '%')
+                        ->orWhere('apellido_paterno_persona', 'LIKE', '%' . $search . '%')
+                        ->orWhere('apellido_materno_persona', 'LIKE', '%' . $search . '%')
+                        ->orWhere('documento_persona', 'LIKE', '%' . $search . '%');
                 });
         });
     }

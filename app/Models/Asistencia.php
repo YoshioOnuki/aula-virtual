@@ -23,6 +23,12 @@ class Asistencia extends Model
         'id_gestion_aula',
     ];
 
+    protected $casts = [
+        'fecha_asistencia' => 'date',
+        'hora_inicio_asistencia' => 'time',
+        'hora_fin_asistencia' => 'time',
+    ];
+
     public function tipoAsistencia()
     {
         return $this->belongsTo(TipoAsistencia::class, 'id_tipo_asistencia');

@@ -26,6 +26,10 @@ class Curso extends Model
         'id_plan_estudio'
     ];
 
+    protected $casts = [
+        'estado_curso' => 'boolean',
+    ];
+
     public function ciclo()
     {
         return $this->belongsTo(Ciclo::class, 'id_ciclo');

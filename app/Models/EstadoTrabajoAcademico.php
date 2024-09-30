@@ -17,6 +17,10 @@ class EstadoTrabajoAcademico extends Model
         'estado_estado_trabajo_academico',
     ];
 
+    protected $casts = [
+        'estado_estado_trabajo_academico' => 'boolean',
+    ];
+
     public function trabajoAcademicoAlumno()
     {
         return $this->hasMany(TrabajoAcademicoAlumno::class, 'id_estado_trabajo_academico');

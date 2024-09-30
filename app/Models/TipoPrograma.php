@@ -18,6 +18,10 @@ class TipoPrograma extends Model
         'id_nivel_academico',
     ];
 
+    protected $casts = [
+        'estado_tipo_programa' => 'boolean',
+    ];
+
     public function nivelAcademico()
     {
         return $this->belongsTo(NivelAcademico::class, 'id_nivel_academico');

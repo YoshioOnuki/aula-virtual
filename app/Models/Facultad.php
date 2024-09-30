@@ -17,6 +17,10 @@ class Facultad extends Model
         'estado_facultad',
     ];
 
+    protected $casts = [
+        'estado_facultad' => 'boolean',
+    ];
+
     public function programa()
     {
         return $this->hasMany(Programa::class, 'id_facultad');

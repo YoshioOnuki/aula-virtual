@@ -17,11 +17,15 @@ class NivelAcademico extends Model
         'estado_nivel_academico',
     ];
 
+    protected $casts = [
+        'estado_nivel_academico' => 'boolean',
+    ];
+
     public function tipoPrograma()
     {
         return $this->hasMany(TipoPrograma::class, 'id_nivel_academico');
     }
 
     public $timestamps = false;
-    
+
 }

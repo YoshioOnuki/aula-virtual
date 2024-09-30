@@ -17,19 +17,19 @@ class Rol extends Model
         'estado_rol',
     ];
 
-    public $timestamps = false;
+    protected $casts = [
+        'estado_rol' => 'boolean',
+    ];
 
     public function usuarios() {
         return $this->belongsToMany(Usuario::class, 'usuario_rol', 'id_rol', 'id_usuario');
     }
-    
+
     public function usuarioRol()
     {
         return $this->hasMany(UsuarioRol::class, 'id_rol');
     }
 
-    public function gestionAulaUsuario()
-    {
-        return $this->hasMany(GestionAulaUsuario::class, 'id_rol');
-    }
+    public $timestamps = false;
+
 }

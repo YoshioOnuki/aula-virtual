@@ -110,7 +110,7 @@
                                             {{ $item->correo_usuario }}
                                         </td>
                                         <td>
-                                            {{ $item->mostrarRol() }}
+                                            {{ $item->mostrarRoles() }}
                                         </td>
                                         <td>
                                             @if ($item->estado_usuario == 1)

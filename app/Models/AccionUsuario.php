@@ -13,12 +13,20 @@ class AccionUsuario extends Model
     protected $primaryKey = 'id_accion_usuario';
     protected $fillable = [
         'id_accion_usuario',
-        'nombre_accion_usuario',
+        'ruta_accion_usuario',
+        'fecha_accion_usuario',
+        'id_usuario',
+        'id_accion'
     ];
 
     public function usuario()
     {
-        return $this->hasMany(Usuario::class, 'id_accion_usuario');
+        return $this->belongsTo(Usuario::class, 'id_usuario');
+    }
+
+    public function accion()
+    {
+        return $this->belongsTo(Accion::class, 'id_accion');
     }
 
     public $timestamps = false;

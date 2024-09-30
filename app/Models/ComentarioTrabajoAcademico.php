@@ -18,7 +18,7 @@ class ComentarioTrabajoAcademico extends Model
         'id_comentario_trabajo_academico',
         'descripcion_comentario_trabajo_academico',
         'id_trabajo_academico_alumno',
-        'id_gestion_aula_usuario',
+        'id_gestion_aula_docente',
     ];
 
     public function trabajoAcademicoAlumno()
@@ -26,9 +26,9 @@ class ComentarioTrabajoAcademico extends Model
         return $this->belongsTo(TrabajoAcademicoAlumno::class, 'id_trabajo_academico_alumno');
     }
 
-    public function gestionAulaUsuario()
+    public function gestionAulaDocente()
     {
-        return $this->belongsTo(GestionAulaUsuario::class, 'id_gestion_aula_usuario');
+        return $this->belongsTo(GestionAulaDocente::class, 'id_gestion_aula_docente');
     }
 
     protected static function boot()
