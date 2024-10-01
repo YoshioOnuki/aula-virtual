@@ -33,43 +33,27 @@ class CardCurso extends Component
     public $ruta_vista;
 
 
-    // public function redirigir_curso_detalle($id)
-    // {
-    //     $docente  = GestionAulaUsuario::with('usuario.persona')
-    //         ->where('id_gestion_aula', $id)
-    //         ->whereHas('rol', function ($query) {
-    //             $query->where('nombre_rol', 'DOCENTE');
-    //         })
-    //         ->first();
-    //     if($docente) {
-    //         $gestion_aula_usuario = GestionAulaUsuario::where('id_gestion_aula', $id)
-    //             ->where('id_usuario', $this->usuario->id_usuario)
-    //             ->first();
+    public function redirigir_curso_detalle($id)
+    {
+        if($this->docente) {
+            $id_curso = Hashids::encode($this->docente->id_gestion_aula);
+            $id_usuario = Hashids::encode($this->usuario->id_usuario);
 
-    //         $id_curso = Hashids::encode($gestion_aula_usuario->id_gestion_aula_usuario);
-    //         $id_usuario = Hashids::encode($this->usuario->id_usuario);
+            if($this->tipo_vista === 'cursos')
+            {
+                return redirect()->route('cursos.detalle', ['id_usuario' => $id_usuario, 'tipo_vista' => 'cursos', 'id_curso' => $id_curso]);
+            } else {
+                return redirect()->route('carga-academica.detalle', ['id_usuario' => $id_usuario, 'tipo_vista' => 'carga-academica', 'id_curso' => $id_curso]);
+            }
+        } else {
 
-    //         $usuario_sesion = Usuario::find($this->usuario_sesion->id_usuario);
-    //         if ($usuario_sesion->esRol('ADMINISTRADOR'))
-    //         {
-    //             $this->modo_admin = true;
-    //         }
-
-    //         if($this->tipo_vista === 'cursos')
-    //         {
-    //             return redirect()->route('cursos.detalle', ['id_usuario' => $id_usuario, 'tipo_vista' => 'cursos', 'id_curso' => $id_curso]);
-    //         } else {
-    //             return redirect()->route('carga-academica.detalle', ['id_usuario' => $id_usuario, 'tipo_vista' => 'carga-academica', 'id_curso' => $id_curso]);
-    //         }
-    //     } else {
-
-    //         $this->dispatch(
-    //             'toast-basico',
-    //             mensaje: 'No se puede acceder al curso, no tiene docente asignado',
-    //             type: 'error'
-    //         );
-    //     }
-    // }
+            $this->dispatch(
+                'toast-basico',
+                mensaje: 'No se puede acceder al curso, no tiene docente asignado',
+                type: 'error'
+            );
+        }
+    }
 
 
     /* =============== CALCULAR PROGRESO DEL CURSO =============== */
@@ -137,7 +121,7 @@ class CardCurso extends Component
 
         if ($this->tipo_vista === 'cursos')
         {
-            $docente = GestionAula::with([
+            $this->docente = GestionAula::with([
                 'gestionAulaAlumno' => function ($query) {
                     $query->with([
                         'usuario' => function ($query) {
@@ -154,13 +138,29 @@ class CardCurso extends Component
                 })
                 ->first();
 
-            if($docente) {
-                $this->foto_docente[$this->gestion_aula_usuario->id_gestion_aula] = $docente->gestionAulaAlumno[0]->usuario->mostrarFoto('alumno');
+            if($this->docente) {
+                $this->foto_docente[$this->gestion_aula_usuario->id_gestion_aula] = $this->docente->gestionAulaAlumno[0]->usuario->mostrarFoto('alumno');
             }else{
                 $this->foto_docente[$this->gestion_aula_usuario->id_gestion_aula] = '/media/avatar-none.webp';
             }
         } else {
-            if($this->gestion_aula_usuario) {
+            $this->docente = GestionAula::with([
+                'gestionAulaDocente' => function ($query) {
+                    $query->with([
+                        'usuario' => function ($query) {
+                            $query->with('persona')
+                                ->first();
+                        }
+                    ])->first();
+                }
+            ])
+                ->where('id_gestion_aula', $this->gestion_aula_usuario->id_gestion_aula)
+                ->whereHas('gestionAulaDocente', function ($query) {
+                    $query->where('id_usuario', $this->usuario->id_usuario)
+                        ->estado(true);
+                })
+                ->first();
+            if($this->docente) {
                 $this->foto_docente[$this->gestion_aula_usuario->id_gestion_aula] = $this->gestion_aula_usuario->usuario->mostrarFoto('alumno');
             }else{
                 $this->foto_docente[$this->gestion_aula_usuario->id_gestion_aula] = '/media/avatar-none.webp';

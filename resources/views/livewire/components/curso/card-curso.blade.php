@@ -32,30 +32,30 @@
                         </div>
                     </div>
 
-                    @if (!empty($numero_progreso[$gestion_aula_usuario->id_gestion_aula_usuario]) && $tipo_vista === 'cursos')
+                    @if (!empty($numero_progreso[$gestion_aula_usuario->id_gestion_aula_alumno]) && $tipo_vista === 'cursos')
                         <div class="d-flex mb-2 mt-3">
                             <div class="text-muted fs-5">
                                 Progreso:
-                                {{ $numero_progreso_realizados[$gestion_aula_usuario->id_gestion_aula_usuario] ?? '0'
+                                {{ $numero_progreso_realizados[$gestion_aula_usuario->id_gestion_aula_alumno] ?? '0'
                                 }}/{{
-                                $numero_progreso[$gestion_aula_usuario->id_gestion_aula_usuario] ?? '0' }}
+                                $numero_progreso[$gestion_aula_usuario->id_gestion_aula_alumno] ?? '0' }}
                             </div>
                             <div class="ms-auto fs-5">
                                 <span class="text-muted d-inline-flex align-items-center lh-1">
-                                    {{ $progreso[$gestion_aula_usuario->id_gestion_aula_usuario] ?? '0' }}%
+                                    {{ $progreso[$gestion_aula_usuario->id_gestion_aula_alumno] ?? '0' }}%
                                 </span>
                             </div>
                         </div>
 
                         <div class="progress progress-sm">
-                            <div class="progress-bar bg-{{ color_porcentaje($progreso[$gestion_aula_usuario->id_gestion_aula_usuario] ?? 0) }}"
-                                style="width: {{ $progreso[$gestion_aula_usuario->id_gestion_aula_usuario] ?? 0 }}%"
+                            <div class="progress-bar bg-{{ color_porcentaje($progreso[$gestion_aula_usuario->id_gestion_aula_alumno] ?? 0) }}"
+                                style="width: {{ $progreso[$gestion_aula_usuario->id_gestion_aula_alumno] ?? 0 }}%"
                                 role="progressbar"
-                                aria-valuenow="{{ $progreso[$gestion_aula_usuario->id_gestion_aula_usuario] ?? 0 }}"
+                                aria-valuenow="{{ $progreso[$gestion_aula_usuario->id_gestion_aula_alumno] ?? 0 }}"
                                 aria-valuemin="0" aria-valuemax="100"
-                                aria-label="{{ $progreso[$gestion_aula_usuario->id_gestion_aula_usuario] ?? 0 }}% Complete">
+                                aria-label="{{ $progreso[$gestion_aula_usuario->id_gestion_aula_alumno] ?? 0 }}% Complete">
                                 <span class="visually-hidden">{{
-                                    $progreso[$gestion_aula_usuario->id_gestion_aula_usuario]
+                                    $progreso[$gestion_aula_usuario->id_gestion_aula_alumno]
                                     ?? 0 }}%
                                     Complete</span>
                             </div>

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Components\Curso;
 
+use App\Models\GestionAula;
 use App\Models\GestionAulaUsuario;
 use Livewire\Component;
 
@@ -9,8 +10,9 @@ class DatosCurso extends Component
 {
 
     public $curso;
-    public $gestion_aula_usuario;
-    public $id_gestion_aula_usuario;
+    public $gestion_aula;
+    public $ruta_pagina;
+    public $id_gestion_aula;
 
     public $link_clase = ' ';
 
@@ -18,36 +20,38 @@ class DatosCurso extends Component
 
     public $tipo_vista; // Para saber que tipo de vista se está mostrando
 
-    protected $listeners = ['actualizar_datos_curso' => 'load_datos_curso'];
+    protected $listeners = ['actualizar_datos_curso' => 'actualizar_datos_curso'];
 
+
+    public function actualizar_datos_curso()
+    {
+        $this->mount($this->id_gestion_aula, $this->ruta_pagina, $this->tipo_vista);
+    }
 
     /* =============== MOSTRAR DATOS DEL CURSO =============== */
         public function mostrar_datos_curso()
         {
-            $this->gestion_aula_usuario = GestionAulaUsuario::with([
-                'gestionAula' => function ($query) {
+            $this->gestion_aula = GestionAula::with([
+                'curso' => function ($query) {
                     $query->with([
-                        'curso' => function ($query) {
+                        'ciclo',
+                        'planEstudio',
+                        'programa' => function ($query) {
                             $query->with([
-                                'ciclo',
-                                'planEstudio',
-                                'programa' => function ($query) {
-                                    $query->with([
-                                        'facultad',
-                                        'tipoPrograma'
-                                    ])->select('id_programa', 'nombre_programa', 'mencion_programa', 'id_tipo_programa', 'id_facultad');
-                                }
-                            ])->select('id_curso', 'codigo_curso', 'nombre_curso', 'creditos_curso', 'horas_lectivas_curso', 'id_programa', 'id_plan_estudio', 'id_ciclo');
-                        },
-                        'linkClase' => function ($query) {
-                            $query->select('id_link_clase', 'id_gestion_aula', 'nombre_link_clase');
-                        },
-                    ])->select('id_gestion_aula', 'grupo_gestion_aula', 'id_curso');
+                                'facultad',
+                                'tipoPrograma'
+                            ])->select('id_programa', 'nombre_programa', 'mencion_programa', 'id_tipo_programa', 'id_facultad');
+                        }
+                    ])->select('id_curso', 'codigo_curso', 'nombre_curso', 'creditos_curso', 'horas_lectivas_curso', 'id_programa', 'id_plan_estudio', 'id_ciclo');
+                },
+                'linkClase' => function ($query) {
+                    $query->select('id_link_clase', 'id_gestion_aula', 'nombre_link_clase');
                 }
-            ])->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)->first();
+            ])->find($this->id_gestion_aula);
 
-            if ($this->gestion_aula_usuario) {
-                $this->curso = $this->gestion_aula_usuario->gestionAula->curso;
+
+            if ($this->gestion_aula) {
+                $this->curso = $this->gestion_aula->curso;
             }
         }
     /* ======================================================= */
@@ -162,10 +166,11 @@ class DatosCurso extends Component
     }
 
 
-    public function mount($id_gestion_aula_usuario, $ruta_pagina, $tipo_vista)
+    public function mount($id_gestion_aula, $ruta_pagina, $tipo_vista)
     {
+        $this->id_gestion_aula = $id_gestion_aula;
+        $this->ruta_pagina = $ruta_pagina;
         $this->tipo_vista = $tipo_vista;
-        $this->id_gestion_aula_usuario = $id_gestion_aula_usuario;
 
         if($ruta_pagina == 'carga-academica.detalle' || $ruta_pagina == 'cursos.detalle')
         {

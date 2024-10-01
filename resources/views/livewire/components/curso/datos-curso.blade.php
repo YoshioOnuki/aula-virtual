@@ -103,7 +103,7 @@
                     @if($datos)
                     <div class="col-12">
                         <div x-data="{
-                            linkClase: '{{ $gestion_aula_usuario->gestionAula->linkClase ? $gestion_aula_usuario->gestionAula->linkClase->nombre_link_clase : '' }}',
+                            linkClase: '{{ $gestion_aula->linkClase ? $gestion_aula->linkClase->nombre_link_clase : '' }}',
                             handleClick() {
                                 if (!this.linkClase) {
                                     this.$dispatch('toast-basico', {
@@ -121,7 +121,7 @@
                             </a>
                         </div>
 
-                        @if(!$gestion_aula_usuario->gestionAula->linkClase)
+                        @if(!$gestion_aula->linkClase)
                             <div x-data="{ mostrarAlerta: true, salir: false }"
                                 x-show="mostrarAlerta"
                                 x-bind:class="salir ? 'animate__hinge' : 'animate__pulse animate__repeat-2 animate__delay-1s'"

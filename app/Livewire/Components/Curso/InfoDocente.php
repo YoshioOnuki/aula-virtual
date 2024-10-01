@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Components\Curso;
 
+use App\Models\GestionAula;
+use App\Models\GestionAulaDocente;
 use App\Models\GestionAulaUsuario;
 use Livewire\Attributes\Lazy;
 use Livewire\Component;
@@ -9,7 +11,7 @@ use Livewire\Component;
 #[Lazy(isolate: false)]
 class InfoDocente extends Component
 {
-    public $id_gestion_aula_usuario;
+    public $id_gestion_aula;
     public $docente;
 
     public $tipo_vista; // Para saber que tipo de vista se está mostrando
@@ -17,33 +19,19 @@ class InfoDocente extends Component
 
     public function mostrar_datos_docente()
     {
-        $gestion_aula_usuario = GestionAulaUsuario::with([
-            'gestionAula' => function ($query) {
-                $query->select('id_gestion_aula', 'grupo_gestion_aula', 'id_curso');
-            }
-        ])->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)->first();
-
-        $gestion_aula = $gestion_aula_usuario->gestionAula;
-
         if(config('settings.ver_docente_invitado'))
         {
-            $this->docente = GestionAulaUsuario::with(['usuario.persona'])
-                ->join('rol', 'gestion_aula_usuario.id_rol', '=', 'rol.id_rol')
-                ->where('id_gestion_aula', $gestion_aula->id_gestion_aula)
-                ->where(function($query) {
-                    $query->where('rol.nombre_rol', 'DOCENTE')
-                        ->orWhere('rol.nombre_rol', 'DOCENTE INVITADO');
-                })
-                ->orderBy('rol.nombre_rol', 'asc')
+            $this->docente = GestionAulaDocente::with([
+                'usuario.persona',
+            ])
+                ->where('id_gestion_aula', $this->id_gestion_aula)
                 ->get();
         }else{
-            $this->docente = GestionAulaUsuario::with(['usuario.persona'])
-                ->join('rol', 'gestion_aula_usuario.id_rol', '=', 'rol.id_rol')
-                ->where('id_gestion_aula', $gestion_aula->id_gestion_aula)
-                ->where(function($query) {
-                    $query->where('rol.nombre_rol', 'DOCENTE');
-                })
-                ->orderBy('rol.nombre_rol', 'asc')
+            $this->docente = GestionAulaDocente::with([
+                'usuario.persona',
+            ])
+                ->where('es_invitado', false)
+                ->where('id_gestion_aula', $this->id_gestion_aula)
                 ->get();
         }
     }
@@ -72,10 +60,10 @@ class InfoDocente extends Component
     }
 
 
-    public function mount($id_gestion_aula_usuario, $tipo_vista)
+    public function mount($id_gestion_aula, $tipo_vista)
     {
         $this->tipo_vista = $tipo_vista;
-        $this->id_gestion_aula_usuario = $id_gestion_aula_usuario;
+        $this->id_gestion_aula = $id_gestion_aula;
 
         $this->mostrar_datos_docente();
     }

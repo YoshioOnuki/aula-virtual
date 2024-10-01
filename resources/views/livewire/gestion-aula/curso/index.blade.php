@@ -46,7 +46,7 @@
                         @forelse ($gestion_aulas as $item)
                             <livewire:components.curso.card-curso :tipo_vista=$tipo_vista
                                 :usuario=$usuario :gestion_aula=$item :ruta_vista=$ruta_vista
-                                wire:key="curso-{{ $item->id_gestion_aula_usuario }}" lazy />
+                                wire:key="curso-{{ $item->id_gestion_aula }}" lazy />
                         @empty
                             <div class="col-lg-12">
                                 <div class="d-flex justify-content-center align-items-center">

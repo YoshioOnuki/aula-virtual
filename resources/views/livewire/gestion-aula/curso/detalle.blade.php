@@ -15,53 +15,8 @@
                 <div class="col-lg-8">
                     <div class="row g-3">
                         @if($tipo_vista ==='cursos')
-                            <div class="col-12" wire:init="load_orientaciones">
-                                @if($cargando_orientaciones)
-                                    <div class="card card-stacked placeholder-glow">
-                                        <div class="card-header bg-teal-lt">
-                                            <div class="placeholder col-5 bg-teal" style="height: 1.5rem; width: 217.16px;">
-                                            </div>
-                                        </div>
-                                        <div class="card-body px-5">
-                                            <div class="placeholder col-12"></div>
-                                            <div class="placeholder col-10"></div>
-                                            <div class="placeholder col-12"></div>
-                                            <div class="placeholder col-11"></div>
-                                            <div class="placeholder col-7"></div>
-                                        </div>
-                                    </div>
-                                @else
-                                    <div class="card card-stacked animate__animated animate__fadeIn">
-                                        <div class="card-header bg-teal-lt">
-                                            <span class="text-teal me-2">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                    stroke-linecap="round" stroke-linejoin="round"
-                                                    class="icon icon-tabler icons-tabler-outline icon-tabler-license">
-                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                    <path
-                                                        d="M15 21h-9a3 3 0 0 1 -3 -3v-1h10v2a2 2 0 0 0 4 0v-14a2 2 0 1 1 2 2h-2m2 -4h-11a3 3 0 0 0 -3 3v11" />
-                                                    <path d="M9 7l4 0" />
-                                                    <path d="M9 11l4 0" />
-                                                </svg>
-                                            </span>
-                                            <h3 class="card-title fw-semibold">Orientaciones Generales</h3>
-                                        </div>
-                                        <div class="card-body px-5">
-                                            @if($orientaciones_generales)
-                                            <span>
-                                                {!! $orientaciones_generales->descripcion_presentacion !!}
-                                            </span>
-                                            @else
-                                            <span class="text-muted" style="text-align: justify;">
-                                                Actualmente no hay orientaciones generales disponibles para este curso.
-                                                Por favor, revisa más tarde o consulta con el <strong>docente</strong> del curso
-                                                para más información.
-                                            </span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                @endif
+                            <div class="col-12">
+                                <livewire:components.curso.card-presentacion :id_gestion_aula=$id_gestion_aula lazy />
                             </div>
                         @endif
 
@@ -108,8 +63,8 @@
                                             <span class="hide-theme-dark">
                                                 <a class="text-decoration-none text-dark"
                                                     href="{{ $tipo_vista === 'cursos' ?
-                                                    route('cursos.detalle.silabus', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => Hashids::encode($id_gestion_aula_usuario)]) :
-                                                    route('carga-academica.detalle.silabus', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => Hashids::encode($id_gestion_aula_usuario)]) }}">
+                                                    route('cursos.detalle.silabus', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
+                                                    route('carga-academica.detalle.silabus', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}">
                                                     <div
                                                         class="image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-libro-info.webp" alt="Info"
@@ -123,8 +78,8 @@
                                             <span class="hide-theme-light">
                                                 <a class="dark-mode text-decoration-none text-white"
                                                     href="{{ $tipo_vista === 'cursos' ?
-                                                    route('cursos.detalle.silabus', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => Hashids::encode($id_gestion_aula_usuario)]) :
-                                                    route('carga-academica.detalle.silabus', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => Hashids::encode($id_gestion_aula_usuario)]) }}">
+                                                    route('cursos.detalle.silabus', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
+                                                    route('carga-academica.detalle.silabus', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}">
                                                     <div
                                                         class="image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-libro-info.webp" alt="Info"
@@ -142,8 +97,8 @@
                                             <span class="hide-theme-dark">
                                                 <a class="text-decoration-none text-dark"
                                                     href="{{ $tipo_vista === 'cursos' ?
-                                                    route('cursos.detalle.recursos', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => Hashids::encode($id_gestion_aula_usuario)]) :
-                                                    route('carga-academica.detalle.recursos', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => Hashids::encode($id_gestion_aula_usuario)]) }}">
+                                                    route('cursos.detalle.recursos', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
+                                                    route('carga-academica.detalle.recursos', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}">
                                                     <div
                                                         class="image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-carpeta.webp" alt="Info"
@@ -157,8 +112,8 @@
                                             <span class="hide-theme-light">
                                                 <a class="dark-mode text-decoration-none text-white"
                                                     href="{{ $tipo_vista === 'cursos' ?
-                                                    route('cursos.detalle.recursos', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => Hashids::encode($id_gestion_aula_usuario)]) :
-                                                    route('carga-academica.detalle.recursos', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => Hashids::encode($id_gestion_aula_usuario)]) }}">
+                                                    route('cursos.detalle.recursos', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
+                                                    route('carga-academica.detalle.recursos', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}">
                                                     <div
                                                         class="image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-carpeta.webp" alt="Info"
@@ -176,8 +131,8 @@
                                             <span class="hide-theme-dark">
                                                 <a class="text-decoration-none text-dark"
                                                     href="{{ $tipo_vista === 'cursos' ?
-                                                    route('cursos.detalle.foro', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => Hashids::encode($id_gestion_aula_usuario)]) :
-                                                    route('carga-academica.detalle.foro', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => Hashids::encode($id_gestion_aula_usuario)]) }}">
+                                                    route('cursos.detalle.foro', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
+                                                    route('carga-academica.detalle.foro', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}">
                                                     <div
                                                         class="image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-foro-discusion.webp" alt="Info"
@@ -191,8 +146,8 @@
                                             <span class="hide-theme-light">
                                                 <a class="dark-mode text-decoration-none text-white"
                                                     href="{{ $tipo_vista === 'cursos' ?
-                                                    route('cursos.detalle.foro', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => Hashids::encode($id_gestion_aula_usuario)]) :
-                                                    route('carga-academica.detalle.foro', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => Hashids::encode($id_gestion_aula_usuario)]) }}">
+                                                    route('cursos.detalle.foro', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
+                                                    route('carga-academica.detalle.foro', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}">
                                                     <div
                                                         class="image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-foro-discusion.webp" alt="Info"
@@ -210,8 +165,8 @@
                                             <span class="hide-theme-dark">
                                                 <a class="text-decoration-none text-dark"
                                                     href="{{ $tipo_vista === 'cursos' ?
-                                                    route('cursos.detalle.asistencia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => Hashids::encode($id_gestion_aula_usuario)]) :
-                                                    route('carga-academica.detalle.asistencia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => Hashids::encode($id_gestion_aula_usuario)]) }}">
+                                                    route('cursos.detalle.asistencia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
+                                                    route('carga-academica.detalle.asistencia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}">
                                                     <div
                                                         class="image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-matricula.webp" alt="Info"
@@ -225,8 +180,8 @@
                                             <span class="hide-theme-light">
                                                 <a class="dark-mode text-decoration-none text-white"
                                                     href="{{ $tipo_vista === 'cursos' ?
-                                                    route('cursos.detalle.asistencia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => Hashids::encode($id_gestion_aula_usuario)]) :
-                                                    route('carga-academica.detalle.asistencia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => Hashids::encode($id_gestion_aula_usuario)]) }}">
+                                                    route('cursos.detalle.asistencia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
+                                                    route('carga-academica.detalle.asistencia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}">
                                                     <div
                                                         class="image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-matricula.webp" alt="Info"
@@ -244,8 +199,8 @@
                                             <span class="hide-theme-dark">
                                                 <a class="text-decoration-none text-dark"
                                                     href="{{ $tipo_vista === 'cursos' ?
-                                                    route('cursos.detalle.trabajo-academico', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => Hashids::encode($id_gestion_aula_usuario)]) :
-                                                    route('carga-academica.detalle.trabajo-academico', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => Hashids::encode($id_gestion_aula_usuario)]) }}">
+                                                    route('cursos.detalle.trabajo-academico', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
+                                                    route('carga-academica.detalle.trabajo-academico', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}">
                                                     <div
                                                         class="image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-curso-por-internet.webp" alt="Info"
@@ -259,8 +214,8 @@
                                             <span class="hide-theme-light">
                                                 <a class="dark-mode text-decoration-none text-white"
                                                     href="{{ $tipo_vista === 'cursos' ?
-                                                    route('cursos.detalle.trabajo-academico', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => Hashids::encode($id_gestion_aula_usuario)]) :
-                                                    route('carga-academica.detalle.trabajo-academico', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => Hashids::encode($id_gestion_aula_usuario)]) }}">
+                                                    route('cursos.detalle.trabajo-academico', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
+                                                    route('carga-academica.detalle.trabajo-academico', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}">
                                                     <div
                                                         class="image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-curso-por-internet.webp" alt="Info"
@@ -278,8 +233,8 @@
                                             <span class="hide-theme-dark">
                                                 <a class="text-decoration-none text-dark"
                                                     href="{{ $tipo_vista === 'cursos' ?
-                                                    route('cursos.detalle.webgrafia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => Hashids::encode($id_gestion_aula_usuario)]) :
-                                                    route('carga-academica.detalle.webgrafia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => Hashids::encode($id_gestion_aula_usuario)]) }}">
+                                                    route('cursos.detalle.webgrafia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
+                                                    route('carga-academica.detalle.webgrafia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}">
                                                     <div
                                                         class="image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-ubicacion-ip.webp" alt="Info"
@@ -293,8 +248,8 @@
                                             <span class="hide-theme-light">
                                                 <a class="dark-mode text-decoration-none text-white"
                                                     href="{{ $tipo_vista === 'cursos' ?
-                                                    route('cursos.detalle.webgrafia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => Hashids::encode($id_gestion_aula_usuario)]) :
-                                                    route('carga-academica.detalle.webgrafia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => Hashids::encode($id_gestion_aula_usuario)]) }}">
+                                                    route('cursos.detalle.webgrafia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
+                                                    route('carga-academica.detalle.webgrafia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}">
                                                     <div
                                                         class="image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-ubicacion-ip.webp" alt="Info"
@@ -309,7 +264,7 @@
 
                                         @if($tipo_vista ==='carga-academica')
                                         {{-- Link de Clases --}}
-                                        <div class="col-6 col-md-2 col-lg-4 col-xl-3" wire:init="obtener_link_clase">
+                                        <div class="col-6 col-md-2 col-lg-4 col-xl-3">
                                             <span class="hide-theme-dark">
                                                 <div class="" wire:click="abrir_modal_link_clase"
                                                     data-bs-toggle="modal" data-bs-target="#modal-link-clase">
@@ -345,7 +300,7 @@
                                         </div>
 
                                         {{-- Orientaciones --}}
-                                        <div class="col-6 col-md-2 col-lg-4 col-xl-3" wire:init="load_orientaciones">
+                                        <div class="col-6 col-md-2 col-lg-4 col-xl-3">
                                             <span class="hide-theme-dark">
                                                 <div class="" wire:click="abrir_modal_orientaciones"
                                                     data-bs-toggle="modal" data-bs-target="#modal-orientaciones">
@@ -385,7 +340,7 @@
                                         <div class="col-6 col-md-2 col-lg-4 col-xl-3">
                                             <span class="hide-theme-dark">
                                                 <a class="text-decoration-none text-dark"
-                                                    href="{{ route('carga-academica.detalle.alumnos', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => Hashids::encode($id_gestion_aula_usuario)]) }}">
+                                                    href="{{ route('carga-academica.detalle.alumnos', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}">
                                                     <div class="image-button image-button-docente" style="z-index: 1;">
                                                         <img src="/media/icons/icon-registro.webp" alt="Info"
                                                             style="width: 80px; height: 80px;">
@@ -397,7 +352,7 @@
                                             </span>
                                             <span class="hide-theme-light">
                                                 <a class="dark-mode text-decoration-none text-white"
-                                                    href="{{ route('carga-academica.detalle.alumnos', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => Hashids::encode($id_gestion_aula_usuario)]) }}">
+                                                    href="{{ route('carga-academica.detalle.alumnos', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}">
                                                     <div class="image-button image-button-docente">
                                                         <img src="/media/icons/icon-registro.webp" alt="Info"
                                                             style="width: 80px; height: 80px;">
@@ -420,10 +375,10 @@
 
                 <div class="col-lg-4">
 
-                    <livewire:components.curso.info-docente :id_gestion_aula_usuario=$id_gestion_aula_usuario
+                    <livewire:components.curso.info-docente :id_gestion_aula=$id_gestion_aula
                         :tipo_vista=$tipo_vista lazy />
 
-                    <livewire:components.curso.datos-curso :id_gestion_aula_usuario=$id_gestion_aula_usuario
+                    <livewire:components.curso.datos-curso :id_gestion_aula=$id_gestion_aula
                         :ruta_pagina=$ruta_pagina :tipo_vista=$tipo_vista lazy />
 
                 </div>
@@ -442,7 +397,7 @@
                         {{ $titulo_link_clase }}
                     </h5>
                     <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal"
-                        aria-label="Close" wire:click="cerrar_modal"></button>
+                        aria-label="Close" wire:click="limpiar_modal"></button>
                 </div>
                 <form autocomplete="off" wire:submit="guardar_link_clase">
                     <div class="modal-body">
@@ -465,7 +420,7 @@
                     </div>
 
                     <div class="modal-footer">
-                        <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="cerrar_modal">
+                        <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="limpiar_modal">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-ban">
@@ -526,7 +481,7 @@
                         {{ $titulo_orientaciones }}
                     </h5>
                     <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal"
-                        aria-label="Close" wire:click="cerrar_modal"></button>
+                        aria-label="Close" wire:click="limpiar_modal"></button>
                 </div>
                 <form autocomplete="off" wire:submit="guardar_orientaciones">
                     <div class="modal-body">
@@ -546,7 +501,7 @@
                     </div>
 
                     <div class="modal-footer">
-                        <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="cerrar_modal">
+                        <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="limpiar_modal">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-ban">

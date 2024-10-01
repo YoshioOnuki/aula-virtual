@@ -2,6 +2,8 @@
 
 namespace App\Livewire\GestionAula\Curso;
 
+use App\Models\GestionAula;
+use App\Models\GestionAulaAlumno;
 use App\Models\GestionAulaUsuario;
 use App\Models\LinkClase;
 use App\Models\Presentacion;
@@ -17,8 +19,8 @@ use Vinkla\Hashids\Facades\Hashids;
 class Detalle extends Component
 {
 
-    public $id_gestion_aula_usuario_hash;
-    public $id_gestion_aula_usuario;
+    public $id_gestion_aula_hash;
+    public $id_gestion_aula;
     public $curso;
     public $gestion_aula_usuario;
     public $ruta_pagina;
@@ -107,13 +109,12 @@ class Detalle extends Component
             {
                 DB::beginTransaction();
 
-                $id_gestion_aula = GestionAulaUsuario::find($this->id_gestion_aula_usuario)->id_gestion_aula;
-
                 if($this->modo_link_clase === 1) // Agregar
                 {
                     $link_clase = new LinkClase();
                     $link_clase->nombre_link_clase = $this->nombre_link_clase;
-                    $link_clase->id_gestion_aula = $id_gestion_aula;
+                    $link_clase->estado_link_clase = true;
+                    $link_clase->id_gestion_aula = $this->id_gestion_aula;
                     $link_clase->save();
                     $this->link_clase_bool = true;
                     $this->dispatch('actualizar_datos_curso');
@@ -126,6 +127,8 @@ class Detalle extends Component
                 DB::commit();
 
                 $this->cerrar_modal();
+                $this->limpiar_modal();
+                $this->obtener_link_clase();
 
                 $this->dispatch(
                     'toast-basico',
@@ -182,8 +185,6 @@ class Detalle extends Component
             {
                 DB::beginTransaction();
 
-                $id_gestion_aula = GestionAulaUsuario::find($this->id_gestion_aula_usuario)->id_gestion_aula;
-
                 $mensaje = subir_archivo_editor($this->descripcion_orientaciones, 'archivos/posgrado/media/editor-texto/orientaciones/');
                 // Eliminar archivos de la descripción anterior
                 if ($this->orientaciones_generales) {
@@ -195,7 +196,7 @@ class Detalle extends Component
                 {
                     $orientaciones = new Presentacion();
                     $orientaciones->descripcion_presentacion = $mensaje;
-                    $orientaciones->id_gestion_aula = $id_gestion_aula;
+                    $orientaciones->id_gestion_aula = $this->id_gestion_aula;
                     $orientaciones->save();
                     $this->orientaciones_generales_bool = true;
                 }else{ // Editar
@@ -207,13 +208,16 @@ class Detalle extends Component
                 DB::commit();
 
                 $this->cerrar_modal();
+                $this->limpiar_modal();
+                $this->mostrar_orientaciones();
+                $this->dispatch('actualizar_link_clase');
 
                 $this->dispatch(
                     'toast-basico',
                     mensaje: 'Las Orientaciones Generales se han guardado correctamente',
                     type: 'success'
                 );
-                $this->mount($this->id_usuario_hash, $this->tipo_vista, $this->id_gestion_aula_usuario_hash);
+                $this->mount($this->id_usuario_hash, $this->tipo_vista, $this->id_gestion_aula_hash);
 
             } catch (\Exception $e) {
                 DB::rollBack();
@@ -224,7 +228,7 @@ class Detalle extends Component
                     // dd($errorFiles);
                 }
                 $this->cerrar_modal();
-                $this->mount($this->id_usuario_hash, $this->tipo_vista, $this->id_gestion_aula_usuario_hash);
+                $this->mount($this->id_usuario_hash, $this->tipo_vista, $this->id_gestion_aula_hash);
 
                 $this->dispatch(
                     'toast-basico',
@@ -236,7 +240,17 @@ class Detalle extends Component
 
         public function cerrar_modal()
         {
-            $this->limpiar_modal();
+            $this->dispatch(
+                'modal',
+                modal: '#modal-link-clase',
+                action: 'hide'
+            );
+
+            $this->dispatch(
+                'modal',
+                modal: '#modal-orientaciones',
+                action: 'hide'
+            );
         }
 
         public function limpiar_modal()
@@ -263,89 +277,37 @@ class Detalle extends Component
 
 
     /* =============== OBTENER DATOS PARA LA VISTA =============== */
+
         public function mostrar_orientaciones()
         {
-            $gestion_aula_usuario = GestionAulaUsuario::with([
-                'gestionAula' => function ($query) {
-                    $query->with([
-                        'presentacion' => function ($query) {
-                            $query->select('id_presentacion', 'descripcion_presentacion', 'id_gestion_aula');
-                        }
-                    ])->select('id_gestion_aula', 'grupo_gestion_aula', 'id_curso');
-                }
-            ])->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)->first();
-
-            if ($gestion_aula_usuario->gestionAula->presentacion) {
-                $this->orientaciones_generales = $gestion_aula_usuario->gestionAula->presentacion;
-                $this->orientaciones_generales_bool = true;
-            }else{
-                $this->orientaciones_generales = null;
-                $this->orientaciones_generales_bool = false;
-            }
+            $gestion_aula = GestionAula::with('presentacion')->find($this->id_gestion_aula);
+            $this->orientaciones_generales = $gestion_aula->presentacion ?? null;
+            $this->orientaciones_generales_bool = $gestion_aula->presentacion ? true : false;
         }
 
         public function mostrar_titulo_curso()
         {
-            $gestion_aula_usuario = GestionAulaUsuario::with([
-                'gestionAula' => function ($query) {
-                    $query->with([
-                        'curso' => function ($query) {
-                            $query->select('id_curso', 'nombre_curso');
-                        }
-                    ])->select('id_gestion_aula', 'grupo_gestion_aula', 'id_curso');
+            $gestion_aula = GestionAula::with([
+                'curso' => function ($query) {
+                    $query->select('id_curso', 'nombre_curso');
                 }
-            ])->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)->first();
+            ])->find($this->id_gestion_aula);
 
-            if ($gestion_aula_usuario) {
-                $this->nombre_curso = $gestion_aula_usuario->gestionAula->curso->nombre_curso;
-                $this->grupo_gestion_aula = $gestion_aula_usuario->gestionAula->grupo_gestion_aula;
+            if ($gestion_aula) {
+                $this->nombre_curso = $gestion_aula->curso->nombre_curso;
+                $this->grupo_gestion_aula = $gestion_aula->grupo_gestion_aula;
             }
         }
 
         public function obtener_link_clase()
         {
-            $this->gestion_aula_usuario = GestionAulaUsuario::with([
-                'gestionAula' => function ($query) {
-                    $query->with([
-                        'curso' => function ($query) {
-                            $query->with([
-                                'ciclo',
-                                'planEstudio',
-                                'programa' => function ($query) {
-                                    $query->with([
-                                        'facultad',
-                                        'tipoPrograma'
-                                    ])->select('id_programa', 'nombre_programa', 'mencion_programa', 'id_tipo_programa', 'id_facultad');
-                                }
-                            ])->select('id_curso', 'codigo_curso', 'nombre_curso', 'creditos_curso', 'horas_lectivas_curso', 'id_programa', 'id_plan_estudio', 'id_ciclo');
-                        },
-                        'linkClase' => function ($query) {
-                            $query->select('id_link_clase', 'id_gestion_aula', 'nombre_link_clase');
-                        },
-                    ])->select('id_gestion_aula', 'grupo_gestion_aula', 'id_curso');
-                }
-            ])->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)->first();
+            $gestion_aula = GestionAula::with('linkClase')->find($this->id_gestion_aula);
 
-            if($this->gestion_aula_usuario->gestionAula->linkClase)
-            {
-                $this->link_clase = $this->gestion_aula_usuario->gestionAula->linkClase;
-                $this->link_clase_bool = true;
-            }else{
-                $this->link_clase = null;
-                $this->link_clase_bool = false;
-            }
+            $this->link_clase = $gestion_aula->linkClase ?? null;
+            $this->link_clase_bool = $gestion_aula->linkClase ? true : false;
 
         }
     /* =========================================================== */
-
-
-    /* =============== CARGA DE ORIENTACIONES =============== */
-        public function load_orientaciones()
-        {
-            $this->mostrar_orientaciones();
-            $this->cargando_orientaciones = false;
-        }
-    /* ====================================================== */
 
 
     /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
@@ -400,10 +362,10 @@ class Detalle extends Component
     {
         $this->tipo_vista = $tipo_vista;
 
-        $this->id_gestion_aula_usuario_hash = $id_curso;
+        $this->id_gestion_aula_hash = $id_curso;
 
-        $id_gestion_aula_usuario = Hashids::decode($id_curso);
-        $this->id_gestion_aula_usuario = $id_gestion_aula_usuario[0];
+        $id_gestion_aula = Hashids::decode($id_curso);
+        $this->id_gestion_aula = $id_gestion_aula[0];
 
         $this->mostrar_titulo_curso();
 
@@ -420,7 +382,9 @@ class Detalle extends Component
 
         $this->obtener_datos_page_header();
         $this->mostrar_orientaciones();
+        $this->obtener_link_clase();
         $this->descripcion_orientaciones = $this->orientaciones_generales->descripcion_presentacion ?? '';
+        // dd($this->descripcion_orientaciones);
 
         $this->ruta_pagina = request()->route()->getName();
 
