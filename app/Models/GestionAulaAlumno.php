@@ -56,6 +56,13 @@ class GestionAulaAlumno extends Model
         }
     }
 
+    public function scopeEstado($query, $estado)
+    {
+        if ($estado) {
+            return $query->where('estado_gestion_aula_alumno', $estado);
+        }
+    }
+
     protected static function boot()
     {
         parent::boot();

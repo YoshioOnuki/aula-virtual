@@ -57,6 +57,13 @@ class GestionAulaDocente extends Model
         }
     }
 
+    public function scopeEstado($query, $estado)
+    {
+        if ($estado) {
+            return $query->where('estado_gestion_aula_docente', $estado);
+        }
+    }
+
     protected static function boot()
     {
         parent::boot();

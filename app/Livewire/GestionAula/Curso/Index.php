@@ -35,32 +35,26 @@ class Index extends Component
     {
         if($this->tipo_vista === 'cursos')
         {
-            $gestion_aulas = GestionAula::with(['gestionAulaUsuario', 'gestionAulaUsuario.rol'])
-                ->whereHas('gestionAulaUsuario', function ($query) {
+            $gestion_aulas = GestionAula::with(['gestionAulaAlumno', 'curso'])
+                ->whereHas('gestionAulaAlumno', function ($query) {
                     $query->where('id_usuario', $this->usuario->id_usuario)
-                        ->where('estado_gestion_aula_usuario', 1)
-                        ->whereHas('rol', function ($query) {
-                            $query->where('nombre_rol', 'ALUMNO');
-                        });
+                        ->estado(true);
                 })
                 ->orderBy('created_at', 'desc')
                 ->get();
 
-            $this->gestion_aulas = $gestion_aulas->sortBy('gestionAula.curso.nombre_curso');
+            $this->gestion_aulas = $gestion_aulas->sortBy('curso.nombre_curso');
 
         } else {
-            $gestion_aulas = GestionAula::with(['gestionAulaUsuario', 'gestionAulaUsuario.rol'])
-                ->whereHas('gestionAulaUsuario', function ($query) {
-                    $query->where('id_usuario', $this->usuario->id_usuario)
-                        ->where('estado_gestion_aula_usuario', 1)
-                        ->whereHas('rol', function ($query) {
-                            $query->whereIn('nombre_rol', ['DOCENTE', 'DOCENTE INVITADO']);
-                        });
-                })
-                ->orderBy('created_at', 'desc')
-                ->get();
+            $gestion_aulas = GestionAula::with(['gestionAulaDocente', 'curso'])
+            ->whereHas('gestionAulaDocente', function ($query) {
+                $query->where('id_usuario', $this->usuario->id_usuario)
+                    ->estado(true);
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-            $this->gestion_aulas = $gestion_aulas->sortBy('gestionAula.curso.nombre_curso');
+            $this->gestion_aulas = $gestion_aulas->sortBy('curso.nombre_curso');
 
         }
     }

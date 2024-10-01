@@ -67,7 +67,8 @@ class Autoridad extends Model
 
     public function MostrarFoto()
     {
-        return $this->foto_autoridad ?? 'https://ui-avatars.com/api/?name=' . $this->solo_primeros_nombres . '&size=64&&color='. config('settings.color_lt_autoridades') .'&background='. config('settings.color_autoridades') .'&bold=true';
+        return $this->foto_autoridad || $this->foto_autoridad != '' ? $this->foto_autoridad :
+            'https://ui-avatars.com/api/?name=' . $this->solo_primeros_nombres . '&size=64&&color='. config('settings.color_lt_autoridades') .'&background='. config('settings.color_autoridades') .'&bold=true';
     }
 
     public $timestamps = false;

@@ -23,44 +23,41 @@ class Index extends Component
 
     public function mostrar_cursos()
     {
-        $cursos = GestionAula::with(['gestionAulaUsuario', 'gestionAulaUsuario.rol'])
-            ->whereHas('gestionAulaUsuario', function ($query) {
+        $cursos = GestionAula::with(['gestionAulaAlumno', 'curso'])
+            ->whereHas('gestionAulaAlumno', function ($query) {
                 $query->where('id_usuario', $this->usuario->id_usuario)
-                    ->where('estado_gestion_aula_usuario', 1)
-                    ->whereHas('rol', function ($query) {
-                        $query->where('nombre_rol', 'ALUMNO');
-                    });
+                    ->estado(true);
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+        // dd($cursos);
+
+        $this->cursos = $cursos->sortBy('curso.nombre_curso');
+
+        $carga_academica = GestionAula::with(['gestionAulaDocente', 'curso'])
+            ->whereHas('gestionAulaDocente', function ($query) {
+                $query->where('id_usuario', $this->usuario->id_usuario)
+                    ->estado(true);
             })
             ->orderBy('created_at', 'desc')
             ->get();
 
-        $this->cursos = $cursos->sortBy('gestionAula.curso.nombre_curso');
-
-        $carga_academica = GestionAula::with(['gestionAulaUsuario', 'gestionAulaUsuario.rol'])
-            ->whereHas('gestionAulaUsuario', function ($query) {
-                $query->where('id_usuario', $this->usuario->id_usuario)
-                    ->where('estado_gestion_aula_usuario', 1)
-                    ->whereHas('rol', function ($query) {
-                        $query->whereIn('nombre_rol', ['DOCENTE', 'DOCENTE INVITADO']);
-                    });
-            })
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        $this->carga_academica = $carga_academica->sortBy('gestionAula.curso.nombre_curso');
+        $this->carga_academica = $carga_academica->sortBy('curso.nombre_curso');
 
     }
 
 
     public function mount()
     {
-        Auth::logout();
-        return redirect()->route('login');
         $user = Auth::user();
         $this->usuario = Usuario::find($user->id_usuario);
         $this->ruta_vista = request()->route()->getName();
 
-        $this->mostrar_cursos();
+        if (!$this->usuario->esRol('ADMINISTRADOR'))
+        {
+            $this->mostrar_cursos();
+        }
+
     }
 
     public function render()

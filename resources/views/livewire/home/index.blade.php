@@ -32,37 +32,39 @@
                         <div class="card-body overflow-auto" style="height: 610px;">
                             <div class="row row-cards d-flex justify-content-start">
 
-                                @forelse ($cursos as $item)
-                                    <livewire:components.curso.card-curso :tipo_vista=$vista_curso
-                                        :usuario=$usuario :gestion_aula=$item :ruta_vista=$ruta_vista
-                                        wire:key="cursos-{{ $item->id_gestion_aula_usuario }}" lazy />
-                                @empty
-                                    @if($usuario->esRol('ALUMNO'))
-                                        <div class="col-lg-12">
-                                            <div class="d-flex justify-content-center align-items-center">
-                                                <div class="text-muted mt-3">
-                                                    No tiene cursos asignados.
+                                @if (!$usuario->esRol('ADMINISTRADOR'))
+                                    @forelse ($cursos as $item)
+                                        <livewire:components.curso.card-curso :tipo_vista=$vista_curso
+                                            :usuario=$usuario :gestion_aula=$item :ruta_vista=$ruta_vista
+                                            wire:key="cursos-{{ $item->id_gestion_aula_usuario }}" lazy />
+                                    @empty
+                                        @if($usuario->esRol('ALUMNO'))
+                                            <div class="col-lg-12">
+                                                <div class="d-flex justify-content-center align-items-center">
+                                                    <div class="text-muted mt-3">
+                                                        No tiene cursos asignados.
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    @endif
-                                @endforelse
+                                        @endif
+                                    @endforelse
 
-                                @forelse ($carga_academica as $item)
-                                    <livewire:components.curso.card-curso :tipo_vista=$vista_carga
-                                        :usuario=$usuario :gestion_aula=$item :ruta_vista=$ruta_vista
-                                        wire:key="cargas-{{ $item->id_gestion_aula_usuario }}" lazy />
-                                @empty
-                                    @if($usuario->esRol('DOCENTE') || $usuario->esRol('DOCENTE INVITADO'))
-                                        <div class="col-lg-12">
-                                            <div class="d-flex justify-content-center align-items-center">
-                                                <div class="text-muted mt-3">
-                                                    No tiene carga académica asignada.
+                                    @forelse ($carga_academica as $item)
+                                        <livewire:components.curso.card-curso :tipo_vista=$vista_carga
+                                            :usuario=$usuario :gestion_aula=$item :ruta_vista=$ruta_vista
+                                            wire:key="cargas-{{ $item->id_gestion_aula_usuario }}" lazy />
+                                    @empty
+                                        @if($usuario->esRol('DOCENTE') || $usuario->esRol('DOCENTE INVITADO'))
+                                            <div class="col-lg-12">
+                                                <div class="d-flex justify-content-center align-items-center">
+                                                    <div class="text-muted mt-3">
+                                                        No tiene carga académica asignada.
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    @endif
-                                @endforelse
+                                        @endif
+                                    @endforelse
+                                @endif
 
                             </div>
                         </div>
@@ -104,3 +106,6 @@
         </div>
     </div>
 </div>
+
+
+

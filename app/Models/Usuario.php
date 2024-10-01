@@ -125,7 +125,8 @@ class Usuario extends Authenticatable
 
         $nombres = $this->persona ? $this->persona->solo_primeros_nombres : 'Sin Nombres';
 
-        return $this->foto_usuario ?? 'https://ui-avatars.com/api/?name=' . $nombres . '&size=64&&color='. $color_lt .'&background='. $color .'&bold=true';
+        return $this->foto_usuario || $this->foto_usuario != '' ? $this->foto_usuario :
+            'https://ui-avatars.com/api/?name=' . $nombres . '&size=64&&color='. $color_lt .'&background='. $color .'&bold=true';
     }
 
     //Mostrar el rol, si tiene mas de un rol, concatenar
