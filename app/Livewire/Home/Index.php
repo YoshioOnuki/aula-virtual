@@ -15,10 +15,13 @@ class Index extends Component
     public $usuario;
     public $cursos;
     public $carga_academica;
+    public $cursos_finalizados;
+    public $carga_academica_finalizada;
     public $vista_curso = "cursos";
     public $vista_carga = "carga-academica";
 
-    public $ruta_vista;
+    public $tipo_vista_curso = "cursos";
+    public $tipo_vista_carga = "carga-academica";
 
 
     public function mostrar_cursos()
@@ -28,21 +31,46 @@ class Index extends Component
                 $query->where('id_usuario', $this->usuario->id_usuario)
                     ->estado(true);
             })
+            ->estado(true)
+            ->enCurso(true)
             ->orderBy('created_at', 'desc')
             ->get();
-        // dd($cursos);
-
         $this->cursos = $cursos->sortBy('curso.nombre_curso');
+
+        $cursos_finalizados = GestionAula::with(['gestionAulaAlumno', 'curso'])
+        ->whereHas('gestionAulaAlumno', function ($query) {
+            $query->where('id_usuario', $this->usuario->id_usuario)
+                ->estado(true);
+        })
+        ->estado(true)
+        ->enCurso(false)
+        ->orderBy('created_at', 'desc')
+        ->get();
+        $this->cursos_finalizados = $cursos_finalizados->sortBy('curso.nombre_curso');
+
 
         $carga_academica = GestionAula::with(['gestionAulaDocente', 'curso'])
             ->whereHas('gestionAulaDocente', function ($query) {
                 $query->where('id_usuario', $this->usuario->id_usuario)
                     ->estado(true);
             })
+            ->estado(true)
+            ->enCurso(true)
             ->orderBy('created_at', 'desc')
             ->get();
-
         $this->carga_academica = $carga_academica->sortBy('curso.nombre_curso');
+
+        $carga_academica_finalizada = GestionAula::with(['gestionAulaDocente', 'curso'])
+            ->whereHas('gestionAulaDocente', function ($query) {
+                $query->where('id_usuario', $this->usuario->id_usuario)
+                    ->estado(true);
+            })
+            ->estado(true)
+            ->enCurso(false)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        $this->carga_academica_finalizada = $carga_academica_finalizada->sortBy('curso.nombre_curso');
+
 
     }
 
@@ -51,7 +79,6 @@ class Index extends Component
     {
         $user = Auth::user();
         $this->usuario = Usuario::find($user->id_usuario);
-        $this->ruta_vista = request()->route()->getName();
 
         if (!$this->usuario->esRol('ADMINISTRADOR'))
         {

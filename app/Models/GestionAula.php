@@ -19,12 +19,14 @@ class GestionAula extends Model
         'grupo_gestion_aula',
         'fondo_gestion_aula',
         'estado_gestion_aula',
+        'en_curso_gestion_aula',
         'id_curso',
         'id_proceso',
     ];
 
     protected $casts = [
         'estado_gestion_aula' => 'boolean',
+        'en_curso_gestion_aula' => 'boolean',
     ];
 
     public function curso()
@@ -85,6 +87,16 @@ class GestionAula extends Model
     public function trabajoAcademico()
     {
         return $this->hasMany(TrabajoAcademico::class, 'id_gestion_aula');
+    }
+
+    public function scopeEstado($query, $estado)
+    {
+        return $query->where('estado_gestion_aula', $estado);
+    }
+
+    public function scopeEnCurso($query, $en_curso)
+    {
+        return $query->where('en_curso_gestion_aula', $en_curso);
     }
 
     protected static function boot()

@@ -40,23 +40,48 @@ class Index extends Component
                     $query->where('id_usuario', $this->usuario->id_usuario)
                         ->estado(true);
                 })
+                ->estado(true)
+                ->enCurso(true)
                 ->orderBy('created_at', 'desc')
                 ->get();
+            $gestion_aulas = $gestion_aulas->sortBy('curso.nombre_curso');
 
-            $this->gestion_aulas = $gestion_aulas->sortBy('curso.nombre_curso');
-
+            $gestion_aulas_finalizadas = GestionAula::with(['gestionAulaAlumno', 'curso'])
+                ->whereHas('gestionAulaAlumno', function ($query) {
+                    $query->where('id_usuario', $this->usuario->id_usuario)
+                        ->estado(true);
+                })
+                ->estado(true)
+                ->enCurso(false)
+                ->orderBy('created_at', 'desc')
+                ->get();
+            $gestion_aulas_finalizadas = $gestion_aulas_finalizadas->sortBy('curso.nombre_curso');
         } else {
             $gestion_aulas = GestionAula::with(['gestionAulaDocente', 'curso'])
-            ->whereHas('gestionAulaDocente', function ($query) {
-                $query->where('id_usuario', $this->usuario->id_usuario)
-                    ->estado(true);
-            })
-            ->orderBy('created_at', 'desc')
-            ->get();
+                ->whereHas('gestionAulaDocente', function ($query) {
+                    $query->where('id_usuario', $this->usuario->id_usuario)
+                        ->estado(true);
+                })
+                ->estado(true)
+                ->enCurso(true)
+                ->orderBy('created_at', 'desc')
+                ->get();
+            $gestion_aulas = $gestion_aulas->sortBy('curso.nombre_curso');
 
-            $this->gestion_aulas = $gestion_aulas->sortBy('curso.nombre_curso');
-
+            $gestion_aulas_finalizadas = GestionAula::with(['gestionAulaDocente', 'curso'])
+                ->whereHas('gestionAulaDocente', function ($query) {
+                    $query->where('id_usuario', $this->usuario->id_usuario)
+                        ->estado(true);
+                })
+                ->estado(true)
+                ->enCurso(false)
+                ->orderBy('created_at', 'desc')
+                ->get();
+            $gestion_aulas_finalizadas = $gestion_aulas_finalizadas->sortBy('curso.nombre_curso');
         }
+
+        $this->gestion_aulas = $gestion_aulas->merge($gestion_aulas_finalizadas);
+
     }
 
     /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
