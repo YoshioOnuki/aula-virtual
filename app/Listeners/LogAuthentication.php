@@ -2,15 +2,21 @@
 
 namespace App\Listeners;
 
+use App\GetActionId;
+use App\Jobs\RegistrarAuditoriaJob;
 use App\Models\Auditoria;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Jenssegers\Agent\Agent;
 
 class LogAuthentication
 {
+    use GetActionId;
+
+
     /**
      * Create the event listener.
      */
@@ -25,7 +31,7 @@ class LogAuthentication
     public function handle(object $event): void
     {
         $accion = ($event instanceof Login) ? 'Iniciar sesión' : 'Cerrar sesión';
-        $agent = new Agent();
+        // dd($event);
 
         // Obtener la dominio de la URL
         $url = Request::fullUrl();
@@ -35,26 +41,26 @@ class LogAuthentication
 
         if ($event instanceof \Illuminate\Auth\Events\Logout || $event instanceof \Illuminate\Auth\Events\Login) {
             // Registrar en la tabla de auditoría
-            Auditoria::create([
-                'id_accion' => $this->getActionId($accion),
-                'tabla_auditoria' => 'usuario', // O cualquier tabla relevante
-                'id_registro_auditoria' => $event->user->id_usuario,
-                'valor_anterior_auditoria' => null,
-                'valor_nuevo_auditoria' => null,
-                'id_usuario' => $event->user->id_usuario,
-                'ip_auditoria' => Request::ip(),
-                'navegador_auditoria' => $agent->browser() . ' ' . $agent->version($agent->browser()),
-                'so_auditoria' => $agent->platform() . ' ' . $agent->version($agent->platform()),
-                'user_agent_auditoria' => Request::header('User-Agent'),
-                'url_auditoria' => $url,
-                'fecha_auditoria' => now(),
-            ]);
+            $agent = new Agent();
+
+            $datosAuditoria = [
+                'accion' => $accion,// Acción
+                'tabla' => null,// Tabla
+                'id_registro' => null,// ID del registro
+                'valor_anterior' => null,// Valor anterior
+                'valor_nuevo' => null,// Valor nuevo
+                'id_usuario' => $event->user->id_usuario,// ID del usuario
+                'ip' => Request::ip(),// IP
+                'navegador' => $agent->browser() . ' ' . $agent->version($agent->browser()),
+                'so' => $agent->platform() . ' ' . $agent->version($agent->platform()),
+                'user_agent' => Request::header('User-Agent'),// User Agent
+                'url' => $url,// URL
+                'fecha' => now(),// Fecha
+            ];
+
+            RegistrarAuditoriaJob::dispatch($datosAuditoria);
         }
     }
 
-    public function getActionId($action)
-    {
-        // Método para obtener el ID de la acción desde la tabla 'accion'
-        return \App\Models\Accion::where('nombre_accion', $action)->first()->id_accion;
-    }
+
 }

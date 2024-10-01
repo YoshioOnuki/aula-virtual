@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AuditoriaMiddleware;
 use App\Livewire\AlumnosDocentes\Index as AlumnosDocentesIndex;
 use App\Livewire\Configuracion\Autoridades\Index as AutoridadesIndex;
 use App\Livewire\Configuracion\Perfil\Index as PerfilIndex;
@@ -45,7 +46,7 @@ Route::middleware(['throttle:100,1'])->group(function () {
         ->name('login');
 
 
-    Route::middleware(['auth'])->group(function () {
+    Route::middleware(['auth', 'auditoria'])->group(function () {
 
         // Dashboard
         Route::get('/dashboard', HomeIndex::class)

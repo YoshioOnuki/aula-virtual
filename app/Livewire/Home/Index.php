@@ -54,6 +54,8 @@ class Index extends Component
 
     public function mount()
     {
+        Auth::logout();
+        return redirect()->route('login');
         $user = Auth::user();
         $this->usuario = Usuario::find($user->id_usuario);
         $this->ruta_vista = request()->route()->getName();
