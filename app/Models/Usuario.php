@@ -61,6 +61,20 @@ class Usuario extends Authenticatable
         return false;
     }
 
+    public function esDocenteInvitadoAula($id_gestion_aula)
+    {
+        $gestionAulaDocente = GestionAulaDocente::where('id_usuario', $this->id_usuario)
+            ->where('id_gestion_aula', $id_gestion_aula)
+            ->invitado(true)
+            ->first();
+
+        if ($gestionAulaDocente) {
+            return true;
+        }
+
+        return false;
+    }
+
     // public function esRolGestionAula($nombreRol, $idGestionAulaUsuario)
     // {
     //     $idGestionAula = GestionAulaUsuario::find($idGestionAulaUsuario)->id_gestion_aula;

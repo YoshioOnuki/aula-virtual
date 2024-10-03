@@ -64,6 +64,11 @@ class GestionAulaDocente extends Model
         }
     }
 
+    public function scopeInvitado($query, $invitado)
+    {
+        return $query->where('es_invitado', $invitado);
+    }
+
     protected static function boot()
     {
         parent::boot();

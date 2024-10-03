@@ -3,9 +3,11 @@
 namespace App\Livewire\Components\Foro;
 
 use App\Models\Foro;
+use Livewire\Attributes\Lazy;
 use Livewire\Component;
 use Vinkla\Hashids\Facades\Hashids;
 
+#[Lazy(isolate: false)]
 class CardForo extends Component
 {
     public $tipo_vista;

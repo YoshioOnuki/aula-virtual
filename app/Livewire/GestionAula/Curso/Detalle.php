@@ -3,8 +3,6 @@
 namespace App\Livewire\GestionAula\Curso;
 
 use App\Models\GestionAula;
-use App\Models\GestionAulaAlumno;
-use App\Models\GestionAulaUsuario;
 use App\Models\LinkClase;
 use App\Models\Presentacion;
 use App\Models\Usuario;
@@ -22,7 +20,6 @@ class Detalle extends Component
     public $id_gestion_aula_hash;
     public $id_gestion_aula;
     public $curso;
-    public $gestion_aula_usuario;
     public $ruta_pagina;
 
     public $nombre_curso;
@@ -34,7 +31,6 @@ class Detalle extends Component
 
     public $cargando = true;
     public $cargando_orientaciones = true;
-
 
     public $usuario;
     public $id_usuario_hash;
@@ -55,6 +51,7 @@ class Detalle extends Component
 
     public $modo_admin = false;// Modo admin, para saber si se esta en modo administrador
     public $tipo_vista; // Tipo de vista, si es alumno o docente
+    public $modo_invitado = false; // Modo invitado, para saber si se esta en modo invitado
 
     // Variables para page-header
     public $titulo_page_header = 'Detalle';
@@ -126,7 +123,7 @@ class Detalle extends Component
 
                 DB::commit();
 
-                $this->cerrar_modal();
+                $this->cerrar_modal('#modal-link-clase');
                 $this->limpiar_modal();
                 $this->obtener_link_clase();
 
@@ -177,7 +174,7 @@ class Detalle extends Component
                     mensaje: 'No se han realizado cambios en las Orientaciones Generales',
                     type: 'info'
                 );
-                $this->cerrar_modal();
+                $this->cerrar_modal('#modal-orientaciones');
                 return;
             }
 
@@ -207,7 +204,7 @@ class Detalle extends Component
 
                 DB::commit();
 
-                $this->cerrar_modal();
+                $this->cerrar_modal('#modal-orientaciones');
                 $this->limpiar_modal();
                 $this->mostrar_orientaciones();
                 $this->dispatch('actualizar_link_clase');
@@ -227,7 +224,7 @@ class Detalle extends Component
                     $errorFiles = eliminar_archivos_editor($this->descripcion_orientaciones, $this->orientaciones_generales->descripcion_presentacion, 'archivos/posgrado/media/editor-texto/orientaciones/');
                     // dd($errorFiles);
                 }
-                $this->cerrar_modal();
+                $this->cerrar_modal('#modal-orientaciones');
                 $this->mount($this->id_usuario_hash, $this->tipo_vista, $this->id_gestion_aula_hash);
 
                 $this->dispatch(
@@ -238,17 +235,11 @@ class Detalle extends Component
             }
         }
 
-        public function cerrar_modal()
+        public function cerrar_modal($modal)
         {
             $this->dispatch(
                 'modal',
-                modal: '#modal-link-clase',
-                action: 'hide'
-            );
-
-            $this->dispatch(
-                'modal',
-                modal: '#modal-orientaciones',
+                modal: $modal,
                 action: 'hide'
             );
         }
@@ -360,31 +351,23 @@ class Detalle extends Component
 
     public function mount($id_usuario, $tipo_vista, $id_curso)
     {
+        $this->id_usuario_hash = $id_usuario;
+        $this->usuario = Usuario::find(Hashids::decode($id_usuario)[0]);
         $this->tipo_vista = $tipo_vista;
-
         $this->id_gestion_aula_hash = $id_curso;
-
-        $id_gestion_aula = Hashids::decode($id_curso);
-        $this->id_gestion_aula = $id_gestion_aula[0];
+        $this->id_gestion_aula = Hashids::decode($id_curso)[0];
 
         $this->mostrar_titulo_curso();
 
-        $this->id_usuario_hash = $id_usuario;
-        $usuario = Hashids::decode($id_usuario);
-        $this->usuario = Usuario::find($usuario[0]);
+        $usuario_sesion = Usuario::find(Auth::user()->id_usuario);
+        $this->modo_admin = $usuario_sesion->esRol('ADMINISTRADOR') ? true : false;
 
-        $user = Auth::user();
-        $usuario_sesion = Usuario::find($user->id_usuario);
-        if ($usuario_sesion->esRol('ADMINISTRADOR'))
-        {
-            $this->modo_admin = true;
-        }
+        $this->modo_invitado = $this->usuario->esDocenteInvitadoAula($this->id_gestion_aula) && $this->tipo_vista === 'carga-academica' ? true : false;
 
         $this->obtener_datos_page_header();
         $this->mostrar_orientaciones();
         $this->obtener_link_clase();
         $this->descripcion_orientaciones = $this->orientaciones_generales->descripcion_presentacion ?? '';
-        // dd($this->descripcion_orientaciones);
 
         $this->ruta_pagina = request()->route()->getName();
 

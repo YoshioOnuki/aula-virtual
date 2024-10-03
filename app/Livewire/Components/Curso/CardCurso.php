@@ -10,9 +10,11 @@ use App\Models\GestionAulaDocente;
 use App\Models\TrabajoAcademico;
 use App\Models\Usuario;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Lazy;
 use Livewire\Component;
 use Vinkla\Hashids\Facades\Hashids;
 
+#[Lazy(isolate: false)]
 class CardCurso extends Component
 {
 
@@ -124,7 +126,7 @@ class CardCurso extends Component
             }
         ])
             ->where('id_gestion_aula', $this->gestion_aula->id_gestion_aula)
-            ->where('es_invitado', false)
+            ->invitado(false)
             ->first();
 
         if ($this->docente) {

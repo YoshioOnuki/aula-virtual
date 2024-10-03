@@ -1,5 +1,5 @@
 <div>
-    <div class="card card-stacked  mb-3 animate__animated animate__fadeIn  ">
+    <div class="card card-stacked  mb-3 animate__animated animate__fadeIn">
         <div class="progress card-progress h-2">
             <div class="progress-bar bg-{{ $tipo_vista === 'cursos' ? 'teal-lt' : 'orange-lt' }}" style="width: 100%"
                 role="progressbar" aria-valuemin="0" aria-valuemax="100">
