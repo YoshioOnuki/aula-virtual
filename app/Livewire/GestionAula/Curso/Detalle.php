@@ -5,8 +5,7 @@ namespace App\Livewire\GestionAula\Curso;
 use App\Models\GestionAula;
 use App\Models\LinkClase;
 use App\Models\Presentacion;
-use App\Models\Usuario;
-use Illuminate\Support\Facades\Auth;
+use App\Traits\UsuarioTrait;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
@@ -16,6 +15,7 @@ use Vinkla\Hashids\Facades\Hashids;
 #[Layout('components.layouts.app')]
 class Detalle extends Component
 {
+    use UsuarioTrait;
 
     public $id_gestion_aula_hash;
     public $id_gestion_aula;
@@ -278,11 +278,7 @@ class Detalle extends Component
 
         public function mostrar_titulo_curso()
         {
-            $gestion_aula = GestionAula::with([
-                'curso' => function ($query) {
-                    $query->select('id_curso', 'nombre_curso');
-                }
-            ])->find($this->id_gestion_aula);
+            $gestion_aula = GestionAula::with('curso')->find($this->id_gestion_aula);
 
             if ($gestion_aula) {
                 $this->nombre_curso = $gestion_aula->curso->nombre_curso;
@@ -352,17 +348,15 @@ class Detalle extends Component
     public function mount($id_usuario, $tipo_vista, $id_curso)
     {
         $this->id_usuario_hash = $id_usuario;
-        $this->usuario = Usuario::find(Hashids::decode($id_usuario)[0]);
+        $this->usuario = $this->obtenerUsuarioDelCurso();
         $this->tipo_vista = $tipo_vista;
         $this->id_gestion_aula_hash = $id_curso;
         $this->id_gestion_aula = Hashids::decode($id_curso)[0];
 
         $this->mostrar_titulo_curso();
 
-        $usuario_sesion = Usuario::find(Auth::user()->id_usuario);
-        $this->modo_admin = $usuario_sesion->esRol('ADMINISTRADOR') ? true : false;
-
-        $this->modo_invitado = $this->usuario->esDocenteInvitadoAula($this->id_gestion_aula) && $this->tipo_vista === 'carga-academica' ? true : false;
+        $this->modo_admin = $this->obtenerUsuarioAutenticado()->esRol('ADMINISTRADOR');
+        $this->modo_invitado = $this->verificarUsuarioInvitado();
 
         $this->obtener_datos_page_header();
         $this->mostrar_orientaciones();

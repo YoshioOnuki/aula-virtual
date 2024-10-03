@@ -2,19 +2,17 @@
 
 namespace App\Listeners;
 
-use App\GetActionId;
 use App\Jobs\RegistrarAuditoriaJob;
-use App\Models\Auditoria;
+use App\Traits\GetActionIdTrait;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Jenssegers\Agent\Agent;
 
 class LogAuthentication
 {
-    use GetActionId;
+    use GetActionIdTrait;
 
 
     /**

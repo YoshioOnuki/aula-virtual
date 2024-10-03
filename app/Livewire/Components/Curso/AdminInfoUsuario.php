@@ -3,10 +3,9 @@
 namespace App\Livewire\Components\Curso;
 
 use App\Models\Usuario;
-use Livewire\Attributes\Lazy;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 
-#[Lazy(isolate: false)]
 class AdminInfoUsuario extends Component
 {
     public $usuario;
@@ -49,6 +48,21 @@ class AdminInfoUsuario extends Component
 
     public function render()
     {
-        return view('livewire.components.curso.admin-info-usuario');
+
+        // Clave de caché única por usuario y vista
+        $cacheKey = 'admin_info_usuario_' . $this->usuario->id . '_' . $this->tipo_vista;
+
+        // Guardar el contenido en caché durante 5 minutos
+        $usuarioData = Cache::remember($cacheKey, 300, function () {
+            // Lógica para recuperar la información que necesitas mostrar
+            return view('livewire.components.curso.admin-info-usuario', [
+                'usuario' => $this->usuario,
+                'tipo_vista' => $this->tipo_vista,
+            ])->render();
+        });
+
+        return $usuarioData;
+
+        // return view('livewire.components.curso.admin-info-usuario');
     }
 }

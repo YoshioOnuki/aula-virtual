@@ -8,8 +8,7 @@ use App\Models\GestionAula;
 use App\Models\GestionAulaAlumno;
 use App\Models\GestionAulaDocente;
 use App\Models\TrabajoAcademico;
-use App\Models\Usuario;
-use Illuminate\Support\Facades\Auth;
+use App\Models\TrabajoAcademicoAlumno;
 use Livewire\Attributes\Lazy;
 use Livewire\Component;
 use Vinkla\Hashids\Facades\Hashids;
@@ -59,9 +58,25 @@ class CardCurso extends Component
     /* =============== CALCULAR PROGRESO DEL CURSO =============== */
         public function calcular_progreso()
         {
+            // Inicializar variables de progreso
+            $this->numero_progreso[$this->gestion_aula_alumno->id_gestion_aula_alumno] = 0;
+            $this->numero_progreso_realizados[$this->gestion_aula_alumno->id_gestion_aula_alumno] = 0;
+
             $this->calcular_trabajo_academico();
             $this->calcular_foros();
             $this->calcular_asistencia();
+
+            //Validar si el array de progreso es null o esta vacio
+            $this->numero_progreso[$this->gestion_aula_alumno->id_gestion_aula_alumno] = empty($this->numero_progreso[$this->gestion_aula_alumno->id_gestion_aula_alumno])
+                ? 0
+                : $this->numero_progreso[$this->gestion_aula_alumno->id_gestion_aula_alumno];
+            $this->numero_progreso_realizados[$this->gestion_aula_alumno->id_gestion_aula_alumno] = empty($this->numero_progreso_realizados[$this->gestion_aula_alumno->id_gestion_aula_alumno])
+                ? 0
+                : $this->numero_progreso_realizados[$this->gestion_aula_alumno->id_gestion_aula_alumno];
+
+            $this->progreso[$this->gestion_aula_alumno->id_gestion_aula_alumno] = $this->numero_progreso[$this->gestion_aula_alumno->id_gestion_aula_alumno] > 0
+                ? round(($this->numero_progreso_realizados[$this->gestion_aula_alumno->id_gestion_aula_alumno] * 100) / $this->numero_progreso[$this->gestion_aula_alumno->id_gestion_aula_alumno])
+                : 0;
         }
 
         public function calcular_trabajo_academico()
@@ -71,15 +86,11 @@ class CardCurso extends Component
                 $trabajos = $this->gestion_aula->trabajoAcademico->count();
                 $trabajos_realizados = 0;
 
-                $trabajos_realizados = TrabajoAcademico::Join('trabajo_academico_alumno', 'trabajo_academico.id_trabajo_academico', '=', 'trabajo_academico_alumno.id_trabajo_academico')
-                    ->where('trabajo_academico.id_gestion_aula', $this->gestion_aula->id_gestion_aula)
-                    ->where('trabajo_academico_alumno.id_gestion_aula_usuario', $this->gestion_aula_alumno->id_gestion_aula_alumno)
-                    ->where('trabajo_academico_alumno.id_estado_trabajo_academico', 2)
+                $trabajos_realizados = TrabajoAcademicoAlumno::where('id_gestion_aula_alumno', $this->gestion_aula_alumno->id_gestion_aula_alumno)
                     ->count();
 
                 $this->numero_progreso[$this->gestion_aula_alumno->id_gestion_aula_alumno] = $trabajos;
                 $this->numero_progreso_realizados[$this->gestion_aula_alumno->id_gestion_aula_alumno] = $trabajos_realizados;
-                $this->progreso[$this->gestion_aula_alumno->id_gestion_aula_alumno] = round(($trabajos_realizados / $trabajos) * 100);
             }
         }
 
@@ -90,13 +101,11 @@ class CardCurso extends Component
                 $foros = $this->gestion_aula->foro->count();
                 $foros_realizados = 0;
 
-                $foros_realizados = ForoRespuesta::Join('foro', 'foro.id_foro', '=', 'foro_respuesta.id_foro')
-                    ->where('foro_respuesta.id_gestion_aula_usuario', $this->gestion_aula_alumno->id_gestion_aula_alumno)
+                $foros_realizados = ForoRespuesta::where('id_gestion_aula_alumno', $this->gestion_aula_alumno->id_gestion_aula_alumno)
                     ->count();
 
                 $this->numero_progreso[$this->gestion_aula_alumno->id_gestion_aula_alumno] += $foros;
                 $this->numero_progreso_realizados[$this->gestion_aula_alumno->id_gestion_aula_alumno] += $foros_realizados;
-                $this->progreso[$this->gestion_aula_alumno->id_gestion_aula_alumno] = round(($this->numero_progreso_realizados[$this->gestion_aula_alumno->id_gestion_aula_alumno] / $this->numero_progreso[$this->gestion_aula_alumno->id_gestion_aula_alumno]) * 100);
             }
         }
 
@@ -106,11 +115,11 @@ class CardCurso extends Component
                 $asistencias = $this->gestion_aula->asistencia->count();
                 $asistencias_realizadas = 0;
 
-                $asistencias_realizadas = AsistenciaAlumno::where('id_gestion_aula_usuario', $this->gestion_aula_alumno->id_gestion_aula_alumno)->count();
+                $asistencias_realizadas = AsistenciaAlumno::where('id_gestion_aula_alumno', $this->gestion_aula_alumno->id_gestion_aula_alumno)
+                    ->count();
 
                 $this->numero_progreso[$this->gestion_aula_alumno->id_gestion_aula_alumno] += $asistencias;
                 $this->numero_progreso_realizados[$this->gestion_aula_alumno->id_gestion_aula_alumno] += $asistencias_realizadas;
-                $this->progreso[$this->gestion_aula_alumno->id_gestion_aula_alumno] = round(($this->numero_progreso_realizados[$this->gestion_aula_alumno->id_gestion_aula_alumno] / $this->numero_progreso[$this->gestion_aula_alumno->id_gestion_aula_alumno]) * 100);
             }
         }
     /* =========================================================== */
@@ -119,12 +128,7 @@ class CardCurso extends Component
     public function mostrar_foto_docente()
     {
 
-        $this->docente = GestionAulaDocente::with([
-            'usuario' => function ($query) {
-                $query->with('persona')
-                    ->first();
-            }
-        ])
+        $this->docente = GestionAulaDocente::with('usuario')
             ->where('id_gestion_aula', $this->gestion_aula->id_gestion_aula)
             ->invitado(false)
             ->first();
@@ -169,19 +173,17 @@ class CardCurso extends Component
         $this->tipo_vista = $tipo_vista;
         $this->usuario = $usuario;
 
-        $this->gestion_aula = GestionAula::with('curso', 'trabajoAcademico', 'asistencia', 'foro')
+        $this->gestion_aula = GestionAula::with('curso')
             ->where('id_gestion_aula', $gestion_aula->id_gestion_aula)
             ->first();
 
         if ($this->tipo_vista === 'cursos')
         {
-            $this->gestion_aula_alumno = GestionAulaAlumno::with('usuario.persona')
-                ->where('id_gestion_aula', $gestion_aula->id_gestion_aula)
+            $this->gestion_aula_alumno = GestionAulaAlumno::where('id_gestion_aula', $gestion_aula->id_gestion_aula)
                 ->where('id_usuario', $usuario->id_usuario)
                 ->first();
         } else {
-            $this->gestion_aula_docente = GestionAulaDocente::with('usuario.persona')
-                ->where('id_gestion_aula', $gestion_aula->id_gestion_aula)
+            $this->gestion_aula_docente = GestionAulaDocente::where('id_gestion_aula', $gestion_aula->id_gestion_aula)
                 ->where('id_usuario', $usuario->id_usuario)
                 ->first();
         }

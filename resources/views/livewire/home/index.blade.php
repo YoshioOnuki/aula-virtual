@@ -10,7 +10,7 @@
     <div class="page-body">
         <div class="container-xl">
             <div class="row">
-                <div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="col col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
                     <div class="card card-stacked animate__animated animate__fadeIn  mb-3">
                         <div class="card-header d-flex justify-content-center align-items-center"
                         style=" background:rgb(12, 166, 120);">
@@ -72,12 +72,12 @@
                                         @endif
                                     @endforelse
 
-                                    @foreach ($cursos_finalizados as $item)
+                                    @foreach ($cursos_finalizados ?? [] as $item)
                                         <livewire:components.curso.card-curso :tipo_vista=$tipo_vista_curso
                                             :usuario=$usuario :gestion_aula=$item
                                             wire:key="curso-finalizado-{{ $item->id_gestion_aula }}" lazy />
                                     @endforeach
-                                    @foreach ($carga_academica_finalizada as $item)
+                                    @foreach ($carga_academica_finalizada ?? [] as $item)
                                         <livewire:components.curso.card-curso :tipo_vista=$tipo_vista_carga
                                             :usuario=$usuario :gestion_aula=$item
                                             wire:key="carga-finalizada-{{ $item->id_gestion_aula }}" lazy />
@@ -90,7 +90,7 @@
                 </div>
 
 
-                {{-- <div class="col col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                <div class="col col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
                     <div class="card card-stacked mb-3 animate__animated animate__fadeIn">
                         <div class="card-header d-flex justify-content-center align-items-center"
                             style="background: rgb(12, 166, 120);">
@@ -121,7 +121,7 @@
                             </div>
                         </div>
                     </div>
-                </div> --}}
+                </div>
             </div>
         </div>
     </div>

@@ -2,20 +2,16 @@
 
 namespace App\Livewire\GestionAula\Curso;
 
-use App\Models\AsistenciaAlumno;
-use App\Models\ForoRespuesta;
 use App\Models\GestionAula;
-use App\Models\GestionAulaUsuario;
-use App\Models\TrabajoAcademico;
-use App\Models\Usuario;
-use Illuminate\Support\Facades\Auth;
+use App\Traits\UsuarioTrait;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
-use Vinkla\Hashids\Facades\Hashids;
 
 #[Layout('components.layouts.app')]
 class Index extends Component
 {
+    use UsuarioTrait;
+
     public $id_usuario_hash;
     public $usuario;
     public $usuario_sesion;
@@ -127,19 +123,12 @@ class Index extends Component
 
     public function mount($id_usuario, $tipo_vista)
     {
-        $this->tipo_vista = $tipo_vista;
-
-        $user = Auth::user();
-        $this->usuario_sesion = Usuario::find($user->id_usuario);
-
-        if ($this->usuario_sesion->esRol('ADMINISTRADOR'))
-        {
-            $this->modo_admin = true;
-        }
-
         $this->id_usuario_hash = $id_usuario;
-        $id = Hashids::decode($id_usuario);
-        $this->usuario = Usuario::find($id[0]);
+        $this->usuario = $this->obtenerUsuarioDelCurso();
+        $this->tipo_vista = $tipo_vista;
+        $this->usuario_sesion = $this->obtenerUsuarioAutenticado();
+
+        $this->modo_admin = $this->usuario_sesion->esRol('ADMINISTRADOR');
 
         $this->ruta_vista = request()->route()->getName();
 

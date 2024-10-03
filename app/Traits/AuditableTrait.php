@@ -1,15 +1,13 @@
 <?php
 
-namespace App;
+namespace App\Traits;
 
-use App\Models\Auditoria;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Jenssegers\Agent\Agent;
-use App\GetActionId;
 use App\Jobs\RegistrarAuditoriaJob;
 
-trait Auditable
+trait AuditableTrait
 {
     public static function bootAuditable()
     {
@@ -76,6 +74,4 @@ trait Auditable
             RegistrarAuditoriaJob::dispatch($datosAuditoria);
         });
     }
-
 }
-

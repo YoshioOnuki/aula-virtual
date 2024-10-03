@@ -23,10 +23,9 @@ class Index extends Component
     public $tipo_vista_curso = "cursos";
     public $tipo_vista_carga = "carga-academica";
 
-
     public function mostrar_cursos()
     {
-        $cursos = GestionAula::with(['gestionAulaAlumno', 'curso'])
+        $cursos = GestionAula::with(['curso'])
             ->whereHas('gestionAulaAlumno', function ($query) {
                 $query->where('id_usuario', $this->usuario->id_usuario)
                     ->estado(true);
@@ -37,19 +36,19 @@ class Index extends Component
             ->get();
         $this->cursos = $cursos->sortBy('curso.nombre_curso');
 
-        $cursos_finalizados = GestionAula::with(['gestionAulaAlumno', 'curso'])
-        ->whereHas('gestionAulaAlumno', function ($query) {
-            $query->where('id_usuario', $this->usuario->id_usuario)
-                ->estado(true);
-        })
-        ->estado(true)
-        ->enCurso(false)
-        ->orderBy('created_at', 'desc')
-        ->get();
+        $cursos_finalizados = GestionAula::with(['curso'])
+            ->whereHas('gestionAulaAlumno', function ($query) {
+                $query->where('id_usuario', $this->usuario->id_usuario)
+                    ->estado(true);
+            })
+            ->estado(true)
+            ->enCurso(false)
+            ->orderBy('created_at', 'desc')
+            ->get();
         $this->cursos_finalizados = $cursos_finalizados->sortBy('curso.nombre_curso');
 
 
-        $carga_academica = GestionAula::with(['gestionAulaDocente', 'curso'])
+        $carga_academica = GestionAula::with(['curso'])
             ->whereHas('gestionAulaDocente', function ($query) {
                 $query->where('id_usuario', $this->usuario->id_usuario)
                     ->estado(true);
@@ -60,7 +59,7 @@ class Index extends Component
             ->get();
         $this->carga_academica = $carga_academica->sortBy('curso.nombre_curso');
 
-        $carga_academica_finalizada = GestionAula::with(['gestionAulaDocente', 'curso'])
+        $carga_academica_finalizada = GestionAula::with(['curso'])
             ->whereHas('gestionAulaDocente', function ($query) {
                 $query->where('id_usuario', $this->usuario->id_usuario)
                     ->estado(true);
@@ -70,8 +69,6 @@ class Index extends Component
             ->orderBy('created_at', 'desc')
             ->get();
         $this->carga_academica_finalizada = $carga_academica_finalizada->sortBy('curso.nombre_curso');
-
-
     }
 
 
@@ -80,11 +77,9 @@ class Index extends Component
         $user = Auth::user();
         $this->usuario = Usuario::find($user->id_usuario);
 
-        if (!$this->usuario->esRol('ADMINISTRADOR'))
-        {
+        if (!$this->usuario->esRol('ADMINISTRADOR')) {
             $this->mostrar_cursos();
         }
-
     }
 
     public function render()

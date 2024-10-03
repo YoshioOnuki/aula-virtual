@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Traits;
 
 use App\Models\Accion;
 
-trait GetActionId
+trait GetActionIdTrait
 {
     public function getActionId($action)
     {

@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
-use App\GetActionId;
 use App\Models\Auditoria;
+use App\Traits\GetActionIdTrait;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
@@ -15,7 +15,7 @@ use Symfony\Component\Console\Logger\ConsoleLogger;
 class RegistrarAuditoriaJob implements ShouldQueue
 {
     use Queueable;
-    use GetActionId;
+    use GetActionIdTrait;
 
     /**
      * Variables para el registro de auditoria.
