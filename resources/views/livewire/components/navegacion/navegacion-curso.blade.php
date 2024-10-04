@@ -5,8 +5,8 @@
     <div class="list-group list-group-flush fs-4">
 
         <a href="{{ $tipo_vista === 'cursos' ?
-                route('cursos.detalle', ['id_usuario' => $id_usuario_hash, 'tipo_vista' => $tipo_vista, 'id_curso' => $id_gestion_aula_usuario_hash] ) :
-                route('carga-academica.detalle', ['id_usuario' => $id_usuario_hash, 'tipo_vista' => $tipo_vista, 'id_curso' => $id_gestion_aula_usuario_hash] ) }}"
+                route('cursos.detalle', ['id_usuario' => $id_usuario_hash, 'tipo_vista' => $tipo_vista, 'id_curso' => $id_gestion_aula_hash] ) :
+                route('carga-academica.detalle', ['id_usuario' => $id_usuario_hash, 'tipo_vista' => $tipo_vista, 'id_curso' => $id_gestion_aula_hash] ) }}"
             class="list-group-item list-group-item-action {{ request()->routeIs('cursos.detalle') ? 'active' : '' }}"
             aria-current="{{ request()->routeIs('cursos.show') ? 'true' : 'false' }}">
             Detalle del curso

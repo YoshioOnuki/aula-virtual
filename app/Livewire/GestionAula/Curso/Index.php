@@ -17,7 +17,7 @@ class Index extends Component
     public $usuario_sesion;
     public $gestion_aulas;
 
-    public $modo_admin = false;// Modo admin, para saber si se esta en modo administrador
+    public $modo_admin = false; // Modo admin, para saber si se esta en modo administrador
     public $tipo_vista; // Tipo de vista, para saber si es alumno o docente
     public $ruta_vista;
 
@@ -29,8 +29,7 @@ class Index extends Component
 
     public function mostrar_cursos()
     {
-        if($this->tipo_vista === 'cursos')
-        {
+        if ($this->tipo_vista === 'cursos') {
             $gestion_aulas = GestionAula::with(['gestionAulaAlumno', 'curso'])
                 ->whereHas('gestionAulaAlumno', function ($query) {
                     $query->where('id_usuario', $this->usuario->id_usuario)
@@ -77,56 +76,51 @@ class Index extends Component
         }
 
         $this->gestion_aulas = $gestion_aulas->merge($gestion_aulas_finalizadas);
-
     }
 
     /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
-        public function obtener_datos_page_header()
-        {
-            if($this->tipo_vista === 'cursos')
-            {
-                $this->titulo_page_header = 'Mis Cursos';
-            } else {
-                $this->titulo_page_header = 'Carga Académica';
-            }
-
-            // Regresar
-
-            if($this->modo_admin)
-            {
-                if($this->tipo_vista === 'cursos')
-                {
-                    $this->regresar_page_header = [
-                        'route' => 'alumnos',
-                        'params' => []
-                    ];
-                } else {
-                    $this->regresar_page_header = [
-                        'route' => 'docentes',
-                        'params' => []
-                    ];
-                }
-            }
-
-            // Links --> Inicio
-            $this->links_page_header = [
-                [
-                    'name' => 'Inicio',
-                    'route' => 'inicio',
-                    'params' => []
-                ]
-            ];
-
+    public function obtener_datos_page_header()
+    {
+        if ($this->tipo_vista === 'cursos') {
+            $this->titulo_page_header = 'Mis Cursos';
+        } else {
+            $this->titulo_page_header = 'Carga Académica';
         }
+
+        // Regresar
+
+        if ($this->modo_admin) {
+            if ($this->tipo_vista === 'cursos') {
+                $this->regresar_page_header = [
+                    'route' => 'alumnos',
+                    'params' => []
+                ];
+            } else {
+                $this->regresar_page_header = [
+                    'route' => 'docentes',
+                    'params' => []
+                ];
+            }
+        }
+
+        // Links --> Inicio
+        $this->links_page_header = [
+            [
+                'name' => 'Inicio',
+                'route' => 'inicio',
+                'params' => []
+            ]
+        ];
+    }
     /* ===================================================================================== */
 
 
     public function mount($id_usuario, $tipo_vista)
     {
         $this->id_usuario_hash = $id_usuario;
-        $this->usuario = $this->obtenerUsuarioDelCurso();
+        $this->usuario = $this->obtener_usuario_del_curso();
         $this->tipo_vista = $tipo_vista;
-        $this->usuario_sesion = $this->obtenerUsuarioAutenticado();
+        $this->usuario_sesion = $this->obtener_usuario_autenticado();
 
         $this->modo_admin = $this->usuario_sesion->esRol('ADMINISTRADOR');
 
@@ -134,7 +128,6 @@ class Index extends Component
 
         $this->obtener_datos_page_header();
         $this->mostrar_cursos();
-
     }
 
     public function render()

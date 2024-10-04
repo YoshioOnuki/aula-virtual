@@ -1,6 +1,16 @@
 <?php
 
 return [
+
+    /**
+     * Versión del sistema
+     */
+    'version_sistema' => 'BETA',
+
+
+    /**
+     * Configuración de los colores
+     */
     'color_usuario' => '17a2b8',
     'color_lt_usuario' => 'e8f6f8',
     'color_autoridades' => 'f76707',
@@ -31,13 +41,26 @@ return [
     'color-border-card-recurso' => 'pink',
     'color-border-card-foro' => 'lime',
 
+
+    /**
+     * Configuración de las imágenes
+     */
     'fondo_curso_default' => '/media/fondo-cursos/fondo-infor.webp',
     'fondo_detalle_doncente' => '/assets/static/photos/businesswoman-working-at-her-laptop-2.jpg',
     'fondo_detalle_alumno' => '/assets/static/photos/colorful-exotic-flowers-and-greenery.jpg',
 
-    'ver_docente_invitado' => false,
 
+    /**
+     * Configuraciones booleanas
+     */
+    'ver_docente_invitado' => false,
     'restringir_mobile' => true,
 
-    'version_sistema' => 'BETA',
+
+    /**
+     * Configuración de auditorías
+     */
+    'acceso_auditoria' => false,
+    'sesion_auditoria' => true,
+    'modelos_auditoria' => true,
 ];

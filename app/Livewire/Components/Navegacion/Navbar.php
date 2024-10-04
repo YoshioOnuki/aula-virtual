@@ -2,14 +2,11 @@
 
 namespace App\Livewire\Components\Navegacion;
 
-use App\Traits\UsuarioTrait;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class Navbar extends Component
 {
-    use UsuarioTrait;
-
     public $usuario;
     public $persona;
     public $nombre;
@@ -25,7 +22,7 @@ class Navbar extends Component
 
     public function mount()
     {
-        $this->usuario = $this->obtenerUsuarioAutenticado();
+        $this->usuario = Auth::user();
         $this->persona = $this->usuario->persona;
         $this->nombre = $this->persona->soloPrimerosNombres;
     }

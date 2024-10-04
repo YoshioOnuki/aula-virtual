@@ -29,7 +29,10 @@ trait AuditableTrait
                 'fecha' => now(), // fecha
             ];
 
-            RegistrarAuditoriaJob::dispatch($datosAuditoria);
+            // Verificar si la auditoría está habilitada para los modelos
+            if (config('settings.modelos_auditoria')) {
+                RegistrarAuditoriaJob::dispatch($datosAuditoria);
+            }
         });
 
         static::updating(function ($model) {
@@ -50,7 +53,10 @@ trait AuditableTrait
                 'fecha' => now(), // fecha
             ];
 
-            RegistrarAuditoriaJob::dispatch($datosAuditoria);
+            // Verificar si la auditoría está habilitada para los modelos
+            if (config('settings.modelos_auditoria')) {
+                RegistrarAuditoriaJob::dispatch($datosAuditoria);
+            }
         });
 
         static::deleting(function ($model) {
@@ -71,7 +77,10 @@ trait AuditableTrait
                 'fecha' => now(), // fecha
             ];
 
-            RegistrarAuditoriaJob::dispatch($datosAuditoria);
+            // Verificar si la auditoría está habilitada para los modelos
+            if (config('settings.modelos_auditoria')) {
+                RegistrarAuditoriaJob::dispatch($datosAuditoria);
+            }
         });
     }
 }

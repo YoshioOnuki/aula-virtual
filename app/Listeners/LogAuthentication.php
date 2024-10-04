@@ -54,7 +54,10 @@ class LogAuthentication
                 'fecha' => now(),// Fecha
             ];
 
-            RegistrarAuditoriaJob::dispatch($datosAuditoria);
+            // Verificar si la auditoría está habilitada para Iniciar sesión y Cerrar sesión
+            if (config('settings.sesion_auditoria')) {
+                RegistrarAuditoriaJob::dispatch($datosAuditoria);
+            }
         }
     }
 

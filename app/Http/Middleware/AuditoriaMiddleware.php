@@ -36,7 +36,10 @@ class AuditoriaMiddleware
                 'fecha' => now(),// Fecha
             ];
 
-            RegistrarAuditoriaJob::dispatch($datosAuditoria);
+            // Verificar si la auditoría está habilitada para el acceso
+            if (config('settings.acceso_auditoria')) {
+                RegistrarAuditoriaJob::dispatch($datosAuditoria);
+            }
         }
 
         return $next($request);
