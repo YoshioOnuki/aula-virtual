@@ -3,7 +3,6 @@
 namespace App\Listeners;
 
 use App\Jobs\RegistrarAuditoriaJob;
-use App\Traits\GetActionIdTrait;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -12,7 +11,6 @@ use Jenssegers\Agent\Agent;
 
 class LogAuthentication
 {
-    use GetActionIdTrait;
 
 
     /**

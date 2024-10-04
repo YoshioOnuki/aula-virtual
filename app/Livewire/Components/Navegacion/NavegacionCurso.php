@@ -14,6 +14,9 @@ class NavegacionCurso extends Component
     public $links_array = [];
 
 
+    /**
+     * Obtiene los links de navegación
+     */
     public function get_link()
     {
 

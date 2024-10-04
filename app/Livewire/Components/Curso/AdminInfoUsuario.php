@@ -50,10 +50,10 @@ class AdminInfoUsuario extends Component
     {
 
         // Clave de caché única por usuario y vista
-        $cacheKey = 'admin_info_usuario_' . $this->usuario->id . '_' . $this->tipo_vista;
+        $cache_key = 'admin_info_usuario_' . $this->usuario->id_usuario . '_' . $this->tipo_vista;
 
-        // Guardar el contenido en caché durante 5 minutos
-        $usuarioData = Cache::remember($cacheKey, 300, function () {
+        // Guardar el contenido en caché durante 10 minutos
+        $usuario_data = Cache::remember($cache_key, 600, function () {
             // Lógica para recuperar la información que necesitas mostrar
             return view('livewire.components.curso.admin-info-usuario', [
                 'usuario' => $this->usuario,
@@ -61,7 +61,7 @@ class AdminInfoUsuario extends Component
             ])->render();
         });
 
-        return $usuarioData;
+        return $usuario_data;
 
         // return view('livewire.components.curso.admin-info-usuario');
     }

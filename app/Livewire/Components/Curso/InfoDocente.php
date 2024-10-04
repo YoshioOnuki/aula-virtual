@@ -8,7 +8,6 @@ use App\Models\GestionAulaUsuario;
 use Livewire\Attributes\Lazy;
 use Livewire\Component;
 
-#[Lazy(isolate: false)]
 class InfoDocente extends Component
 {
     public $id_gestion_aula;

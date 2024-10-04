@@ -38,7 +38,7 @@ class RegistrarAuditoriaJob implements ShouldQueue
         $agent = new Agent();
 
         Auditoria::create([
-            'id_accion' => $this->getActionId($this->datosAuditoria['accion']),
+            'id_accion' => $this->get_action_id($this->datosAuditoria['accion']),
             'tabla_auditoria' => $this->datosAuditoria['tabla'],
             'id_registro_auditoria' => $this->datosAuditoria['id_registro'],
             'valor_anterior_auditoria' => $this->datosAuditoria['valor_anterior'],

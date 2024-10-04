@@ -23,38 +23,42 @@ class DatosCurso extends Component
     protected $listeners = ['actualizar_datos_curso' => 'actualizar_datos_curso'];
 
 
+    /**
+     * Actualiza los datos del curso, renderizando la vista
+     */
     public function actualizar_datos_curso()
     {
         $this->mount($this->id_gestion_aula, $this->ruta_pagina, $this->tipo_vista);
     }
 
-    /* =============== MOSTRAR DATOS DEL CURSO =============== */
-        public function mostrar_datos_curso()
-        {
-            $this->gestion_aula = GestionAula::with([
-                'curso' => function ($query) {
-                    $query->with([
-                        'ciclo',
-                        'planEstudio',
-                        'programa' => function ($query) {
-                            $query->with([
-                                'facultad',
-                                'tipoPrograma'
-                            ])->select('id_programa', 'nombre_programa', 'mencion_programa', 'id_tipo_programa', 'id_facultad');
-                        }
-                    ])->select('id_curso', 'codigo_curso', 'nombre_curso', 'creditos_curso', 'horas_lectivas_curso', 'id_programa', 'id_plan_estudio', 'id_ciclo');
-                },
-                'linkClase' => function ($query) {
-                    $query->select('id_link_clase', 'id_gestion_aula', 'nombre_link_clase');
-                }
-            ])->find($this->id_gestion_aula);
-
-
-            if ($this->gestion_aula) {
-                $this->curso = $this->gestion_aula->curso;
+    /**
+     * Muestra los datos del curso
+     */
+    public function mostrar_datos_curso()
+    {
+        $this->gestion_aula = GestionAula::with([
+            'curso' => function ($query) {
+                $query->with([
+                    'ciclo',
+                    'planEstudio',
+                    'programa' => function ($query) {
+                        $query->with([
+                            'facultad',
+                            'tipoPrograma'
+                        ])->select('id_programa', 'nombre_programa', 'mencion_programa', 'id_tipo_programa', 'id_facultad');
+                    }
+                ])->select('id_curso', 'codigo_curso', 'nombre_curso', 'creditos_curso', 'horas_lectivas_curso', 'id_programa', 'id_plan_estudio', 'id_ciclo');
+            },
+            'linkClase' => function ($query) {
+                $query->select('id_link_clase', 'id_gestion_aula', 'nombre_link_clase');
             }
+        ])->find($this->id_gestion_aula);
+
+
+        if ($this->gestion_aula) {
+            $this->curso = $this->gestion_aula->curso;
         }
-    /* ======================================================= */
+    }
 
 
     public function placeholder()

@@ -10,31 +10,31 @@ use Vinkla\Hashids\Facades\Hashids;
 trait UsuarioTrait
 {
     // Método para obtener el usuario autenticado desde la sesión
-    public function obtenerUsuarioAutenticado()
+    public function obtener_usuario_autenticado()
     {
         $usuario = Auth::user();
         return Usuario::find($usuario->id_usuario);
     }
 
-    // Método para obtener el ID del curso desde la URL (o cualquier otro dato de la URL)
-    public function obtenerIdUsuarioDesdeUrlCodificado()
+    // Método para obtener el ID del curso desde la URL codificado
+    public function obtener_id_usuario_curso_codificado()
     {
         // Usar los parámetros de la ruta
         return Route::current()->parameter('id_usuario');
     }
 
-    // Método para obtener el ID del curso desde la URL (o cualquier otro dato de la URL)
-    public function obtenerIdUsuarioDesdeUrlDecodificado()
+    // Método para obtener el ID del curso desde la URL decodificado
+    public function obtener_id_usuario_curso()
     {
-        $id_usuario = $this->obtenerIdUsuarioDesdeUrlCodificado();
+        $id_usuario = $this->obtener_id_usuario_curso_codificado();
         // Decodificar el ID
         return Hashids::decode($id_usuario)[0];
     }
 
     // Método para obtener el usuario del curso en el que está actualmente
-    public function obtenerUsuarioDelCurso()
+    public function obtener_usuario_del_curso()
     {
-        $id_usuario = $this->obtenerIdUsuarioDesdeUrlDecodificado();
+        $id_usuario = $this->obtener_id_usuario_url_decodificado();
         return Usuario::find($id_usuario);
     }
 
