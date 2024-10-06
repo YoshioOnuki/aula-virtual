@@ -219,7 +219,7 @@
                 <div class="row row-cards d-flex justify-content-between">
                     <div class="col-lg-2 d-none d-lg-block">
                         <livewire:components.navegacion.navegacion-curso :tipo_vista=$tipo_vista
-                            :id_usuario=$id_usuario_hash :id_gestion_aula_usuario=$id_gestion_aula_usuario />
+                            :id_usuario=$id_usuario_hash :id_curso=$id_gestion_aula_hash />
                     </div>
 
                     <div class="col-lg-10 col-md-12 col-sm-12">
@@ -563,31 +563,31 @@
 @script
 <script>
     document.addEventListener('livewire:navigated', () => {
-            const asistencias = document.querySelector('.asistencias');
-            const mobileMessage = document.querySelector('.mobile-message');
-            const md = new MobileDetect(window.navigator.userAgent);
+        const asistencias = document.querySelector('.asistencias');
+        const mobileMessage = document.querySelector('.mobile-message');
+        const md = new MobileDetect(window.navigator.userAgent);
 
-            function isMobileDevice() {
-                return md.mobile() !== null;
-            }
+        function isMobileDevice() {
+            return md.mobile() !== null;
+        }
 
-            function toggleContent() {
-                const isMobile = isMobileDevice();
-                const isNarrowScreen = window.innerWidth < 768;
-                asistencias.style.display = (isMobile || isNarrowScreen) ? 'none' : 'block';
-                mobileMessage.style.display = (isMobile || isNarrowScreen) ? 'block' : 'none';
-            }
+        function toggleContent() {
+            const isMobile = isMobileDevice();
+            const isNarrowScreen = window.innerWidth < 768;
+            asistencias.style.display = (isMobile || isNarrowScreen) ? 'none' : 'block';
+            mobileMessage.style.display = (isMobile || isNarrowScreen) ? 'block' : 'none';
+        }
 
-            toggleContent();
-            window.addEventListener("resize", toggleContent);
+        toggleContent();
+        window.addEventListener("resize", toggleContent);
 
-            // Asegúrate de que el checkbox existe antes de intentar usarlo
-            var checkbox = document.getElementById('myCheckbox');
-            if (checkbox) {
-                checkbox.indeterminate = true;
-            } else {
-                console.warn('El checkbox con ID myCheckbox no existe en el DOM.');
-            }
-        });
+        // Asegúrate de que el checkbox existe antes de intentar usarlo
+        var checkbox = document.getElementById('myCheckbox');
+        if (checkbox) {
+            checkbox.indeterminate = true;
+        } else {
+            console.warn('El checkbox con ID myCheckbox no existe en el DOM.');
+        }
+    });
 </script>
 @endscript

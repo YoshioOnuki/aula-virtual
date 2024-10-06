@@ -7,7 +7,6 @@ use App\Models\ForoRespuesta;
 use App\Models\GestionAula;
 use App\Models\GestionAulaAlumno;
 use App\Models\GestionAulaDocente;
-use App\Models\TrabajoAcademico;
 use App\Models\TrabajoAcademicoAlumno;
 use Livewire\Attributes\Lazy;
 use Livewire\Component;

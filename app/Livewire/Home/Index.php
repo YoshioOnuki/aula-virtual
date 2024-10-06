@@ -23,6 +23,11 @@ class Index extends Component
     public $tipo_vista_curso = "cursos";
     public $tipo_vista_carga = "carga-academica";
 
+    /**
+     * Variables para la vista Dashboard
+     */
+    public $acceso_auditoria;
+
     public function mostrar_cursos()
     {
         $cursos = GestionAula::with(['curso'])
@@ -72,6 +77,27 @@ class Index extends Component
     }
 
 
+    /**
+     * Funsiones para la vista Dashboard
+     */
+    public function estado_acceso_auditoria()
+    {
+        $this->acceso_auditoria = !$this->acceso_auditoria;
+
+        config(['settings.acceso_auditoria' => $this->acceso_auditoria]);
+
+        // Cambiar el estado de la variable en el archivo de configuración
+        // $config = config('settings');
+        // $config['acceso_auditoria'] = $this->acceso_auditoria;
+        // $config = var_export($config, true);
+        // $config = str_replace("array (", "config([", $config);
+        // $config = str_replace(")", "]);", $config);
+        // $config = "<?php\n\n" . $config;
+        // file_put_contents(config_path('settings.php'), $config);
+
+    }
+
+
     public function mount()
     {
         $user = Auth::user();
@@ -80,6 +106,8 @@ class Index extends Component
         if (!$this->usuario->esRol('ADMINISTRADOR')) {
             $this->mostrar_cursos();
         }
+
+        $this->acceso_auditoria = config('settings.acceso_auditoria');
     }
 
     public function render()
@@ -87,8 +115,14 @@ class Index extends Component
         $autoridades_model = Autoridad::with('facultad', 'cargo')->activo()->orderBy('id_cargo')
             ->get();
 
-        return view('livewire.home.index', [
-            'autoridades_model' => $autoridades_model
-        ]);
+        if ($this->usuario->esRol('ADMINISTRADOR'))
+        {
+            return view('livewire.home.dashboard');
+        } else {
+            return view('livewire.home.index', [
+                'autoridades_model' => $autoridades_model
+            ]);
+        }
+
     }
 }

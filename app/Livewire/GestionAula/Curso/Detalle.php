@@ -51,7 +51,7 @@ class Detalle extends Component
 
     public $modo_admin = false; // Modo admin, para saber si se esta en modo administrador
     public $tipo_vista; // Tipo de vista, si es alumno o docente
-    public $modo_invitado = false; // Modo invitado, para saber si se esta en modo invitado
+    public $es_docente_invitado = false; // Modo invitado, para saber si se esta en modo invitado
 
     // Variables para page-header
     public $titulo_page_header = 'Detalle';
@@ -344,12 +344,12 @@ class Detalle extends Component
         $this->usuario = $this->obtener_usuario_del_curso();
         $this->tipo_vista = $tipo_vista;
         $this->id_gestion_aula_hash = $id_curso;
-        $this->id_gestion_aula = Hashids::decode($id_curso)[0];
+        $this->id_gestion_aula = $this->obtener_id_curso();
 
         $this->mostrar_titulo_curso();
 
         $this->modo_admin = $this->obtener_usuario_autenticado()->esRol('ADMINISTRADOR');
-        $this->modo_invitado = $this->verificar_usuario_invitado();
+        $this->es_docente_invitado = $this->verificar_usuario_invitado();
 
         $this->obtener_datos_page_header();
         $this->mostrar_orientaciones();

@@ -169,7 +169,7 @@ class Detalle extends Component
                     }
 
                     // Obtener el texto de la descripción del trabajo
-                    $descripcion_trabajo = subir_archivo_editor($this->descripcion_trabajo_academico_alumno, 'archivos/posgrado/media/editor-texto/trabajos-academicos/');
+                    $descripcion_trabajo = subir_archivo_editor($this->descripcion_trabajo_academico_alumno, 'archivos/posgrado/media/editor-texto/trabajos-academicos-alumnos/');
 
                     if($this->modo === 1)// Modo agregar
                         // Obtener el estado del trabajo académico

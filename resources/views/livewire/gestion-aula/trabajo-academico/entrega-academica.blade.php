@@ -10,7 +10,7 @@
             <div class="row row-cards d-flex justify-content-between">
                 <div class="col-lg-2 d-none d-lg-block">
                     <livewire:components.navegacion.navegacion-curso :tipo_vista=$tipo_vista
-                        :id_usuario=$id_usuario_hash :id_gestion_aula_usuario=$id_gestion_aula_usuario />
+                        :id_usuario=$id_usuario_hash :id_curso=$id_gestion_aula_hash />
                 </div>
 
                 <div class="col-lg-10 col-md-12 col-sm-12">
@@ -105,9 +105,7 @@
                                                                 {{ Str::limit($archivo->nombre_archivo_alumno, 20) }}
                                                             </h5>
                                                             <small class="text-muted d-block mt-1 fw-light">
-                                                                {{
-                                                                formato_tamano_archivo(filesize($archivo->archivo_alumno))
-                                                                }}
+                                                                {{ formato_tamano_archivo(filesize($archivo->archivo_alumno)) }}
                                                             </small>
                                                         </div>
                                                     </div>

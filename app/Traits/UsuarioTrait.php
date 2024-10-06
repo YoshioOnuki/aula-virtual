@@ -42,7 +42,7 @@ trait UsuarioTrait
         $tipo_vista = Route::current()->parameter('tipo_vista');
         $usuario = $this->obtener_usuario_del_curso();
 
-        return $usuario->esDocenteInvitadoAula($id_gestion_aula) && $tipo_vista === 'carga-academica' ? true : false;
+        return $usuario->esDocenteInvitado($id_gestion_aula) && $tipo_vista === 'carga-academica' ? true : false;
     }
 
     /**
@@ -56,8 +56,4 @@ trait UsuarioTrait
         $id_curso = Hashids::decode($id_curso)[0];
         return $id_curso;
     }
-
-
-
-
 }

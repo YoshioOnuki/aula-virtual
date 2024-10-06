@@ -2,9 +2,11 @@
 
 namespace App\Livewire\GestionAula\Webgrafia;
 
+use App\Models\GestionAula;
 use App\Models\GestionAulaUsuario;
 use App\Models\Usuario;
 use App\Models\Webgrafia;
+use App\Traits\UsuarioTrait;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
@@ -18,6 +20,7 @@ use Vinkla\Hashids\Facades\Hashids;
 class Index extends Component
 {
     use WithPagination;
+    use UsuarioTrait;
     protected $paginationTheme = 'bootstrap';
 
     #[Url('mostrar')]
@@ -27,9 +30,7 @@ class Index extends Component
 
     public $id_usuario_hash;
     public $usuario;
-
-    public $id_gestion_aula_usuario_hash;
-    public $id_gestion_aula_usuario;
+    public $id_gestion_aula_hash;
     public $id_gestion_aula;
 
     // Variables para el modal de Recursos
@@ -44,16 +45,20 @@ class Index extends Component
 
 
     public $modo_admin = false;// Modo admin, para saber si se esta en modo administrador
+    public $es_docente = false;
+    public $es_docente_invitado = false;
+    public $tipo_vista;
 
     // Variables para page-header
     public $titulo_page_header = 'Webgrafía';
     public $links_page_header = [];
     public $regresar_page_header;
 
-    public $tipo_vista;
 
 
-    /* =============== FUNCIONES PARA EL MODAL DE WEBGRAFIA - AGREGAR Y EDITAR =============== */
+    /**
+     * Abrir modal para editar webgrafía
+     */
     public function abrir_modal_webgrafia_editar(Webgrafia $webgrafia)
     {
         $this->limpiar_modal();
@@ -67,6 +72,9 @@ class Index extends Component
         $this->link_webgrafia = $this->editar_webgrafia->link_webgrafia;
     }
 
+    /**
+     * Abrir modal para agregar webgrafía
+     */
     public function abrir_modal_webgrafia_agregar()
     {
         $this->limpiar_modal();
@@ -76,6 +84,9 @@ class Index extends Component
         $this->accion_estado = 'Agregar';
     }
 
+    /**
+     * Guardar webgrafía
+     */
     public function guardar_webgrafia()
     {
         $this->validate();
@@ -105,6 +116,7 @@ class Index extends Component
             DB::commit();
 
             $this->cerrar_modal();
+            $this->limpiar_modal();
 
             $this->dispatch(
                 'toast-basico',
@@ -124,11 +136,21 @@ class Index extends Component
 
     }
 
-    public function cerrar_modal()
+    /**
+     * Cerrar modal
+     */
+    public function cerrar_modal($modal = '#modal-webgrafia')
     {
-        $this->limpiar_modal();
+        $this->dispatch(
+            'modal',
+            modal: $modal,
+            action: 'hide'
+        );
     }
 
+    /**
+     * Limpiar modal
+     */
     public function limpiar_modal()
     {
         $this->modo = 1;
@@ -141,7 +163,9 @@ class Index extends Component
     }
 
 
-    /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
+    /**
+     * Obtener datos para el page header
+     */
     public function obtener_datos_page_header()
     {
         $this->titulo_page_header = 'Webgrafía';
@@ -151,12 +175,12 @@ class Index extends Component
         {
             $this->regresar_page_header = [
                 'route' => 'cursos.detalle',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]
             ];
         } else {
             $this->regresar_page_header = [
                 'route' => 'carga-academica.detalle',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]
             ];
         }
 
@@ -185,21 +209,21 @@ class Index extends Component
             ];
         }
 
-        $curso = GestionAulaUsuario::with('gestionAula.curso')->find($this->id_gestion_aula_usuario);
+        $gestion_aula = GestionAula::with('curso')->find($this->id_gestion_aula);
 
         // Links --> Detalle del curso o carga académica
         if ($this->tipo_vista === 'cursos')
         {
             $this->links_page_header[] = [
-                'name' => $curso->gestionAula->curso->nombre_curso,
+                'name' => $gestion_aula->curso->nombre_curso,
                 'route' => 'cursos.detalle',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]
             ];
         } else {
             $this->links_page_header[] = [
-                'name' => $curso->gestionAula->curso->nombre_curso,
+                'name' => $gestion_aula->curso->nombre_curso,
                 'route' => 'carga-academica.detalle',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]
             ];
         }
 
@@ -207,27 +231,19 @@ class Index extends Component
 
     public function mount($id_usuario, $tipo_vista, $id_curso)
     {
-        $this->tipo_vista = $tipo_vista;
-
-        $this->id_gestion_aula_usuario_hash = $id_curso;
-        $id_gestion_aula_usuario = Hashids::decode($id_curso);
-        $this->id_gestion_aula_usuario = $id_gestion_aula_usuario[0];
-        $this->id_gestion_aula = GestionAulaUsuario::find($this->id_gestion_aula_usuario)->id_gestion_aula;
-
-
         $this->id_usuario_hash = $id_usuario;
-        $id_usuario = Hashids::decode($id_usuario);
-        $this->usuario = Usuario::find($id_usuario[0]);
+        $this->usuario = $this->obtener_usuario_del_curso();
+        $this->tipo_vista = $tipo_vista;
+        $this->id_gestion_aula_hash = $id_curso;
+        $this->id_gestion_aula = $this->obtener_id_curso();
 
-        $user = Auth::user();
-        $usuario_sesion = Usuario::find($user->id_usuario);
+        $this->modo_admin = $this->obtener_usuario_autenticado()->esRol('ADMINISTRADOR');
 
-        if ($usuario_sesion->esRol('ADMINISTRADOR'))
-        {
-            $this->modo_admin = true;
-        }
+        $this->es_docente = $this->usuario->esDocente($this->id_gestion_aula);
+
+        $this->es_docente_invitado = $this->verificar_usuario_invitado();
+
         $this->obtener_datos_page_header();
-
     }
 
 

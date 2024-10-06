@@ -30,6 +30,7 @@ class Index extends Component
 
     public $modo_admin = false;// Modo admin, para saber si se esta en modo administrador
     public $es_docente = false;
+    public $es_docente_invitado = false;
     public $tipo_vista;
 
     // Variables para carga de datos
@@ -212,6 +213,7 @@ class Index extends Component
         $usuario_sesion = $this->obtener_usuario_autenticado();
         $this->modo_admin = $usuario_sesion->esRol('ADMINISTRADOR');
         $this->es_docente = $this->usuario->esDocente($this->id_gestion_aula);
+        $this->es_docente_invitado = $this->verificar_usuario_invitado();
 
         $this->mostrar_datos_curso();
         $this->mostrar_silabus();

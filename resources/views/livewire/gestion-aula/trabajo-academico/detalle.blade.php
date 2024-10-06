@@ -9,7 +9,7 @@
             <div class="row row-cards d-flex justify-content-between">
                 <div class="col-lg-2 d-none d-lg-block">
                     <livewire:components.navegacion.navegacion-curso :tipo_vista=$tipo_vista
-                        :id_usuario=$id_usuario_hash :id_gestion_aula_usuario=$id_gestion_aula_usuario />
+                        :id_usuario=$id_usuario_hash :id_curso=$id_gestion_aula_hash />
                 </div>
 
                 <div class="col-lg-10 col-md-12 col-sm-12">
@@ -299,45 +299,45 @@
 @script
 <script>
     $(function() {
-                $('#descripcion_trabajo_academico_alumno').summernote({
-                    placeholder: 'Ingrese la descripción del trabajo académico a entregar',
-                    height: 200,
-                    tabsize: 2,
-                    toolbar: [
-                        ['style', ['style']],
-                        ['font', ['bold', 'underline', 'clear']],
-                        ['color', ['color']],
-                        ['para', ['ul', 'ol', 'paragraph']],
-                        ['table', ['table']],
-                        ['insert', ['link', 'picture']]
-                    ],
-                    callbacks: {
-                        onImageUpload: function(files) {
-                            var maxSize = 2 * 1024 * 1024; // 2MB
-                            if (files[0].size > maxSize) {
-                                // Mostrar toast de error
-                                window.dispatchEvent(new CustomEvent('toast-basico', {
-                                    detail: {
-                                        type: 'error',
-                                        mensaje: 'El archivo supera el tamaño máximo permitido de 2MB.'
-                                    }
-                                }));
-                                console.log('El archivo supera el tamaño máximo permitido de 2MB.');
-                                return;
-                            }else{
-                                let editor = $(this);
-                                let reader = new FileReader();
-                                reader.onloadend = function () {
-                                    editor.summernote('insertImage', reader.result);
-                                };
-                                reader.readAsDataURL(files[0]);
+        $('#descripcion_trabajo_academico_alumno').summernote({
+            placeholder: 'Ingrese la descripción del trabajo académico a entregar',
+            height: 200,
+            tabsize: 2,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture']]
+            ],
+            callbacks: {
+                onImageUpload: function(files) {
+                    var maxSize = 2 * 1024 * 1024; // 2MB
+                    if (files[0].size > maxSize) {
+                        // Mostrar toast de error
+                        window.dispatchEvent(new CustomEvent('toast-basico', {
+                            detail: {
+                                type: 'error',
+                                mensaje: 'El archivo supera el tamaño máximo permitido de 2MB.'
                             }
-                        },
-                        onChange: function(contents, $editable) {
-                            @this.set('descripcion_trabajo_academico_alumno', contents);
-                        }
-                    },
-                });
-            })
+                        }));
+                        console.log('El archivo supera el tamaño máximo permitido de 2MB.');
+                        return;
+                    }else{
+                        let editor = $(this);
+                        let reader = new FileReader();
+                        reader.onloadend = function () {
+                            editor.summernote('insertImage', reader.result);
+                        };
+                        reader.readAsDataURL(files[0]);
+                    }
+                },
+                onChange: function(contents, $editable) {
+                    @this.set('descripcion_trabajo_academico_alumno', contents);
+                }
+            },
+        });
+    })
 </script>
 @endscript

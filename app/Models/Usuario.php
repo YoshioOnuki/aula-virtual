@@ -38,15 +38,18 @@ class Usuario extends Authenticatable
         return $this->hasMany(UsuarioRol::class, 'id_usuario');
     }
 
-    public function roles() {
+    public function roles()
+    {
         return $this->belongsToMany(Rol::class, 'usuario_rol', 'id_usuario', 'id_rol');
     }
 
-    public function gestionAulaAlumno(){
+    public function gestionAulaAlumno()
+    {
         return $this->hasMany(GestionAulaAlumno::class, 'id_usuario');
     }
 
-    public function gestionAulaDocente(){
+    public function gestionAulaDocente()
+    {
         return $this->hasMany(GestionAulaDocente::class, 'id_usuario');
     }
 
@@ -61,7 +64,7 @@ class Usuario extends Authenticatable
         return false;
     }
 
-    public function esDocenteInvitadoAula($id_gestion_aula)
+    public function esDocenteInvitado($id_gestion_aula)
     {
         $gestionAulaDocente = GestionAulaDocente::where('id_usuario', $this->id_usuario)
             ->where('id_gestion_aula', $id_gestion_aula)
@@ -104,64 +107,32 @@ class Usuario extends Authenticatable
         return false;
     }
 
-    // public function esRolGestionAula($nombreRol, $idGestionAulaUsuario)
-    // {
-    //     $idGestionAula = GestionAulaUsuario::find($idGestionAulaUsuario)->id_gestion_aula;
-    //     $gestionAulaUsuario = GestionAulaUsuario::with([
-    //         'gestionAula' => function ($query) {
-    //             $query->select('id_gestion_aula');
-    //         },
-    //         'rol' => function ($query) {
-    //             $query->select('id_rol', 'nombre_rol');
-    //         }
-    //     ])->whereHas('rol', function ($query) use ($nombreRol) {
-    //         $query->where('nombre_rol', $nombreRol);
-    //     })->where('id_usuario', $this->id_usuario)
-    //     ->where('id_gestion_aula', $idGestionAula)->first();
-
-    //     if ($gestionAulaUsuario) {
-    //         return true;
-    //     }
-
-    //     return false;
-    // }
-
-    // public function getRolUsuaAttribute()
-    // {
-    //     return $this->roles->first()->nombre_rol;
-    // }
-
     public function MostrarFoto($tipo)
     {
         $color = '000000';
         $color_lt = 'ffffff';
 
-        if($tipo === 'usuario')
-        {
+        if ($tipo === 'usuario') {
             $color = config('settings.color_usuario');
             $color_lt = config('settings.color_lt_usuario');
         }
 
-        if($tipo === 'docente')
-        {
+        if ($tipo === 'docente') {
             $color = config('settings.color_docente');
             $color_lt = config('settings.color_lt_docente');
         }
 
-        if($tipo === 'alumno')
-        {
+        if ($tipo === 'alumno') {
             $color = config('settings.color_alumnos');
             $color_lt = config('settings.color_lt_alumnos');
         }
 
-        if($tipo === 'azure')
-        {
+        if ($tipo === 'azure') {
             $color = '4299e1';
             $color_lt = 'ecf5fc';
         }
 
-        if($tipo === 'indigo')
-        {
+        if ($tipo === 'indigo') {
             $color = '4263eb';
             $color_lt = 'eceffd';
         }
@@ -169,7 +140,7 @@ class Usuario extends Authenticatable
         $nombres = $this->persona ? $this->persona->solo_primeros_nombres : 'Sin Nombres';
 
         return $this->foto_usuario || $this->foto_usuario != '' ? $this->foto_usuario :
-            'https://ui-avatars.com/api/?name=' . $nombres . '&size=64&&color='. $color_lt .'&background='. $color .'&bold=true';
+            'https://ui-avatars.com/api/?name=' . $nombres . '&size=64&&color=' . $color_lt . '&background=' . $color . '&bold=true';
     }
 
     //Mostrar el rol, si tiene mas de un rol, concatenar
@@ -198,7 +169,7 @@ class Usuario extends Authenticatable
             return $query;
         }
 
-        return $query->where(function($query) use ($search) {
+        return $query->where(function ($query) use ($search) {
             $query->where('correo_usuario', 'LIKE', '%' . $search . '%')
                 ->orWhereHas('persona', function ($subQuery) use ($search) {
                     $subQuery->where('nombres_persona', 'LIKE', '%' . $search . '%')
@@ -216,7 +187,7 @@ class Usuario extends Authenticatable
             return $query;
         }
 
-        return $query->where(function($query) use ($search) {
+        return $query->where(function ($query) use ($search) {
             $query->where('correo_usuario', 'LIKE', '%' . $search . '%')
                 ->orWhereHas('persona', function ($subQuery) use ($search) {
                     $subQuery->where('nombres_persona', 'LIKE', '%' . $search . '%')
@@ -234,7 +205,7 @@ class Usuario extends Authenticatable
             return $query;
         }
 
-        return $query->where(function($query) use ($search) {
+        return $query->where(function ($query) use ($search) {
             $query->where('correo_usuario', 'LIKE', '%' . $search . '%')
                 ->orWhereHas('persona', function ($subQuery) use ($search) {
                     $subQuery->where('nombres_persona', 'LIKE', '%' . $search . '%')
@@ -245,15 +216,18 @@ class Usuario extends Authenticatable
         });
     }
 
-    public function scopeActivo($query) {
+    public function scopeActivo($query)
+    {
         return $query->where('estado_usuario', 1);
     }
 
-    public function scopeInactivo($query) {
+    public function scopeInactivo($query)
+    {
         return $query->where('estado_usuario', 0);
     }
 
-    public function scopeCorreo($query, $correo) {
+    public function scopeCorreo($query, $correo)
+    {
         return $query->where('correo_usuario', $correo);
     }
 

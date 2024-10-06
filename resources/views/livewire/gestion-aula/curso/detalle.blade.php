@@ -6,12 +6,12 @@
     <div class="page-body">
         <div class="container-xl">
 
-            @if ($modo_invitado)
+            @if ($es_docente_invitado)
                 <livewire:components.navegacion.alert-docente-invitado />
             @endif
 
             @if($modo_admin)
-            <livewire:components.curso.admin-info-usuario :usuario=$usuario :tipo_vista=$tipo_vista lazy />
+                <livewire:components.curso.admin-info-usuario :usuario=$usuario :tipo_vista=$tipo_vista lazy />
             @endif
 
             <div class="row g-3">

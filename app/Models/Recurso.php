@@ -26,6 +26,13 @@ class Recurso extends Model
         return $this->belongsTo(GestionAula::class, 'id_gestion_aula');
     }
 
+    public function scopeSearch($query, $search)
+    {
+        if ($search) {
+            return $query->where('nombre_recurso', 'LIKE', "%$search%");
+        }
+    }
+
     protected static function boot()
     {
         parent::boot();

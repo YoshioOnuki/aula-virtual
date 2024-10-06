@@ -6,10 +6,14 @@
     <div class="page-body">
         <div class="container-xl">
 
+            @if ($es_docente_invitado)
+                <livewire:components.navegacion.alert-docente-invitado />
+            @endif
+
             <div class="row row-cards d-flex justify-content-between">
                 <div class="col-lg-2 d-none d-lg-block">
                     <livewire:components.navegacion.navegacion-curso :tipo_vista=$tipo_vista
-                        :id_usuario=$id_usuario_hash :id_gestion_aula_usuario=$id_gestion_aula_usuario />
+                        :id_usuario=$id_usuario_hash :id_curso=$id_gestion_aula_hash />
                 </div>
 
                 <div class="col-lg-10 col-md-12 col-sm-12">
@@ -19,9 +23,47 @@
 
                     <div class="row g-3">
                         <div class="col-12">
-                            <div class="card animate__animated animate__fadeIn  ">
+                            <div class="card card-stacked animate__animated animate__fadeIn">
+
+                                <div class="card-stamp card-stamp-lg">
+                                    {{-- Icono de la tarjeta (Lado derecho de la esquina superior) --}}
+                                    @if ($tipo_vista === 'cursos')
+                                        <div class="card-stamp-icon bg-teal">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                class="icon icon-tabler icons-tabler-outline icon-tabler-world-pin">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M20.972 11.291a9 9 0 1 0 -8.322 9.686" />
+                                                <path d="M3.6 9h16.8" />
+                                                <path d="M3.6 15h8.9" />
+                                                <path d="M11.5 3a17 17 0 0 0 0 18" />
+                                                <path d="M12.5 3a16.986 16.986 0 0 1 2.578 9.018" />
+                                                <path
+                                                    d="M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879z" />
+                                                <path d="M19 18v.01" />
+                                            </svg>
+                                        </div>
+                                    @elseif($tipo_vista === 'carga-academica')
+                                        <div class="card-stamp-icon bg-orange">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                class="icon icon-tabler icons-tabler-outline icon-tabler-world-pin">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M20.972 11.291a9 9 0 1 0 -8.322 9.686" />
+                                                <path d="M3.6 9h16.8" />
+                                                <path d="M3.6 15h8.9" />
+                                                <path d="M11.5 3a17 17 0 0 0 0 18" />
+                                                <path d="M12.5 3a16.986 16.986 0 0 1 2.578 9.018" />
+                                                <path
+                                                    d="M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879z" />
+                                                <path d="M19 18v.01" />
+                                            </svg>
+                                        </div>
+                                    @endif
+                                </div>
+
                                 <div class="card-body border-bottom py-3">
-                                    <div class="d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center justify-content-between w-100">
                                         <div class="text-secondary">
                                             Mostrar
                                             <div class="mx-2 d-inline-block">
@@ -36,54 +78,52 @@
                                             entradas
                                         </div>
                                         <div class="text-secondary row">
-                                            @if ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario) &&
-                                            $tipo_vista === 'carga-academica')
-                                            <div class="col-lg-7 col-9">
-                                                <div class="d-inline-block">
-                                                    <input type="text" class="form-control"
-                                                        wire:model.live.debounce.500ms="search"
-                                                        aria-label="Search invoice" placeholder="Buscar">
+                                            @if ($es_docente && $tipo_vista === 'carga-academica')
+                                                <div class="col-lg-7 col-9">
+                                                    <div class="d-inline-block w-100">
+                                                        <input type="text" class="form-control"
+                                                            wire:model.live.debounce.500ms="search"
+                                                            aria-label="Search invoice" placeholder="Buscar">
+                                                    </div>
                                                 </div>
-                                            </div>
                                             @else
-                                            <div class="col-lg-12">
-                                                <div class="d-inline-block">
-                                                    <input type="text" class="form-control"
-                                                        wire:model.live.debounce.500ms="search"
-                                                        aria-label="Search invoice" placeholder="Buscar">
+                                                <div class="col-lg-12">
+                                                    <div class="d-inline-block w-100">
+                                                        <input type="text" class="form-control"
+                                                            wire:model.live.debounce.500ms="search"
+                                                            aria-label="Search invoice" placeholder="Buscar">
+                                                    </div>
                                                 </div>
-                                            </div>
                                             @endif
 
-                                            @if ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario) &&
-                                            $tipo_vista === 'carga-academica')
-                                            <div class="col-lg-5 col-3 d-flex justify-content-end">
-                                                <a class="btn btn-primary d-none d-md-inline-block"
-                                                    wire:click="abrir_modal_webgrafia_agregar()" data-bs-toggle="modal"
-                                                    data-bs-target="#modal-webgrafia">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
-                                                        height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                        stroke="currentColor" fill="none" stroke-linecap="round"
-                                                        stroke-linejoin="round">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                        <path d="M12 5l0 14" />
-                                                        <path d="M5 12l14 0" />
-                                                    </svg>
-                                                    Agregar Webgrafía
-                                                </a>
-                                                <a class="btn btn-primary d-md-none btn-icon"
-                                                    wire:click="abrir_modal_webgrafia_agregar()" data-bs-toggle="modal"
-                                                    data-bs-target="#modal-webgrafia">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
-                                                        height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                        stroke="currentColor" fill="none" stroke-linecap="round"
-                                                        stroke-linejoin="round">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                        <path d="M12 5l0 14" />
-                                                        <path d="M5 12l14 0" />
-                                                    </svg>
-                                                </a>
-                                            </div>
+                                            @if ($es_docente && $tipo_vista === 'carga-academica')
+                                                <div class="col-lg-5 col-3 d-flex justify-content-end">
+                                                    <a class="btn btn-primary d-none d-md-inline-block"
+                                                        wire:click="abrir_modal_webgrafia_agregar()" data-bs-toggle="modal"
+                                                        data-bs-target="#modal-webgrafia">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                                                            height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                            stroke="currentColor" fill="none" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                            <path d="M12 5l0 14" />
+                                                            <path d="M5 12l14 0" />
+                                                        </svg>
+                                                        Registrar
+                                                    </a>
+                                                    <a class="btn btn-primary d-md-none btn-icon"
+                                                        wire:click="abrir_modal_webgrafia_agregar()" data-bs-toggle="modal"
+                                                        data-bs-target="#modal-webgrafia">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                                                            height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                            stroke="currentColor" fill="none" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                            <path d="M12 5l0 14" />
+                                                            <path d="M5 12l14 0" />
+                                                        </svg>
+                                                    </a>
+                                                </div>
                                             @endif
                                         </div>
                                     </div>
@@ -115,45 +155,42 @@
                                                     {{ $item->link_webgrafia }}
                                                 </td>
                                                 <td>
-                                                    @if ($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario)
-                                                    &&
-                                                    $tipo_vista === 'carga-academica')
-                                                    <div class="btn-list flex-nowrap">
-                                                        <div class="dropdown">
-                                                            <button class="btn dropdown-toggle align-text-top"
-                                                                data-bs-toggle="dropdown" aria-expanded="false">
-                                                                Acciones
-                                                            </button>
-                                                            <div class="dropdown-menu dropdown-menu-end">
-                                                                <a class="dropdown-item" style="cursor: pointer;"
-                                                                    wire:click="redirect_link({{ $item->id_webgrafia }})">
-                                                                    Ir al link
-                                                                </a>
-                                                                <a class="dropdown-item" style="cursor: pointer;"
-                                                                    wire:click="abrir_modal_webgrafia_editar({{ $item->id_webgrafia }})"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#modal-webgrafia">
-                                                                    Editar
-                                                                </a>
+                                                    @if ($es_docente && $tipo_vista === 'carga-academica')
+                                                        <div class="btn-list flex-nowrap">
+                                                            <div class="dropdown">
+                                                                <button class="btn dropdown-toggle align-text-top"
+                                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                                    Acciones
+                                                                </button>
+                                                                <div class="dropdown-menu dropdown-menu-end">
+                                                                    <a class="dropdown-item" style="cursor: pointer;"
+                                                                        wire:click="redirect_link({{ $item->id_webgrafia }})">
+                                                                        Ir al link
+                                                                    </a>
+                                                                    <a class="dropdown-item" style="cursor: pointer;"
+                                                                        wire:click="abrir_modal_webgrafia_editar({{ $item->id_webgrafia }})"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#modal-webgrafia">
+                                                                        Editar
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
                                                     @else
-
-                                                    <div x-data="{ link: '{{ $item->link_webgrafia }}' }">
-                                                        <div x-data="{
-                                                            link: '{{ $item->link_webgrafia ? $item->link_webgrafia : '' }}',
-                                                            handleClick() {
-                                                                if (!this.link) {
-                                                                    this.$dispatch('toast-basico', {
-                                                                        mensaje: 'El link de la webgrafía no está disponible',
-                                                                        type: 'error'
-                                                                    });
-                                                                } else {
-                                                                    window.open(this.link, '_blank');
+                                                        <div x-data="{ link: '{{ $item->link_webgrafia }}' }">
+                                                            <div x-data="{
+                                                                link: '{{ $item->link_webgrafia ? $item->link_webgrafia : '' }}',
+                                                                handleClick() {
+                                                                    if (!this.link) {
+                                                                        this.$dispatch('toast-basico', {
+                                                                            mensaje: 'El link de la webgrafía no está disponible',
+                                                                            type: 'error'
+                                                                        });
+                                                                    } else {
+                                                                        window.open(this.link, '_blank');
+                                                                    }
                                                                 }
-                                                            }
-                                                        }">
+                                                            }">
                                                             <button type="button" class="btn btn-outline-primary"
                                                                 @click="handleClick">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24"
@@ -171,35 +208,34 @@
                                                                 Ir al link
                                                             </button>
                                                         </div>
-
-                                                        @endif
+                                                    @endif
                                                 </td>
                                             </tr>
                                             @empty
-                                            @if ($webgrafias->count() == 0 && $search != '')
-                                            <tr>
-                                                <td colspan="4">
-                                                    <div class="text-center"
-                                                        style="padding-bottom: 2rem; padding-top: 2rem;">
-                                                        <span class="text-secondary">
-                                                            No se encontraron resultados para
-                                                            "<strong>{{ $search }}</strong>"
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            @else
-                                            <tr>
-                                                <td colspan="4">
-                                                    <div class="text-center"
-                                                        style="padding-bottom: 2rem; padding-top: 2rem;">
-                                                        <span class="text-secondary">
-                                                            No hay webgrafias registradas
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            @endif
+                                                @if ($webgrafias->count() == 0 && $search != '')
+                                                    <tr>
+                                                        <td colspan="4">
+                                                            <div class="text-center"
+                                                                style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                                <span class="text-secondary">
+                                                                    No se encontraron resultados para
+                                                                    "<strong>{{ $search }}</strong>"
+                                                                </span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                @else
+                                                    <tr>
+                                                        <td colspan="4">
+                                                            <div class="text-center"
+                                                                style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                                <span class="text-secondary">
+                                                                    No hay webgrafias registradas
+                                                                </span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                @endif
                                             @endforelse
                                         </tbody>
                                     </table>
@@ -244,7 +280,7 @@
                         {{ $titulo_modal }}
                     </h5>
                     <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal"
-                        aria-label="Close" wire:click="cerrar_modal"></button>
+                        aria-label="Close" wire:click="limpiar_modal"></button>
                 </div>
                 <form autocomplete="off" wire:submit="guardar_webgrafia">
                     <div class="modal-body">
@@ -281,7 +317,7 @@
                     </div>
 
                     <div class="modal-footer">
-                        <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="cerrar_modal">
+                        <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="limpiar_modal">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-ban">
