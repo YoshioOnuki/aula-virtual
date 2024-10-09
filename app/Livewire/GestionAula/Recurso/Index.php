@@ -154,7 +154,6 @@ class Index extends Component
 
             $this->cerrar_modal();
             $this->limpiar_modal();
-            $this->mostrar_recursos();
             $this->load_recursos();
 
         } catch (\Exception $e) {
