@@ -57,10 +57,10 @@
             <thead>
                 <tr>
                     @if($tipo_vista === 'cursos')
-                    <th class="col-1">Código</th>
-                    <th>Alumno</th>
+                        <th class="col-1">Código</th>
+                        <th>Alumno</th>
                     @else
-                    <th>Docente</th>
+                        <th>Docente</th>
                     @endif
                     <th>Usuario</th>
                     <th>Última acción</th>
@@ -69,95 +69,95 @@
             </thead>
             <tbody>
                 @forelse ($usuarios as $item)
-                <tr>
-                    @if($tipo_vista === 'cursos')
-                        <td>
-                            {{ $item->persona->codigo_alumno_persona ?? 'N/A'}}
-                        </td>
-                    @endif
-                    <td>
-                        <div class="d-flex py-1 align-items-center">
-                            @if($tipo_vista === 'cursos')
-                                <img src="{{ asset($item->mostrarFoto('alumno')) }}" alt="avatar" class="avatar me-2 rounded avatar-static">
-                            @else
-                                <img src="{{ asset($item->mostrarFoto('docente')) }}" alt="avatar" class="avatar me-2 rounded avatar-static">
-                            @endif
-                            <div class="flex-fill">
-                                <div class="font-weight-medium">
-                                    {{ $item->nombre_completo }}
-                                </div>
-                                <div class="text-secondary"><a href="#" class="text-reset">{{
-                                        $item->persona->documento_persona }}</a>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-
-                    <td>
-                        {{ $item->correo_usuario }}
-                    </td>
-                    <td>
-                        @if($item->id_accion_usuario === null && $item->ultima_accion_usuario === null)
-                        <span class="text-red">
-                            Nunca inició sesión
-                        </span>
-                        @else
-                        "{{ $item->accionUsuario->nombre_accion }}" <br>
-                        {{ ultima_conexion($item->ultima_accion_usuario) }}
+                    <tr>
+                        @if($tipo_vista === 'cursos')
+                            <td>
+                                {{ $item->persona->codigo_alumno_persona ?? 'N/A'}}
+                            </td>
                         @endif
-                    </td>
-                    <td>
-                        <div class="btn-list flex-nowrap">
-                            <div class="dropdown">
-                                <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    Acciones
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    @if($tipo_vista === 'carga-academica')
-                                    <a class="dropdown-item" style="cursor: pointer;"
-                                        href="{{ route('carga-academica', ['id_usuario' => Hashids::encode($item->id_usuario), 'tipo_vista' => $tipo_vista]) }}">
-                                        Carga académica
-                                    </a>
-                                    @elseif($tipo_vista === 'cursos')
-                                    <a class="dropdown-item" style="cursor: pointer;"
-                                        href="{{ route('cursos', ['id_usuario' => Hashids::encode($item->id_usuario), 'tipo_vista' => $tipo_vista]) }}">
-                                        Cursos
-                                    </a>
-                                    @endif
+                        <td>
+                            <div class="d-flex py-1 align-items-center">
+                                @if($tipo_vista === 'cursos')
+                                    <img src="{{ asset($item->mostrarFoto('alumno')) }}" alt="avatar" class="avatar me-2 rounded avatar-static">
+                                @else
+                                    <img src="{{ asset($item->mostrarFoto('docente')) }}" alt="avatar" class="avatar me-2 rounded avatar-static">
+                                @endif
+                                <div class="flex-fill">
+                                    <div class="font-weight-medium">
+                                        {{ $item->nombre_completo }}
+                                    </div>
+                                    <div class="text-secondary"><a href="#" class="text-reset">{{
+                                            $item->persona->documento_persona }}</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </td>
-                </tr>
-                @empty
-                @if ($usuarios->count() == 0 && $search != '')
-                <tr>
-                    <td colspan="6">
-                        <div class="text-center" style="padding-bottom: 2rem; padding-top: 2rem;">
-                            <span class="text-secondary">
-                                No se encontraron resultados para
-                                "<strong>{{ $search }}</strong>"
-                            </span>
-                        </div>
-                    </td>
-                </tr>
-                @else
-                <tr>
-                    <td colspan="6">
-                        <div class="text-center" style="padding-bottom: 2rem; padding-top: 2rem;">
-                            <div wire:loading.remove>
-                                <span class="text-secondary">
-                                    Busca un {{ $tipo_vista === 'cursos' ? 'Alumno' : 'Docente' }}.
+                        </td>
+
+                        <td>
+                            {{ $item->correo_usuario }}
+                        </td>
+                        <td>
+                            @if($item->auditoria->count() === 0)
+                                <span class="text-red">
+                                    Nunca inició sesión
                                 </span>
+                            @else
+                                "{{ $item->auditoria->last()->accion_auditoria }}" <br>
+                                {{ ultima_conexion($item->auditoria->last()->fecha_auditoria) }}
+                            @endif
+                        </td>
+                        <td>
+                            <div class="btn-list flex-nowrap">
+                                <div class="dropdown">
+                                    <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        Acciones
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-end">
+                                        @if($tipo_vista === 'carga-academica')
+                                        <a class="dropdown-item" style="cursor: pointer;"
+                                            href="{{ route('carga-academica', ['id_usuario' => Hashids::encode($item->id_usuario), 'tipo_vista' => $tipo_vista]) }}">
+                                            Carga académica
+                                        </a>
+                                        @elseif($tipo_vista === 'cursos')
+                                        <a class="dropdown-item" style="cursor: pointer;"
+                                            href="{{ route('cursos', ['id_usuario' => Hashids::encode($item->id_usuario), 'tipo_vista' => $tipo_vista]) }}">
+                                            Cursos
+                                        </a>
+                                        @endif
+                                    </div>
+                                </div>
                             </div>
-                            <div wire:loading>
-                                <div class="spinner-border text-blue" role="status"></div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                @endif
+                        </td>
+                    </tr>
+                @empty
+                    @if ($usuarios->count() == 0 && $search != '')
+                        <tr>
+                            <td colspan="6">
+                                <div class="text-center" style="padding-bottom: 2rem; padding-top: 2rem;">
+                                    <span class="text-secondary">
+                                        No se encontraron resultados para
+                                        "<strong>{{ $search }}</strong>"
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    @else
+                        <tr>
+                            <td colspan="6">
+                                <div class="text-center" style="padding-bottom: 2rem; padding-top: 2rem;">
+                                    <div wire:loading.remove>
+                                        <span class="text-secondary">
+                                            Busca un {{ $tipo_vista === 'cursos' ? 'Alumno' : 'Docente' }}.
+                                        </span>
+                                    </div>
+                                    <div wire:loading>
+                                        <div class="spinner-border text-blue" role="status"></div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    @endif
                 @endforelse
             </tbody>
         </table>

@@ -53,6 +53,11 @@ class Usuario extends Authenticatable
         return $this->hasMany(GestionAulaDocente::class, 'id_usuario');
     }
 
+    public function auditoria()
+    {
+        return $this->hasMany(Auditoria::class, 'id_usuario');
+    }
+
     // Validar que rol es, mandando como parametro el nombre del rol
     public function esRol($nombreRol)
     {

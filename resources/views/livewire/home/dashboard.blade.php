@@ -218,7 +218,7 @@
                                 <div class="text-secondary">
                                     Mostrar
                                     <div class="mx-2 d-inline-block">
-                                        <select wire:model.live="mostrar_paginate_actividades" class="form-select">
+                                        <select wire:model.live="mostrar_paginate_visitas" class="form-select">
                                             <option value="5">5</option>
                                             <option value="10">10</option>
                                             <option value="20">20</option>
@@ -230,7 +230,7 @@
                                     <div class="col-lg-12">
                                         <div class="d-inline-block w-100">
                                             <input type="text" class="form-control"
-                                                wire:model.live.debounce.500ms="search_actividades"
+                                                wire:model.live.debounce.500ms="search_visitas"
                                                 aria-label="Buscar actividades" placeholder="Buscar">
                                         </div>
                                     </div>

@@ -2,9 +2,6 @@
 
 namespace App\Livewire\AlumnosDocentes;
 
-use App\Models\Usuario;
-use Illuminate\Support\Facades\DB;
-use Livewire\Attributes\Url;
 use Livewire\Component;
 
 class Index extends Component
@@ -19,12 +16,7 @@ class Index extends Component
     /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
         public function obtener_datos_page_header()
         {
-            if($this->tipo_vista === 'cursos')
-            {
-                $this->titulo_page_header = 'ALUMNOS';
-            } else {
-                $this->titulo_page_header = 'DOCENTES';
-            }
+            $this->titulo_page_header = $this->tipo_vista === 'cursos' ? 'ALUMNOS' : 'DOCENTES';
 
             // Links --> Inicio
             $this->links_page_header = [
@@ -41,16 +33,8 @@ class Index extends Component
 
     public function mount()
     {
-        if(request()->routeIs('alumnos*'))
-        {
-            $this->tipo_vista = 'cursos';
-        }elseif(request()->routeIs('docentes*'))
-        {
-            $this->tipo_vista = 'carga-academica';
-        }
-
+        $this->tipo_vista = request()->routeIs('alumnos*') ? 'cursos' : 'carga-academica';
         $this->obtener_datos_page_header();
-
     }
 
     public function render()

@@ -65,11 +65,6 @@ class Auditoria extends Model
         return $this->accion->nombre_accion;
     }
 
-    public function getFechaAuditoriaAttribute($value)
-    {
-        return $value->format('Y-m-d H:i:s');
-    }
-
     public function getValorAnteriorAuditoriaAttribute($value)
     {
         return json_decode($value);

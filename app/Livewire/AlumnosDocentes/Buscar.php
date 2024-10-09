@@ -5,7 +5,6 @@ namespace App\Livewire\AlumnosDocentes;
 use App\Models\Usuario;
 use Livewire\Attributes\Url;
 use Livewire\Component;
-use Vinkla\Hashids\Facades\Hashids;
 
 class Buscar extends Component
 {
@@ -18,22 +17,24 @@ class Buscar extends Component
 
     public function mostrar_usuarios()
     {
-        $this->usuarios = Usuario::with('persona', 'roles', 'accionUsuario')
-            ->where('estado_usuario', 1)
+        $this->usuarios = Usuario::with('persona', 'roles', 'auditoria.accion')
+            ->activo()
             ->whereHas('roles', function($query){
                 if($this->tipo_vista == 'cursos'){
                     $query->where('nombre_rol', 'ALUMNO');
                 }else{
-                    $query->whereIn('nombre_rol', ['DOCENTE', 'DOCENTE INVITADO']);
+                    $query->where('nombre_rol', 'DOCENTE');
                 }
             })->where(function($query) {
                 if($this->tipo_vista === 'cursos')
                 {
                     $query->searchAlumno($this->search);
                 }else{
-                    $query->search($this->search);
+                    $query->searchDocente($this->search);
                 }
-            })->get();
+            })
+                ->take(20)
+                ->get();
 
             $this->usuarios = $this->usuarios->sortBy(function ($usuario) {
                 return $usuario->persona->nombres_persona . ' ' . $usuario->persona->apellido_paterno_persona . ' ' . $usuario->persona->apellido_materno_persona;
