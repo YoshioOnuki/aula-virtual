@@ -19,6 +19,7 @@ class Index extends Component
 
     public $usuario;
     public $id_usuario_hash;
+    public $gestion_aula;
     public $id_gestion_aula_hash;
     public $id_gestion_aula;
     public $curso;
@@ -109,7 +110,7 @@ class Index extends Component
      */
     public function mostrar_datos_curso()
     {
-        $gestion_aula = GestionAula::with([
+        $this->gestion_aula = GestionAula::with([
             'curso' => function ($query) {
                 $query->with([
                     'ciclo',
@@ -124,8 +125,8 @@ class Index extends Component
             }
         ])->find($this->id_gestion_aula);
 
-        if ($gestion_aula) {
-            $this->curso = $gestion_aula->curso;
+        if ($this->gestion_aula) {
+            $this->curso = $this->gestion_aula->curso;
         }
     }
 

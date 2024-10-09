@@ -245,7 +245,7 @@
                                                         <strong>Nombre del Curso</strong>
                                                     </div>
                                                     <div class="col-12">
-                                                        {{ $curso->nombre_curso }}
+                                                        {{ $curso->nombre_curso }} - GRUPO {{ $gestion_aula->grupo_gestion_aula }}
                                                     </div>
                                                 </div>
                                             </div>
