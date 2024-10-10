@@ -56,7 +56,7 @@ class Persona extends Model
      * @var array
      */
     protected $casts = [
-        'documento_persona' => 'string',
+        'documento_persona' => 'integer',
     ];
 
 
