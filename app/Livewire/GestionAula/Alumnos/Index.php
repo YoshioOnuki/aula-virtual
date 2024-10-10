@@ -40,6 +40,7 @@ class Index extends Component
     public $correo_usuario;
 
     public $modo_admin = false;// Modo admin, para saber si se esta en modo administrador
+    public $es_docente_invitado = false;
     public $tipo_vista;
 
     // Variables para page-header
@@ -190,6 +191,8 @@ class Index extends Component
         $this->id_gestion_aula = $this->obtener_id_curso();
 
         $this->modo_admin = $this->obtener_usuario_autenticado()->esRol('ADMINISTRADOR');
+
+        $this->es_docente_invitado = $this->verificar_usuario_invitado();
 
         $this->obtener_datos_page_header();
     }
