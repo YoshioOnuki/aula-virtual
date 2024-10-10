@@ -103,10 +103,16 @@ if (!function_exists('format_mes')) {
 if (!function_exists('ultima_conexion')) {
     function ultima_conexion($fecha)
     {
+        // Si la fecha esta vacia, retornar Sin Conexión
+        if ($fecha === '') {
+            return 'Sin Conexión';
+        }
+
         $fecha_actual = date('Y-m-d');
         $hora_actual = date('H:i:s');
         $fecha_ultima_conexion = date('Y-m-d', strtotime($fecha));
         $hora_ultima_conexion = date('H:i:s', strtotime($fecha));
+
         if ($fecha_actual == $fecha_ultima_conexion) {
             return 'Hoy a las ' . date('h:i A', strtotime($hora_ultima_conexion));
         } else {

@@ -21,21 +21,104 @@ class AsistenciaAlumno extends Model
         'id_gestion_aula_alumno',
     ];
 
+    /**
+     * Los atributos que deben ser convertidos.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'nombre_estado_asistencia',
+        'nombre_completo_alumno',
+    ];
+
+
+    /**
+     * Retorna asistencia
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function asistencia()
     {
         return $this->belongsTo(Asistencia::class, 'id_asistencia');
     }
 
+    /**
+     * Retorna estadoAsistencia
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function estadoAsistencia()
     {
         return $this->belongsTo(EstadoAsistencia::class, 'id_estado_asistencia');
     }
 
+    /**
+     * Retorna gestionAulaAlumno
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function gestionAulaAlumno()
     {
         return $this->belongsTo(GestionAulaAlumno::class, 'id_gestion_aula_alumno');
     }
 
+    /**
+     * Retorna usuarioRegistra
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function usuarioRegistra()
+    {
+        return $this->belongsTo(Usuario::class, 'created_by');
+    }
+
+    /**
+     * Retorna usuarioActualiza
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function usuarioActualiza()
+    {
+        return $this->belongsTo(Usuario::class, 'updated_by');
+    }
+
+    /**
+     * Retorna usuarioElimina
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function usuarioElimina()
+    {
+        return $this->belongsTo(Usuario::class, 'deleted_by');
+    }
+
+
+    /**
+     * Get the nombre_estado_asistencia attribute.
+     *
+     * @return string
+     */
+    public function getNombreEstadoAsistenciaAttribute(): string
+    {
+        return $this->estadoAsistencia->nombre_estado_asistencia;
+    }
+
+    /**
+     * Get the nombre_completo_alumno attribute.
+     *
+     * @return string
+     */
+    public function getNombreCompletoAlumnoAttribute(): string
+    {
+        return $this->gestionAulaAlumno->nombre_completo_alumno;
+    }
+
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
     protected static function boot()
     {
         parent::boot();

@@ -21,16 +21,97 @@ class ForoRespuesta extends Model
         'id_gestion_aula_alumno',
     ];
 
+    /**
+     * Los atributos que deben ser añadidos.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'nombre_completo_alumno',
+    ];
+
+    /**
+     * Los atributos que deben ocultarse.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'created_by',
+        'updated_by',
+        'deleted_by',
+    ];
+
+
+    /**
+     * Retorna foro
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function foro()
     {
         return $this->belongsTo(Foro::class, 'id_foro');
     }
 
+    /**
+     * Retorna gestionAulaAlumno
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function gestionAulaAlumno()
     {
         return $this->belongsTo(GestionAulaAlumno::class, 'id_gestion_aula_alumno');
     }
 
+    /**
+     * Retorna usuarioRegistra
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function usuarioRegistra()
+    {
+        return $this->belongsTo(Usuario::class, 'created_by');
+    }
+
+    /**
+     * Retorna usuarioActualiza
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function usuarioActualiza()
+    {
+        return $this->belongsTo(Usuario::class, 'updated_by');
+    }
+
+    /**
+     * Retorna usuarioElimina
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function usuarioElimina()
+    {
+        return $this->belongsTo(Usuario::class, 'deleted_by');
+    }
+
+
+    /**
+     * Get the nombre_completo_alumno attribute.
+     *
+     * @return string
+     */
+    public function getNombreCompletoAlumnoAttribute(): string
+    {
+        return $this->gestionAulaAlumno->nombre_completo_alumno;
+    }
+
+
+    /**
+     * El método "arrancado" del modelo.
+     *
+     * @return void
+     */
     protected static function boot()
     {
         parent::boot();

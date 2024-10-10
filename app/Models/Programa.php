@@ -20,22 +20,92 @@ class Programa extends Model
         'id_tipo_programa',
     ];
 
+
+    /**
+     * Los atributos que deben ser añadidos.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'nombre_estado_programa',
+        'nombre_facultad',
+        'nombre_tipo_programa',
+    ];
+
+    /**
+     * Los atributos que deben ser convertidos.
+     *
+     * @var array
+     */
     protected $casts = [
         'estado_programa' => 'boolean',
     ];
 
+
+    /**
+     * Retorna facultad
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function facultad()
     {
         return $this->belongsTo(Facultad::class, 'id_facultad');
     }
 
+    /**
+     * Retorna tipoPrograma
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function tipoPrograma()
     {
         return $this->belongsTo(TipoPrograma::class, 'id_tipo_programa');
     }
 
+    /**
+     * Retorna curso
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function curso()
     {
         return $this->hasMany(Curso::class, 'id_programa');
     }
+
+
+    /**
+     * Retorna nombre_estado_programa
+     *
+     * @return string
+     */
+    public function getNombreEstadoProgramaAttribute() : string
+    {
+        return $this->estado_programa ? 'Activo' : 'Inactivo';
+    }
+
+    /**
+     * Retorna nombre_facultad
+     *
+     * @return string
+     */
+    public function getNombreFacultadAttribute() : string
+    {
+        return $this->facultad->nombre_facultad;
+    }
+
+    /**
+     * Retorna nombre_tipo_programa
+     *
+     * @return string
+     */
+    public function getNombreTipoProgramaAttribute() : string
+    {
+        return $this->tipoPrograma->nombre_tipo_programa;
+    }
+
+
+    /**
+     * Las marcas de tiempo que deben ser deshabilitadas.
+     */
+    public $timestamps = false;
 }

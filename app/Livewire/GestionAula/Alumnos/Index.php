@@ -2,8 +2,11 @@
 
 namespace App\Livewire\GestionAula\Alumnos;
 
+use App\Models\GestionAula;
+use App\Models\GestionAulaAlumno;
 use App\Models\GestionAulaUsuario;
 use App\Models\Usuario;
+use App\Traits\UsuarioTrait;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Url;
@@ -14,6 +17,7 @@ use Vinkla\Hashids\Facades\Hashids;
 class Index extends Component
 {
     use WithPagination;
+    use UsuarioTrait;
     protected $paginationTheme = 'bootstrap';
 
     #[Url('mostrar')]
@@ -23,36 +27,34 @@ class Index extends Component
 
     public $id_usuario_hash;
     public $usuario;
-
-    public $id_gestion_aula_usuario_hash;
-    public $id_gestion_aula_usuario;
+    public $id_gestion_aula_hash;
     public $id_gestion_aula;
 
     // Variables para modal
     public $modo = 1; // Modo 1 = Habilitar / 0 = Retirar
     public $titulo_modal = 'Estado de Alumno';
     public $accion_estado = 'Habilitar';
-    public $id_gestion_aula_usuario_alumno;
+    public $id_gestion_aula_alumno;
     public $codigo_alumno;
     public $nombres_alumno;
     public $correo_usuario;
 
     public $modo_admin = false;// Modo admin, para saber si se esta en modo administrador
+    public $tipo_vista;
 
     // Variables para page-header
     public $titulo_page_header = 'LISTA DE ALUMNOS';
     public $links_page_header = [];
     public $regresar_page_header;
 
-    public $tipo_vista;
 
 
-    public function abrir_modal_estado(GestionAulaUsuario $gestion_aula_usuario, $modo)
+    public function abrir_modal_estado(GestionAulaAlumno $gestion_aula_alumno, $modo)
     {
-        $this->id_gestion_aula_usuario_alumno = $gestion_aula_usuario->id_gestion_aula_usuario;
-        $this->codigo_alumno = $gestion_aula_usuario->usuario->persona->codigo_alumno_persona;
-        $this->nombres_alumno = $gestion_aula_usuario->usuario->nombre_completo;
-        $this->correo_usuario = $gestion_aula_usuario->usuario->correo_usuario;
+        $this->id_gestion_aula_alumno = $gestion_aula_alumno->id_gestion_aula_alumno;
+        $this->codigo_alumno = $gestion_aula_alumno->usuario->codigo_alumno;
+        $this->nombres_alumno = $gestion_aula_alumno->usuario->nombre_completo;
+        $this->correo_usuario = $gestion_aula_alumno->usuario->correo_usuario;
         $this->titulo_modal = 'Estado de Alumno';
 
         if ($modo === 1) {
@@ -68,44 +70,32 @@ class Index extends Component
             modal: '#modal-estado-alumnos',
             action: 'show'
         );
-
     }
 
+
+    /**
+     * Cambiar estado del alumno
+     */
     public function cambiar_estado()
     {
-        //Transacción para el manejo de datos
         try
         {
             DB::beginTransaction();
 
-            $gestion_aula_usuario = GestionAulaUsuario::find($this->id_gestion_aula_usuario_alumno);
-            $gestion_aula_usuario->estado_gestion_aula_usuario = $this->modo;
-            $gestion_aula_usuario->save();
-            // dd($gestion_aula_usuario->estado_gestion_aula_usuario, $gestion_aula_usuario->usuario->nombre_completo);
+            $gestion_aula_alumno = GestionAulaAlumno::find($this->id_gestion_aula_alumno);
+            $gestion_aula_alumno->estado_gestion_aula_alumno = $this->modo;
+            $gestion_aula_alumno->save();
 
-            //Reiniciar variables
-            $this->id_gestion_aula_usuario_alumno = '';
-            $this->codigo_alumno = '';
-            $this->nombres_alumno = '';
-            $this->correo_usuario = '';
-            $this->modo = 1;
-            $this->titulo_modal = 'Estado de Alumno';
-            $this->accion_estado = 'Habilitar';
+            DB::commit();
 
-            //Cerrar modal
-            $this->dispatch(
-                'modal',
-                modal: '#modal-estado-alumnos',
-                action: 'hide'
-            );
+            $this->cerrar_modal();
+            $this->limpiar_modal();
 
             $this->dispatch(
                 'toast-basico',
                 mensaje: 'Estado de alumno actualizado correctamente',
                 type: 'success'
             );
-
-            DB::commit();
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -116,12 +106,28 @@ class Index extends Component
                 type: 'error'
             );
         }
-
     }
 
+
+    /**
+     * Cerrar modal
+     */
+    public function cerrar_modal($modal = '#modal-estado-alumnos')
+    {
+        $this->dispatch(
+            'modal',
+            modal: $modal,
+            action: 'hide'
+        );
+    }
+
+
+    /**
+     * Limpiar modal
+     */
     public function limpiar_modal()
     {
-        $this->id_gestion_aula_usuario_alumno = '';
+        $this->id_gestion_aula_alumno = '';
         $this->codigo_alumno = '';
         $this->nombres_alumno = '';
         $this->correo_usuario = '';
@@ -131,15 +137,12 @@ class Index extends Component
 
         // Reiniciar errores
         $this->resetErrorBag();
-
-        $this->dispatch(
-            'modal',
-            modal: '#modal-estado-alumnos',
-            action: 'hide'
-        );
     }
 
-    /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
+
+    /**
+     * Obtener los datos para el page header
+     */
     public function obtener_datos_page_header()
     {
         $this->titulo_page_header = 'LISTA DE ALUMNOS';
@@ -147,7 +150,7 @@ class Index extends Component
         // Regresar
         $this->regresar_page_header = [
             'route' => 'carga-academica.detalle',
-            'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+            'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]
         ];
 
         // Links --> Inicio
@@ -166,13 +169,13 @@ class Index extends Component
             'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista]
         ];
 
-        $curso = GestionAulaUsuario::with('gestionAula.curso')->find($this->id_gestion_aula_usuario);
+        $gestion_aula = GestionAula::with('curso')->find($this->id_gestion_aula);
 
         // Links --> Detalle del curso o carga académica
         $this->links_page_header[] = [
-            'name' => $curso->gestionAula->curso->nombre_curso,
+            'name' => $gestion_aula->curso->nombre_curso,
             'route' => 'carga-academica.detalle',
-            'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_usuario_hash]
+            'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]
         ];
 
     }
@@ -180,49 +183,23 @@ class Index extends Component
 
     public function mount($id_usuario, $tipo_vista, $id_curso)
     {
-        $this->tipo_vista = $tipo_vista;
-
-        $this->id_gestion_aula_usuario_hash = $id_curso;
-        $id_gestion_aula_usuario = Hashids::decode($id_curso);
-        $this->id_gestion_aula_usuario = $id_gestion_aula_usuario[0];
-        $this->id_gestion_aula = GestionAulaUsuario::find($this->id_gestion_aula_usuario)->id_gestion_aula;
-
-
         $this->id_usuario_hash = $id_usuario;
-        $id_usuario = Hashids::decode($id_usuario);
-        $this->usuario = Usuario::find($id_usuario[0]);
+        $this->usuario = $this->obtener_usuario_del_curso();
+        $this->tipo_vista = $tipo_vista;
+        $this->id_gestion_aula_hash = $id_curso;
+        $this->id_gestion_aula = $this->obtener_id_curso();
 
-        $user = Auth::user();
-        $usuario_sesion = Usuario::find($user->id_usuario);
-
-        if ($usuario_sesion->esRol('ADMINISTRADOR'))
-        {
-            $this->modo_admin = true;
-        }
-
+        $this->modo_admin = $this->obtener_usuario_autenticado()->esRol('ADMINISTRADOR');
 
         $this->obtener_datos_page_header();
-
     }
 
     public function render()
     {
-        $alumnos = GestionAulaUsuario::with([
-            'usuario' => function ($query) {
-                $query->with([
-                    'persona' => function ($query) {
-                        $query->select('id_persona', 'documento_persona', 'nombres_persona', 'apellido_paterno_persona', 'apellido_materno_persona', 'codigo_alumno_persona', 'correo_persona');
-                    }
-                ])->select('id_usuario', 'correo_usuario', 'foto_usuario', 'estado_usuario', 'id_persona');
-            },
-            'rol' => function ($query) {
-                $query->select('id_rol', 'nombre_rol', 'estado_rol');
-            },
-        ])->where('id_gestion_aula', $this->id_gestion_aula)
-            ->whereHas('rol', function ($query) {
-                $query->where('nombre_rol', 'ALUMNO');
-            })
-            ->searchUsuario($this->search)
+        $alumnos = GestionAulaAlumno::with('usuario')
+            ->gestionAula($this->id_gestion_aula)
+            ->estado(true)
+            ->searchAlumno($this->search)
             ->paginate($this->mostrar_paginate);
 
         return view('livewire.gestion-aula.alumnos.index', [
