@@ -35,9 +35,6 @@ class Usuario extends Authenticatable
         'solo_primeros_nombres',
         'codigo_alumno',
         'documento_persona',
-        'es_alumno',
-        'es_docente',
-        'es_docente_invitado',
         'ultima_conexion',
     ];
 
@@ -218,63 +215,6 @@ class Usuario extends Authenticatable
     }
 
     /**
-     * Retorna es_alumno
-     *
-     * @return boolean
-     */
-    public function getEsAlumnoAttribute($id_gestion_aula) : bool
-    {
-        $gestionAulaAlumno = GestionAulaAlumno::where('id_usuario', $this->id_usuario)
-        ->gestionAula($id_gestion_aula)
-        ->estado(true)
-        ->first();
-
-        if ($gestionAulaAlumno) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Retorna es_docente
-     *
-     * @return boolean
-     */
-    public function getEsDocenteAttribute($id_gestion_aula) : bool
-    {
-        $gestionAulaDocente = GestionAulaDocente::where('id_usuario', $this->id_usuario)
-            ->gestionAula($id_gestion_aula)
-            ->invitado(false)
-            ->first();
-
-        if ($gestionAulaDocente) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Retorna es_docente_invitado
-     *
-     * @return boolean
-     */
-    public function getEsDocenteInvitadoAttribute($id_gestion_aula) : bool
-    {
-        $gestionAulaDocente = GestionAulaDocente::where('id_usuario', $this->id_usuario)
-            ->gestionAula($id_gestion_aula)
-            ->invitado(true)
-            ->first();
-
-        if ($gestionAulaDocente) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * Retorna ultima_conexion
      *
      * @return string
@@ -288,18 +228,51 @@ class Usuario extends Authenticatable
         return $auditoria->fecha_auditoria ?? '';
     }
 
+
+    // Validar si es docente invitado en una gestion de aula
     public function esDocenteInvitado($id_gestion_aula)
     {
+        $gestionAulaDocente = GestionAulaDocente::where('id_usuario', $this->id_usuario)
+            ->gestionAula($id_gestion_aula)
+            ->invitado(true)
+            ->first();
+
+        if ($gestionAulaDocente) {
+            return true;
+        }
+
+        return false;
     }
 
-    public function esAlumno($id_gestion_aula)
-    {
-    }
-
+    // Validar si es docente en una gestion de aula
     public function esDocente($id_gestion_aula)
     {
+        $gestionAulaDocente = GestionAulaDocente::where('id_usuario', $this->id_usuario)
+            ->gestionAula($id_gestion_aula)
+            ->invitado(false)
+            ->first();
+
+        if ($gestionAulaDocente) {
+            return true;
+        }
+
+        return false;
     }
 
+    // Validar si es alumno en una gestion de aula
+    public function esAlumno($id_gestion_aula)
+    {
+        $gestionAulaAlumno = GestionAulaAlumno::where('id_usuario', $this->id_usuario)
+            ->gestionAula($id_gestion_aula)
+            ->estado(true)
+            ->first();
+
+        if ($gestionAulaAlumno) {
+            return true;
+        }
+
+        return false;
+    }
 
     // Validar que rol es, mandando como parametro el nombre del rol
     public function esRol($nombreRol)
