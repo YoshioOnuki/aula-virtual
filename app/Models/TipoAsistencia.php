@@ -17,50 +17,14 @@ class TipoAsistencia extends Model
         'estado_tipo_asistencia',
     ];
 
-
-    /**
-     * Los atributos que deben ser añadidos.
-     *
-     * @var array
-     */
-    protected $appends = [
-        'nombre_estado_tipo_asistencia',
-    ];
-
-    /**
-     * Los atributos que deben ser convertidos.
-     *
-     * @var array
-     */
     protected $casts = [
         'estado_tipo_asistencia' => 'boolean',
     ];
 
-
-    /**
-     * Retorna asistencia
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
     public function asistencia()
     {
         return $this->hasMany(Asistencia::class, 'id_tipo_asistencia');
     }
 
-
-    /**
-     * Retorna nombre_estado_tipo_asistencia
-     *
-     * @return string
-     */
-    public function getNombreEstadoTipoAsistenciaAttribute() : string
-    {
-        return $this->estado_tipo_asistencia ? 'Activo' : 'Inactivo';
-    }
-
-
-    /**
-     * Las marcas de tiempo que deben ser deshabilitadas.
-     */
     public $timestamps = false;
 }

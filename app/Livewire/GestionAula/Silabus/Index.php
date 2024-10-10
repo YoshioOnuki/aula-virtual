@@ -130,10 +130,6 @@ class Index extends Component
         }
     }
 
-
-    /**
-     * Mostrar el silabus
-     */
     public function mostrar_silabus()
     {
         $gestion_aula = GestionAula::with('silabus')->find($this->id_gestion_aula);

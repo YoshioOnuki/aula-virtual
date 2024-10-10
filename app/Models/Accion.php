@@ -16,8 +16,5 @@ class Accion extends Model
         'nombre_accion',
     ];
 
-    /**
-     * Las marcas de tiempo que deben ser deshabilitadas.
-     */
     public $timestamps = false;
 }

@@ -17,30 +17,16 @@ class UsuarioRol extends Model
         'id_rol',
     ];
 
-
-    /**
-     * Retorna usuario
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
+    public $timestamps = false;
+    
     public function usuario()
     {
         return $this->belongsTo(Usuario::class, 'id_usuario');
     }
 
-    /**
-     * Retorna rol
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
     public function rol()
     {
         return $this->belongsTo(Rol::class, 'id_rol');
     }
 
-
-    /**
-     * Las marcas de tiempo que deben ser deshabilitadas.
-     */
-    public $timestamps = false;
 }

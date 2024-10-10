@@ -175,15 +175,13 @@ class ListaEntregasAcademicas extends Component
             'rol' => function ($query) {
                 $query->where('estado_rol', 1);
             }
-        ])
-            ->gestionAula($this->id_gestion_aula)
+        ])->where('id_gestion_aula', $this->id_gestion_aula)
             ->whereHas('usuario', function ($query) {
                 $query->where('estado_usuario', 1);
             })
             ->whereHas('rol', function ($query) {
                 $query->where('nombre_rol', 'ALUMNO');
             })
-            ->estado(true)
             ->searchAlumno($this->search)
             ->paginate($this->mostrar_paginate);
 

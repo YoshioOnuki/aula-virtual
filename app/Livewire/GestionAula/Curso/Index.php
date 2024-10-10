@@ -30,9 +30,9 @@ class Index extends Component
     public function mostrar_cursos()
     {
         if ($this->tipo_vista === 'cursos') {
-            $gestion_aulas = GestionAula::with('curso')
+            $gestion_aulas = GestionAula::with(['gestionAulaAlumno', 'curso'])
                 ->whereHas('gestionAulaAlumno', function ($query) {
-                    $query->usuario($this->usuario->id_usuario)
+                    $query->where('id_usuario', $this->usuario->id_usuario)
                         ->estado(true);
                 })
                 ->estado(true)
@@ -41,9 +41,9 @@ class Index extends Component
                 ->get();
             $gestion_aulas = $gestion_aulas->sortBy('curso.nombre_curso');
 
-            $gestion_aulas_finalizadas = GestionAula::with('curso')
+            $gestion_aulas_finalizadas = GestionAula::with(['gestionAulaAlumno', 'curso'])
                 ->whereHas('gestionAulaAlumno', function ($query) {
-                    $query->usuario($this->usuario->id_usuario)
+                    $query->where('id_usuario', $this->usuario->id_usuario)
                         ->estado(true);
                 })
                 ->estado(true)
@@ -52,9 +52,9 @@ class Index extends Component
                 ->get();
             $gestion_aulas_finalizadas = $gestion_aulas_finalizadas->sortBy('curso.nombre_curso');
         } else {
-            $gestion_aulas = GestionAula::with('curso')
+            $gestion_aulas = GestionAula::with(['gestionAulaDocente', 'curso'])
                 ->whereHas('gestionAulaDocente', function ($query) {
-                    $query->usuario($this->usuario->id_usuario)
+                    $query->where('id_usuario', $this->usuario->id_usuario)
                         ->estado(true);
                 })
                 ->estado(true)
@@ -63,9 +63,9 @@ class Index extends Component
                 ->get();
             $gestion_aulas = $gestion_aulas->sortBy('curso.nombre_curso');
 
-            $gestion_aulas_finalizadas = GestionAula::with('curso')
+            $gestion_aulas_finalizadas = GestionAula::with(['gestionAulaDocente', 'curso'])
                 ->whereHas('gestionAulaDocente', function ($query) {
-                    $query->usuario($this->usuario->id_usuario)
+                    $query->where('id_usuario', $this->usuario->id_usuario)
                         ->estado(true);
                 })
                 ->estado(true)

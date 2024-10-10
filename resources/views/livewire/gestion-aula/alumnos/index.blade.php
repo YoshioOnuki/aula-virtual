@@ -63,91 +63,92 @@
                                             $i = $alumnos->count() ?? 0;
                                             @endphp
                                             @forelse ($alumnos as $item)
-                                                <tr
-                                                    class="{{ !$item->estado_gestion_aula_alumno ? 'bg-red text-white fw-bold' : '' }}">
-                                                    <td>
-                                                        <span
-                                                            class="{{ !$item->estado_gestion_aula_alumno ? 'text-white' : 'text-secondary' }}">
-                                                            {{ $i-- }}
-                                                        </span>
-                                                    </td>
-                                                    <td>
-                                                        {{ $item->codigo_alumno }}
-                                                    </td>
-                                                    <td>
-                                                        <div class="d-flex py-1 align-items-center">
-                                                            <img src="{{ asset($item->usuario->mostrarFoto('azure')) }}"
-                                                                alt="avatar" class="avatar rounded avatar-static me-2">
-                                                            <div class="flex-fill">
-                                                                <div class="font-weight-medium">
-                                                                    {{ $item->nombre_completo_alumno }}
-                                                                </div>
+                                            <tr
+                                                class="{{ $item->estado_gestion_aula_usuario === 0 ? 'bg-red text-white fw-bold' : '' }}">
+                                                <td>
+                                                    <span
+                                                        class="{{ $item->estado_gestion_aula_usuario === 0 ? 'text-white' : 'text-secondary' }}">
+                                                        {{ $i-- }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    {{ $item->usuario->persona->codigo_alumno_persona }}
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex py-1 align-items-center">
+                                                        <img src="{{ asset($item->usuario->mostrarFoto('azure')) }}"
+                                                            alt="avatar" class="avatar rounded avatar-static me-2">
+                                                        <div class="flex-fill">
+                                                            <div class="font-weight-medium">{{
+                                                                $item->usuario->nombre_completo
+                                                                }}
+                                                            </div>
 
-                                                                <div x-data="{ isCopied: false }"
-                                                                    class="col-auto {{ !$item->estado_gestion_aula_alumno ? 'text-white' : 'text-secondary' }}">
-                                                                    <a class="text-reset cursor-pointer copy-to-clipboard"
-                                                                        @click="navigator.clipboard.writeText('{{ $item->documento_alumno }}')
-                                                                            .then(() => {
-                                                                                isCopied = true;
-                                                                                setTimeout(() => isCopied = false, 1000);
-                                                                            }).catch(err => console.error('Error al copiar al portapapeles: ', err))"
-                                                                        x-show="!isCopied">
-                                                                        {{ $item->documento_alumno }}
-                                                                    </a>
+                                                            <div x-data="{ isCopied: false }"
+                                                                class="col-auto {{ $item->estado_gestion_aula_usuario === 0 ? 'text-white' : 'text-secondary' }}">
+                                                                <a class="text-reset cursor-pointer copy-to-clipboard"
+                                                                    @click="navigator.clipboard.writeText('{{ $item->usuario->persona->documento_persona }}')
+                                                                        .then(() => {
+                                                                            isCopied = true;
+                                                                            setTimeout(() => isCopied = false, 1000);
+                                                                        }).catch(err => console.error('Error al copiar al portapapeles: ', err))"
+                                                                    x-show="!isCopied">
+                                                                    {{ $item->usuario->persona->documento_persona }}
+                                                                </a>
 
-                                                                    <span x-show="isCopied" class="text-primary">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                            height="24" viewBox="0 0 24 24" fill="none"
-                                                                            stroke="currentColor" stroke-width="2"
-                                                                            stroke-linecap="round" stroke-linejoin="round"
-                                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-copy-check">
-                                                                            <path stroke="none" d="M0 0h24v24H0z"
-                                                                                fill="none" />
-                                                                            <path stroke="none" d="M0 0h24v24H0z" />
-                                                                            <path
-                                                                                d="M7 9.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" />
-                                                                            <path
-                                                                                d="M4.012 16.737a2 2 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" />
-                                                                            <path d="M11 14l2 2l4 -4" />
-                                                                        </svg>
-                                                                        Copiado
-                                                                    </span>
-                                                                </div>
+                                                                <span x-show="isCopied" class="text-primary">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                        height="24" viewBox="0 0 24 24" fill="none"
+                                                                        stroke="currentColor" stroke-width="2"
+                                                                        stroke-linecap="round" stroke-linejoin="round"
+                                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-copy-check">
+                                                                        <path stroke="none" d="M0 0h24v24H0z"
+                                                                            fill="none" />
+                                                                        <path stroke="none" d="M0 0h24v24H0z" />
+                                                                        <path
+                                                                            d="M7 9.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" />
+                                                                        <path
+                                                                            d="M4.012 16.737a2 2 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" />
+                                                                        <path d="M11 14l2 2l4 -4" />
+                                                                    </svg>
+                                                                    Copiado
+                                                                </span>
                                                             </div>
                                                         </div>
-                                                    </td>
-                                                    <td>
-                                                        {{ $item->correo_usuario }}
-                                                    </td>
-                                                    <td class="{{ $item->ultima_conexion ? 'text-secondary' : 'text-danger' }}">
-                                                        {{ ultima_conexion($item->ultima_conexion) }}
-                                                    </td>
-                                                </tr>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    {{ $item->usuario->correo_usuario }}
+                                                </td>
+                                                <td>
+                                                    {{ ultima_conexion('2024-06-23 12:18:17') }}
+                                                </td>
+                                            </tr>
                                             @empty
-                                                @if ($alumnos->count() == 0 && $search != '')
-                                                    <tr>
-                                                        <td colspan="5">
-                                                            <div class="text-center"
-                                                                style="padding-bottom: 2rem; padding-top: 2rem;">
-                                                                <span class="text-secondary">
-                                                                    No se encontraron resultados para
-                                                                    "<strong>{{ $search }}</strong>"
-                                                                </span>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                @else
-                                                    <tr>
-                                                        <td colspan="5">
-                                                            <div class="text-center"
-                                                                style="padding-bottom: 2rem; padding-top: 2rem;">
-                                                                <span class="text-secondary">
-                                                                    No hay alumnos matriculados
-                                                                </span>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                @endif
+                                            @if ($alumnos->count() == 0 && $search != '')
+                                            <tr>
+                                                <td colspan="5">
+                                                    <div class="text-center"
+                                                        style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                        <span class="text-secondary">
+                                                            No se encontraron resultados para
+                                                            "<strong>{{ $search }}</strong>"
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            @else
+                                            <tr>
+                                                <td colspan="5">
+                                                    <div class="text-center"
+                                                        style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                        <span class="text-secondary">
+                                                            No hay alumnos matriculados
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            @endif
                                             @endforelse
                                         </tbody>
                                     </table>
@@ -155,22 +156,22 @@
 
                                 <div class="card-footer {{ $alumnos->hasPages() ? 'py-0' : '' }}">
                                     @if ($alumnos->hasPages())
-                                        <div class="d-flex justify-content-between">
-                                            <div class="d-flex align-items-center text-secondary">
-                                                Mostrando {{ $alumnos->firstItem() }} - {{ $alumnos->lastItem() }} de
-                                                {{ $alumnos->total() }} registros
-                                            </div>
-                                            <div class="mt-3">
-                                                {{ $alumnos->links() }}
-                                            </div>
+                                    <div class="d-flex justify-content-between">
+                                        <div class="d-flex align-items-center text-secondary">
+                                            Mostrando {{ $alumnos->firstItem() }} - {{ $alumnos->lastItem() }} de
+                                            {{ $alumnos->total() }} registros
                                         </div>
+                                        <div class="mt-3">
+                                            {{ $alumnos->links() }}
+                                        </div>
+                                    </div>
                                     @else
-                                        <div class="d-flex justify-content-between">
-                                            <div class="d-flex align-items-center text-secondary">
-                                                Mostrando {{ $alumnos->firstItem() }} - {{ $alumnos->lastItem() }} de
-                                                {{ $alumnos->total() }} registros
-                                            </div>
+                                    <div class="d-flex justify-content-between">
+                                        <div class="d-flex align-items-center text-secondary">
+                                            Mostrando {{ $alumnos->firstItem() }} - {{ $alumnos->lastItem() }} de
+                                            {{ $alumnos->total() }} registros
                                         </div>
+                                    </div>
                                     @endif
                                 </div>
                             </div>
