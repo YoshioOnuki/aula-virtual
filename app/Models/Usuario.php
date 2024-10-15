@@ -37,6 +37,15 @@ class Usuario extends Authenticatable
     ];
 
     /**
+     * Los atributos que deben ser ocultos.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'contrasenia_usuario',
+    ];
+
+    /**
      * Los atributos que deben ser convertidos.
      *
      * @var array

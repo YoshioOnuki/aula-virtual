@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\AuditableTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Rol extends Model
 {
     use HasFactory;
+    use AuditableTrait;
 
     protected $table = 'rol';
     protected $primaryKey = 'id_rol';
@@ -73,4 +75,17 @@ class Rol extends Model
      */
     public $timestamps = false;
 
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Call the Auditable logic
+        static::bootAuditable();
+    }
 }

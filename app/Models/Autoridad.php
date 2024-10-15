@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Autoridad extends Model
 {
     use HasFactory;
+    use AuditableTrait;
 
     protected $table = 'autoridad';
     protected $primaryKey = 'id_autoridad';
@@ -148,4 +149,17 @@ class Autoridad extends Model
      */
     public $timestamps = false;
 
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Call the Auditable logic
+        static::bootAuditable();
+    }
 }
