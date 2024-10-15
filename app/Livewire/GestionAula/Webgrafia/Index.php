@@ -39,7 +39,7 @@ class Index extends Component
     public $accion_estado = 'Agregar';
     #[Validate('nullable')]
     public $descripcion_webgrafia;
-    #[Validate('required')]
+    #[Validate('required|url')]
     public $link_webgrafia;
     public $editar_webgrafia;
 
@@ -90,7 +90,6 @@ class Index extends Component
     public function guardar_webgrafia()
     {
         $this->validate();
-
 
         try
         {

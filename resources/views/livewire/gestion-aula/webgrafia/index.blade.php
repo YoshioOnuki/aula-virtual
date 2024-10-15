@@ -163,11 +163,27 @@
                                                                     Acciones
                                                                 </button>
                                                                 <div class="dropdown-menu dropdown-menu-end">
-                                                                    <a class="dropdown-item" style="cursor: pointer;"
-                                                                        wire:click="redirect_link({{ $item->id_webgrafia }})">
-                                                                        Ir al link
-                                                                    </a>
-                                                                    <a class="dropdown-item" style="cursor: pointer;"
+                                                                    <div x-data="{ link: '{{ $item->link_webgrafia }}' }">
+                                                                        <div x-data="{
+                                                                            link: '{{ $item->link_webgrafia ? $item->link_webgrafia : '' }}',
+                                                                            handleClick() {
+                                                                                if (!this.link) {
+                                                                                    this.$dispatch('toast-basico', {
+                                                                                        mensaje: 'El link de la webgrafía no está disponible',
+                                                                                        type: 'error'
+                                                                                    });
+                                                                                } else {
+                                                                                    window.open(this.link, '_blank');
+                                                                                }
+                                                                            }
+                                                                        }">
+                                                                        <a class="dropdown-item cursor-pointer"
+                                                                            @click="handleClick">
+                                                                            Ir al link
+                                                                        </a>
+                                                                    </div>
+                                                                    
+                                                                    <a class="dropdown-item cursor-pointer"
                                                                         wire:click="abrir_modal_webgrafia_editar({{ $item->id_webgrafia }})"
                                                                         data-bs-toggle="modal"
                                                                         data-bs-target="#modal-webgrafia">
