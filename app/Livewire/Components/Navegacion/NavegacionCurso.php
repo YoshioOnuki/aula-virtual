@@ -2,14 +2,11 @@
 
 namespace App\Livewire\Components\Navegacion;
 
-use App\Traits\UsuarioTrait;
 use Livewire\Component;
 use Vinkla\Hashids\Facades\Hashids;
 
 class NavegacionCurso extends Component
 {
-    use UsuarioTrait;
-
     public $id_usuario_hash;
     public $id_gestion_aula_hash;
     public $tipo_vista;

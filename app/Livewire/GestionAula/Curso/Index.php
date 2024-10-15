@@ -124,7 +124,7 @@ class Index extends Component
     public function mount($id_usuario, $tipo_vista)
     {
         $this->id_usuario_hash = $id_usuario;
-        $this->usuario = $this->obtener_usuario_del_curso();
+        $this->usuario = $this->obtener_usuario_del_curso($id_usuario);
         $this->tipo_vista = $tipo_vista;
         $this->usuario_sesion = $this->obtener_usuario_autenticado();
 

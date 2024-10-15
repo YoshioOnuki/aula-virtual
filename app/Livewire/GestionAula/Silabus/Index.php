@@ -213,16 +213,16 @@ class Index extends Component
     public function mount($id_usuario, $tipo_vista, $id_curso)
     {
         $this->id_usuario_hash = $id_usuario;
-        $this->usuario = $this->obtener_usuario_del_curso();
+        $this->usuario = $this->obtener_usuario_del_curso($id_usuario);
         $this->tipo_vista = $tipo_vista;
         $this->id_gestion_aula_hash = $id_curso;
 
-        $this->id_gestion_aula = $this->obtener_id_curso();
+        $this->id_gestion_aula = $this->obtener_id_curso($id_curso);
 
         $usuario_sesion = $this->obtener_usuario_autenticado();
         $this->modo_admin = $usuario_sesion->esRol('ADMINISTRADOR');
         $this->es_docente = $this->usuario->esDocente($this->id_gestion_aula);
-        $this->es_docente_invitado = $this->verificar_usuario_invitado();
+        $this->es_docente_invitado = $this->verificar_usuario_invitado($id_curso, $id_usuario, $tipo_vista);
 
         $this->mostrar_datos_curso();
         $this->mostrar_silabus();
