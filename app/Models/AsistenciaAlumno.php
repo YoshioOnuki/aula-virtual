@@ -21,21 +21,64 @@ class AsistenciaAlumno extends Model
         'id_gestion_aula_alumno',
     ];
 
+
+    /**
+     * Los atributos que deben ser añadidos.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'nombre_estado_asistencia',
+    ];
+
+
+    /**
+     * Retorna asistencia
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function asistencia()
     {
         return $this->belongsTo(Asistencia::class, 'id_asistencia');
     }
 
+    /**
+     * Retorna estadoAsistencia
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function estadoAsistencia()
     {
         return $this->belongsTo(EstadoAsistencia::class, 'id_estado_asistencia');
     }
 
+    /**
+     * Retorna gestionAulaAlumno
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function gestionAulaAlumno()
     {
         return $this->belongsTo(GestionAulaAlumno::class, 'id_gestion_aula_alumno');
     }
 
+
+    /**
+     * Retorna nombre_estado_asistencia
+     *
+     * @return string
+     */
+    public function getNombreEstadoAsistenciaAttribute() : string
+    {
+        return $this->estadoAsistencia->nombre_estado_asistencia;
+    }
+
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
     protected static function boot()
     {
         parent::boot();

@@ -21,16 +21,64 @@ class ForoRespuesta extends Model
         'id_gestion_aula_alumno',
     ];
 
+
+    /**
+     * Retorna foro
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function foro()
     {
         return $this->belongsTo(Foro::class, 'id_foro');
     }
 
+    /**
+     * Retorna gestionAulaAlumno
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function gestionAulaAlumno()
     {
         return $this->belongsTo(GestionAulaAlumno::class, 'id_gestion_aula_alumno');
     }
 
+
+    /**
+     * Retorna usuarioRegistra
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function usuarioRegistra()
+    {
+        return $this->belongsTo(Usuario::class, 'created_by');
+    }
+
+    /**
+     * Retorna usuarioActualiza
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function usuarioActualiza()
+    {
+        return $this->belongsTo(Usuario::class, 'updated_by');
+    }
+
+    /**
+     * Retorna usuarioElimina
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function usuarioElimina()
+    {
+        return $this->belongsTo(Usuario::class, 'deleted_by');
+    }
+
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
     protected static function boot()
     {
         parent::boot();

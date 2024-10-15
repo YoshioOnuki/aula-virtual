@@ -21,16 +21,63 @@ class ComentarioTrabajoAcademico extends Model
         'id_gestion_aula_docente',
     ];
 
+
+    /**
+     * Retorna trabajoAcademicoAlumno
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function trabajoAcademicoAlumno()
     {
         return $this->belongsTo(TrabajoAcademicoAlumno::class, 'id_trabajo_academico_alumno');
     }
 
+    /**
+     * Retorna gestionAulaDocente
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function gestionAulaDocente()
     {
         return $this->belongsTo(GestionAulaDocente::class, 'id_gestion_aula_docente');
     }
 
+    /**
+     * Retorna usuarioRegistra
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function usuarioRegistra()
+    {
+        return $this->belongsTo(Usuario::class, 'created_by');
+    }
+
+    /**
+     * Retorna usuarioActualiza
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function usuarioActualiza()
+    {
+        return $this->belongsTo(Usuario::class, 'updated_by');
+    }
+
+    /**
+     * Retorna usuarioElimina
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function usuarioElimina()
+    {
+        return $this->belongsTo(Usuario::class, 'deleted_by');
+    }
+
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
     protected static function boot()
     {
         parent::boot();

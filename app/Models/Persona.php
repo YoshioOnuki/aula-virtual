@@ -24,27 +24,108 @@ class Persona extends Model
         'correo_persona',
     ];
 
+
+    /**
+     * Los atributos que deben ser añadidos.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'nombre_completo',
+        'solo_primeros_nombres',
+        'foto',
+    ];
+
+    /**
+     * Los atributos que deben ser convertidos.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'documento_persona' => 'integer',
+    ];
+
+
+    /**
+     * Retorna usuario
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function usuario()
     {
         return $this->hasOne(Usuario::class, 'id_persona');
     }
 
-    public function getSoloPrimerosNombresAttribute()
+    /**
+     * Retorna usuarioRegistra
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function usuarioRegistra()
+    {
+        return $this->belongsTo(Usuario::class, 'created_by');
+    }
+
+    /**
+     * Retorna usuarioActualiza
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function usuarioActualiza()
+    {
+        return $this->belongsTo(Usuario::class, 'updated_by');
+    }
+
+    /**
+     * Retorna usuarioElimina
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function usuarioElimina()
+    {
+        return $this->belongsTo(Usuario::class, 'deleted_by');
+    }
+
+
+    /**
+     * Get the nombre_completo attribute.
+     *
+     * @return string
+     */
+    public function getNombreCompletoAttribute() : string
+    {
+        return $this->nombres_persona . ' ' . $this->apellido_paterno_persona . ' ' . $this->apellido_materno_persona;
+    }
+
+    /**
+     * Get the solo_primeros_nombres attribute.
+     *
+     * @return string
+     */
+    public function getSoloPrimerosNombresAttribute() : string
     {
         $nombres = explode(' ', $this->nombres_persona);
         return $nombres[0] . ' ' . $this->apellido_paterno_persona;
     }
 
-    public function getNombreCompletoAttribute()
-    {
-        return $this->nombres_persona . ' ' . $this->apellido_paterno_persona . ' ' . $this->apellido_materno_persona;
-    }
-
-    public function getFotoAttribute()
+    /**
+     * Get the foto attribute.
+     *
+     * @return string
+     */
+    public function getFotoAttribute() : string
     {
         return $this->usuario->first()->foto_usuario ?? '';
     }
 
+
+    /**
+     * Scope a query to search persona.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $search
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
     public function scopeSearch($query, $search)
     {
         if ($search == null) {
@@ -58,6 +139,12 @@ class Persona extends Model
             ->orWhere('correo_persona', 'LIKE', "%$search%");
     }
 
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
     protected static function boot()
     {
         parent::boot();

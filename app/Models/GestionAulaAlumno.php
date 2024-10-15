@@ -21,32 +21,125 @@ class GestionAulaAlumno extends Model
         'id_gestion_aula',
     ];
 
+
+    /**
+    * Los atributos que deben ser añadidos.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'nombre_estado_gestion_aula_alumno',
+    ];
+
+    /**
+     * Los atributos que deben ser convertidos.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'estado_gestion_aula_alumno' => 'boolean',
+    ];
+
+
+    /**
+     * Retorna usuario
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function usuario()
     {
         return $this->belongsTo(Usuario::class, 'id_usuario');
     }
 
+    /**
+     * Retorna gestionAula
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function gestionAula()
     {
         return $this->belongsTo(GestionAula::class, 'id_gestion_aula');
     }
 
+    /**
+     * Retorna trabajoAcademicoAlumno
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function trabajoAcademicoAlumno()
     {
         return $this->hasMany(TrabajoAcademicoAlumno::class, 'id_gestion_aula_alumno');
     }
 
+    /**
+     * Retorna foroRespuesta
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function foroRespuesta()
     {
         return $this->hasMany(ForoRespuesta::class, 'id_gestion_aula_alumno');
     }
 
+    /**
+     * Retorna asistenciaAlumno
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function asistenciaAlumno()
     {
         return $this->hasMany(AsistenciaAlumno::class, 'id_gestion_aula_alumno');
     }
 
-    // Usar el search del scope de usuario para buscar alumnos
+    /**
+     * Retorna usuarioRegistra
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function usuarioRegistra()
+    {
+        return $this->belongsTo(Usuario::class, 'created_by');
+    }
+
+    /**
+     * Retorna usuarioActualiza
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function usuarioActualiza()
+    {
+        return $this->belongsTo(Usuario::class, 'updated_by');
+    }
+
+    /**
+     * Retorna usuarioElimina
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function usuarioElimina()
+    {
+        return $this->belongsTo(Usuario::class, 'deleted_by');
+    }
+
+
+    /**
+     * Retorna nombre_estado_gestion_aula_alumno
+     *
+     * @return string
+     */
+    public function getNombreEstadoGestionAulaAlumnoAttribute() : string
+    {
+        return $this->estado_gestion_aula_alumno ? 'Activo' : 'Inactivo';
+    }
+
+
+        /**
+     * Scope a query to search alumno.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $search
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
     public function scopeSearchAlumno($query, $search)
     {
         if ($search) {
@@ -56,6 +149,13 @@ class GestionAulaAlumno extends Model
         }
     }
 
+    /**
+     * Scope a query to search estado.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $estado
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
     public function scopeEstado($query, $estado)
     {
         if ($estado) {
@@ -63,6 +163,12 @@ class GestionAulaAlumno extends Model
         }
     }
 
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
     protected static function boot()
     {
         parent::boot();

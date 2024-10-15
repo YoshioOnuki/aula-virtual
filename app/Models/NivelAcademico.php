@@ -17,15 +17,51 @@ class NivelAcademico extends Model
         'estado_nivel_academico',
     ];
 
+
+    /**
+     * Los atributos que deben ser añadidos.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'nombre_estado_nivel_academico',
+    ];
+
+    /**
+     * Los atributos que deben ser convertidos.
+     *
+     * @var array
+     */
     protected $casts = [
         'estado_nivel_academico' => 'boolean',
     ];
 
+
+    /**
+     * Retorna tipoPrograma
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function tipoPrograma()
     {
         return $this->hasMany(TipoPrograma::class, 'id_nivel_academico');
     }
 
+
+    /**
+     * Retorna nombre_estado_nivel_academico
+     *
+     * @return string
+     */
+    public function getNombreEstadoNivelAcademicoAttribute() : string
+    {
+        return $this->estado_nivel_academico ? 'Activo' : 'Inactivo';
+    }
+
+
+    /**
+     * Las marcas de tiempo que deben ser deshabilitadas.
+     */
     public $timestamps = false;
 
 }

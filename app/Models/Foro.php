@@ -24,26 +24,84 @@ class Foro extends Model
         'id_gestion_aula',
     ];
 
+
+    /**
+     * Los atributos que deben ser convertidos.
+     *
+     * @var array
+     */
     protected $casts = [
         'fecha_inicio_foro' => 'datetime',
         'fecha_fin_foro' => 'datetime',
     ];
 
+
+    /**
+     * Retorna gestionAula
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function gestionAula()
     {
         return $this->belongsTo(GestionAula::class, 'id_gestion_aula');
     }
 
+    /**
+     * Retorna gestionAulaDocente
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function gestionAulaDocente()
     {
         return $this->belongsTo(GestionAulaDocente::class, 'id_gestion_aula_docente');
     }
 
+    /**
+     * Retorna foroRespuesta
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function foroRespuesta()
     {
         return $this->hasMany(ForoRespuesta::class, 'id_foro');
     }
 
+    /**
+     * Retorna usuarioRegistra
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function usuarioRegistra()
+    {
+        return $this->belongsTo(Usuario::class, 'created_by');
+    }
+
+    /**
+     * Retorna usuarioActualiza
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function usuarioActualiza()
+    {
+        return $this->belongsTo(Usuario::class, 'updated_by');
+    }
+
+    /**
+     * Retorna usuarioElimina
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function usuarioElimina()
+    {
+        return $this->belongsTo(Usuario::class, 'deleted_by');
+    }
+
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
     protected static function boot()
     {
         parent::boot();
