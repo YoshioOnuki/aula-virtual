@@ -27,12 +27,16 @@ class Index extends Component
     public $regresar_page_header;
 
 
+
+    /**
+     * Muestra los cursos del usuario
+     */
     public function mostrar_cursos()
     {
         if ($this->tipo_vista === 'cursos') {
-            $gestion_aulas = GestionAula::with(['gestionAulaAlumno', 'curso'])
+            $gestion_aulas = GestionAula::with('curso')
                 ->whereHas('gestionAulaAlumno', function ($query) {
-                    $query->where('id_usuario', $this->usuario->id_usuario)
+                    $query->usuario($this->usuario->id_usuario)
                         ->estado(true);
                 })
                 ->estado(true)
@@ -41,9 +45,9 @@ class Index extends Component
                 ->get();
             $gestion_aulas = $gestion_aulas->sortBy('curso.nombre_curso');
 
-            $gestion_aulas_finalizadas = GestionAula::with(['gestionAulaAlumno', 'curso'])
+            $gestion_aulas_finalizadas = GestionAula::with('curso')
                 ->whereHas('gestionAulaAlumno', function ($query) {
-                    $query->where('id_usuario', $this->usuario->id_usuario)
+                    $query->usuario($this->usuario->id_usuario)
                         ->estado(true);
                 })
                 ->estado(true)
@@ -52,9 +56,9 @@ class Index extends Component
                 ->get();
             $gestion_aulas_finalizadas = $gestion_aulas_finalizadas->sortBy('curso.nombre_curso');
         } else {
-            $gestion_aulas = GestionAula::with(['gestionAulaDocente', 'curso'])
+            $gestion_aulas = GestionAula::with('curso')
                 ->whereHas('gestionAulaDocente', function ($query) {
-                    $query->where('id_usuario', $this->usuario->id_usuario)
+                    $query->usuario($this->usuario->id_usuario)
                         ->estado(true);
                 })
                 ->estado(true)
@@ -63,9 +67,9 @@ class Index extends Component
                 ->get();
             $gestion_aulas = $gestion_aulas->sortBy('curso.nombre_curso');
 
-            $gestion_aulas_finalizadas = GestionAula::with(['gestionAulaDocente', 'curso'])
+            $gestion_aulas_finalizadas = GestionAula::with('curso')
                 ->whereHas('gestionAulaDocente', function ($query) {
-                    $query->where('id_usuario', $this->usuario->id_usuario)
+                    $query->usuario($this->usuario->id_usuario)
                         ->estado(true);
                 })
                 ->estado(true)
@@ -78,7 +82,10 @@ class Index extends Component
         $this->gestion_aulas = $gestion_aulas->merge($gestion_aulas_finalizadas);
     }
 
-    /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
+
+    /**
+     * Obtiene datos para mostrar el componente page header
+     */
     public function obtener_datos_page_header()
     {
         if ($this->tipo_vista === 'cursos') {
@@ -112,7 +119,6 @@ class Index extends Component
             ]
         ];
     }
-    /* ===================================================================================== */
 
 
     public function mount($id_usuario, $tipo_vista)

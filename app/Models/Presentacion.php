@@ -65,6 +65,21 @@ class Presentacion extends Model
 
 
     /**
+     * Scope a query to search
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param integer $id_gestion_aula
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeGestionAula($query, $id_gestion_aula)
+    {
+        if ($id_gestion_aula) {
+            return $query->where('id_gestion_aula', $id_gestion_aula);
+        }
+    }
+
+
+    /**
      * Retorna usuarioRegistra
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

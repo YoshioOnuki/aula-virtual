@@ -136,6 +136,34 @@ class GestionAulaDocente extends Model
 
 
     /**
+     * Scope a query to search gestion aula.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $gestion_aula
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeGestionAula($query, $gestion_aula)
+    {
+        if ($gestion_aula) {
+            return $query->where('id_gestion_aula', $gestion_aula);
+        }
+    }
+
+    /**
+     * Scope a query to search usuario.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $usuario
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeUsuario($query, $usuario)
+    {
+        if ($usuario) {
+            return $query->where('id_usuario', $usuario);
+        }
+    }
+
+    /**
      * Scope a query to search estado.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query

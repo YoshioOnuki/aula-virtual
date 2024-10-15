@@ -80,6 +80,20 @@ class Webgrafia extends Model
             ->orWhere('link_webgrafia', 'LIKE', "%$search%");
     }
 
+    /**
+     * Scope a query to search
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param integer $id_gestion_aula
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeGestionAula($query, $id_gestion_aula)
+    {
+        if ($id_gestion_aula) {
+            return $query->where('id_gestion_aula', $id_gestion_aula);
+        }
+    }
+
 
     /**
      * The "booted" method of the model.

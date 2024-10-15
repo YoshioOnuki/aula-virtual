@@ -32,7 +32,7 @@ class Index extends Component
     {
         $cursos = GestionAula::with(['curso'])
             ->whereHas('gestionAulaAlumno', function ($query) {
-                $query->where('id_usuario', $this->usuario->id_usuario)
+                $query->usuario($this->usuario->id_usuario)
                     ->estado(true);
             })
             ->estado(true)
@@ -43,7 +43,7 @@ class Index extends Component
 
         $cursos_finalizados = GestionAula::with(['curso'])
             ->whereHas('gestionAulaAlumno', function ($query) {
-                $query->where('id_usuario', $this->usuario->id_usuario)
+                $query->usuario($this->usuario->id_usuario)
                     ->estado(true);
             })
             ->estado(true)
@@ -55,7 +55,7 @@ class Index extends Component
 
         $carga_academica = GestionAula::with(['curso'])
             ->whereHas('gestionAulaDocente', function ($query) {
-                $query->where('id_usuario', $this->usuario->id_usuario)
+                $query->usuario($this->usuario->id_usuario)
                     ->estado(true);
             })
             ->estado(true)
@@ -66,7 +66,7 @@ class Index extends Component
 
         $carga_academica_finalizada = GestionAula::with(['curso'])
             ->whereHas('gestionAulaDocente', function ($query) {
-                $query->where('id_usuario', $this->usuario->id_usuario)
+                $query->usuario($this->usuario->id_usuario)
                     ->estado(true);
             })
             ->estado(true)

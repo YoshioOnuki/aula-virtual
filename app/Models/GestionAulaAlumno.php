@@ -133,6 +133,34 @@ class GestionAulaAlumno extends Model
     }
 
 
+    /**
+     * Scope a query to search alumno.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $id_gestion_aula
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeGestionAula($query, $id_gestion_aula)
+    {
+        if ($id_gestion_aula) {
+            return $query->where('id_gestion_aula', $id_gestion_aula);
+        }
+    }
+
+        /**
+     * Scope a query to search usuario.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $usuario
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeUsuario($query, $usuario)
+    {
+        if ($usuario) {
+            return $query->where('id_usuario', $usuario);
+        }
+    }
+
         /**
      * Scope a query to search alumno.
      *

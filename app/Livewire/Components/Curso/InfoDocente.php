@@ -23,14 +23,16 @@ class InfoDocente extends Component
             $this->docente = GestionAulaDocente::with([
                 'usuario.persona',
             ])
-                ->where('id_gestion_aula', $this->id_gestion_aula)
+                ->gestionAula($this->id_gestion_aula)
+                ->estado(true)
                 ->get();
         }else{
             $this->docente = GestionAulaDocente::with([
                 'usuario.persona',
             ])
+                ->gestionAula($this->id_gestion_aula)
                 ->invitado(false)
-                ->where('id_gestion_aula', $this->id_gestion_aula)
+                ->estado(true)
                 ->get();
         }
     }

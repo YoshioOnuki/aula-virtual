@@ -60,6 +60,10 @@ class Index extends Component
         return $nombre_bd;
     }
 
+
+    /**
+     * Guardar el silabus
+     */
     public function guardar_silabus()
     {
         $this->validate();
@@ -130,6 +134,10 @@ class Index extends Component
         }
     }
 
+
+    /**
+     * Mostrar silabus
+     */
     public function mostrar_silabus()
     {
         $gestion_aula = GestionAula::with('silabus')->find($this->id_gestion_aula);
