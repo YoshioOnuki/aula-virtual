@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\AuditableTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -11,6 +12,7 @@ class GestionAula extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use AuditableTrait;
 
     protected $table = 'gestion_aula';
     protected $primaryKey = 'id_gestion_aula';
@@ -251,6 +253,9 @@ class GestionAula extends Model
     protected static function boot()
     {
         parent::boot();
+
+        // Call the Auditable logic
+        static::bootAuditable();
 
         static::creating(function ($gestion_aula) {
             $gestion_aula->created_by = Auth::id();

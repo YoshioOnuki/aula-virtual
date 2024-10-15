@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\AuditableTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -11,6 +12,7 @@ class Webgrafia extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use AuditableTrait;
 
     protected $table = 'webgrafia';
     protected $primaryKey = 'id_webgrafia';
@@ -103,6 +105,9 @@ class Webgrafia extends Model
     protected static function boot()
     {
         parent::boot();
+
+        // Call the Auditable logic
+        static::bootAuditable();
 
         static::creating(function ($webgrafia) {
             $webgrafia->created_by = Auth::id();

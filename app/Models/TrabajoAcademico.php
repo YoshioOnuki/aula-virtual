@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\AuditableTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -11,6 +12,7 @@ class TrabajoAcademico extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use AuditableTrait;
 
     protected $table = 'trabajo_academico';
     protected $primaryKey = 'id_trabajo_academico';
@@ -119,6 +121,9 @@ class TrabajoAcademico extends Model
     protected static function boot()
     {
         parent::boot();
+
+        // Call the Auditable logic
+        static::bootAuditable();
 
         static::creating(function ($trabajo_academico) {
             $trabajo_academico->created_by = Auth::id();

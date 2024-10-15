@@ -61,6 +61,13 @@ return [
      * Configuración de auditorías
      */
     'acceso_auditoria' => false,
-    'sesion_auditoria' => true,
-    'modelos_auditoria' => true,
+    'sesion_auditoria' => false,
+    'accion_auditoria' => false,
+
+    /**
+     * Configuración de auditorías para el administrador
+     */
+    'admin_acceso_auditoria' => false,
+    'admin_sesion_auditoria' => false,
+    'admin_accion_auditoria' => false,
 ];

@@ -88,6 +88,9 @@ class Presentacion extends Model
     {
         parent::boot();
 
+        // Call the Auditable logic
+        static::bootAuditable();
+
         static::creating(function ($presentacion) {
             $presentacion->created_by = Auth::id();
         });
