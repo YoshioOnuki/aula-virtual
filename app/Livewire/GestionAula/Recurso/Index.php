@@ -156,6 +156,8 @@ class Index extends Component
             $this->limpiar_modal();
             $this->load_recursos();
 
+            // Evento para recargar los recursos
+            $this->dispatch('load-recursos');
         } catch (\Exception $e) {
             DB::rollBack();
             // dd($e);
@@ -167,13 +169,6 @@ class Index extends Component
         }
     }
 
-    /**
-     * Renderizar la vista de los recursos
-     */
-    public function load_recursos()
-    {
-        $this->dispatch('load-recursos');
-    }
 
     /**
      * Cerrar modal

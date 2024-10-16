@@ -38,7 +38,7 @@ trait UsuarioTrait
         $id_gestion_aula = $this->obtener_id_curso($id_curso);
         $usuario = $this->obtener_usuario_del_curso($id_usuario);
 
-            return $usuario->esDocenteInvitado($id_gestion_aula) && $tipo_vista === 'carga-academica' ? true : false;
+        return $usuario->esDocenteInvitado($id_gestion_aula) && $tipo_vista === 'carga-academica' ? true : false;
     }
 
 }

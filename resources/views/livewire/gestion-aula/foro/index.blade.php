@@ -51,7 +51,7 @@
                                         <th>Título del foro</th>
                                         <th class="col-2">Última respuesta</th>
                                         <th class="col-1 text-center">Respuestas</th>
-                                        @if($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario) || $usuario->esRolGestionAula('DOCENTE INVITADO', $id_gestion_aula_usuario))
+                                        @if($usuario->esDocente($id_gestion_aula) || $usuario->esDocenteInvitado($id_gestion_aula))
                                             <th class="w-1 text-center"></th>
                                         @endif
                                     </tr>
@@ -66,19 +66,19 @@
                                             </td>
                                             <td>
                                                 <div class="d-flex py-1 align-items-center">
-                                                    <img src="{{ asset($item->foroRespuesta->first()->gestionAulaUsuario->usuario->mostrarFoto('alumno')) }}" alt="avatar"
+                                                    <img src="{{ asset($item->foroRespuesta->gestionAulaAlumno->usuario->mostrarFoto('alumno')) }}" alt="avatar"
                                                         class="avatar me-2 rounded avatar-static">
                                                     <div class="flex-fill">
                                                         <div class="font-weight-medium">
-                                                            {{ Str::limit($item->foroRespuesta->first()->gestionAulaUsuario->usuario->nombre_completo, 18) }}
+                                                            {{ Str::limit($item->foroRespuesta->gestionAulaAlumno->usuario->nombre_completo, 18) }}
                                                         </div>
                                                         <div class="text-secondary">
                                                             <a href="#" class="text-reset">
                                                                 {{-- Validar si la fecha es hoy --}}
-                                                                @if($item->foroRespuesta->first()->created_at->isToday())
-                                                                Hoy {{ $item->foroRespuesta->first()->created_at->diffForHumans() }}
+                                                                @if($item->foroRespuesta->created_at->isToday())
+                                                                Hoy {{ $item->foroRespuesta->created_at->diffForHumans() }}
                                                                 @else
-                                                                    {{ format_fecha_string($item->foroRespuesta->first()->created_at) }}
+                                                                    {{ format_fecha_string($item->foroRespuesta->created_at) }}
                                                                 @endif
                                                             </a>
                                                         </div>
@@ -88,7 +88,7 @@
                                             <td class="text-center">
                                                 {{ $item->foro_respuesta_count }}
                                             </td>
-                                            @if($usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario) || $usuario->esRolGestionAula('DOCENTE INVITADO', $id_gestion_aula_usuario))
+                                            @if($usuario->esDocente($id_gestion_aula) || $usuario->esDocenteInvitado($id_gestion_aula))
                                                 <td class="text-center">
                                                     <div class="dropdown">
                                                         <a href="#" class=" text-dark" data-bs-toggle="dropdown">
@@ -129,7 +129,7 @@
                                                     <div class="text-center"
                                                         style="padding-bottom: 2rem; padding-top: 2rem;">
                                                         <span class="text-secondary">
-                                                            No hay alumnos matriculados
+                                                            No hay foros disponibles
                                                         </span>
                                                     </div>
                                                 </td>
@@ -182,7 +182,7 @@
                         {{ $titulo_modal }}
                     </h5>
                     <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal"
-                        aria-label="Close" wire:click="cerrar_modal"></button>
+                        aria-label="Close" wire:click="limpiar_modal"></button>
                 </div>
                 <form autocomplete="off" wire:submit="guardar_foro">
                     <div class="modal-body">
@@ -277,7 +277,7 @@
                     </div>
 
                     <div class="modal-footer">
-                        <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="cerrar_modal">
+                        <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="limpiar_modal">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-ban">
