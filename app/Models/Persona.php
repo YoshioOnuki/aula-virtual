@@ -45,6 +45,8 @@ class Persona extends Model
      */
     protected $casts = [
         'documento_persona' => 'integer',
+        'codigo_alumno_persona' => 'string',
+        'documento_persona' => 'string',
     ];
 
 
@@ -138,6 +140,7 @@ class Persona extends Model
             ->orWhere('apellido_paterno_persona', 'LIKE', "%$search%")
             ->orWhere('apellido_materno_persona', 'LIKE', "%$search%")
             ->orWhere('codigo_alumno_persona', 'LIKE', "%$search%")
+            ->orWhere('documento_persona', 'LIKE', "%$search%")
             ->orWhere('correo_persona', 'LIKE', "%$search%");
     }
 

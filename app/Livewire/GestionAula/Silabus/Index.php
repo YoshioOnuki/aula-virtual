@@ -3,7 +3,6 @@
 namespace App\Livewire\GestionAula\Silabus;
 
 use App\Models\GestionAula;
-use App\Models\GestionAulaUsuario;
 use App\Traits\UsuarioTrait;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;

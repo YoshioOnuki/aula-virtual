@@ -30,16 +30,6 @@ class Auditoria extends Model
 
 
     /**
-     * Los atributos que deben ser convertidos.
-     *
-     * @var array
-     */
-    protected $appends = [
-        'usuario_auditoria',
-        'accion_auditoria',
-    ];
-
-    /**
      * Los atributos que deben ocultarse.
      *
      * @var array
@@ -60,7 +50,7 @@ class Auditoria extends Model
         'registro_auditoria' => 'collection',
         'usuario_auditoria' => 'string',
         'accion_auditoria' => 'string',
-        'fecha_auditoria' => 'datetime',
+        // 'fecha_auditoria' => 'datetime',
     ];
 
 
@@ -96,27 +86,6 @@ class Auditoria extends Model
             return null;
         }
         return $this->tabla_auditoria::find($this->id_registro_auditoria);
-    }
-
-
-    /**
-     * Get the usuario_auditoria attribute.
-     *
-     * @return string
-     */
-    public function getUsuarioAuditoriaAttribute()
-    {
-        return $this->usuario->nombre_usuario;
-    }
-
-    /**
-     * Get the accion_auditoria attribute.
-     *
-     * @return string
-     */
-    public function getAccionAuditoriaAttribute()
-    {
-        return $this->accion->nombre_accion;
     }
 
 

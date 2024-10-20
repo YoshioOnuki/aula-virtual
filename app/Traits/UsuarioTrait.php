@@ -4,7 +4,6 @@ namespace App\Traits;
 
 use App\Models\Usuario;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
 use Vinkla\Hashids\Facades\Hashids;
 
 trait UsuarioTrait

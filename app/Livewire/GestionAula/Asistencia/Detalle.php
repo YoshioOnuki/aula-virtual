@@ -7,11 +7,8 @@ use App\Models\AsistenciaAlumno;
 use App\Models\EstadoAsistencia;
 use App\Models\GestionAula;
 use App\Models\GestionAulaAlumno;
-use App\Models\GestionAulaUsuario;
 use App\Models\Persona;
-use App\Models\Usuario;
 use App\Traits\UsuarioTrait;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
@@ -370,6 +367,7 @@ class Detalle extends Component
             ->whereHas('usuario.gestionAulaAlumno', function ($query) {
                 $query->where('id_gestion_aula', $this->id_gestion_aula);
             })
+            ->search($this->search)
             ->orderBy('nombres_persona', 'asc')
             ->orderBy('apellido_paterno_persona', 'asc')
             ->orderBy('apellido_materno_persona', 'asc')

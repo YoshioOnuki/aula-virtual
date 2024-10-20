@@ -3,7 +3,6 @@
 namespace App\Livewire\Components\Navegacion;
 
 use Livewire\Component;
-use Vinkla\Hashids\Facades\Hashids;
 
 class NavegacionCurso extends Component
 {

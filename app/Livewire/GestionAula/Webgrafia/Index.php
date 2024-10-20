@@ -3,18 +3,14 @@
 namespace App\Livewire\GestionAula\Webgrafia;
 
 use App\Models\GestionAula;
-use App\Models\GestionAulaUsuario;
-use App\Models\Usuario;
 use App\Models\Webgrafia;
 use App\Traits\UsuarioTrait;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Vinkla\Hashids\Facades\Hashids;
 
 #[Layout('components.layouts.app')]
 class Index extends Component

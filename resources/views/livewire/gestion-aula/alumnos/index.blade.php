@@ -26,11 +26,11 @@
                                             Mostrar
                                             <div class="mx-2 d-inline-block">
                                                 <select wire:model.live="mostrar_paginate" class="form-select">
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
                                                     <option value="5">5</option>
                                                     <option value="10">10</option>
                                                     <option value="20">20</option>
+                                                    <option value="30">30</option>
+                                                    <option value="50">50</option>
                                                 </select>
                                             </div>
                                             entradas
@@ -60,19 +60,19 @@
                                         </thead>
                                         <tbody>
                                             @php
-                                            $i = $alumnos->count() ?? 0;
+                                            $i = 1;
                                             @endphp
                                             @forelse ($alumnos as $item)
                                             <tr
-                                                class="{{ $item->estado_gestion_aula_usuario === 0 ? 'bg-red text-white fw-bold' : '' }}">
+                                                class="{{ !$item->usuario->gestionAulaAlumno[0]->estado_gestion_aula_alumno ? 'bg-red text-white fw-bold' : '' }}">
                                                 <td>
                                                     <span
-                                                        class="{{ $item->estado_gestion_aula_usuario === 0 ? 'text-white' : 'text-secondary' }}">
-                                                        {{ $i-- }}
+                                                        class="{{ !$item->usuario->gestionAulaAlumno[0]->estado_gestion_aula_alumno ? 'text-white' : 'text-secondary' }}">
+                                                        {{ $i++ }}
                                                     </span>
                                                 </td>
                                                 <td>
-                                                    {{ $item->usuario->persona->codigo_alumno_persona }}
+                                                    {{ $item->codigo_alumno_persona }}
                                                 </td>
                                                 <td>
                                                     <div class="d-flex py-1 align-items-center">
@@ -80,12 +80,12 @@
                                                             alt="avatar" class="avatar rounded avatar-static me-2">
                                                         <div class="flex-fill">
                                                             <div class="font-weight-medium">{{
-                                                                $item->usuario->nombre_completo
+                                                                $item->nombre_completo
                                                                 }}
                                                             </div>
 
                                                             <div x-data="{ isCopied: false }"
-                                                                class="col-auto {{ $item->estado_gestion_aula_usuario === 0 ? 'text-white' : 'text-secondary' }}">
+                                                                class="col-auto {{ !$item->usuario->gestionAulaAlumno[0]->estado_gestion_aula_alumno ? 'text-white' : 'text-secondary' }}">
                                                                 <a class="text-reset cursor-pointer copy-to-clipboard"
                                                                     @click="navigator.clipboard.writeText('{{ $item->usuario->persona->documento_persona }}')
                                                                         .then(() => {
@@ -93,7 +93,7 @@
                                                                             setTimeout(() => isCopied = false, 1000);
                                                                         }).catch(err => console.error('Error al copiar al portapapeles: ', err))"
                                                                     x-show="!isCopied">
-                                                                    {{ $item->usuario->persona->documento_persona }}
+                                                                    {{ $item->documento_persona }}
                                                                 </a>
 
                                                                 <span x-show="isCopied" class="text-primary">
@@ -120,8 +120,8 @@
                                                 <td>
                                                     {{ $item->usuario->correo_usuario }}
                                                 </td>
-                                                <td>
-                                                    {{ ultima_conexion('2024-06-23 12:18:17') }}
+                                                <td class="{{ !$item->usuario->auditoria->last() ? 'text-red' : '' }}">
+                                                    {{ $item->usuario->auditoria->last() === null ? 'Sin conexión' : format_fecha_horas($item->usuario->auditoria->last()->fecha_auditoria) }}
                                                 </td>
                                             </tr>
                                             @empty

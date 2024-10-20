@@ -131,14 +131,11 @@ class Asistencia extends Model
         }
 
         return $query->where(function ($query) use ($search) {
-            $query->where('nombre_asistencia', 'like', '%' . $search . '%')
-                ->orWhere('fecha_asistencia', 'like', '%' . $search . '%')
+            $query->where('fecha_asistencia', 'like', '%' . $search . '%')
                 ->orWhere('hora_inicio_asistencia', 'like', '%' . $search . '%')
                 ->orWhere('hora_fin_asistencia', 'like', '%' . $search . '%')
-                ->orWhereHas('asistenciaAlumno', function ($query) use ($search) {
-                    $query->whereHas('estadoAsistencia', function ($query) use ($search) {
-                        $query->where('nombre_estado_asistencia', 'like', '%' . $search . '%');
-                    });
+                ->orWhereHas('tipoAsistencia', function ($query) use ($search) {
+                    $query->where('nombre_tipo_asistencia', 'like', '%' . $search . '%');
                 });
         });
     }
