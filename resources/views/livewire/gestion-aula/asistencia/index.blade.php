@@ -237,8 +237,6 @@
                                                 Mostrar
                                                 <div class="mx-2 d-inline-block">
                                                     <select wire:model.live="mostrar_paginate" class="form-select">
-                                                        <option value="1">1</option>
-                                                        <option value="2">2</option>
                                                         <option value="5">5</option>
                                                         <option value="10">10</option>
                                                         <option value="20">20</option>
@@ -552,7 +550,7 @@
     </div>
 
 
-    <div wire:ignore.self class="modal fade" id="modal-asistencias" tabindex="-1" data-bs-backdrop="static">
+    <div wire:ignore.self class="modal fade" id="modal-asistencia" tabindex="-1" data-bs-backdrop="static">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -560,7 +558,7 @@
                         {{ $titulo_asistencias }}
                     </h5>
                     <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal"
-                        aria-label="Close" wire:click="cerrar_modal"></button>
+                        aria-label="Close" wire:click="limpiar_modal"></button>
                 </div>
                 <form autocomplete="off" wire:submit="guardar_asistencias" novalidate>
                     <div class="modal-body">
@@ -627,7 +625,7 @@
                     </div>
 
                     <div class="modal-footer">
-                        <a class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="cerrar_modal">
+                        <a class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="limpiar_modal">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-ban">
@@ -687,7 +685,7 @@
                         Eliminar Asistencia
                     </h5>
                     <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal"
-                        aria-label="Close" wire:click="cerrar_modal_eliminar"></button>
+                        aria-label="Close" wire:click="limpiar_modal_eliminar"></button>
                 </div>
                 <form autocomplete="off" wire:submit="eliminar_asistencia({{ $id_asistencia_a_eliminar }})" novalidate>
                     <div class="modal-status bg-red"></div>
@@ -769,7 +767,7 @@
 
                     <div class="modal-footer">
                         <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal"
-                            wire:click="cerrar_modal_eliminar">
+                            wire:click="limpiar_modal_eliminar">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-ban">
@@ -819,7 +817,7 @@
                         Enviar Asistencia
                     </h5>
                     <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal"
-                        aria-label="Close" wire:click="cerrar_modal_enviar"></button>
+                        aria-label="Close" wire:click="limpiar_modal_enviar"></button>
                 </div>
                 <form autocomplete="off" wire:submit="enviar_asistencia" novalidate>
                     <div class="modal-status bg-teal"></div>
@@ -869,7 +867,7 @@
                     </div>
 
                     <div class="modal-footer">
-                        <a class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="cerrar_modal_enviar">
+                        <a class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="limpiar_modal_enviar">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-ban">

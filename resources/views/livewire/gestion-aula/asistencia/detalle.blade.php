@@ -236,11 +236,11 @@
                                                 Mostrar
                                                 <div class="mx-2 d-inline-block">
                                                     <select wire:model.live="mostrar_paginate" class="form-select">
-                                                        <option value="1">1</option>
-                                                        <option value="2">2</option>
                                                         <option value="5">5</option>
                                                         <option value="10">10</option>
                                                         <option value="20">20</option>
+                                                        <option value="30">30</option>
+                                                        <option value="50">50</option>
                                                     </select>
                                                 </div>
                                                 entradas
@@ -316,115 +316,115 @@
                                             </thead>
                                             <tbody>
                                                 @php
-                                                $i = $alumnos->count() ?? 0;
+                                                    $i = 1;
                                                 @endphp
                                                 @forelse ($alumnos as $item)
-                                                <tr
-                                                    class="{{ $item->estado_gestion_aula_usuario === 0 ? 'bg-red text-white fw-bold' : '' }}">
-                                                    <td>
-                                                        <input class="form-check-input" type="checkbox"
-                                                            wire:model.live="check_alumno.{{ $item->id_gestion_aula_usuario }}"
-                                                            {{ $item->estado_gestion_aula_usuario === 0 ||
-                                                        !$item->asistenciaAlumno->isEmpty() ? 'disabled' : '' }}>
-                                                    </td>
-                                                    <td>
-                                                        <span
-                                                            class="{{ $item->estado_gestion_aula_usuario === 0 ? 'text-white' : 'text-secondary' }}">
-                                                            {{ $i-- }}
-                                                        </span>
-                                                    </td>
-                                                    <td>
-                                                        {{ $item->usuario->persona->codigo_alumno_persona }}
-                                                    </td>
+                                                    <tr
+                                                        class="{{ !$item->usuario->gestionAulaAlumno[0]->estado_gestion_aula_alumno ? 'bg-red text-white fw-bold' : '' }}">
+                                                        <td>
+                                                            <input class="form-check-input" type="checkbox"
+                                                                wire:model.live="check_alumno.{{ $item->usuario->gestionAulaAlumno[0]->id_gestion_aula_alumno }}"
+                                                                {{ !$item->usuario->gestionAulaAlumno[0]->estado_gestion_aula_alumno ||
+                                                            !$item->usuario->gestionAulaAlumno[0]->asistenciaAlumno->isEmpty() ? 'disabled' : '' }}>
+                                                        </td>
+                                                        <td>
+                                                            <span
+                                                                class="{{ $item->usuario->gestionAulaAlumno[0]->estado_gestion_aula_alumno === 0 ? 'text-white' : 'text-secondary' }}">
+                                                                {{ $i++ }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            {{ $item->codigo_alumno_persona }}
+                                                        </td>
 
-                                                    <td>
-                                                        <div class="d-flex py-1 align-items-center">
-                                                            <img src="{{ $item->usuario->mostrarFoto('azure') }}"
-                                                                alt="avatar" class="avatar rounded avatar-static me-2">
-                                                            <div class="flex-fill">
-                                                                <div class="font-weight-medium">{{
-                                                                    $item->usuario->nombre_completo }}
-                                                                </div>
-                                                                <div
-                                                                    class="{{ $item->estado_gestion_aula_usuario === 0 ? 'text-white' : 'text-secondary' }}">
-                                                                    <a href="#" class="text-reset">
-                                                                        {{ $item->usuario->persona->documento_persona }}
-                                                                    </a>
+                                                        <td>
+                                                            <div class="d-flex py-1 align-items-center">
+                                                                <img src="{{ $item->usuario->mostrarFoto('azure') }}"
+                                                                    alt="avatar" class="avatar rounded avatar-static me-2">
+                                                                <div class="flex-fill">
+                                                                    <div class="font-weight-medium">{{
+                                                                        $item->nombre_completo }}
+                                                                    </div>
+                                                                    <div
+                                                                        class="{{ !$item->usuario->gestionAulaAlumno[0]->estado_gestion_aula_alumno ? 'text-white' : 'text-secondary' }}">
+                                                                        <a href="#" class="text-reset">
+                                                                            {{ $item->documento_persona }}
+                                                                        </a>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        @forelse ($item->asistenciaAlumno as $asistencias)
-                                                        {{ format_fecha_horas($asistencias->created_at) }}
-                                                        @if(tiempo_transcurrido($asistencias->created_at,
-                                                        $asistencias->asistencia->fecha_asistencia,
-                                                        $asistencias->asistencia->hora_inicio_asistencia,
-                                                        $asistencias->asistencia->hora_fin_asistencia) !== '')
-                                                        <span class="text-red ms-2">
-                                                            <br>
-                                                            {{ tiempo_transcurrido($asistencias->created_at,
-                                                            $asistencias->asistencia->fecha_asistencia,
-                                                            $asistencias->asistencia->hora_inicio_asistencia,
-                                                            $asistencias->asistencia->hora_fin_asistencia) }}
-                                                            tarde.
-                                                        </span>
-                                                        @endif
-                                                        @empty
-                                                        <span class="text-secondary">
-                                                            Sin asistencia
-                                                        </span>
-                                                        @endforelse
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @forelse ($item->asistenciaAlumno as $alumno)
-                                                        <span wire:key="{{ $alumno->id_asistencia_alumno }}"
-                                                            class="status status-{{ color_estado_asistencia($alumno->estadoAsistencia->nombre_estado_asistencia) }} px-3 py-2">
-                                                            {{ $alumno->estadoAsistencia->nombre_estado_asistencia }}
-                                                        </span>
-                                                        @empty
-                                                        <button type="button"
-                                                            class="btn btn-outline-primary btn-sm {{ in_array(true, $this->check_alumno) ? 'disabled' : '' }}"
-                                                            wire:click="abrir_modal_enviar_asistencia({{ $item->id_gestion_aula_usuario }})">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                height="24" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="2"
-                                                                stroke-linecap="round" stroke-linejoin="round"
-                                                                class="icon icon-tabler icons-tabler-outline icon-tabler-checks">
-                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                <path d="M7 12l5 5l10 -10" />
-                                                                <path d="M2 12l5 5m5 -5l5 -5" />
-                                                            </svg>
-                                                            Enviar Asistencia
-                                                        </button>
-                                                        @endforelse
-                                                    </td>
-                                                </tr>
+                                                        </td>
+                                                        <td>
+                                                            @forelse ($item->usuario->gestionAulaAlumno[0]->asistenciaAlumno as $asistencias)
+                                                                {{ format_fecha_horas($asistencias->created_at) }}
+                                                                @if(tiempo_transcurrido($asistencias->created_at,
+                                                                    $asistencias->asistencia->fecha_asistencia,
+                                                                    $asistencias->asistencia->hora_inicio_asistencia,
+                                                                    $asistencias->asistencia->hora_fin_asistencia) !== '')
+                                                                    <span class="text-red ms-2">
+                                                                        <br>
+                                                                        {{ tiempo_transcurrido($asistencias->created_at,
+                                                                        $asistencias->asistencia->fecha_asistencia,
+                                                                        $asistencias->asistencia->hora_inicio_asistencia,
+                                                                        $asistencias->asistencia->hora_fin_asistencia) }}
+                                                                        tarde.
+                                                                    </span>
+                                                                @endif
+                                                            @empty
+                                                                <span class="text-secondary">
+                                                                    Sin asistencia
+                                                                </span>
+                                                            @endforelse
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @forelse ($item->usuario->gestionAulaAlumno[0]->asistenciaAlumno as $alumno)
+                                                                <span wire:key="{{ $alumno->id_asistencia_alumno }}"
+                                                                    class="status status-{{ color_estado_asistencia($alumno->estadoAsistencia->nombre_estado_asistencia) }} px-3 py-2">
+                                                                    {{ $alumno->estadoAsistencia->nombre_estado_asistencia }}
+                                                                </span>
+                                                            @empty
+                                                                <button type="button"
+                                                                    class="btn btn-outline-primary btn-sm {{ in_array(true, $this->check_alumno) ? 'disabled' : '' }}"
+                                                                    wire:click="abrir_modal_enviar_asistencia({{ $item->id_gestion_aula_alumno }})">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                        height="24" viewBox="0 0 24 24" fill="none"
+                                                                        stroke="currentColor" stroke-width="2"
+                                                                        stroke-linecap="round" stroke-linejoin="round"
+                                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-checks">
+                                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                        <path d="M7 12l5 5l10 -10" />
+                                                                        <path d="M2 12l5 5m5 -5l5 -5" />
+                                                                    </svg>
+                                                                    Enviar Asistencia
+                                                                </button>
+                                                            @endforelse
+                                                        </td>
+                                                    </tr>
                                                 @empty
-                                                @if ($alumnos->count() == 0 && $search != '')
-                                                <tr>
-                                                    <td colspan="4">
-                                                        <div class="text-center"
-                                                            style="padding-bottom: 2rem; padding-top: 2rem;">
-                                                            <span class="text-secondary">
-                                                                No se encontraron resultados para
-                                                                "<strong>{{ $search }}</strong>"
-                                                            </span>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                @else
-                                                <tr>
-                                                    <td colspan="4">
-                                                        <div class="text-center"
-                                                            style="padding-bottom: 2rem; padding-top: 2rem;">
-                                                            <span class="text-secondary">
-                                                                No hay alumnos matriculados
-                                                            </span>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                @endif
+                                                    @if ($alumnos->count() == 0 && $search != '')
+                                                        <tr>
+                                                            <td colspan="4">
+                                                                <div class="text-center"
+                                                                    style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                                    <span class="text-secondary">
+                                                                        No se encontraron resultados para
+                                                                        "<strong>{{ $search }}</strong>"
+                                                                    </span>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    @else
+                                                        <tr>
+                                                            <td colspan="4">
+                                                                <div class="text-center"
+                                                                    style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                                    <span class="text-secondary">
+                                                                        No hay alumnos matriculados
+                                                                    </span>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    @endif
                                                 @endforelse
                                             </tbody>
                                         </table>
@@ -469,7 +469,7 @@
                         {{ $titulo_modal_enviar }}
                     </h5>
                     <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal"
-                        aria-label="Close" wire:click="cerrar_modal_enviar"></button>
+                        aria-label="Close" wire:click="limpiar_modal"></button>
                 </div>
                 <form autocomplete="off" wire:submit="enviar_asistencia" novalidate>
                     <div class="modal-status bg-teal"></div>
@@ -519,7 +519,7 @@
                     </div>
 
                     <div class="modal-footer">
-                        <a class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="cerrar_modal_enviar">
+                        <a class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="limpiar_modal">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-ban">
