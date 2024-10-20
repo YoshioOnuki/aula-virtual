@@ -132,6 +132,19 @@ class Curso extends Model
 
 
     /**
+     * Scope a query to only include active cursos.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param mixed $estado
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeEstado($query, $estado)
+    {
+        return $query->where('estado_curso', $estado);
+    }
+
+
+    /**
      * The "booted" method of the model.
      *
      * @return void

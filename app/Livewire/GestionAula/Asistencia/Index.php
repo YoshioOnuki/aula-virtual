@@ -94,7 +94,10 @@ class Index extends Component
     }
 
 
-    /* =============== FUNCIONES PARA EL MODAL DE ASISTENCIA- AGREGAR Y EDITAR =============== */
+
+    /**
+     * Abrir modal para agregar asistencia
+     */
     public function abrir_modal_asistencias_agregar()
     {
         $this->limpiar_modal();
@@ -104,6 +107,10 @@ class Index extends Component
         $this->accion_asistencias = 'Agregar';
     }
 
+
+    /**
+     * Abrir modal para editar asistencia
+     */
     public function abrir_modal_asistencias_editar(Asistencia $asistencia)
     {
         $this->limpiar_modal();
@@ -120,6 +127,10 @@ class Index extends Component
         $this->hora_fin_asistencia = Carbon::createFromFormat('H:i:s', $asistencia->hora_fin_asistencia)->format('H:i');
     }
 
+
+    /**
+     * Guardar asistencia
+     */
     public function guardar_asistencias()
     {
         $this->validate([
@@ -145,6 +156,7 @@ class Index extends Component
                 DB::commit();
 
                 $this->cerrar_modal('#modal-asistencia');
+                $this->limpiar_modal();
 
                 $this->dispatch(
                     'toast-basico',
@@ -153,7 +165,7 @@ class Index extends Component
                 );
             } catch (\Exception $e) {
                 DB::rollBack();
-                dd($e);
+                // dd($e);
                 $this->dispatch(
                     'toast-basico',
                     mensaje: 'Ha ocurrido un error al guardar la asistencia: ',
@@ -163,6 +175,10 @@ class Index extends Component
         }
     }
 
+
+    /**
+     * Agregar asistencia
+     */
     public function agregar_asistenca()
     {
         $asistencia = new Asistencia();
@@ -176,6 +192,10 @@ class Index extends Component
         $asistencia->save();
     }
 
+
+    /**
+     * Editar asistencia
+     */
     public function editar_asistencia()
     {
         $asistencia = Asistencia::find($this->id_asistencia_editar);
@@ -188,6 +208,10 @@ class Index extends Component
         $asistencia->save();
     }
 
+
+    /**
+     * Validar hora de inicio
+     */
     public function validate_hora_inicio()
     {
         $horaActual = Carbon::now()->format('H:i');
@@ -200,6 +224,10 @@ class Index extends Component
         }
     }
 
+
+    /**
+     * Validar fecha
+     */
     public function validate_fecha()
     {
         $fechaActual = Carbon::today()->toDateString();
@@ -228,11 +256,11 @@ class Index extends Component
         // Reiniciar errores
         $this->resetErrorBag();
     }
-    /* ========================================================================================================== */
 
 
-
-    /* =============== FUNCIONES PARA EL MODAL DE ELIMINAR ASISTENCIA =============== */
+    /**
+     * Abrir modal para eliminar asistencia
+     */
     public function abrir_modal_eliminar(Asistencia $asistencia)
     {
         $this->id_asistencia_a_eliminar = $asistencia->id_asistencia;
@@ -242,6 +270,10 @@ class Index extends Component
         $this->hora_fin_asistencia_a_eliminar = format_hora($asistencia->hora_fin_asistencia);
     }
 
+
+    /**
+     * Eliminar asistencia
+     */
     public function eliminar_asistencia(Asistencia $asistencia)
     {
         try {
@@ -269,6 +301,10 @@ class Index extends Component
         }
     }
 
+
+    /**
+     * Limpiar modal de eliminar
+     */
     public function limpiar_modal_eliminar()
     {
         $this->id_asistencia_a_eliminar = null;
@@ -279,8 +315,9 @@ class Index extends Component
     }
 
 
-
-    /* =============== FUNCIONES PARA EL MODAL DE  ENVIAR ASISTENCIAS =============== */
+    /**
+     * Abrir modal para enviar asistencia
+     */
     public function abrir_modal_enviar_asistencia(Asistencia $asistencia)
     {
         $this->limpiar_modal_enviar();
@@ -293,6 +330,10 @@ class Index extends Component
         $this->hora_fin_asistencia_a_enviar = $asistencia->hora_fin_asistencia;
     }
 
+
+    /**
+     * Enviar asistencia
+     */
     public function enviar_asistencia()
     {
         $this->validate([
@@ -302,7 +343,6 @@ class Index extends Component
         try {
             DB::beginTransaction();
 
-            // dd(verificar_hora_actual($this->hora_inicio_asistencia_a_enviar, $this->hora_fin_asistencia_a_enviar, $this->fecha_asistencia_a_enviar));
             if (verificar_hora_actual($this->hora_inicio_asistencia_a_enviar, $this->hora_fin_asistencia_a_enviar, $this->fecha_asistencia_a_enviar)) {
                 $asistencia_alumno = new AsistenciaAlumno();
                 $asistencia_alumno->id_asistencia = $this->id_asistencia_enviar;
@@ -322,6 +362,7 @@ class Index extends Component
             DB::commit();
 
             $this->cerrar_modal('#modal-enviar-asistencia');
+            $this->limpiar_modal_enviar();
 
             $this->dispatch(
                 'toast-basico',
@@ -492,8 +533,6 @@ class Index extends Component
                 ->orderBy('hora_inicio_asistencia', 'asc')
                 ->paginate($this->mostrar_paginate);
 
-            // dd($asistencias);
-
         } elseif ($this->tipo_vista === 'carga-academica') {
             $asistencias = Asistencia::with([
                 'tipoAsistencia',
@@ -505,7 +544,7 @@ class Index extends Component
                 ->paginate($this->mostrar_paginate);
         }
 
-        $tipo_asistencias = TipoAsistencia::where('estado_tipo_asistencia', 1)->get();
+        $tipo_asistencias = TipoAsistencia::estado(true)->get();
 
         return view('livewire.gestion-aula.asistencia.index', [
             'asistencias' => $asistencias,

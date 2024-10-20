@@ -129,7 +129,7 @@ class Autoridad extends Model
      */
     public function scopeActivo($query)
     {
-        return $query->where('estado_autoridad', 1);
+        return $query->where('estado_autoridad', true);
     }
 
     /**
@@ -140,7 +140,7 @@ class Autoridad extends Model
      */
     public function scopeInactivo($query)
     {
-        return $query->where('estado_autoridad', 0);
+        return $query->where('estado_autoridad', false);
     }
 
 

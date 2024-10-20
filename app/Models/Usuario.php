@@ -364,7 +364,7 @@ class Usuario extends Authenticatable
      */
     public function scopeActivo($query)
     {
-        return $query->where('estado_usuario', 1);
+        return $query->where('estado_usuario', true);
     }
 
     /**
@@ -375,7 +375,7 @@ class Usuario extends Authenticatable
      */
     public function scopeInactivo($query)
     {
-        return $query->where('estado_usuario', 0);
+        return $query->where('estado_usuario', false);
     }
 
     /**

@@ -62,6 +62,21 @@ class TipoAsistencia extends Model
 
 
     /**
+     * Scope a query to estado tipo asistencia.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param mixed $estado
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeEstado($query, $estado)
+    {
+        if ($estado) {
+            return $query->where('estado_tipo_asistencia', $estado);
+        }
+    }
+
+
+    /**
      * Las marcas de tiempo que deben ser deshabilitadas.
      */
     public $timestamps = false;

@@ -95,6 +95,21 @@ class Proceso extends Model
 
 
     /**
+     * Scope a query to only include active proceso.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param mixed $estado
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeEstado($query, $estado)
+    {
+        if ($estado) {
+            return $query->where('estado_proceso', $estado);
+        }
+    }
+
+
+    /**
      * The "booted" method of the model.
      *
      * @return void

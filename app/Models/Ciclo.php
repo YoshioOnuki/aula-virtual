@@ -63,6 +63,19 @@ class Ciclo extends Model
 
 
     /**
+     * Scope a query to only include active ciclos.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param mixed $estado
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeEstado($query, $estado)
+    {
+        return $query->where('estado_ciclo', $estado);
+    }
+
+
+    /**
      * Las marcas de tiempo que deben ser deshabilitadas.
      */
     public $timestamps = false;
