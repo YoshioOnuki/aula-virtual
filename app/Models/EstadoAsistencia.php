@@ -19,15 +19,6 @@ class EstadoAsistencia extends Model
 
 
     /**
-     * Los atributos que deben ser añadidos.
-     *
-     * @var array
-     */
-    protected $appends = [
-        'nombre_estado_asistencia',
-    ];
-
-    /**
      * Los atributos que deben ser convertidos.
      *
      * @var array
@@ -45,17 +36,6 @@ class EstadoAsistencia extends Model
     public function asistenciaAlumno()
     {
         return $this->hasMany(AsistenciaAlumno::class, 'id_estado_asistencia');
-    }
-
-
-    /**
-     * Retorna nombre_estado_asistencia
-     *
-     * @return string
-     */
-    public function getNombreEstadoAsistenciaAttribute() : string
-    {
-        return $this->estado_estado_asistencia ? 'Activo' : 'Inactivo';
     }
 
 

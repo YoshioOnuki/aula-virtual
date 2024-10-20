@@ -19,15 +19,6 @@ class EstadoTrabajoAcademico extends Model
 
 
     /**
-     * Los atributos que deben ser añadidos.
-     *
-     * @var array
-     */
-    protected $appends = [
-        'nombre_estado_trabajo_academico',
-    ];
-
-    /**
      * Los atributos que deben ser convertidos.
      *
      * @var array
@@ -45,17 +36,6 @@ class EstadoTrabajoAcademico extends Model
     public function trabajoAcademicoAlumno()
     {
         return $this->hasMany(TrabajoAcademicoAlumno::class, 'id_estado_trabajo_academico');
-    }
-
-
-    /**
-     * Retorna nombre_estado_trabajo_academico
-     *
-     * @return string
-     */
-    public function getNombreEstadoTrabajoAcademicoAttribute() : string
-    {
-        return $this->estado_estado_trabajo_academico ? 'Activo' : 'Inactivo';
     }
 
 

@@ -42,8 +42,6 @@ class Asistencia extends Model
      */
     protected $casts = [
         'fecha_asistencia' => 'date',
-        'hora_inicio_asistencia' => 'time',
-        'hora_fin_asistencia' => 'time',
     ];
 
 
