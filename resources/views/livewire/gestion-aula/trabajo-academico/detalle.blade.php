@@ -112,7 +112,7 @@
                                             <div class="row g-2">
                                                 @foreach ($trabajo_academico->archivoDocente as $archivo)
                                                     @if (file_exists($archivo->archivo_docente))
-                                                        <div class="col-6 col-md-3 col-lg-4 col-xl-4">
+                                                        <div class="col-12 col-md-6 col-lg-6 col-xl-6">
                                                             <a class="card p-3 mb-3 text-decoration-none cursor-pointer"
                                                                 wire:click="descargar_archivo({{ $archivo->id_archivo_docente }})">
                                                                 <div class="d-flex align-items-center">
@@ -120,7 +120,7 @@
                                                                         alt="icono-recurso" class="me-2" width="40">
                                                                     <div>
                                                                         <h5 class="mb-0">
-                                                                            {{ Str::limit($archivo->nombre_archivo_docente, 20) }}
+                                                                            {{ Str::limit($archivo->nombre_archivo_docente, 25) }}
                                                                         </h5>
                                                                         <small class="text-muted d-block mt-1 fw-light">
                                                                             {{ formato_tamano_archivo(filesize($archivo->archivo_docente)) }}
