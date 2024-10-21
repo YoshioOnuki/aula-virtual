@@ -108,7 +108,7 @@ class Detalle extends Component
         $this->id_asistencia_enviar = $this->id_asistencia;
         $asistencia = Asistencia::find($this->id_asistencia);
 
-        $this->estados = EstadoAsistencia::where('estado_estado_asistencia', 1)->get();
+        $this->estados = EstadoAsistencia::estado(true)->get();
         $this->tipo_asistencia_a_enviar = $asistencia->tipoAsistencia->nombre_tipo_asistencia;
         $this->fecha_asistencia_a_enviar = $asistencia->fecha_asistencia;
         $this->hora_inicio_asistencia_a_enviar = $asistencia->hora_inicio_asistencia;
@@ -134,7 +134,7 @@ class Detalle extends Component
         $this->id_asistencia_enviar = $this->id_asistencia;
         $asistencia = Asistencia::find($this->id_asistencia);
 
-        $this->estados = EstadoAsistencia::where('estado_estado_asistencia', 1)->get();
+        $this->estados = EstadoAsistencia::estado(true)->get();
         $this->tipo_asistencia_a_enviar = $asistencia->tipoAsistencia->nombre_tipo_asistencia;
         $this->fecha_asistencia_a_enviar = $asistencia->fecha_asistencia;
         $this->hora_inicio_asistencia_a_enviar = $asistencia->hora_inicio_asistencia;

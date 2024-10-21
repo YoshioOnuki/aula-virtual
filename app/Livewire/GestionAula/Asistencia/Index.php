@@ -323,7 +323,7 @@ class Index extends Component
         $this->limpiar_modal_enviar();
 
         $this->id_asistencia_enviar = $asistencia->id_asistencia;
-        $this->estados = EstadoAsistencia::where('estado_estado_asistencia', 1)->get();
+        $this->estados = EstadoAsistencia::estado(true)->get();
         $this->tipo_asistencia_a_enviar = $asistencia->tipoAsistencia->nombre_tipo_asistencia;
         $this->fecha_asistencia_a_enviar = $asistencia->fecha_asistencia;
         $this->hora_inicio_asistencia_a_enviar = $asistencia->hora_inicio_asistencia;
@@ -505,11 +505,13 @@ class Index extends Component
         if ($this->tipo_vista === 'cursos') {
             $this->id_gestion_aula_alumno = GestionAulaAlumno::where('id_usuario', $this->usuario->id_usuario)
                 ->gestionAula($this->id_gestion_aula)
+                ->estado(true)
                 ->first()
                 ->id_gestion_aula_alumno ?? null;
         } else {
             $this->id_gestion_aula_docente = GestionAulaDocente::where('id_usuario', $this->usuario->id_usuario)
                 ->gestionAula($this->id_gestion_aula)
+                ->estado(true)
                 ->first()
                 ->id_gestion_aula_docente ?? null;
         }

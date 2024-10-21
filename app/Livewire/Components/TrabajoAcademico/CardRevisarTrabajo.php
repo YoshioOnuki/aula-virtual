@@ -4,6 +4,7 @@ namespace App\Livewire\Components\TrabajoAcademico;
 
 use App\Models\ComentarioTrabajoAcademico;
 use App\Models\EstadoTrabajoAcademico;
+use App\Models\GestionAulaAlumno;
 use App\Models\TrabajoAcademicoAlumno;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Validate;
@@ -20,6 +21,8 @@ class CardRevisarTrabajo extends Component
     public $validar_entrega = false;
     public $editar_entrega = false;
 
+    public $es_docente_invitado = false;
+
     // Variables para la revisión de trabajos
     #[Validate('required|numeric|min:0|max:20')]
     public $nota_trabajo_academico;
@@ -31,6 +34,12 @@ class CardRevisarTrabajo extends Component
 
     public function revisar_trabajo_academico()
     {
+        if ($this->es_docente_invitado) {
+            $this->dispatch('permiso_denegado');
+            return;
+        }
+        dd('Revisar trabajo académico');
+
         $this->validate([
             'nota_trabajo_academico' => 'required|numeric|min:0|max:20'
         ]);
@@ -148,6 +157,9 @@ class CardRevisarTrabajo extends Component
         $this->id_usuario_hash = Hashids::encode($usuario->id_usuario);
 
         $this->trabajo_academico_alumno = $trabajo_academico_alumno;
+
+        $id_gestion_aula = GestionAulaAlumno::find($id_gestion_aula_alumno)->id_gestion_aula;
+        $this->es_docente_invitado = $usuario->esDocenteInvitado($id_gestion_aula) && $tipo_vista === 'carga-academica' ? true : false;
 
         $this->cargar_datos();
         $this->validar_entrega();

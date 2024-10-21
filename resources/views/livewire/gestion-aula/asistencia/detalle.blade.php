@@ -216,6 +216,10 @@
         <div class="page-body">
             <div class="container-xl">
 
+                @if ($es_docente_invitado)
+                    <livewire:components.navegacion.alert-docente-invitado />
+                @endif
+
                 <div class="row row-cards d-flex justify-content-between">
                     <div class="col-lg-2 d-none d-lg-block">
                         <livewire:components.navegacion.navegacion-curso :tipo_vista=$tipo_vista
@@ -247,7 +251,7 @@
                                             </div>
 
                                             <div class="text-secondary row">
-                                                @if (in_array(true, $this->check_alumno))
+                                                @if (in_array(true, $this->check_alumno) && $es_docente)
                                                 <div class="col-lg-7 col-9">
                                                     <div class="d-inline-block">
                                                         <input type="text" class="form-control"
@@ -265,34 +269,34 @@
                                                 </div>
                                                 @endif
 
-                                                @if (in_array(true, $this->check_alumno))
-                                                <div class="col-lg-5 col-3 d-flex justify-content-end">
-                                                    <a class="btn btn-outline-primary d-none d-md-inline-block"
-                                                        wire:click="abrir_modal_enviar_asistencias">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                            stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round"
-                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-checks">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                            <path d="M7 12l5 5l10 -10" />
-                                                            <path d="M2 12l5 5m5 -5l5 -5" />
-                                                        </svg>
-                                                        Enviar Asistencias
-                                                    </a>
-                                                    <a class="btn btn-outline-primary d-md-none btn-icon"
-                                                        wire:click="abrir_modal_enviar_asistencias">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                            stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round"
-                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-checks">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                            <path d="M7 12l5 5l10 -10" />
-                                                            <path d="M2 12l5 5m5 -5l5 -5" />
-                                                        </svg>
-                                                    </a>
-                                                </div>
+                                                @if (in_array(true, $this->check_alumno) && $es_docente)
+                                                    <div class="col-lg-5 col-3 d-flex justify-content-end">
+                                                        <a class="btn btn-outline-primary d-none d-md-inline-block"
+                                                            wire:click="abrir_modal_enviar_asistencias">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                                stroke-width="2" stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                class="icon icon-tabler icons-tabler-outline icon-tabler-checks">
+                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                <path d="M7 12l5 5l10 -10" />
+                                                                <path d="M2 12l5 5m5 -5l5 -5" />
+                                                            </svg>
+                                                            Enviar Asistencias
+                                                        </a>
+                                                        <a class="btn btn-outline-primary d-md-none btn-icon"
+                                                            wire:click="abrir_modal_enviar_asistencias">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                                stroke-width="2" stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                class="icon icon-tabler icons-tabler-outline icon-tabler-checks">
+                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                <path d="M7 12l5 5l10 -10" />
+                                                                <path d="M2 12l5 5m5 -5l5 -5" />
+                                                            </svg>
+                                                        </a>
+                                                    </div>
                                                 @endif
                                             </div>
 
@@ -383,20 +387,24 @@
                                                                     {{ $alumno->estadoAsistencia->nombre_estado_asistencia }}
                                                                 </span>
                                                             @empty
-                                                                <button type="button"
-                                                                    class="btn btn-outline-primary btn-sm {{ in_array(true, $this->check_alumno) ? 'disabled' : '' }}"
-                                                                    wire:click="abrir_modal_enviar_asistencia({{ $item->usuario->gestionAulaAlumno[0]->id_gestion_aula_alumno }})">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                        height="24" viewBox="0 0 24 24" fill="none"
-                                                                        stroke="currentColor" stroke-width="2"
-                                                                        stroke-linecap="round" stroke-linejoin="round"
-                                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-checks">
-                                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                        <path d="M7 12l5 5l10 -10" />
-                                                                        <path d="M2 12l5 5m5 -5l5 -5" />
-                                                                    </svg>
-                                                                    Enviar Asistencia
-                                                                </button>
+                                                                @if ($es_docente)
+                                                                    <button type="button"
+                                                                        class="btn btn-outline-primary btn-sm {{ in_array(true, $this->check_alumno) ? 'disabled' : '' }}"
+                                                                        wire:click="abrir_modal_enviar_asistencia({{ $item->usuario->gestionAulaAlumno[0]->id_gestion_aula_alumno }})">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                            height="24" viewBox="0 0 24 24" fill="none"
+                                                                            stroke="currentColor" stroke-width="2"
+                                                                            stroke-linecap="round" stroke-linejoin="round"
+                                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-checks">
+                                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                            <path d="M7 12l5 5l10 -10" />
+                                                                            <path d="M2 12l5 5m5 -5l5 -5" />
+                                                                        </svg>
+                                                                        Enviar Asistencia
+                                                                    </button>
+                                                                @else
+                                                                    -
+                                                                @endif
                                                             @endforelse
                                                         </td>
                                                     </tr>

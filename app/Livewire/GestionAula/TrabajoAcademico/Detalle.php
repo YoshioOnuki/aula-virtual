@@ -400,6 +400,7 @@ class Detalle extends Component
         $this->id_gestion_aula = $this->obtener_id_curso($id_curso);
 
         $this->modo_admin = $this->obtener_usuario_autenticado()->esRol('ADMINISTRADOR');
+        $this->es_docente_invitado = $this->verificar_usuario_invitado($id_curso, $id_usuario, $tipo_vista);
 
         $id_trabajo_academico = Hashids::decode($id_trabajo_academico);
         $this->trabajo_academico = TrabajoAcademico::with('archivoDocente')->find($id_trabajo_academico[0]);

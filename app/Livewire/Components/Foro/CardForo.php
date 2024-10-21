@@ -13,7 +13,7 @@ class CardForo extends Component
     public $tipo_vista;
     public $usuario;
     public $id_usuario_hash;
-    public $id_gestion_aula_usuario;
+    public $id_gestion_aula;
     public $foro;
 
     protected $listeners = ['actualizar-foros' => '$actualizar_foros'];
@@ -27,7 +27,7 @@ class CardForo extends Component
 
     public function actualizar_foros()
     {
-        $this->mount($this->tipo_vista, $this->usuario, $this->id_gestion_aula_usuario, $this->foro);
+        $this->mount($this->tipo_vista, $this->usuario, $this->id_gestion_aula, $this->foro);
     }
 
 
@@ -67,21 +67,22 @@ class CardForo extends Component
     }
 
 
-    public function mount($tipo_vista, $usuario, $id_gestion_aula_usuario, $foro)
+    public function mount($tipo_vista, $usuario, $id_curso, $foro)
     {
-        $this->tipo_vista = $tipo_vista;
-        $this->usuario = $usuario;
-        $this->id_gestion_aula_usuario = $id_gestion_aula_usuario;
         $this->id_usuario_hash = Hashids::encode($usuario->id_usuario);
-        if ($this->usuario->esRolGestionAula('DOCENTE', $this->id_gestion_aula_usuario)) {
+        $this->usuario = $usuario;
+        $this->tipo_vista = $tipo_vista;
+        $this->id_gestion_aula = $id_curso;
+
+        if ($this->usuario->esDocente($this->id_gestion_aula)) {
             $this->foro = Foro::find($foro->id_foro);
         }else{
-            $this->foro = Foro::with([
-                'foroRespuesta' => function ($query) {
-                    $query->orderBy('created_at', 'asc')
-                        ->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario);
-                }
-            ])->find($foro->id_foro);
+            // $this->foro = Foro::with([
+            //     'foroRespuesta' => function ($query) {
+            //         $query->orderBy('created_at', 'asc')
+            //             ->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario);
+            //     }
+            // ])->find($foro->id_foro);
         }
     }
 

@@ -5,6 +5,11 @@
 
     <div class="page-body">
         <div class="container-xl">
+
+            @if ($es_docente_invitado)
+                <livewire:components.navegacion.alert-docente-invitado />
+            @endif
+
             <div class="row row-cards d-flex justify-content-between">
                 <div class="col-lg-2 d-none d-lg-block">
                     <livewire:components.navegacion.navegacion-curso :tipo_vista=$tipo_vista

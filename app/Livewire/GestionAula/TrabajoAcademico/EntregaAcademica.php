@@ -38,7 +38,10 @@ class EntregaAcademica extends Component
 
 
     // Listener para actualizar la vista actualizar_estado_entrega
-    protected $listeners = ['actualizar_estado_entrega' => 'actualizar_estado_entrega'];
+    protected $listeners = [
+        'actualizar_estado_entrega' => 'actualizar_estado_entrega',
+        'permiso_denegado' => 'permiso_denegado'
+    ];
 
 
     /**
@@ -141,6 +144,19 @@ class EntregaAcademica extends Component
     public function actualizar_estado_entrega()
     {
         $this->dispatch('actualizar_estado_entrega_alumno');
+    }
+
+
+    /**
+     * Evento para mostrar un mensaje de permiso denegado
+     */
+    public function permiso_denegado()
+    {
+        $this->dispatch(
+            'toast-basico',
+            mensaje: 'Usted no tiene permisos para realizar esta acción',
+            type: 'error'
+        );
     }
 
 

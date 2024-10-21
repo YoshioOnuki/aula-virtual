@@ -216,6 +216,11 @@
 
         <div class="page-body">
             <div class="container-xl">
+
+                @if ($es_docente_invitado)
+                    <livewire:components.navegacion.alert-docente-invitado />
+                @endif
+
                 <div class="row row-cards d-flex justify-content-between">
                     <div class="col-lg-2 d-none d-lg-block">
                         <livewire:components.navegacion.navegacion-curso :tipo_vista=$tipo_vista
@@ -225,7 +230,7 @@
                     <div class="col-lg-10 col-md-12 col-sm-12">
 
                         @if($modo_admin)
-                        <livewire:components.curso.admin-info-usuario :usuario=$usuario :tipo_vista=$tipo_vista lazy />
+                            <livewire:components.curso.admin-info-usuario :usuario=$usuario :tipo_vista=$tipo_vista lazy />
                         @endif
 
                         <div class="row g-3">
@@ -263,35 +268,34 @@
                                                 </div>
                                                 @endif
 
-                                                @if ($es_docente &&
-                                                $tipo_vista === 'carga-academica')
-                                                <div class="col-lg-5 col-3 d-flex justify-content-end">
-                                                    <a class="btn btn-primary d-none d-md-inline-block"
-                                                        wire:click="abrir_modal_asistencias_agregar"
-                                                        data-bs-toggle="modal" data-bs-target="#modal-asistencias">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
-                                                            height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                            stroke="currentColor" fill="none" stroke-linecap="round"
-                                                            stroke-linejoin="round">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                            <path d="M12 5l0 14" />
-                                                            <path d="M5 12l14 0" />
-                                                        </svg>
-                                                        Crear Asistencia
-                                                    </a>
-                                                    <a class="btn btn-primary d-md-none btn-icon"
-                                                        wire:click="abrir_modal_asistencias_agregar"
-                                                        data-bs-toggle="modal" data-bs-target="#modal-asistencias">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
-                                                            height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                            stroke="currentColor" fill="none" stroke-linecap="round"
-                                                            stroke-linejoin="round">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                            <path d="M12 5l0 14" />
-                                                            <path d="M5 12l14 0" />
-                                                        </svg>
-                                                    </a>
-                                                </div>
+                                                @if ($es_docente && $tipo_vista === 'carga-academica')
+                                                    <div class="col-lg-5 col-3 d-flex justify-content-end">
+                                                        <a class="btn btn-primary d-none d-md-inline-block"
+                                                            wire:click="abrir_modal_asistencias_agregar"
+                                                            data-bs-toggle="modal" data-bs-target="#modal-asistencia">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                                                                height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                                stroke="currentColor" fill="none" stroke-linecap="round"
+                                                                stroke-linejoin="round">
+                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                <path d="M12 5l0 14" />
+                                                                <path d="M5 12l14 0" />
+                                                            </svg>
+                                                            Crear Asistencia
+                                                        </a>
+                                                        <a class="btn btn-primary d-md-none btn-icon"
+                                                            wire:click="abrir_modal_asistencias_agregar"
+                                                            data-bs-toggle="modal" data-bs-target="#modal-asistencia">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                                                                height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                                stroke="currentColor" fill="none" stroke-linecap="round"
+                                                                stroke-linejoin="round">
+                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                <path d="M12 5l0 14" />
+                                                                <path d="M5 12l14 0" />
+                                                            </svg>
+                                                        </a>
+                                                    </div>
                                                 @endif
                                             </div>
                                         </div>
@@ -341,149 +345,146 @@
                                                     </td>
                                                     <td class="text-center">
                                                         @if ($item->asistenciaAlumno->isEmpty())
-                                                        <button type="button"
-                                                            class="btn btn-outline-primary btn-sm
-                                                                {{ verificar_hora_actual($item->hora_inicio_asistencia, $item->hora_fin_asistencia, $item->fecha_asistencia) ? '' : 'disabled' }}"
-                                                            wire:click="abrir_modal_enviar_asistencia({{ $item->id_asistencia }})"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#modal-enviar-asistencia">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                height="24" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="2"
-                                                                stroke-linecap="round" stroke-linejoin="round"
-                                                                class="icon icon-tabler icons-tabler-outline icon-tabler-checks">
-                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                <path d="M7 12l5 5l10 -10" />
-                                                                <path d="M2 12l5 5m5 -5l5 -5" />
-                                                            </svg>
-                                                            Enviar Asistencia
-                                                        </button>
+                                                            <button type="button"
+                                                                class="btn btn-outline-primary btn-sm
+                                                                    {{ verificar_hora_actual($item->hora_inicio_asistencia, $item->hora_fin_asistencia, $item->fecha_asistencia) ? '' : 'disabled' }}"
+                                                                wire:click="abrir_modal_enviar_asistencia({{ $item->id_asistencia }})"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#modal-enviar-asistencia">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                    height="24" viewBox="0 0 24 24" fill="none"
+                                                                    stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round"
+                                                                    class="icon icon-tabler icons-tabler-outline icon-tabler-checks">
+                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                    <path d="M7 12l5 5l10 -10" />
+                                                                    <path d="M2 12l5 5m5 -5l5 -5" />
+                                                                </svg>
+                                                                Enviar Asistencia
+                                                            </button>
                                                         @else
-                                                        @foreach ($item->asistenciaAlumno as $alumno)
-                                                        @if ($alumno->estadoAsistencia->nombre_estado_asistencia ===
-                                                        'Presente')
-                                                        <span wire:key="{{ $alumno->id_asistencia_alumno }}"
-                                                            class="status status-teal px-1 py-1">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                height="24" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="2"
-                                                                stroke-linecap="round" stroke-linejoin="round"
-                                                                class="icon icon-tabler icons-tabler-outline icon-tabler-circle-dashed-letter-p text-teal">
-                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                <path d="M10 12h2a2 2 0 1 0 0 -4h-2v8" />
-                                                                <path d="M8.56 3.69a9 9 0 0 0 -2.92 1.95" />
-                                                                <path d="M3.69 8.56a9 9 0 0 0 -.69 3.44" />
-                                                                <path d="M3.69 15.44a9 9 0 0 0 1.95 2.92" />
-                                                                <path d="M8.56 20.31a9 9 0 0 0 3.44 .69" />
-                                                                <path d="M15.44 20.31a9 9 0 0 0 2.92 -1.95" />
-                                                                <path d="M20.31 15.44a9 9 0 0 0 .69 -3.44" />
-                                                                <path d="M20.31 8.56a9 9 0 0 0 -1.95 -2.92" />
-                                                                <path d="M15.44 3.69a9 9 0 0 0 -3.44 -.69" />
-                                                            </svg>
-                                                        </span>
-                                                        @break
-                                                        @elseif($alumno->estadoAsistencia->nombre_estado_asistencia ===
-                                                        'Tarde')
-                                                        <span wire:key="{{ $alumno->id_asistencia_alumno }}"
-                                                            class="status status-yellow px-1 py-1">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                height="24" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="2"
-                                                                stroke-linecap="round" stroke-linejoin="round"
-                                                                class="icon icon-tabler icons-tabler-outline icon-tabler-circle-dashed-letter-t text-yellow">
-                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                <path d="M10 8h4" />
-                                                                <path d="M12 8v8" />
-                                                                <path d="M8.56 3.69a9 9 0 0 0 -2.92 1.95" />
-                                                                <path d="M3.69 8.56a9 9 0 0 0 -.69 3.44" />
-                                                                <path d="M3.69 15.44a9 9 0 0 0 1.95 2.92" />
-                                                                <path d="M8.56 20.31a9 9 0 0 0 3.44 .69" />
-                                                                <path d="M15.44 20.31a9 9 0 0 0 2.92 -1.95" />
-                                                                <path d="M20.31 15.44a9 9 0 0 0 .69 -3.44" />
-                                                                <path d="M20.31 8.56a9 9 0 0 0 -1.95 -2.92" />
-                                                                <path d="M15.44 3.69a9 9 0 0 0 -3.44 -.69" />
-                                                            </svg>
-                                                        </span>
-                                                        @break
-                                                        @elseif($alumno->estadoAsistencia->nombre_estado_asistencia ===
-                                                        'Ausente')
-                                                        <span wire:key="{{ $alumno->id_asistencia_alumno }}"
-                                                            class="status status-red px-1 py-1">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                height="24" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="2"
-                                                                stroke-linecap="round" stroke-linejoin="round"
-                                                                class="icon icon-tabler icons-tabler-outline icon-tabler-circle-dashed-letter-a text-red">
-                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                <path d="M10 16v-6a2 2 0 1 1 4 0v6" />
-                                                                <path d="M10 13h4" />
-                                                                <path d="M8.56 3.69a9 9 0 0 0 -2.92 1.95" />
-                                                                <path d="M3.69 8.56a9 9 0 0 0 -.69 3.44" />
-                                                                <path d="M3.69 15.44a9 9 0 0 0 1.95 2.92" />
-                                                                <path d="M8.56 20.31a9 9 0 0 0 3.44 .69" />
-                                                                <path d="M15.44 20.31a9 9 0 0 0 2.92 -1.95" />
-                                                                <path d="M20.31 15.44a9 9 0 0 0 .69 -3.44" />
-                                                                <path d="M20.31 8.56a9 9 0 0 0 -1.95 -2.92" />
-                                                                <path d="M15.44 3.69a9 9 0 0 0 -3.44 -.69" />
-                                                            </svg>
-                                                        </span>
-                                                        @break
-                                                        @elseif($alumno->estadoAsistencia->nombre_estado_asistencia ===
-                                                        'Justificado')
-                                                        <span wire:key="{{ $alumno->id_asistencia_alumno }}"
-                                                            class="status status-azure px-1 py-1">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                height="24" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="2"
-                                                                stroke-linecap="round" stroke-linejoin="round"
-                                                                class="icon icon-tabler icons-tabler-outline icon-tabler-circle-dashed-letter-j text-azure">
-                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                <path d="M10 8h4v6a2 2 0 1 1 -4 0" />
-                                                                <path d="M8.56 3.69a9 9 0 0 0 -2.92 1.95" />
-                                                                <path d="M3.69 8.56a9 9 0 0 0 -.69 3.44" />
-                                                                <path d="M3.69 15.44a9 9 0 0 0 1.95 2.92" />
-                                                                <path d="M8.56 20.31a9 9 0 0 0 3.44 .69" />
-                                                                <path d="M15.44 20.31a9 9 0 0 0 2.92 -1.95" />
-                                                                <path d="M20.31 15.44a9 9 0 0 0 .69 -3.44" />
-                                                                <path d="M20.31 8.56a9 9 0 0 0 -1.95 -2.92" />
-                                                                <path d="M15.44 3.69a9 9 0 0 0 -3.44 -.69" />
-                                                            </svg>
-                                                        </span>
-                                                        @break
-                                                        @endif
-                                                        @endforeach
+                                                            @foreach ($item->asistenciaAlumno as $alumno)
+                                                                @if ($alumno->estadoAsistencia->nombre_estado_asistencia === 'Presente')
+                                                                    <span wire:key="{{ $alumno->id_asistencia_alumno }}"
+                                                                        class="status status-teal px-1 py-1">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                            height="24" viewBox="0 0 24 24" fill="none"
+                                                                            stroke="currentColor" stroke-width="2"
+                                                                            stroke-linecap="round" stroke-linejoin="round"
+                                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-circle-dashed-letter-p text-teal">
+                                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                            <path d="M10 12h2a2 2 0 1 0 0 -4h-2v8" />
+                                                                            <path d="M8.56 3.69a9 9 0 0 0 -2.92 1.95" />
+                                                                            <path d="M3.69 8.56a9 9 0 0 0 -.69 3.44" />
+                                                                            <path d="M3.69 15.44a9 9 0 0 0 1.95 2.92" />
+                                                                            <path d="M8.56 20.31a9 9 0 0 0 3.44 .69" />
+                                                                            <path d="M15.44 20.31a9 9 0 0 0 2.92 -1.95" />
+                                                                            <path d="M20.31 15.44a9 9 0 0 0 .69 -3.44" />
+                                                                            <path d="M20.31 8.56a9 9 0 0 0 -1.95 -2.92" />
+                                                                            <path d="M15.44 3.69a9 9 0 0 0 -3.44 -.69" />
+                                                                        </svg>
+                                                                    </span>
+                                                                    @break
+                                                                @elseif($alumno->estadoAsistencia->nombre_estado_asistencia === 'Tarde')
+                                                                    <span wire:key="{{ $alumno->id_asistencia_alumno }}"
+                                                                        class="status status-yellow px-1 py-1">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                            height="24" viewBox="0 0 24 24" fill="none"
+                                                                            stroke="currentColor" stroke-width="2"
+                                                                            stroke-linecap="round" stroke-linejoin="round"
+                                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-circle-dashed-letter-t text-yellow">
+                                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                            <path d="M10 8h4" />
+                                                                            <path d="M12 8v8" />
+                                                                            <path d="M8.56 3.69a9 9 0 0 0 -2.92 1.95" />
+                                                                            <path d="M3.69 8.56a9 9 0 0 0 -.69 3.44" />
+                                                                            <path d="M3.69 15.44a9 9 0 0 0 1.95 2.92" />
+                                                                            <path d="M8.56 20.31a9 9 0 0 0 3.44 .69" />
+                                                                            <path d="M15.44 20.31a9 9 0 0 0 2.92 -1.95" />
+                                                                            <path d="M20.31 15.44a9 9 0 0 0 .69 -3.44" />
+                                                                            <path d="M20.31 8.56a9 9 0 0 0 -1.95 -2.92" />
+                                                                            <path d="M15.44 3.69a9 9 0 0 0 -3.44 -.69" />
+                                                                        </svg>
+                                                                    </span>
+                                                                    @break
+                                                                @elseif($alumno->estadoAsistencia->nombre_estado_asistencia === 'Ausente')
+                                                                    <span wire:key="{{ $alumno->id_asistencia_alumno }}"
+                                                                        class="status status-red px-1 py-1">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                            height="24" viewBox="0 0 24 24" fill="none"
+                                                                            stroke="currentColor" stroke-width="2"
+                                                                            stroke-linecap="round" stroke-linejoin="round"
+                                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-circle-dashed-letter-a text-red">
+                                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                            <path d="M10 16v-6a2 2 0 1 1 4 0v6" />
+                                                                            <path d="M10 13h4" />
+                                                                            <path d="M8.56 3.69a9 9 0 0 0 -2.92 1.95" />
+                                                                            <path d="M3.69 8.56a9 9 0 0 0 -.69 3.44" />
+                                                                            <path d="M3.69 15.44a9 9 0 0 0 1.95 2.92" />
+                                                                            <path d="M8.56 20.31a9 9 0 0 0 3.44 .69" />
+                                                                            <path d="M15.44 20.31a9 9 0 0 0 2.92 -1.95" />
+                                                                            <path d="M20.31 15.44a9 9 0 0 0 .69 -3.44" />
+                                                                            <path d="M20.31 8.56a9 9 0 0 0 -1.95 -2.92" />
+                                                                            <path d="M15.44 3.69a9 9 0 0 0 -3.44 -.69" />
+                                                                        </svg>
+                                                                    </span>
+                                                                    @break
+                                                                @elseif($alumno->estadoAsistencia->nombre_estado_asistencia === 'Justificado')
+                                                                    <span wire:key="{{ $alumno->id_asistencia_alumno }}"
+                                                                        class="status status-azure px-1 py-1">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                            height="24" viewBox="0 0 24 24" fill="none"
+                                                                            stroke="currentColor" stroke-width="2"
+                                                                            stroke-linecap="round" stroke-linejoin="round"
+                                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-circle-dashed-letter-j text-azure">
+                                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                            <path d="M10 8h4v6a2 2 0 1 1 -4 0" />
+                                                                            <path d="M8.56 3.69a9 9 0 0 0 -2.92 1.95" />
+                                                                            <path d="M3.69 8.56a9 9 0 0 0 -.69 3.44" />
+                                                                            <path d="M3.69 15.44a9 9 0 0 0 1.95 2.92" />
+                                                                            <path d="M8.56 20.31a9 9 0 0 0 3.44 .69" />
+                                                                            <path d="M15.44 20.31a9 9 0 0 0 2.92 -1.95" />
+                                                                            <path d="M20.31 15.44a9 9 0 0 0 .69 -3.44" />
+                                                                            <path d="M20.31 8.56a9 9 0 0 0 -1.95 -2.92" />
+                                                                            <path d="M15.44 3.69a9 9 0 0 0 -3.44 -.69" />
+                                                                        </svg>
+                                                                    </span>
+                                                                    @break
+                                                                @endif
+                                                            @endforeach
                                                         @endif
                                                     </td>
-                                                    @elseif ($tipo_vista === 'carga-academica' && ($es_docente ||
-                                                    $es_docente_invitado))
-                                                    <td>
-                                                        <div class="btn-list flex-nowrap">
-                                                            <div class="dropdown">
-                                                                <button class="btn dropdown-toggle align-text-top"
-                                                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                                                    Acciones
-                                                                </button>
-                                                                <div class="dropdown-menu dropdown-menu-end">
-                                                                    <a class="dropdown-item" style="cursor: pointer;"
-                                                                        wire:click="redirifir_detalle_asistencias({{ $item->id_asistencia }})">
-                                                                        Detalle de Asistencias
-                                                                    </a>
-                                                                    <a class="dropdown-item" style="cursor: pointer;"
-                                                                        wire:click="abrir_modal_asistencias_editar({{ $item->id_asistencia }})"
-                                                                        data-bs-toggle="modal"
-                                                                        data-bs-target="#modal-asistencia">
-                                                                        Editar
-                                                                    </a>
-                                                                    <a class="dropdown-item" style="cursor: pointer;"
-                                                                        wire:click="abrir_modal_eliminar({{ $item->id_asistencia }})"
-                                                                        data-bs-toggle="modal"
-                                                                        data-bs-target="#modal-eliminar">
-                                                                        Eliminar
-                                                                    </a>
+                                                    @elseif ($tipo_vista === 'carga-academica' && ($es_docente || $es_docente_invitado))
+                                                        <td>
+                                                            <div class="btn-list flex-nowrap">
+                                                                <div class="dropdown">
+                                                                    <button class="btn dropdown-toggle align-text-top"
+                                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                                        Acciones
+                                                                    </button>
+                                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                                        <a class="dropdown-item" style="cursor: pointer;"
+                                                                            wire:click="redirifir_detalle_asistencias({{ $item->id_asistencia }})">
+                                                                            Detalle de Asistencias
+                                                                        </a>
+                                                                        @if ($es_docente)
+                                                                            <a class="dropdown-item" style="cursor: pointer;"
+                                                                                wire:click="abrir_modal_asistencias_editar({{ $item->id_asistencia }})"
+                                                                                data-bs-toggle="modal"
+                                                                                data-bs-target="#modal-asistencia">
+                                                                                Editar
+                                                                            </a>
+                                                                            <a class="dropdown-item" style="cursor: pointer;"
+                                                                                wire:click="abrir_modal_eliminar({{ $item->id_asistencia }})"
+                                                                                data-bs-toggle="modal"
+                                                                                data-bs-target="#modal-eliminar">
+                                                                                Eliminar
+                                                                            </a>
+                                                                        @endif
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </td>
+                                                        </td>
                                                     @endif
                                                 </tr>
                                                 @empty
@@ -592,8 +593,12 @@
                             <div class="col-lg-12">
                                 <label for="fecha_asistencia" class="form-label required">Fecha de Asistencia</label>
                                 <input type="date" class="form-control
-                                @if ($errors->has('fecha_asistencia')) is-invalid
-                                @elseif($fecha_asistencia) is-valid @endif" wire:model.live="fecha_asistencia"
+                                    @if ($errors->has('fecha_asistencia')) 
+                                        is-invalid
+                                    @elseif($fecha_asistencia) 
+                                        is-valid 
+                                    @endif"
+                                    wire:model.live="fecha_asistencia"
                                     min="{{ date('Y-m-d') }}">
                                 @error('fecha_asistencia')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -602,13 +607,16 @@
                             <div class="col-lg-6">
                                 <label for="hora_inicio_asistencia" class="form-label required">Hora de inicio</label>
                                 <input type="time" class="form-control
-                                @if ($errors->has('hora_inicio_asistencia')) is-invalid
-                                @elseif($hora_inicio_asistencia) is-valid @endif"
-                                    wire:model.live="hora_inicio_asistencia" {{ ($modo_asistencias===0 &&
-                                    $this->validate_hora_inicio() && $fecha_asistencia_temporal === $fecha_asistencia)
-                                || ($modo_asistencias === 0 && $this->validate_fecha()) ? 'disabled' : '' }}>
+                                    @if ($errors->has('hora_inicio_asistencia')) 
+                                        is-invalid
+                                    @elseif($hora_inicio_asistencia) 
+                                        is-valid 
+                                    @endif"
+                                    wire:model.live="hora_inicio_asistencia"
+                                    {{ ($modo_asistencias === 0 && $this->validate_hora_inicio() && $fecha_asistencia_temporal === $fecha_asistencia)
+                                    || ($modo_asistencias === 0 && $this->validate_fecha()) ? 'disabled' : '' }}>
                                 @error('hora_inicio_asistencia')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="col-lg-6">

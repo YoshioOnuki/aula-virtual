@@ -38,6 +38,7 @@ class Index extends Component
     public $correo_usuario;
 
     public $modo_admin = false;// Modo admin, para saber si se esta en modo administrador
+    public $es_docente_invitado = false;
 
     // Variables para page-header
     public $titulo_page_header = 'LISTA DE ALUMNOS';
@@ -195,6 +196,7 @@ class Index extends Component
         $this->id_gestion_aula = $this->obtener_id_curso($id_curso);
 
         $this->modo_admin = $this->obtener_usuario_autenticado()->esRol('ADMINISTRADOR');
+        $this->es_docente_invitado = $this->verificar_usuario_invitado($id_curso, $id_usuario, $tipo_vista);
 
         $this->obtener_datos_page_header();
 
@@ -225,7 +227,6 @@ class Index extends Component
             ->orderBy('apellido_paterno_persona', 'asc')
             ->orderBy('apellido_materno_persona', 'asc')
             ->paginate($this->mostrar_paginate);
-        // dd($alumnos);
 
         return view('livewire.gestion-aula.alumnos.index', [
             'alumnos' => $alumnos
