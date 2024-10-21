@@ -125,7 +125,7 @@
                                                     {{ $item->usuario->correo_usuario }}
                                                 </td>
                                                 <td class="{{ !$item->usuario->auditoria->last() ? 'text-red' : '' }}">
-                                                    {{ $item->usuario->auditoria->last() === null ? 'Sin conexión' : format_fecha_horas($item->usuario->auditoria->last()->fecha_auditoria) }}
+                                                    {{ $item->usuario->auditoria->last() === null ? 'Sin conexión' : ultima_conexion($item->usuario->auditoria->last()->fecha_auditoria) }}
                                                 </td>
                                             </tr>
                                             @empty

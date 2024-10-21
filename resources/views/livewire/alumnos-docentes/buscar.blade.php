@@ -63,7 +63,7 @@
                         <th>Docente</th>
                     @endif
                     <th>Usuario</th>
-                    <th>Última acción</th>
+                    <th>Última conexión</th>
                     <th class="col-1">Acciones</th>
                 </tr>
             </thead>
@@ -99,11 +99,10 @@
                         <td>
                             @if($item->auditoria->count() === 0)
                                 <span class="text-red">
-                                    Nunca inició sesión
+                                    Sin conexión
                                 </span>
                             @else
-                                "{{ $item->auditoria->last()->accion_auditoria }}" <br>
-                                {{ ultima_conexion($item->auditoria->last()->fecha_auditoria) }}
+                                {{ $item->auditoria->last() === null ? 'Sin conexión' : ultima_conexion($item->auditoria->last()->fecha_auditoria) }}
                             @endif
                         </td>
                         <td>
