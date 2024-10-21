@@ -15,7 +15,7 @@ class CardRevisarTrabajo extends Component
     public $tipo_vista;
     public $usuario;
     public $id_usuario_hash;
-    public $id_gestion_aula_usuario;
+    public $id_gestion_aula_alumno;
     public $trabajo_academico_alumno;
     public $validar_entrega = false;
     public $editar_entrega = false;
@@ -47,7 +47,7 @@ class CardRevisarTrabajo extends Component
                 $comentario_trabajo_academico = new ComentarioTrabajoAcademico();
                 $comentario_trabajo_academico->descripcion_comentario_trabajo_academico = $this->descripcion_comentario_trabajo_academico;
                 $comentario_trabajo_academico->id_trabajo_academico_alumno = $this->trabajo_academico_alumno->id_trabajo_academico_alumno;
-                $comentario_trabajo_academico->id_gestion_aula_usuario = $this->id_gestion_aula_usuario;
+                $comentario_trabajo_academico->id_gestion_aula_alumno = $this->id_gestion_aula_alumno;
                 $comentario_trabajo_academico->save();
             }
 
@@ -59,7 +59,6 @@ class CardRevisarTrabajo extends Component
             $tramite_trabajo_academico_alumno->nota_trabajo_academico_alumno = $this->nota_trabajo_academico;
             $tramite_trabajo_academico_alumno->id_estado_trabajo_academico = $id_estado_trabajo_academico;
             $tramite_trabajo_academico_alumno->save();
-
 
             DB::commit();
 
@@ -141,11 +140,11 @@ class CardRevisarTrabajo extends Component
     }
 
 
-    public function mount($tipo_vista, $usuario, $id_gestion_aula_usuario, $trabajo_academico_alumno)
+    public function mount($tipo_vista, $usuario, $id_gestion_aula_alumno, $trabajo_academico_alumno)
     {
         $this->tipo_vista = $tipo_vista;
         $this->usuario = $usuario;
-        $this->id_gestion_aula_usuario = $id_gestion_aula_usuario;
+        $this->id_gestion_aula_alumno = $id_gestion_aula_alumno;
         $this->id_usuario_hash = Hashids::encode($usuario->id_usuario);
 
         $this->trabajo_academico_alumno = $trabajo_academico_alumno;

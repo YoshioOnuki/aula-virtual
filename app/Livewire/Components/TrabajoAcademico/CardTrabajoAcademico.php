@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Components\TrabajoAcademico;
 
+use App\Models\GestionAulaAlumno;
 use App\Models\TrabajoAcademico;
 use Livewire\Attributes\Lazy;
 use Livewire\Component;
@@ -12,10 +13,12 @@ class CardTrabajoAcademico extends Component
 {
     public $tipo_vista;
     public $usuario;
-    public $id_gestion_aula_usuario;
-    public $trabajo_academico;
-
     public $id_usuario_hash;
+    public $id_gestion_aula;
+    public $id_gestion_aula_alumno;
+    public $trabajo_academico;
+    public $es_docente;
+
 
     protected $listeners = ['actualizar-trabajos-academicos' => 'mostrar_trabajos'];
 
@@ -28,7 +31,7 @@ class CardTrabajoAcademico extends Component
 
     public function mostrar_trabajos()
     {
-        $this->mount($this->tipo_vista, $this->usuario, $this->id_gestion_aula_usuario, $this->trabajo_academico);
+        $this->mount($this->tipo_vista, $this->usuario, $this->id_gestion_aula, $this->trabajo_academico);
     }
 
     public function placeholder()
@@ -51,7 +54,7 @@ class CardTrabajoAcademico extends Component
                     </div>
                     <div class=" d-flex justify-content-end">
                         @if ($tipo_vista === 'carga-academica' &&
-                        $usuario->esRolGestionAula('DOCENTE', $id_gestion_aula_usuario))
+                        $usuario->esDocente($id_gestion_aula))
                         <a href="#" tabindex="-1"
                             class="btn btn-secondary disabled placeholder col-sm-2 col-lg-3 col-xl-2 d-none d-md-inline-block"
                             aria-hidden="true"></a>
@@ -67,20 +70,27 @@ class CardTrabajoAcademico extends Component
     }
 
 
-    public function mount($tipo_vista, $usuario, $id_gestion_aula_usuario, $trabajo_academico)
+    public function mount($tipo_vista, $usuario, $id_curso, $trabajo_academico)
     {
         $this->tipo_vista = $tipo_vista;
         $this->usuario = $usuario;
-        $this->id_gestion_aula_usuario = $id_gestion_aula_usuario;
+        $this->id_gestion_aula = $id_curso;
         $this->id_usuario_hash = Hashids::encode($usuario->id_usuario);
+        $this->id_gestion_aula_alumno = GestionAulaAlumno::where('id_usuario', $usuario->id_usuario)
+            ->gestionAula($this->id_gestion_aula)
+            ->first()
+            ->id_gestion_aula_alumno ?? null;
+
+        $this->es_docente = $this->usuario->esDocente($this->id_gestion_aula);
+
         $this->trabajo_academico = TrabajoAcademico::with([
             'trabajoAcademicoAlumno' => function ($query) {
                 $query->with('estadoTrabajoAcademico')
-                    ->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)
+                    ->where('id_gestion_aula_alumno', $this->id_gestion_aula_alumno)
                     ->first();
             }
         ])->find($trabajo_academico->id_trabajo_academico);
-        // dd($this->trabajo_academico);
+
     }
 
 

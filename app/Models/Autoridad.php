@@ -120,6 +120,19 @@ class Autoridad extends Model
             });
     }
 
+    /**
+     * Scope a query to search estado de la autoridad.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param mixed $estado
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeEstado($query, $estado)
+    {
+        if ($estado) {
+            return $query->where('estado_autoridad', $estado);
+        }
+    }
 
     /**
      * Scope a query to search by estado activo.

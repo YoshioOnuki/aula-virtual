@@ -357,6 +357,20 @@ class Usuario extends Authenticatable
     }
 
     /**
+     * Scope a query to search estado de usuario.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param mixed $estado
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeEstado($query, $estado)
+    {
+        if ($estado) {
+            return $query->where('estado_usuario', $estado);
+        }
+    }
+
+    /**
      * Scope a query to search docente activo.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query

@@ -96,87 +96,83 @@
                                     </div>
 
                                     @if($trabajo_academico->archivoDocente->count() > 0)
-                                    {{-- Archivos adjuntos --}}
-                                    <div class="">
+                                        {{-- Archivos adjuntos --}}
+                                        <div class="">
 
-                                        <div class="hr-text hr-text-center ">
-                                            <span>
-                                                Archivos adjuntos
-                                            </span>
-                                        </div>
+                                            <div class="hr-text hr-text-center ">
+                                                <span>
+                                                    Archivos adjuntos
+                                                </span>
+                                            </div>
 
-                                        <div class="row g-2">
-                                            @foreach ($trabajo_academico->archivoDocente as $archivo)
-                                            @if (file_exists($archivo->archivo_docente))
-                                            <div class="col-6 col-md-3 col-lg-4 col-xl-4">
-                                                <a class="card p-3 mb-3 text-decoration-none cursor-pointer"
-                                                    wire:click="descargar_archivo({{ $archivo->id_archivo_docente }})">
-                                                    <div class="d-flex align-items-center">
-                                                        <img src="{{ obtener_icono_archivo($archivo->archivo_docente) }}"
-                                                            alt="icono-recurso" class="me-2" width="40">
-                                                        <div>
-                                                            <h5 class="mb-0">
-                                                                {{ Str::limit($archivo->nombre_archivo_docente, 20) }}
-                                                            </h5>
-                                                            <small class="text-muted d-block mt-1 fw-light">
-                                                                {{
-                                                                formato_tamano_archivo(filesize($archivo->archivo_docente))
-                                                                }}
-                                                            </small>
+                                            <div class="row g-2">
+                                                @foreach ($trabajo_academico->archivoDocente as $archivo)
+                                                    @if (file_exists($archivo->archivo_docente))
+                                                        <div class="col-6 col-md-3 col-lg-4 col-xl-4">
+                                                            <a class="card p-3 mb-3 text-decoration-none cursor-pointer"
+                                                                wire:click="descargar_archivo({{ $archivo->id_archivo_docente }})">
+                                                                <div class="d-flex align-items-center">
+                                                                    <img src="{{ obtener_icono_archivo($archivo->archivo_docente) }}"
+                                                                        alt="icono-recurso" class="me-2" width="40">
+                                                                    <div>
+                                                                        <h5 class="mb-0">
+                                                                            {{ Str::limit($archivo->nombre_archivo_docente, 20) }}
+                                                                        </h5>
+                                                                        <small class="text-muted d-block mt-1 fw-light">
+                                                                            {{ formato_tamano_archivo(filesize($archivo->archivo_docente)) }}
+                                                                        </small>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
                                                         </div>
-                                                    </div>
+                                                    @else
+                                                        <div class="col-6 col-md-3 col-lg-4 col-xl-4">
+                                                            <div class="card p-3 mb-3 background-gray">
+                                                                <div class="d-flex align-items-center">
+                                                                    <img src="/media/icons/icon-archivo-generico2.webp"
+                                                                        alt="icono-recurso" class="me-2" width="40">
+                                                                    <div>
+                                                                        <h5 class="mb-0 text-danger">
+                                                                            {{ Str::limit("Archivo no disponible", 20) }}
+                                                                        </h5>
+                                                                        <small class="text-muted d-block mt-1 fw-light">
+                                                                            No disponible
+                                                                        </small>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @endif
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    @if ($usuario->esAlumno($id_gestion_aula) && $tipo_vista === 'cursos')
+                                        @if($entrega_trabajo === false)
+                                            <div class="card-footer d-flex justify-content-end align-items-center mt-4">
+                                                <a class="btn btn-primary
+                                                            {{ verificar_fecha_trabajo($trabajo_academico->fecha_inicio_trabajo_academico, $trabajo_academico->fecha_fin_trabajo_academico) ? '' : 'disabled' }}"
+                                                    wire:click="abrir_modal_entrega_trabajo()" data-bs-toggle="modal"
+                                                    data-bs-target="#modal-entrega">
+                                                    Agregar entrega
                                                 </a>
                                             </div>
-                                            @else
-                                            <div class="col-6 col-md-3 col-lg-4 col-xl-4">
-                                                <div class="card p-3 mb-3 background-gray">
-                                                    <div class="d-flex align-items-center">
-                                                        <img src="/media/icons/icon-archivo-generico2.webp"
-                                                            alt="icono-recurso" class="me-2" width="40">
-                                                        <div>
-                                                            <h5 class="mb-0 text-danger">
-                                                                {{ Str::limit("Archivo no disponible", 20) }}
-                                                            </h5>
-                                                            <small class="text-muted d-block mt-1 fw-light">
-                                                                No disponible
-                                                            </small>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                        @else
+                                            <div class="card-footer d-flex justify-content-end align-items-center mt-4">
+                                                <span class="status 
+                                                    status-{{ color_estado_trabajo_academico($trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico ?? 'No entregado') }}
+                                                    px-3 py-2 h-100">
+                                                    {{ $trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico ?? 'No entregado' }}
+                                                </span>
                                             </div>
-                                            @endif
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                    @endif
-
-                                    @if ($usuario->esRolGestionAula('ALUMNO', $id_gestion_aula_usuario) && $tipo_vista
-                                    ===
-                                    'cursos')
-                                    @if($entrega_trabajo === false)
-                                    <div class="card-footer d-flex justify-content-end align-items-center mt-4">
-                                        <a class="btn btn-primary
-                                                    {{ verificar_fecha_trabajo($trabajo_academico->fecha_inicio_trabajo_academico, $trabajo_academico->fecha_fin_trabajo_academico) ? '' : 'disabled' }}"
-                                            wire:click="abrir_modal_entrega_trabajo()" data-bs-toggle="modal"
-                                            data-bs-target="#modal-entrega">
-                                            Agregar entrega
-                                        </a>
-                                    </div>
-                                    @else
-                                    <div class="card-footer d-flex justify-content-end align-items-center mt-4">
-                                        <span class="status 
-                                            status-{{ color_estado_trabajo_academico($trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico ?? 'No entregado') }}
-                                            px-3 py-2 h-100">
-                                            {{ $trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico ?? 'No entregado' }}
-                                        </span>
-                                    </div>
-                                    {{-- <div class="card-footer d-flex justify-content-end align-items-center mt-4">
-                                        <a class="btn btn-primary" wire:click="abrir_modal_entrega_trabajo()"
-                                            data-bs-toggle="modal" data-bs-target="#modal-entrega">
-                                            Editar entrega
-                                        </a>
-                                    </div> --}}
-                                    @endif
+                                            {{-- <div class="card-footer d-flex justify-content-end align-items-center mt-4">
+                                                <a class="btn btn-primary" wire:click="abrir_modal_entrega_trabajo()"
+                                                    data-bs-toggle="modal" data-bs-target="#modal-entrega">
+                                                    Editar entrega
+                                                </a>
+                                            </div> --}}
+                                        @endif
                                     @endif
                                 </div>
                             </div>
@@ -184,8 +180,8 @@
 
                         <div class="col-lg-4">
                             <livewire:components.trabajo-academico.card-estado-trabajo :id_usuario_hash=$id_usuario_hash
-                                :tipo_vista=$tipo_vista :id_gestion_aula_usuario=$id_gestion_aula_usuario
-                                :trabajo_academico=$trabajo_academico :id_gestion_aula=$id_gestion_aula
+                                :tipo_vista=$tipo_vista :id_curso=$id_gestion_aula
+                                :trabajo_academico=$trabajo_academico
                                 :lista_alumnos=true lazy />
                         </div>
 
@@ -205,7 +201,7 @@
                         {{ $titulo_modal }}
                     </h5>
                     <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal"
-                        aria-label="Close" wire:click="cerrar_modal"></button>
+                        aria-label="Close" wire:click="limpiar_modal"></button>
                 </div>
                 <form autocomplete="off" wire:submit="guardar_entrega_trabajo">
                     <div class="modal-body">
@@ -243,7 +239,7 @@
                     </div>
 
                     <div class="modal-footer">
-                        <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="cerrar_modal">
+                        <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="limpiar_modal">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-ban">

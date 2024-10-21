@@ -2,16 +2,22 @@
 
 namespace App\Livewire\Components\TrabajoAcademico;
 
+use App\Models\GestionAulaAlumno;
 use App\Models\GestionAulaUsuario;
 use App\Models\TrabajoAcademico;
 use App\Models\TrabajoAcademicoAlumno;
+use App\Traits\UsuarioTrait;
 use Livewire\Component;
 
 class CardEstadoTrabajo extends Component
 {
+    use UsuarioTrait;
+
     public $id_usuario_hash;
+    public $usuario;
     public $tipo_vista;
-    public $id_gestion_aula_usuario;
+    public $id_gestion_aula;
+    public $id_gestion_aula_alumno;
     public $trabajo_academico;
     public $trabajo_academico_alumno;
     public $cantidad_alumnos;
@@ -23,11 +29,14 @@ class CardEstadoTrabajo extends Component
     protected $listeners = ['actualizar_estado_trabajo' => 'actualizar_estado_trabajo'];
 
 
+    /**
+     * Actualizar estado del trabajo académico
+     */
     public function actualizar_estado_trabajo()
     {
         $this->trabajo_academico_alumno = TrabajoAcademicoAlumno::with('estadoTrabajoAcademico')
             ->where('id_trabajo_academico', $this->trabajo_academico->id_trabajo_academico)
-            ->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)
+            ->where('id_gestion_aula_alumno', $this->id_gestion_aula_alumno)
             ->first();
 
         $this->cantidad_alumnos_entregados = TrabajoAcademicoAlumno::where('id_trabajo_academico', $this->trabajo_academico->id_trabajo_academico)
@@ -47,16 +56,16 @@ class CardEstadoTrabajo extends Component
             })
             ->count();
 
-        $this->cantidad_alumnos = GestionAulaUsuario::with('rol')
-            ->where('id_gestion_aula', $this->trabajo_academico->id_gestion_aula)
-            ->whereHas('rol', function ($query) {
-                $query->where('nombre_rol', 'ALUMNO');
-            })
-            ->where('estado_gestion_aula_usuario', 1)
-            ->count();
+        // Cantida de alumnos del curso
+        $this->cantidad_alumnos = GestionAulaAlumno::where('id_gestion_aula', $this->id_gestion_aula)
+        ->estado(true)
+        ->count();
     }
 
 
+    /**
+     * Placeholder para la carga diferida de la vista
+     */
     public function placeholder()
     {
         return <<<'HTML'
@@ -134,16 +143,21 @@ class CardEstadoTrabajo extends Component
     }
 
 
-    public function mount($id_usuario_hash, $tipo_vista, $id_gestion_aula_usuario, TrabajoAcademico $trabajo_academico, $id_gestion_aula, $lista_alumnos)
+    public function mount($id_usuario_hash, $tipo_vista, $id_curso, TrabajoAcademico $trabajo_academico, $lista_alumnos)
     {
         $this->id_usuario_hash = $id_usuario_hash;
+        $this->usuario = $this->obtener_usuario_del_curso($id_usuario_hash);
         $this->tipo_vista = $tipo_vista;
-        $this->id_gestion_aula_usuario = $id_gestion_aula_usuario;
+        $this->id_gestion_aula = $id_curso;
         $this->trabajo_academico = $trabajo_academico;
         $this->lista_alumnos = $lista_alumnos;
+        $this->id_gestion_aula_alumno = GestionAulaAlumno::where('id_usuario', $this->usuario->id_usuario)
+        ->gestionAula($this->id_gestion_aula)
+        ->first()
+        ->id_gestion_aula_alumno ?? null;
 
         $this->trabajo_academico_alumno = TrabajoAcademicoAlumno::where('id_trabajo_academico', $this->trabajo_academico->id_trabajo_academico)
-            ->where('id_gestion_aula_usuario', $this->id_gestion_aula_usuario)
+            ->where('id_gestion_aula_alumno', $this->id_gestion_aula_alumno)
             ->first();
 
         // Cantidad de alumnos que han entregado el trabajo
@@ -167,12 +181,8 @@ class CardEstadoTrabajo extends Component
             ->count();
 
         // Cantida de alumnos del curso
-        $this->cantidad_alumnos = GestionAulaUsuario::with('rol')
-            ->where('id_gestion_aula', $id_gestion_aula)
-            ->whereHas('rol', function ($query) {
-                $query->where('nombre_rol', 'ALUMNO');
-            })
-            ->where('estado_gestion_aula_usuario', 1)
+        $this->cantidad_alumnos = GestionAulaAlumno::where('id_gestion_aula', $this->id_gestion_aula)
+            ->estado(true)
             ->count();
     }
 
