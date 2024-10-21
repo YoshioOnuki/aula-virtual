@@ -121,8 +121,8 @@ class Index extends Component
 
         $this->id_asistencia_editar = $asistencia->id_asistencia;
         $this->tipo_asistencia = $asistencia->id_tipo_asistencia;
-        $this->fecha_asistencia = $asistencia->fecha_asistencia;
-        $this->fecha_asistencia_temporal = $this->fecha_asistencia;
+        $this->fecha_asistencia = Carbon::parse($asistencia->fecha_asistencia)->format('Y-m-d');
+        $this->fecha_asistencia_temporal = $asistencia->fecha_asistencia;
         $this->hora_inicio_asistencia = Carbon::createFromFormat('H:i:s', $asistencia->hora_inicio_asistencia)->format('H:i');
         $this->hora_fin_asistencia = Carbon::createFromFormat('H:i:s', $asistencia->hora_fin_asistencia)->format('H:i');
     }
