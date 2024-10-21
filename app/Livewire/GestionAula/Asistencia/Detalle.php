@@ -92,7 +92,7 @@ class Detalle extends Component
     /**
      * Abrir modal para enviar asistencia
      */
-    public function abrir_modal_enviar_asistencia($id_gestion_aula)
+    public function abrir_modal_enviar_asistencia($id_gestion_aula_alumno)
     {
         $this->limpiar_modal();
         $this->dispatch(
@@ -104,7 +104,7 @@ class Detalle extends Component
         $this->titulo_modal_enviar = 'Enviar Asistencia';
         $this->modo_enviar = 0; // Enviar asistencia a un solo alumno
 
-        $this->id_gestion_aula_enviar = $id_gestion_aula;
+        $this->id_gestion_aula_enviar = $id_gestion_aula_alumno;
         $this->id_asistencia_enviar = $this->id_asistencia;
         $asistencia = Asistencia::find($this->id_asistencia);
 

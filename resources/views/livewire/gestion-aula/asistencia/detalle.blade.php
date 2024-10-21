@@ -385,7 +385,7 @@
                                                             @empty
                                                                 <button type="button"
                                                                     class="btn btn-outline-primary btn-sm {{ in_array(true, $this->check_alumno) ? 'disabled' : '' }}"
-                                                                    wire:click="abrir_modal_enviar_asistencia({{ $item->id_gestion_aula_alumno }})">
+                                                                    wire:click="abrir_modal_enviar_asistencia({{ $item->usuario->gestionAulaAlumno[0]->id_gestion_aula_alumno }})">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                         height="24" viewBox="0 0 24 24" fill="none"
                                                                         stroke="currentColor" stroke-width="2"
