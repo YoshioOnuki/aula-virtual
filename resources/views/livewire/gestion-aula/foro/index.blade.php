@@ -22,8 +22,33 @@
                     @endif
 
                     <div class="card animate__animated animate__fadeIn">
-                        <div class="card-body border-bottom py-3">
 
+                        <div class="card-stamp card-stamp-lg">
+                            {{-- Icono de la tarjeta (Lado derecho de la esquina superior) --}}
+                            @if ($tipo_vista === 'cursos')
+                                <div class="card-stamp-icon bg-teal">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-messages">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M21 14l-3 -3h-7a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1h9a1 1 0 0 1 1 1v10" />
+                                        <path d="M14 15v2a1 1 0 0 1 -1 1h-7l-3 3v-10a1 1 0 0 1 1 -1h2" />
+                                    </svg>
+                                </div>
+                            @elseif($tipo_vista === 'carga-academica')
+                                <div class="card-stamp-icon bg-orange">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-messages">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M21 14l-3 -3h-7a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1h9a1 1 0 0 1 1 1v10" />
+                                        <path d="M14 15v2a1 1 0 0 1 -1 1h-7l-3 3v-10a1 1 0 0 1 1 -1h2" />
+                                    </svg>
+                                </div>
+                            @endif
+                        </div>
+
+                        <div class="card-body border-bottom py-3">
                             <div class="d-flex align-items-center justify-content-between w-100">
                                 <div class="text-secondary">
                                     Mostrar
@@ -86,7 +111,6 @@
                                     @endif
                                 </div>
                             </div>
-
                         </div>
 
                         <div class="table-responsive">
@@ -106,7 +130,10 @@
                                     @forelse ($foros as $item)
                                         <tr>
                                             <td>
-                                                <a href="" class="text-reset">
+                                                <a href="{{ $tipo_vista === 'carga-academica' ? 
+                                                    route('carga-academica.detalle.foro.detalle', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash, 'id_foro' => Hashids::encode($item->id_foro)]) :
+                                                    route('cursos.detalle.foro.detalle', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash, 'id_foro' => Hashids::encode($item->id_foro)]) }}"
+                                                    class="text-reset">
                                                     {{ $item->titulo_foro }}
                                                 </a>
                                             </td>
@@ -119,7 +146,10 @@
                                                             {{ Str::limit($item->gestionAulaDocente->usuario->nombre_completo, 20) }}
                                                         </div>
                                                         <div class="text-secondary">
-                                                            <a href="#" class="text-reset">
+                                                            <a href="{{ $tipo_vista === 'carga-academica' ? 
+                                                                route('carga-academica.detalle.foro.detalle', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash, 'id_foro' => Hashids::encode($item->id_foro)]) :
+                                                                route('cursos.detalle.foro.detalle', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash, 'id_foro' => Hashids::encode($item->id_foro)]) }}"
+                                                                class="text-reset">
                                                                 {{-- Validar si la fecha es hoy --}}
                                                                 @if($item->created_at->isToday())
                                                                 Hoy {{ $item->created_at->diffForHumans() }}
@@ -141,7 +171,10 @@
                                                                 {{ Str::limit($item->foroRespuesta->last()->gestionAulaAlumno->usuario->nombre_completo, 20) }}
                                                             </div>
                                                             <div class="text-secondary">
-                                                                <a href="#" class="text-reset">
+                                                                <a href="{{ $tipo_vista === 'carga-academica' ? 
+                                                                    route('carga-academica.detalle.foro.detalle', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash, 'id_foro' => Hashids::encode($item->id_foro)]) :
+                                                                    route('cursos.detalle.foro.detalle', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash, 'id_foro' => Hashids::encode($item->id_foro)]) }}"
+                                                                    class="text-reset">
                                                                     {{-- Validar si la fecha es hoy --}}
                                                                     @if($item->foroRespuesta->last()->created_at->isToday())
                                                                     Hoy {{ $item->foroRespuesta->last()->created_at->diffForHumans() }}
