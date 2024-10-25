@@ -10,6 +10,21 @@ const METHOD = "AES-256-CBC";
 const SECRET_KEY = '$AULA@2024';
 const SECRET_IV = '010524';
 
+
+// Funcion para obtener la fecha ingresada en formato "dia, 25 de octubre de 2024, 12:00 PM"
+if (!function_exists('format_fecha_completa')) {
+    function format_fecha_completa($fecha)
+    {
+        $dia = date('w', strtotime($fecha));
+        $dia_semana = format_dia_semana($fecha);
+        $dia_mes = date('d', strtotime($fecha));
+        $mes = format_mes(date('m', strtotime($fecha)));
+        $anio = date('Y', strtotime($fecha));
+        $hora = date('h:i A', strtotime($fecha));
+        return $dia_semana . ', ' . $dia_mes . ' de ' . $mes . ' de ' . $anio . ', ' . $hora;
+    }
+}
+
 if (!function_exists('format_fecha_horas')) {
     function format_fecha_horas($fecha)
     {
