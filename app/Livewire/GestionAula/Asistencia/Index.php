@@ -279,18 +279,22 @@ class Index extends Component
         try {
             DB::beginTransaction();
 
-            $asistencia->asistenciaAlumno()->delete();
+            if ($asistencia->asistenciaAlumno()->count() > 0) {
+                $asistencia->asistenciaAlumno()->delete();
+            }
             $asistencia->delete();
 
             DB::commit();
 
             $this->cerrar_modal('#modal-eliminar');
+            $this->limpiar_modal_eliminar();
 
             $this->dispatch(
                 'toast-basico',
                 mensaje: 'La asistencia se ha eliminado correctamente',
                 type: 'success'
             );
+
         } catch (\Exception $e) {
             DB::rollBack();
             $this->dispatch(
