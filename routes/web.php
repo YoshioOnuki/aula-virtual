@@ -10,6 +10,7 @@ use App\Livewire\GestionAula\Asistencia\Detalle as AsistenciaDetalle;
 use App\Livewire\GestionAula\Asistencia\Index as AsistenciaIndex;
 use App\Livewire\GestionAula\Curso\Detalle as CursoDetalle;
 use App\Livewire\GestionAula\Curso\Index as CursoIndex;
+use App\Livewire\GestionAula\Foro\Detalle as ForoDetalle;
 use App\Livewire\GestionAula\Foro\Index as ForoIndex;
 use App\Livewire\GestionAula\Manuales\Index as ManualesIndex;
 use App\Livewire\GestionAula\PlanEstudio\Index as PlanEstudioIndex;
@@ -140,6 +141,9 @@ Route::middleware(['throttle:100,1'])->group(function () {
                     // Foro
                     Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/foro', ForoIndex::class)
                         ->name('cursos.detalle.foro');
+                    // Detalle del foro
+                    Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/foro/{id_foro}', ForoDetalle::class)
+                        ->name('cursos.detalle.foro.detalle');
                     // Asistencia
                     Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/asistencia', AsistenciaIndex::class)
                         ->name('cursos.detalle.asistencia');
@@ -173,6 +177,9 @@ Route::middleware(['throttle:100,1'])->group(function () {
                     // Foro
                     Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/foro', ForoIndex::class)
                         ->name('carga-academica.detalle.foro');
+                    // Detalle del foro
+                    Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/foro/{id_foro}', ForoDetalle::class)
+                        ->name('carga-academica.detalle.foro.detalle');
                     // Asistencia
                     Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/asistencia', AsistenciaIndex::class)
                         ->name('carga-academica.detalle.asistencia');
