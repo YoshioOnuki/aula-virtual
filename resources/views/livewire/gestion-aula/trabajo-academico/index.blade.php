@@ -127,6 +127,7 @@
     </div>
 
 
+    {{-- Modal de trabajo académico --}}
     <div wire:ignore.self class="modal fade" id="modal-trabajo-academico" tabindex="-1" data-bs-backdrop="static">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">

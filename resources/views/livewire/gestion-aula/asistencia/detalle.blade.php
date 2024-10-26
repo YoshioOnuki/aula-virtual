@@ -228,12 +228,38 @@
 
                     <div class="col-lg-10 col-md-12 col-sm-12">
                         @if($modo_admin)
-                        <livewire:components.curso.admin-info-usuario :usuario=$usuario :tipo_vista=$tipo_vista lazy />
+                            <livewire:components.curso.admin-info-usuario :usuario=$usuario :tipo_vista=$tipo_vista lazy />
                         @endif
 
                         <div class="row g-3">
                             <div class="col-12">
-                                <div class="card animate__animated animate__fadeIn  ">
+                                <div class="card animate__animated animate__fadeIn">
+
+                                    <div class="card-stamp">
+                                        {{-- Icono de la tarjeta (Lado derecho de la esquina superior) --}}
+                                        @if ($tipo_vista === 'cursos')
+                                            <div class="card-stamp-icon bg-teal">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="icon icon-tabler icons-tabler-outline icon-tabler-checkbox">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                    <path d="M9 11l3 3l8 -8" />
+                                                    <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9" />
+                                                </svg>
+                                            </div>
+                                        @elseif($tipo_vista === 'carga-academica')
+                                            <div class="card-stamp-icon bg-orange">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="icon icon-tabler icons-tabler-outline icon-tabler-checkbox">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                    <path d="M9 11l3 3l8 -8" />
+                                                    <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9" />
+                                                </svg>
+                                            </div>
+                                        @endif
+                                    </div>
+
                                     <div class="card-body border-bottom py-3">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="text-secondary">

@@ -237,7 +237,7 @@
                             <div class="col-12">
                                 <div class="card animate__animated animate__fadeIn">
 
-                                    <div class="card-stamp card-stamp-lg">
+                                    <div class="card-stamp">
                                         {{-- Icono de la tarjeta (Lado derecho de la esquina superior) --}}
                                         @if ($tipo_vista === 'cursos')
                                             <div class="card-stamp-icon bg-teal">
