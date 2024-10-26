@@ -18,7 +18,7 @@
 
                 <div class="col-lg-10 col-md-12 col-sm-12">
                     @if($modo_admin)
-                    <livewire:components.curso.admin-info-usuario :usuario=$usuario :tipo_vista=$tipo_vista lazy />
+                        <livewire:components.curso.admin-info-usuario :usuario=$usuario :tipo_vista=$tipo_vista lazy />
                     @endif
 
                     <div class="row g-3">

@@ -30,7 +30,6 @@ class Detalle extends Component
 
     public $id_usuario_hash;
     public $usuario;
-
     public $id_gestion_aula_hash;
     public $id_gestion_aula;
 

@@ -23,7 +23,7 @@
 
                     <div class="card animate__animated animate__fadeIn">
 
-                        <div class="card-stamp card-stamp-lg">
+                        <div class="card-stamp">
                             {{-- Icono de la tarjeta (Lado derecho de la esquina superior) --}}
                             @if ($tipo_vista === 'cursos')
                                 <div class="card-stamp-icon bg-teal">
@@ -152,7 +152,7 @@
                                                                 class="text-reset">
                                                                 {{-- Validar si la fecha es hoy --}}
                                                                 @if($item->created_at->isToday())
-                                                                Hoy {{ $item->created_at->diffForHumans() }}
+                                                                    Hoy {{ $item->created_at->diffForHumans() }}
                                                                 @else
                                                                     {{ format_fecha_string($item->created_at) }}
                                                                 @endif
@@ -177,7 +177,7 @@
                                                                     class="text-reset">
                                                                     {{-- Validar si la fecha es hoy --}}
                                                                     @if($item->foroRespuesta->last()->created_at->isToday())
-                                                                    Hoy {{ $item->foroRespuesta->last()->created_at->diffForHumans() }}
+                                                                        Hoy {{ $item->foroRespuesta->last()->created_at->diffForHumans() }}
                                                                     @else
                                                                         {{ format_fecha_string($item->foroRespuesta->last()->created_at) }}
                                                                     @endif
@@ -319,15 +319,12 @@
                                 <label for="descripcion_foro" class="form-label required">
                                     Descripción del Foro
                                 </label>
-                                <textarea name="descripcion_foro"
-                                    class="form-control @error('descripcion_foro') is-invalid @elseif(strlen($descripcion_foro) > 0) is-valid @enderror"
-                                    id="descripcion_foro" wire:model.live="descripcion_foro"
-                                    placeholder="Ingrese la descripción del trabajo académico" rows="4"></textarea>
-                                @error('descripcion_foro')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
+                                <div wire:ignore>
+                                    <textarea class="form-control" wire:model.lazy="descripcion_foro"
+                                        id="descripcion_foro">
+                                        {{ $descripcion_foro }}
+                                    </textarea>
                                 </div>
-                                @enderror
                             </div>
 
                             <div class="col-lg-6">
@@ -698,5 +695,51 @@
         </div>
     </div>
 
-
 </div>
+
+
+@script
+<script>
+    $(function() {
+            $('#descripcion_foro').summernote({
+                placeholder: 'Ingrese la descripcion del foro',
+                height: 200,
+                tabsize: 2,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture']]
+                ],
+                callbacks: {
+                    onImageUpload: function(files) {
+                        var maxSize = 2 * 1024 * 1024; // 2MB
+                        if (files[0].size > maxSize) {
+                            // Mostrar toast de error
+                            window.dispatchEvent(new CustomEvent('toast-basico', {
+                                detail: {
+                                    type: 'error',
+                                    mensaje: 'El archivo supera el tamaño máximo permitido de 2MB.'
+                                }
+                            }));
+                            console.log('El archivo supera el tamaño máximo permitido de 2MB.');
+                            return;
+                        }else{
+                            let editor = $(this);
+                            let reader = new FileReader();
+                            reader.onloadend = function () {
+                                editor.summernote('insertImage', reader.result);
+                            };
+                            reader.readAsDataURL(files[0]);
+                        }
+                    },
+                    onChange: function(contents, $editable) {
+                        @this.set('descripcion_foro', contents);
+                    }
+                },
+            });
+        })
+</script>
+@endscript
