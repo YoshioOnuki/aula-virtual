@@ -21,6 +21,7 @@ class ForoRespuesta extends Model
         'descripcion_foro_respuesta',
         'id_foro',
         'id_gestion_aula_alumno',
+        'id_respuesta_padre',
     ];
 
 
@@ -44,6 +45,25 @@ class ForoRespuesta extends Model
         return $this->belongsTo(GestionAulaAlumno::class, 'id_gestion_aula_alumno');
     }
 
+    /**
+     * Retorna padre
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function padre()
+    {
+        return $this->belongsTo(ForoRespuesta::class, 'id_respuesta_padre');
+    }
+
+    /**
+     * Retorna hijos
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function hijos()
+    {
+        return $this->hasMany(ForoRespuesta::class, 'id_respuesta_padre');
+    }
 
     /**
      * Retorna usuarioRegistra
