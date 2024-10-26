@@ -448,6 +448,7 @@ class Index extends Component
         ])
             ->withCount('foroRespuesta') // Cuenta la cantidad de respuestas
             ->gestionAula($this->id_gestion_aula)
+            ->search($this->search)
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 

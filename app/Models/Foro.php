@@ -113,6 +113,22 @@ class Foro extends Model
         }
     }
 
+    /**
+     * Scope a query to search
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param integer $search
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSearch($query, $search)
+    {
+        if ($search) {
+            return $query->where('titulo_foro', 'LIKE', "%$search%")
+                ->orWhere('fecha_inicio_foro', 'LIKE', "%$search%")
+                ->orWhere('fecha_fin_foro', 'LIKE', "%$search%");
+        }
+    }
+
 
     /**
      * The "booted" method of the model.
