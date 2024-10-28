@@ -617,8 +617,9 @@ if (!function_exists('subir_archivo_editor')) {
 }
 
 
-if (!function_exists('eliminar_archivos_editor')) {
-    function eliminar_archivos_editor($descripcion_actual, $descripcion_anterior, $ruta_archivos)
+// Funcion para eliminar archivos de un editor de texto comparando la descripción actual con la anterior
+if (!function_exists('eliminar_comparando_archivos_editor')) {
+    function eliminar_comparando_archivos_editor($descripcion_actual, $descripcion_anterior, $ruta_archivos)
     {
         $dom_actual = new DOMDocument();
         libxml_use_internal_errors(true);
@@ -650,6 +651,38 @@ if (!function_exists('eliminar_archivos_editor')) {
                 // Si la imagen en la descripción anterior no está en la actual, se elimina
                 if (strpos($src_anterior, asset($ruta_archivos)) !== false && !in_array($src_anterior, $rutas_actuales)) {
                     $filePath = str_replace(asset(''), '', $src_anterior);
+                    $absolutePath = public_path($filePath);
+
+                    // Verificar si el archivo existe y eliminarlo
+                    if (file_exists($absolutePath)) {
+                        unlink($absolutePath);
+                        $deletedFiles[] = $absolutePath;
+                    }
+                }
+            }
+        }
+
+        return $deletedFiles; // Retornar los archivos eliminados para referencia
+    }
+}
+
+
+// Funcion para eliminar archivos de un editor de texto
+if (!function_exists('eliminar_archivos_editor')) {
+    function eliminar_archivos_editor($descripcion, $ruta_archivos)
+    {
+        $dom = new DOMDocument();
+        libxml_use_internal_errors(true);
+        $dom->loadHTML($descripcion, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+
+        $images = $dom->getElementsByTagName('img');
+
+        $deletedFiles = [];
+        foreach ($images as $img) {
+            if ($img instanceof DOMElement) {
+                $src = $img->getAttribute('src');
+                if (strpos($src, asset($ruta_archivos)) !== false) {
+                    $filePath = str_replace(asset(''), '', $src);
                     $absolutePath = public_path($filePath);
 
                     // Verificar si el archivo existe y eliminarlo
@@ -699,20 +732,3 @@ if (!function_exists('contenido_vacio')) {
 }
 
 
-// Funcion para obtener el id_accion de la accion del usuario
-if (!function_exists('obtener_id_accion')) {
-    function obtener_id_accion($accion)
-    {
-        return Accion::where('nombre_accion', $accion)->first()->id_accion;
-    }
-}
-
-// Funcion para obtener la url con los parametros deshasheados
-if (!function_exists('obtener_url')) {
-    function obtener_url()
-    {
-        $url = request()->route()->getName();
-
-        dd($url);
-    }
-}
