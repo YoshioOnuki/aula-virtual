@@ -11,6 +11,7 @@ class Navbar extends Component
     public $persona;
     public $nombre;
 
+
     /**
      * Método para cerrar sesión
      */
@@ -19,6 +20,7 @@ class Navbar extends Component
         Auth::logout();
         return redirect()->route('login');
     }
+
 
     public function mount()
     {

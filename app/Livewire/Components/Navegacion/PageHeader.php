@@ -13,15 +13,9 @@ class PageHeader extends Component
     public $regresar;
 
 
-    public function mount($titulo, $links_array, $regresar, $titulo_pasos)
-    {
-        $this->titulo_pasos = $titulo_pasos;
-        $this->titulo = $titulo;
-        $this->regresar = $regresar;
-        $this->linksArray = $links_array;
-    }
-
-
+    /**
+     * Placeholder para mostrar mientras se carga la información
+     */
     public function placeholder()
     {
         return <<<'HTML'
@@ -29,6 +23,15 @@ class PageHeader extends Component
             <div class="spinner-border text-blue" role="status"></div>
         </div>
         HTML;
+    }
+
+
+    public function mount($titulo, $links_array, $regresar, $titulo_pasos)
+    {
+        $this->titulo_pasos = $titulo_pasos;
+        $this->titulo = $titulo;
+        $this->regresar = $regresar;
+        $this->linksArray = $links_array;
     }
 
 

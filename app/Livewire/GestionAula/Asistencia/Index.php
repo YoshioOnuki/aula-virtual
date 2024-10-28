@@ -88,6 +88,9 @@ class Index extends Component
     ];
 
 
+    /**
+     * Actualizar la vista de la paginación en tiempo real
+     */
     public function updatingMostrarPaginate()
     {
         $this->resetPage();
@@ -241,24 +244,6 @@ class Index extends Component
 
 
     /**
-     * Cerrar modal de asistencias
-     */
-    public function limpiar_modal()
-    {
-        $this->modo_asistencias = 1;
-        $this->titulo_asistencias = 'Agregar Asistencia';
-        $this->accion_asistencias = 'Agregar';
-        $this->tipo_asistencia = '';
-        $this->fecha_asistencia = '';
-        $this->fecha_asistencia_temporal = '';
-        $this->hora_inicio_asistencia = '';
-        $this->hora_fin_asistencia = '';
-        // Reiniciar errores
-        $this->resetErrorBag();
-    }
-
-
-    /**
      * Abrir modal para eliminar asistencia
      */
     public function abrir_modal_eliminar(Asistencia $asistencia)
@@ -395,6 +380,24 @@ class Index extends Component
             modal: $modal,
             action: 'hide'
         );
+    }
+
+
+    /**
+     * Cerrar modal de asistencias
+     */
+    public function limpiar_modal()
+    {
+        $this->modo_asistencias = 1;
+        $this->titulo_asistencias = 'Agregar Asistencia';
+        $this->accion_asistencias = 'Agregar';
+        $this->tipo_asistencia = '';
+        $this->fecha_asistencia = '';
+        $this->fecha_asistencia_temporal = '';
+        $this->hora_inicio_asistencia = '';
+        $this->hora_fin_asistencia = '';
+        // Reiniciar errores
+        $this->resetErrorBag();
     }
 
 

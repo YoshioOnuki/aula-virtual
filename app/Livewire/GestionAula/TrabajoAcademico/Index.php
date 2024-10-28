@@ -34,13 +34,13 @@ class Index extends Component
     public $nombre_trabajo_academico;
     #[Validate('nullable')]
     public $descripcion_trabajo_academico;
-    #[Validate('required')]
+    #[Validate('required|before_or_equal:fecha_fin_trabajo_academico|date')]
     public $fecha_inicio_trabajo_academico;
-    #[Validate('required')]
+    #[Validate('required|after_or_equal:fecha_inicio_trabajo_academico|date')]
     public $fecha_fin_trabajo_academico;
-    #[Validate('required')]
+    #[Validate('required|date_format:H:i|before_or_equal:hora_fin_trabajo_academico')]
     public $hora_inicio_trabajo_academico;
-    #[Validate('required')]
+    #[Validate('required|date_format:H:i|after_or_equal:hora_inicio_trabajo_academico')]
     public $hora_fin_trabajo_academico;
     #[Validate(['archivos_trabajo_academico.*' => 'nullable|file|mimes:pdf,xls,xlsx,doc,docx,ppt,pptx,txt,jpg,jpeg,png|max:4096'])]
     public $archivos_trabajo_academico = [];
@@ -198,6 +198,11 @@ class Index extends Component
 
             DB::commit();
 
+            $this->cerrar_modal();
+            $this->limpiar_modal();
+            // Evento para actualizar la lista de trabajos académicos
+            $this->dispatch('actualizar-trabajos-academicos');
+
             if (count($this->archivos_trabajo_academico) <= 0) {
                 $this->dispatch(
                     'toast-basico',
@@ -212,19 +217,13 @@ class Index extends Component
                 );
             }
 
-            $this->cerrar_modal();
-            $this->limpiar_modal();
-            // Evento para actualizar la lista de trabajos académicos
-            $this->dispatch('actualizar-trabajos-academicos');
         } catch (\Exception $e) {
             DB::rollBack();
 
             if (isset($nombres_bd)) {
                 $this->eliminar_archivo_trabajo($nombres_bd);
             }
-
-            dd($e);
-            // $this->cerrar_modal();
+            // dd($e);
             $this->dispatch(
                 'toast-basico',
                 mensaje: 'Ha ocurrido un error al guardar el trabajo academico',
@@ -245,6 +244,7 @@ class Index extends Component
             action: 'hide'
         );
     }
+
 
     /**
      * Limpiar modal
@@ -360,6 +360,7 @@ class Index extends Component
         $this->obtener_datos_page_header();
         $this->mostrar_trabajos();
     }
+
 
     public function render()
     {

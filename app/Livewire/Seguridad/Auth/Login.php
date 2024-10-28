@@ -6,7 +6,6 @@ use App\Models\Usuario;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Facades\Route;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
@@ -16,7 +15,6 @@ use Livewire\Component;
 #[Title('Login - Aula Virtual')]
 class Login extends Component
 {
-
     #[Validate('required|email')]
     public $correo;
     #[Validate('required')]
@@ -28,6 +26,9 @@ class Login extends Component
     protected $tiempo_bloqueo = 5; // Tiempo de bloqueo en minutos
 
 
+    /**
+     * Validar credenciales y autenticar al usuario
+     */
     public function iniciar_sesion()
     {
         $this->validate();
@@ -65,6 +66,9 @@ class Login extends Component
     }
 
 
+    /**
+     * Actualizar el tiempo restante para el bloqueo
+     */
     public function update_tiempo_restante()
     {
         $key = request()->ip();
@@ -80,15 +84,19 @@ class Login extends Component
     }
 
 
+    /**
+     * Cerrar bloqueo
+     */
     public function cerrar_bloqueo()
     {
         $this->estado_bloqueo = false;
     }
 
+
     public function mount()
     {
         $this->update_tiempo_restante();
-        // RateLimiter::clear(request()->ip());
+        // RateLimiter::clear(request()->ip());// Limpiar intentos para pruebas
     }
 
 

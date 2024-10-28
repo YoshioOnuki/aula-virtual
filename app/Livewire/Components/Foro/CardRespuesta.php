@@ -14,6 +14,9 @@ class CardRespuesta extends Component
     public $es_propietario = false;
 
 
+    /**
+     * Evento para abrir modal de eliminación de respuesta
+     */
     public function eliminar_respuesta()
     {
         $this->dispatch('abrir_modal_eliminar_respuesta', $this->foro_respuesta->id_foro_respuesta);

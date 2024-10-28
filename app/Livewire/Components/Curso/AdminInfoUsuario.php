@@ -11,12 +11,10 @@ class AdminInfoUsuario extends Component
     public $usuario;
     public $tipo_vista;
 
-    public function mount(Usuario $usuario, $tipo_vista)
-    {
-        $this->usuario = $usuario;
-        $this->tipo_vista = $tipo_vista;
-    }
 
+    /**
+     * Placeholder para mostrar mientras se carga la información
+     */
     public function placeholder()
     {
         return <<<'HTML'
@@ -46,9 +44,15 @@ class AdminInfoUsuario extends Component
     }
 
 
+    public function mount(Usuario $usuario, $tipo_vista)
+    {
+        $this->usuario = $usuario;
+        $this->tipo_vista = $tipo_vista;
+    }
+
+
     public function render()
     {
-
         // Clave de caché única por usuario y vista
         $cache_key = 'admin_info_usuario_' . $this->usuario->id_usuario . '_' . $this->tipo_vista;
 
@@ -62,7 +66,5 @@ class AdminInfoUsuario extends Component
         });
 
         return $usuario_data;
-
-        // return view('livewire.components.curso.admin-info-usuario');
     }
 }

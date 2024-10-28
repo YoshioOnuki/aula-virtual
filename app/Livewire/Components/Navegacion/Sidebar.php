@@ -21,6 +21,7 @@ class Sidebar extends Component
         return redirect()->route('login');
     }
 
+
     public function mount()
     {
         $this->usuario = Auth::user();

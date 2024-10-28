@@ -117,6 +117,9 @@ class NavegacionCurso extends Component
     }
 
 
+    /**
+     * Placeholder para mostrar mientras se cargan los datos
+     */
     public function placeholder()
     {
         return <<<'HTML'

@@ -230,10 +230,12 @@ class Detalle extends Component
                     // Editar el trabajo académico
                 }
 
+                DB::commit();
+
+                $this->cerrar_modal();
+                $this->limpiar_modal();
                 $this->dispatch('actualizar_estado_trabajo');
                 $this->verificar_entrega_trabajo();
-
-                DB::commit();
 
                 if (count($this->archivos_trabajo_alumno) <= 0)
                 {
@@ -250,8 +252,6 @@ class Detalle extends Component
                     );
                 }
 
-                $this->cerrar_modal();
-                $this->limpiar_modal();
             }
         } catch (\Exception $e) {
             DB::rollBack();
@@ -260,8 +260,6 @@ class Detalle extends Component
                 $this->eliminar_archivo_entrega($nombres_bd);
             }
             // dd($e);
-            $this->cerrar_modal();
-            $this->limpiar_modal();
             $this->dispatch(
                 'toast-basico',
                 mensaje: 'Ha ocurrido un error al guardar la entrega del trabajo académico',

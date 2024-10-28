@@ -3,7 +3,6 @@
 namespace App\Livewire\Components\Curso;
 
 use App\Models\GestionAula;
-use App\Models\GestionAulaUsuario;
 use Livewire\Component;
 
 class DatosCurso extends Component

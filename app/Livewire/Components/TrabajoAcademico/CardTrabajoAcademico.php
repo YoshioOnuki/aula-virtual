@@ -23,17 +23,27 @@ class CardTrabajoAcademico extends Component
     protected $listeners = ['actualizar-trabajos-academicos' => 'mostrar_trabajos'];
 
 
+    /**
+     * Evento para abrir modal de edición de trabajo académico
+     */
     public function abrir_modal($id_trabajo_academico)
     {
         $this->dispatch('abrir-modal-trabajo-editar', $id_trabajo_academico);
     }
 
 
+    /**
+     * Actualizar trabajos académicos
+     */
     public function mostrar_trabajos()
     {
         $this->mount($this->tipo_vista, $this->usuario, $this->id_gestion_aula, $this->trabajo_academico);
     }
 
+
+    /**
+     * Placeholder para mostrar mientras se cargan los datos
+     */
     public function placeholder()
     {
         return <<<'HTML'

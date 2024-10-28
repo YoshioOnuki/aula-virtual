@@ -19,18 +19,27 @@ class CardForo extends Component
     protected $listeners = ['actualizar-foros' => '$actualizar_foros'];
 
 
+    /**
+     * Abrir modal para editar foro
+     */
     public function abrir_modal($id_foro)
     {
         $this->dispatch('abrir-modal-foro-editar', $id_foro);
     }
 
 
+    /**
+     * Actualizar foros despues de registrar o editar
+     */
     public function actualizar_foros()
     {
         $this->mount($this->tipo_vista, $this->usuario, $this->id_gestion_aula, $this->foro);
     }
 
 
+    /**
+     * Placeholder para mostrar mientras se cargan los datos
+     */
     public function placeholder()
     {
         return <<<'HTML'

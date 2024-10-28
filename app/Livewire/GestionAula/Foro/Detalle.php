@@ -118,12 +118,12 @@ class Detalle extends Component
         if ($this->tipo_vista === 'cursos') {
             $this->regresar_page_header = [
                 'route' => 'cursos.detalle.foro',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash, 'id_foro' => Hashids::encode($this->id_foro)]
+                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]
             ];
         } else {
             $this->regresar_page_header = [
                 'route' => 'carga-academica.detalle.foro',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash, 'id_foro' => Hashids::encode($this->id_foro)]
+                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]
             ];
         }
 
@@ -212,8 +212,7 @@ class Detalle extends Component
         $this->es_docente = $this->usuario->esDocente($this->id_gestion_aula);
         $this->es_docente_invitado = $this->verificar_usuario_invitado($id_curso, $id_usuario, $tipo_vista);
 
-        $id_foro = Hashids::decode($id_foro);
-        $this->id_foro = $id_foro[0];
+        $this->id_foro = Hashids::decode($id_foro)[0];
 
         if($this->usuario->esAlumno($this->id_gestion_aula)) {
             $this->id_gestion_aula_alumno = GestionAulaAlumno::where('id_usuario', $this->usuario->id_usuario)
@@ -224,6 +223,7 @@ class Detalle extends Component
         $this->obtener_datos_page_header();
         $this->obtener_foro();
     }
+
 
     public function render()
     {

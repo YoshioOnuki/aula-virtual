@@ -51,7 +51,6 @@ class Index extends Component
     public $regresar_page_header;
 
 
-
     /**
      * Abrir modal para editar webgrafía
      */
@@ -68,6 +67,7 @@ class Index extends Component
         $this->link_webgrafia = $this->editar_webgrafia->link_webgrafia;
     }
 
+
     /**
      * Abrir modal para agregar webgrafía
      */
@@ -79,6 +79,7 @@ class Index extends Component
         $this->titulo_modal = 'Agregar webgrafia';
         $this->accion_estado = 'Agregar';
     }
+
 
     /**
      * Guardar webgrafía
@@ -131,6 +132,7 @@ class Index extends Component
 
     }
 
+
     /**
      * Cerrar modal
      */
@@ -142,6 +144,7 @@ class Index extends Component
             action: 'hide'
         );
     }
+
 
     /**
      * Limpiar modal

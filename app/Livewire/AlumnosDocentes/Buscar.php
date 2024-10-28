@@ -15,6 +15,9 @@ class Buscar extends Component
     public $tipo_vista;
 
 
+    /**
+     * Mostrar usuarios
+     */
     public function mostrar_usuarios()
     {
         $this->usuarios = Usuario::with('persona', 'roles', 'auditoria.accion')
@@ -41,6 +44,10 @@ class Buscar extends Component
             });
     }
 
+
+    /**
+     * Actualizar busqueda de usuarios en tiempo real
+     */
     public function updatedSearch()
     {
         if ($this->search || $this->search != '') {
@@ -51,6 +58,9 @@ class Buscar extends Component
     }
 
 
+    /**
+     * Placeholder para la carga diferida
+     */
     public function placeholder()
     {
         return <<<'HTML'

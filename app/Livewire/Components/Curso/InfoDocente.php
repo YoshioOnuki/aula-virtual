@@ -2,10 +2,7 @@
 
 namespace App\Livewire\Components\Curso;
 
-use App\Models\GestionAula;
 use App\Models\GestionAulaDocente;
-use App\Models\GestionAulaUsuario;
-use Livewire\Attributes\Lazy;
 use Livewire\Component;
 
 class InfoDocente extends Component
@@ -16,6 +13,9 @@ class InfoDocente extends Component
     public $tipo_vista; // Para saber que tipo de vista se está mostrando
 
 
+    /**
+     * Mostrar datos del docente
+     */
     public function mostrar_datos_docente()
     {
         if(config('settings.ver_docente_invitado'))
@@ -38,6 +38,9 @@ class InfoDocente extends Component
     }
 
 
+    /**
+     * Placeholder para mostrar mientras se cargan los datos
+     */
     public function placeholder()
     {
         return <<<'HTML'

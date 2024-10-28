@@ -13,22 +13,22 @@ class Index extends Component
     public $links_page_header;
 
 
-    /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
-        public function obtener_datos_page_header()
-        {
-            $this->titulo_page_header = $this->tipo_vista === 'cursos' ? 'ALUMNOS' : 'DOCENTES';
+    /**
+     * Obtener datos para mostrar el componente Page Header
+     */
+    public function obtener_datos_page_header()
+    {
+        $this->titulo_page_header = $this->tipo_vista === 'cursos' ? 'ALUMNOS' : 'DOCENTES';
 
-            // Links --> Inicio
-            $this->links_page_header = [
-                [
-                    'name' => 'Inicio',
-                    'route' => 'inicio',
-                    'params' => []
-                ]
-            ];
-
-        }
-    /* ===================================================================================== */
+        // Links --> Inicio
+        $this->links_page_header = [
+            [
+                'name' => 'Inicio',
+                'route' => 'inicio',
+                'params' => []
+            ]
+        ];
+    }
 
 
     public function mount()

@@ -23,11 +23,16 @@ class Index extends Component
     public $tipo_vista_curso = "cursos";
     public $tipo_vista_carga = "carga-academica";
 
+
     /**
      * Variables para la vista Dashboard
      */
     public $acceso_auditoria;
 
+
+    /**
+     * Obtener los cursos y carga académica del usuario
+     */
     public function mostrar_cursos()
     {
         $cursos = GestionAula::with(['curso'])
@@ -110,15 +115,16 @@ class Index extends Component
         $this->acceso_auditoria = config('settings.acceso_auditoria');
     }
 
+
     public function render()
     {
-        $autoridades_model = Autoridad::with('facultad', 'cargo')->activo()->orderBy('id_cargo')
-            ->get();
-
         if ($this->usuario->esRol('ADMINISTRADOR'))
         {
             return view('livewire.home.dashboard');
         } else {
+            $autoridades_model = Autoridad::with('facultad', 'cargo')->activo()->orderBy('id_cargo')
+            ->get();
+
             return view('livewire.home.index', [
                 'autoridades_model' => $autoridades_model
             ]);

@@ -45,6 +45,28 @@ class EntregaAcademica extends Component
 
 
     /**
+     * Evento para actualizar el estado de la entrega académica
+     */
+    public function actualizar_estado_entrega()
+    {
+        $this->dispatch('actualizar_estado_entrega_alumno');
+    }
+
+
+    /**
+     * Evento para mostrar un mensaje de permiso denegado
+     */
+    public function permiso_denegado()
+    {
+        $this->dispatch(
+            'toast-basico',
+            mensaje: 'Usted no tiene permisos para realizar esta acción',
+            type: 'error'
+        );
+    }
+
+
+    /**
      * Obtener datos para mostrar el componente page header
      */
     public function obtener_datos_page_header()
@@ -135,28 +157,6 @@ class EntregaAcademica extends Component
             'route' => 'carga-academica.detalle.trabajo-academico.alumnos',
             'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash, 'id_trabajo_academico' => Hashids::encode($this->trabajo_academico->id_trabajo_academico)]
         ];
-    }
-
-
-    /**
-     * Evento para actualizar el estado de la entrega académica
-     */
-    public function actualizar_estado_entrega()
-    {
-        $this->dispatch('actualizar_estado_entrega_alumno');
-    }
-
-
-    /**
-     * Evento para mostrar un mensaje de permiso denegado
-     */
-    public function permiso_denegado()
-    {
-        $this->dispatch(
-            'toast-basico',
-            mensaje: 'Usted no tiene permisos para realizar esta acción',
-            type: 'error'
-        );
     }
 
 

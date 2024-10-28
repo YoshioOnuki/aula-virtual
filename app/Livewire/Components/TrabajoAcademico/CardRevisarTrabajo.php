@@ -32,13 +32,15 @@ class CardRevisarTrabajo extends Component
     protected $listeners = ['actualizar_estado_entrega_alumno' => 'actualizar_estado_entrega_alumno'];
 
 
+    /**
+     * Revisar trabajo académico
+     */
     public function revisar_trabajo_academico()
     {
         if ($this->es_docente_invitado) {
             $this->dispatch('permiso_denegado');
             return;
         }
-        dd('Revisar trabajo académico');
 
         $this->validate([
             'nota_trabajo_academico' => 'required|numeric|min:0|max:20'
@@ -91,6 +93,9 @@ class CardRevisarTrabajo extends Component
     }
 
 
+    /**
+     * Cargar datos del trabajo académico (nota y comentario)
+     */
     public function cargar_datos()
     {
         if($this->trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico !== 'Entregado') {
@@ -102,18 +107,27 @@ class CardRevisarTrabajo extends Component
     }
 
 
+    /**
+     * Validar si el trabajo académico ha sido entregado
+     */
     public function validar_entrega()
     {
         $this->trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico === 'Entregado' ? $this->validar_entrega = true : $this->validar_entrega = false;
     }
 
 
+    /**
+     * Estado de la entrega del trabajo académico
+     */
     public function editar_trabajo_academico()
     {
         $this->editar_entrega = true;
     }
 
 
+    /**
+     * Actualizar datos de la entrega del trabajo académico
+     */
     public function actualizar_estado_entrega_alumno()
     {
         $this->trabajo_academico_alumno = TrabajoAcademicoAlumno::find($this->trabajo_academico_alumno->id_trabajo_academico_alumno);
@@ -122,6 +136,9 @@ class CardRevisarTrabajo extends Component
     }
 
 
+    /**
+     * Placeholder para la carga de datos
+     */
     public function placeholder()
     {
         return <<<'HTML'

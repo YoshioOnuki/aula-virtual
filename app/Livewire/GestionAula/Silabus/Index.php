@@ -86,14 +86,14 @@ class Index extends Component
 
             DB::commit();
 
+            $this->silabus_pdf = $gestion_aula->silabus;
+            $this->reset('silabus');
+
             $this->dispatch(
                 'toast-basico',
                 mensaje: 'El silabus se ha guardado correctamente',
                 type: 'success'
             );
-
-            $this->silabus_pdf = $gestion_aula->silabus;
-            $this->reset('silabus');
 
         } catch (\Exception $e) {
             DB::rollBack();

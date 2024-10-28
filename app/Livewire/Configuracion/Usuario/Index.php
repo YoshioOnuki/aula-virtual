@@ -30,6 +30,9 @@ class Index extends Component
     public $rol_usuario;
 
 
+    /**
+     * Método para abrir el modal de estado del usuario
+     */
     public function abrir_modal_estado(Usuario $usuario, $modo)
     {
         $this->id_usuario = $usuario->id_usuario;
@@ -55,9 +58,12 @@ class Index extends Component
 
     }
 
+
+    /**
+     * Cambiar estado del usuario
+     */
     public function cambiar_estado()
     {
-        //Transacción para el manejo de datos
         try
         {
             DB::beginTransaction();
@@ -65,7 +71,6 @@ class Index extends Component
             $usuario = Usuario::find($this->id_usuario);
             $usuario->estado_usuario = $this->modo;
             $usuario->save();
-            // dd($usuario->estado_usuario);
 
             //Reiniciar variables
             $this->nombres_persona = '';
@@ -75,12 +80,10 @@ class Index extends Component
             $this->titulo_modal = 'Estado de Usuario';
             $this->accion_estado = 'Habilitar';
 
-            //Cerrar modal
-            $this->dispatch(
-                'modal',
-                modal: '#modal-estado-usuario',
-                action: 'hide'
-            );
+            DB::commit();
+
+            $this->cerrar_modal();
+            $this->limpiar_modal();
 
             $this->dispatch(
                 'toast-basico',
@@ -88,20 +91,35 @@ class Index extends Component
                 type: 'success'
             );
 
-            DB::commit();
 
         } catch (\Exception $e) {
             DB::rollBack();
-
+            // dd($e->getMessage());
             $this->dispatch(
                 'toast-basico',
-                mensaje: 'Ocurrió un error al actualizar el estado del usuario'.$e->getMessage(),
+                mensaje: 'Ocurrió un error al actualizar el estado del usuario',
                 type: 'error'
             );
         }
-
     }
 
+
+    /**
+     * Cerrar modal
+     */
+    public function cerrar_modal($modal = '#modal-estado-usuario')
+    {
+        $this->dispatch(
+            'modal',
+            modal: $modal,
+            action: 'hide'
+        );
+    }
+
+
+    /**
+     * Limpiar el modal
+     */
     public function limpiar_modal()
     {
         $this->nombres_persona = '';
@@ -113,13 +131,8 @@ class Index extends Component
 
         // Reiniciar errores
         $this->resetErrorBag();
-
-        $this->dispatch(
-            'modal',
-            modal: '#modal-estado-usuario',
-            action: 'hide'
-        );
     }
+
 
     public function mount()
     {

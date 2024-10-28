@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
-use Vinkla\Hashids\Facades\Hashids;
 
 #[Layout('components.layouts.app')]
 class Detalle extends Component
@@ -59,7 +58,9 @@ class Detalle extends Component
     public $regresar_page_header;
 
 
-    /* =============== FUNCIONES PARA EL MODAL DE LINK DE CURSO Y ORIENTACIONES - AGREGAR Y EDITAR =============== */
+    /**
+     * Función para abrir el modal de Link de Clase
+     */
     public function abrir_modal_link_clase()
     {
         $this->limpiar_modal();
@@ -75,6 +76,10 @@ class Detalle extends Component
         }
     }
 
+
+    /**
+     * Función para abrir el modal de Orientaciones
+     */
     public function abrir_modal_orientaciones()
     {
         $this->limpiar_modal();
@@ -91,6 +96,10 @@ class Detalle extends Component
         }
     }
 
+
+    /**
+     * Función para guardar el link de la clase
+     */
     public function guardar_link_clase()
     {
         $this->nombre_link_clase = limpiar_cadena($this->nombre_link_clase);
@@ -139,6 +148,10 @@ class Detalle extends Component
         }
     }
 
+
+    /**
+     * Función para guardar las orientaciones generales
+     */
     public function guardar_orientaciones()
     {
         if (
@@ -183,7 +196,7 @@ class Detalle extends Component
             $mensaje = subir_archivo_editor($this->descripcion_orientaciones, 'archivos/posgrado/media/editor-texto/orientaciones/');
             // Eliminar archivos de la descripción anterior
             if ($this->orientaciones_generales) {
-                $deletedFiles = eliminar_archivos_editor($mensaje, $this->orientaciones_generales->descripcion_presentacion, 'archivos/posgrado/media/editor-texto/orientaciones/');
+                $deletedFiles = eliminar_comparando_archivos_editor($mensaje, $this->orientaciones_generales->descripcion_presentacion, 'archivos/posgrado/media/editor-texto/orientaciones/');
                 // dd($deletedFiles);
             }
 
@@ -200,6 +213,9 @@ class Detalle extends Component
                 $orientaciones->save();
             }
 
+            throw new \Exception('Error al guardar las orientaciones');
+
+
             DB::commit();
 
             $this->cerrar_modal('#modal-orientaciones');
@@ -215,15 +231,7 @@ class Detalle extends Component
             $this->mount($this->id_usuario_hash, $this->tipo_vista, $this->id_gestion_aula_hash);
         } catch (\Exception $e) {
             DB::rollBack();
-            dd($e);
-            // Eliminar archivos subidos recientemente $mensaje, si hubo un error
-            if ($mensaje) {
-                $errorFiles = eliminar_archivos_editor($this->descripcion_orientaciones, $this->orientaciones_generales->descripcion_presentacion, 'archivos/posgrado/media/editor-texto/orientaciones/');
-                // dd($errorFiles);
-            }
-            $this->cerrar_modal('#modal-orientaciones');
-            $this->mount($this->id_usuario_hash, $this->tipo_vista, $this->id_gestion_aula_hash);
-
+            // dd($e);
             $this->dispatch(
                 'toast-basico',
                 mensaje: 'Ha ocurrido un error al guardar las Orientaciones Generales',
@@ -232,6 +240,10 @@ class Detalle extends Component
         }
     }
 
+
+    /**
+     * Función para cerrar el modal
+     */
     public function cerrar_modal($modal)
     {
         $this->dispatch(
@@ -241,6 +253,10 @@ class Detalle extends Component
         );
     }
 
+
+    /**
+     * Función para limpiar los campos del modal
+     */
     public function limpiar_modal()
     {
         // Variables de link de clase
@@ -261,11 +277,11 @@ class Detalle extends Component
         // Reiniciar errores
         $this->resetErrorBag();
     }
-    /* ======================================================================= */
 
 
-    /* =============== OBTENER DATOS PARA LA VISTA =============== */
-
+    /**
+     * Función para obtener las orientaciones generales o presentación del curso
+     */
     public function mostrar_orientaciones()
     {
         $gestion_aula = GestionAula::with('presentacion')->find($this->id_gestion_aula);
@@ -273,6 +289,10 @@ class Detalle extends Component
         $this->orientaciones_generales_bool = $gestion_aula->presentacion ? true : false;
     }
 
+
+    /**
+     * Función para obtener el titulo del curso
+     */
     public function mostrar_titulo_curso()
     {
         $gestion_aula = GestionAula::with('curso')->find($this->id_gestion_aula);
@@ -283,6 +303,10 @@ class Detalle extends Component
         }
     }
 
+
+    /**
+     * Función para obtener el link de la clase
+     */
     public function obtener_link_clase()
     {
         $gestion_aula = GestionAula::with('linkClase')->find($this->id_gestion_aula);
@@ -290,10 +314,11 @@ class Detalle extends Component
         $this->link_clase = $gestion_aula->linkClase ?? null;
         $this->link_clase_bool = $gestion_aula->linkClase ? true : false;
     }
-    /* =========================================================== */
 
 
-    /* =============== OBTENER DATOS PARA MOSTRAR EL COMPONENTE PAGE HEADER =============== */
+    /**
+     * Función para obtener los datos del page header
+     */
     public function obtener_datos_page_header()
     {
         $this->titulo_page_header = $this->nombre_curso . ' GRUPO ' . $this->grupo_gestion_aula;
@@ -335,7 +360,6 @@ class Detalle extends Component
             ];
         }
     }
-    /* ==================================================================================== */
 
 
     public function mount($id_usuario, $tipo_vista, $id_curso)

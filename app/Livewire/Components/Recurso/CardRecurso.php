@@ -26,6 +26,7 @@ class CardRecurso extends Component
         $this->mount($this->tipo_vista, $this->usuario, $this->id_gestion_aula, $this->recurso);
     }
 
+
     /**
      * Abrir modal para editar un recurso
      */
@@ -33,6 +34,7 @@ class CardRecurso extends Component
     {
         $this->dispatch('abrir-modal-recurso-editar', $recurso);
     }
+
 
     /**
      * Descargar recurso
@@ -42,6 +44,7 @@ class CardRecurso extends Component
         $ruta = $recurso->archivo_recurso;
         return response()->download($ruta, $recurso->nombre_recurso.'.'.pathinfo($ruta, PATHINFO_EXTENSION));
     }
+
 
     /**
      * Placeholder para la carga de datos
@@ -84,6 +87,7 @@ class CardRecurso extends Component
             </div>
         HTML;
     }
+
 
     public function mount($tipo_vista, $usuario, $id_curso, $recurso)
     {

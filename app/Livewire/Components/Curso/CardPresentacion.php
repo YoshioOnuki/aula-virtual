@@ -11,6 +11,10 @@ class CardPresentacion extends Component
     public $orientaciones_generales;
     public $orientaciones_generales_bool;
 
+
+    /**
+     * Mostrar orientaciones generales o presentacion del curso
+     */
     public function mostrar_orientaciones()
     {
         $gestion_aula = GestionAula::with([
@@ -22,6 +26,10 @@ class CardPresentacion extends Component
         $this->orientaciones_generales = $gestion_aula->presentacion ?? null;
     }
 
+
+    /**
+     * Placeholder para mostrar mientras se cargan los datos
+     */
     public function placeholder()
     {
         return <<<'HTML'
@@ -40,6 +48,7 @@ class CardPresentacion extends Component
             </div>
         HTML;
     }
+
 
     public function mount($id_gestion_aula)
     {

@@ -92,6 +92,7 @@ class Index extends Component
         $this->estado_carga_modal = false;
     }
 
+
     /**
      * Subir archivo del recurso
      */
@@ -116,6 +117,7 @@ class Index extends Component
 
         return $nombre_bd;
     }
+
 
     /**
      * Validar y guardar el recurso
@@ -146,18 +148,18 @@ class Index extends Component
 
             DB::commit();
 
+            $this->cerrar_modal();
+            $this->limpiar_modal();
+            // Evento para recargar los recursos
+            $this->dispatch('load-recursos');
+
             $this->dispatch(
                 'toast-basico',
                 mensaje: 'El recurso se ha guardado correctamente',
                 type: 'success'
             );
 
-            $this->cerrar_modal();
-            $this->limpiar_modal();
-            $this->load_recursos();
 
-            // Evento para recargar los recursos
-            $this->dispatch('load-recursos');
         } catch (\Exception $e) {
             DB::rollBack();
             // dd($e);
@@ -182,6 +184,7 @@ class Index extends Component
         );
     }
 
+
     /**
      * Limpiar modal
      */
@@ -198,6 +201,7 @@ class Index extends Component
         // Reiniciar estado de carga
         $this->estado_carga_modal = true;
     }
+
 
     /**
      * Obtener datos para el page header
@@ -281,6 +285,7 @@ class Index extends Component
         $this->obtener_datos_page_header();
 
     }
+
 
     public function render()
     {

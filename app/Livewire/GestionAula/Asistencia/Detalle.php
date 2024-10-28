@@ -326,8 +326,7 @@ class Detalle extends Component
         $this->es_docente = $this->usuario->esDocente($this->id_gestion_aula);
         $this->es_docente_invitado = $this->verificar_usuario_invitado($id_curso, $id_usuario, $tipo_vista);
 
-        $id_asistencia = Hashids::decode($id_asistencia);
-        $this->id_asistencia = $id_asistencia[0];
+        $this->id_asistencia = Hashids::decode($id_asistencia)[0];
 
         $this->obtener_datos_page_header();
 

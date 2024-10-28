@@ -30,6 +30,10 @@ class Index extends Component
     public $cargo_autoridad;
     public $facultad_autoridad;
 
+
+    /**
+     * Método para abrir el modal de estado de la autoridad
+     */
     public function abrir_modal_estado(Autoridad $autoridad, $modo)
     {
         $this->id_autoridad = $autoridad->id_autoridad;
@@ -55,9 +59,12 @@ class Index extends Component
 
     }
 
+
+    /**
+     * Método para cambiar el estado de la autoridad
+     */
     public function cambiar_estado()
     {
-        //Transacción para el manejo de datos
         try
         {
             DB::beginTransaction();
@@ -76,11 +83,8 @@ class Index extends Component
             $this->accion_estado = 'Habilitar';
 
             //Cerrar modal
-            $this->dispatch(
-                'modal',
-                modal: '#modal-estado-autoridad',
-                action: 'hide'
-            );
+            $this->cerrar_modal();
+            $this->limpiar_modal();
 
             $this->dispatch(
                 'toast-basico',
@@ -92,17 +96,32 @@ class Index extends Component
 
         } catch (\Exception $e) {
             DB::rollBack();
-
+            //dd($e->getMessage());
             $this->dispatch(
                 'toast-basico',
-                mensaje: 'Ocurrió un error al actualizar el estado de la Autoridad: ' . $e->getMessage(),
+                mensaje: 'Ocurrió un error al actualizar el estado de la Autoridad',
                 type: 'error'
             );
         }
-
-
     }
 
+
+    /**
+     * Cerrar modal
+     */
+    public function cerrar_modal($modal = '#modal-estado-autoridad')
+    {
+        $this->dispatch(
+            'modal',
+            modal: $modal,
+            action: 'hide'
+        );
+    }
+
+
+    /**
+     * Método para limpiar el modal
+     */
     public function limpiar_modal()
     {
         $this->id_autoridad = '';
@@ -115,13 +134,8 @@ class Index extends Component
 
         // Reiniciar errores
         $this->resetErrorBag();
-
-        $this->dispatch(
-            'modal',
-            modal: '#modal-estado-autoridad',
-            action: 'hide'
-        );
     }
+
 
     public function render()
     {

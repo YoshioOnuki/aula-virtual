@@ -3,7 +3,6 @@
 namespace App\Livewire\Components\TrabajoAcademico;
 
 use App\Models\GestionAulaAlumno;
-use App\Models\GestionAulaUsuario;
 use App\Models\TrabajoAcademico;
 use App\Models\TrabajoAcademicoAlumno;
 use App\Traits\UsuarioTrait;

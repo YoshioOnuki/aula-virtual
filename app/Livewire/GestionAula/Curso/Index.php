@@ -27,7 +27,6 @@ class Index extends Component
     public $regresar_page_header;
 
 
-
     /**
      * Muestra los cursos del usuario
      */
