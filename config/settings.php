@@ -55,6 +55,7 @@ return [
      */
     'ver_docente_invitado' => false,
     'restringir_mobile' => true,
+    'responder_respuesta_foro' => true,
 
 
     /**
