@@ -554,7 +554,6 @@ if (!function_exists('color_estado_trabajo_academico')) {
     }
 }
 
-
 // Funcion para subir archivos de un editor de texto
 if (!function_exists('subir_archivo_editor')) {
     function subir_archivo_editor($descripcion, $ruta_archivos)
@@ -616,7 +615,6 @@ if (!function_exists('subir_archivo_editor')) {
     }
 }
 
-
 // Funcion para eliminar archivos de un editor de texto comparando la descripción actual con la anterior
 if (!function_exists('eliminar_comparando_archivos_editor')) {
     function eliminar_comparando_archivos_editor($descripcion_actual, $descripcion_anterior, $ruta_archivos)
@@ -666,7 +664,6 @@ if (!function_exists('eliminar_comparando_archivos_editor')) {
     }
 }
 
-
 // Funcion para eliminar archivos de un editor de texto
 if (!function_exists('eliminar_archivos_editor')) {
     function eliminar_archivos_editor($descripcion, $ruta_archivos)
@@ -698,10 +695,9 @@ if (!function_exists('eliminar_archivos_editor')) {
     }
 }
 
-
 // Funcion para verificar si el contenido es vacio
-if (!function_exists('contenido_vacio')) {
-    function contenido_vacio($contenido)
+if (!function_exists('limpiar_editor_vacio')) {
+    function limpiar_editor_vacio($contenido)
     {
         // Si solo hay espacios, eliminarlos (&nbsp;)
         $contenido = str_replace('&nbsp;', '', $contenido);
@@ -709,6 +705,16 @@ if (!function_exists('contenido_vacio')) {
 
         if (
             $contenido === '<p><br></p>' ||
+            $contenido === '<h1> </h1>' ||
+            $contenido === '<h2> </h2>' ||
+            $contenido === '<h3> </h3>' ||
+            $contenido === '<h4> </h4>' ||
+            $contenido === '<h5> </h5>' ||
+            $contenido === '<h6> </h6>' ||
+            $contenido === '<p> </p>' ||
+            $contenido === '<p>  </p>' ||
+            $contenido === '<p>   </p>' ||
+            $contenido === '<p>    </p>' ||
             $contenido === '<h1><br></h1>' ||
             $contenido === '<h2><br></h2>' ||
             $contenido === '<h3><br></h3>' ||
@@ -730,5 +736,3 @@ if (!function_exists('contenido_vacio')) {
         return $contenido;
     }
 }
-
-
