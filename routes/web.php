@@ -177,6 +177,12 @@ Route::middleware(['throttle:100,1'])->group(function () {
                     // Foro
                     Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/foro', ForoIndex::class)
                         ->name('carga-academica.detalle.foro');
+                    // Foro formulario - Registrar foro
+                    Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/foro/registrar', ForoFormulario::class)
+                        ->name('carga-academica.detalle.foro.registrar');
+                    // Foro formulario - Editar foro
+                    Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/foro/{id_foro}/editar', ForoFormulario::class)
+                        ->name('carga-academica.detalle.foro.editar');
                     // Detalle del foro
                     Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/foro/{id_foro}', ForoDetalle::class)
                         ->name('carga-academica.detalle.foro.detalle');
