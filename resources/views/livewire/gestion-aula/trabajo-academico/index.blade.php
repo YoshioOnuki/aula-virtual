@@ -68,7 +68,7 @@
                                         {{-- Boton de agregar --}}
                                         @if ($tipo_vista === 'carga-academica' && $es_docente)
                                             <div class="col-lg-12">
-                                                <a class="card card-link cursor-pointer"
+                                                <a class="card card-link card-link-pop cursor-pointer"
                                                     wire:click="abrir_modal_agregar_trabajo()" data-bs-toggle="modal"
                                                     data-bs-target="#modal-trabajo-academico">
                                                     <div class="card-body text-secondary">

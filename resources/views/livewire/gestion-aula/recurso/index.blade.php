@@ -93,7 +93,7 @@
                                         @if ($tipo_vista === 'carga-academica' && $es_docente)
                                             {{-- Agregar recurso --}}
                                             <div class="col-lg-12">
-                                                <a class="card cursor-pointer" wire:click="abrir_modal_recurso_agregar()"
+                                                <a class="card cursor-pointer card-link card-link-pop" wire:click="abrir_modal_recurso_agregar()"
                                                     data-bs-toggle="modal" data-bs-target="#modal-recursos">
                                                     <div class="card-body text-secondary">
                                                         <div class="row g-2">

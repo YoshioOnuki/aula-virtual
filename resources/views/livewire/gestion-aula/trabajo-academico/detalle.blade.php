@@ -113,7 +113,7 @@
                                                 @foreach ($trabajo_academico->archivoDocente as $archivo)
                                                     @if (file_exists($archivo->archivo_docente))
                                                         <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                                                            <a class="card p-3 mb-3 text-decoration-none cursor-pointer"
+                                                            <a class="card p-3 mb-3 text-decoration-none cursor-pointer card-link card-link-pop"
                                                                 wire:click="descargar_archivo({{ $archivo->id_archivo_docente }})">
                                                                 <div class="d-flex align-items-center">
                                                                     <img src="{{ obtener_icono_archivo($archivo->archivo_docente) }}"
