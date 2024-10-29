@@ -11,7 +11,9 @@ use App\Livewire\GestionAula\Asistencia\Index as AsistenciaIndex;
 use App\Livewire\GestionAula\Curso\Detalle as CursoDetalle;
 use App\Livewire\GestionAula\Curso\Index as CursoIndex;
 use App\Livewire\GestionAula\Foro\Detalle as ForoDetalle;
+use App\Livewire\GestionAula\Foro\ForoFormulario;
 use App\Livewire\GestionAula\Foro\Index as ForoIndex;
+use App\Livewire\GestionAula\Foro\RespuestaFormulario;
 use App\Livewire\GestionAula\Manuales\Index as ManualesIndex;
 use App\Livewire\GestionAula\PlanEstudio\Index as PlanEstudioIndex;
 use App\Livewire\GestionAula\Recurso\Index as RecursoIndex;
@@ -144,6 +146,12 @@ Route::middleware(['throttle:100,1'])->group(function () {
                     // Detalle del foro
                     Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/foro/{id_foro}', ForoDetalle::class)
                         ->name('cursos.detalle.foro.detalle');
+                    // Respuesta Formulario - Crear y editar respuesta de un foro
+                    Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/foro/{id_foro}/formulario', RespuestaFormulario::class)
+                        ->name('cursos.detalle.foro.respuesta.formulario');
+                    // Respuesta Formulario - Crear y editar respuesta de otra respuesta
+                    Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/foro/{id_foro}/respuesta/{id_foro_respuesta}/formulario', RespuestaFormulario::class)
+                        ->name('cursos.detalle.foro.respuesta.formulario.respuesta');
                     // Asistencia
                     Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/asistencia', AsistenciaIndex::class)
                         ->name('cursos.detalle.asistencia');
@@ -186,6 +194,12 @@ Route::middleware(['throttle:100,1'])->group(function () {
                     // Detalle del foro
                     Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/foro/{id_foro}', ForoDetalle::class)
                         ->name('carga-academica.detalle.foro.detalle');
+                    // Respuesta Formulario - Crear y editar respuesta de un foro
+                    Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/foro/{id_foro}/formulario', RespuestaFormulario::class)
+                        ->name('carga-academica.detalle.foro.respuesta.formulario');
+                    // Respuesta Formulario - Crear y editar respuesta de otra respuesta
+                    Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/foro/{id_foro}/respuesta/{id_foro_respuesta}/formulario', RespuestaFormulario::class)
+                        ->name('carga-academica.detalle.foro.respuesta.formulario.respuesta');
                     // Asistencia
                     Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/asistencia', AsistenciaIndex::class)
                         ->name('carga-academica.detalle.asistencia');
