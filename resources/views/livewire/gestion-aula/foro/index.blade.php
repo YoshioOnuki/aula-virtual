@@ -6,6 +6,8 @@
     <div class="page-body">
         <div class="container-xl">
 
+            <div wire:init="mostrar_toast"></div>
+
             @if ($es_docente_invitado)
                 <livewire:components.navegacion.alert-docente-invitado />
             @endif
@@ -83,6 +85,18 @@
                                     @if ($es_docente && $tipo_vista === 'carga-academica')
                                         <div class="col-lg-5 col-3 d-flex justify-content-end">
                                             <a class="btn btn-primary d-none d-md-inline-block"
+                                                href="{{ route('carga-academica.detalle.foro.registrar', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                                                    height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                    stroke="currentColor" fill="none" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                    <path d="M12 5l0 14" />
+                                                    <path d="M5 12l14 0" />
+                                                </svg>
+                                                Registrar
+                                            </a>
+                                            {{-- <a class="btn btn-primary d-none d-md-inline-block"
                                                 wire:click="abrir_modal_agregar_foro()" data-bs-toggle="modal"
                                                 data-bs-target="#modal-foro">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
@@ -94,8 +108,19 @@
                                                     <path d="M5 12l14 0" />
                                                 </svg>
                                                 Registrar
-                                            </a>
+                                            </a> --}}
                                             <a class="btn btn-primary d-md-none btn-icon"
+                                                href="{{ route('carga-academica.detalle.foro.registrar', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                                                    height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                    stroke="currentColor" fill="none" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                    <path d="M12 5l0 14" />
+                                                    <path d="M5 12l14 0" />
+                                                </svg>
+                                            </a>
+                                            {{-- <a class="btn btn-primary d-md-none btn-icon"
                                                 wire:click="abrir_modal_agregar_foro()" data-bs-toggle="modal"
                                                 data-bs-target="#modal-foro">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
@@ -106,7 +131,7 @@
                                                     <path d="M12 5l0 14" />
                                                     <path d="M5 12l14 0" />
                                                 </svg>
-                                            </a>
+                                            </a> --}}
                                         </div>
                                     @endif
                                 </div>
@@ -208,14 +233,18 @@
                                                             </svg>
                                                         </a>
                                                         <div class="dropdown-menu">
-                                                            <a class="dropdown-item cursor-pointer" wire:click="abrir_modal_editar_foro({{ $item->id_foro }})"
-                                                                data-bs-toggle="modal" data-bs-target="#modal-foro">
+                                                            <a class="dropdown-item cursor-pointer"
+                                                                href="{{ route('carga-academica.detalle.foro.editar', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash, 'id_foro' => Hashids::encode($item->id_foro)]) }}">
                                                                 Editar
                                                             </a>
-                                                            <a class="dropdown-item cursor-pointer" wire:click="abrir_modal_duplicar_foro({{ $item->id_foro }})"
+                                                            {{-- <a class="dropdown-item cursor-pointer" wire:click="abrir_modal_editar_foro({{ $item->id_foro }})"
+                                                                data-bs-toggle="modal" data-bs-target="#modal-foro">
+                                                                Editar
+                                                            </a> --}}
+                                                            {{-- <a class="dropdown-item cursor-pointer" wire:click="abrir_modal_duplicar_foro({{ $item->id_foro }})"
                                                                 data-bs-toggle="modal" data-bs-target="#modal-duplicar">
                                                                 Duplicar
-                                                            </a>
+                                                            </a> --}}
                                                             <a class="dropdown-item cursor-pointer" wire:click="abrir_modal_eliminar_foro({{ $item->id_foro }})"
                                                                 data-bs-toggle="modal" data-bs-target="#modal-eliminar">
                                                                 Eliminar
@@ -286,7 +315,7 @@
     </div>
 
 
-    {{-- Modal para agregar y editar foro --}}
+    {{-- Modal para agregar y editar foro <==> DE BAJA --}}
     <div wire:ignore.self class="modal fade" id="modal-foro" tabindex="-1" data-bs-backdrop="static">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -697,49 +726,3 @@
 
 </div>
 
-
-@script
-<script>
-    $(function() {
-            $('#descripcion_foro').summernote({
-                placeholder: 'Ingrese la descripcion del foro',
-                height: 200,
-                tabsize: 2,
-                toolbar: [
-                    ['style', ['style']],
-                    ['font', ['bold', 'underline', 'clear']],
-                    ['color', ['color']],
-                    ['para', ['ul', 'ol', 'paragraph']],
-                    ['table', ['table']],
-                    ['insert', ['link', 'picture']]
-                ],
-                callbacks: {
-                    onImageUpload: function(files) {
-                        var maxSize = 2 * 1024 * 1024; // 2MB
-                        if (files[0].size > maxSize) {
-                            // Mostrar toast de error
-                            window.dispatchEvent(new CustomEvent('toast-basico', {
-                                detail: {
-                                    type: 'error',
-                                    mensaje: 'El archivo supera el tamaño máximo permitido de 2MB.'
-                                }
-                            }));
-                            console.log('El archivo supera el tamaño máximo permitido de 2MB.');
-                            return;
-                        }else{
-                            let editor = $(this);
-                            let reader = new FileReader();
-                            reader.onloadend = function () {
-                                editor.summernote('insertImage', reader.result);
-                            };
-                            reader.readAsDataURL(files[0]);
-                        }
-                    },
-                    onChange: function(contents, $editable) {
-                        @this.set('descripcion_foro', contents);
-                    }
-                },
-            });
-        })
-</script>
-@endscript

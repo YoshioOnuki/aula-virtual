@@ -74,6 +74,26 @@ class Index extends Component
 
 
     /**
+     * Mostrar toast de éxito
+     */
+    public function mostrar_toast()
+    {
+        if(session('mensaje_exito'))
+        {
+            $mensaje_toast = session('mensaje_exito');
+            session()->forget('mensaje_exito');
+
+            $this->dispatch(
+                'toast-basico',
+                mensaje: $mensaje_toast,
+                type: 'success'
+            );
+
+        }
+    }
+
+
+    /**
      * Abrir modal para agregar un foro
      */
     public function abrir_modal_agregar_foro()
@@ -208,6 +228,12 @@ class Index extends Component
             // Buscar respuesta del foro para eliminar
             $foro = Foro::with('foroRespuesta')
                 ->find($id_foro);
+
+            // Eliminar archivos del foro
+            $errorFiles = eliminar_archivos_editor($foro->descripcion_foro, 'archivos/posgrado/media/editor-texto/foros/');
+            foreach ($foro->foroRespuesta as $respuesta) {
+                $errorFiles = eliminar_archivos_editor($respuesta->descripcion_foro_respuesta, 'archivos/posgrado/media/editor-texto/foros/');
+            }
 
             if ($foro->foroRespuesta->count() > 0) {
                 $foro->foroRespuesta()->delete();
@@ -346,7 +372,6 @@ class Index extends Component
         $this->reset([
             'id_foro_a_duplicar',
             'titulo_foro_a_duplicar',
-            'descripcion_foro_a_duplicar',
             'fecha_inicio_foro_a_duplicar',
             'fecha_fin_foro_a_duplicar'
         ]);
