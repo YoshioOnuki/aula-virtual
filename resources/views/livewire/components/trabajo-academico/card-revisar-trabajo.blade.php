@@ -10,7 +10,7 @@
                 <tbody>
                     <div class="row g-3">
                         <div class="col-lg-12">
-                            <label for="nota_trabajo_academico" class="form-label">
+                            <label for="nota_trabajo_academico" class="form-label required">
                                 Nota
                             </label>
                             @if (!$validar_entrega)
@@ -88,7 +88,8 @@
                     ['style', ['style']],
                     ['font', ['bold', 'underline', 'clear']],
                     ['color', ['color']],
-                    ['para', ['ul', 'ol']]
+                    ['para', ['ul', 'ol']],
+                    ['insert', ['link', 'picture']],
                 ],
                 callbacks: {
                     // Evitar cualquier tipo de archivo de imagen (png, jpg, jpeg, gif, etc.)

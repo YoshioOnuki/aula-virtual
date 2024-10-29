@@ -46,14 +46,12 @@ class CardRevisarTrabajo extends Component
             'nota_trabajo_academico' => 'required|numeric|min:0|max:20'
         ]);
 
-        try
-        {
+        try {
             DB::beginTransaction();
 
-            $this->descripcion_comentario_trabajo_academico = contenido_vacio($this->descripcion_comentario_trabajo_academico);
+            $this->descripcion_comentario_trabajo_academico = limpiar_editor_vacio($this->descripcion_comentario_trabajo_academico);
 
-            if ($this->descripcion_comentario_trabajo_academico !== '')
-            {
+            if ($this->descripcion_comentario_trabajo_academico !== '') {
                 // Crear comentario nuevo
                 $comentario_trabajo_academico = new ComentarioTrabajoAcademico();
                 $comentario_trabajo_academico->descripcion_comentario_trabajo_academico = $this->descripcion_comentario_trabajo_academico;
@@ -80,7 +78,6 @@ class CardRevisarTrabajo extends Component
             );
 
             $this->dispatch('actualizar_estado_entrega');
-
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -98,7 +95,7 @@ class CardRevisarTrabajo extends Component
      */
     public function cargar_datos()
     {
-        if($this->trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico !== 'Entregado') {
+        if ($this->trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico !== 'Entregado') {
             $this->nota_trabajo_academico = $this->trabajo_academico_alumno->nota_trabajo_academico_alumno;
 
             $comentario_trabajo_academico = ComentarioTrabajoAcademico::where('id_trabajo_academico_alumno', $this->trabajo_academico_alumno->id_trabajo_academico_alumno)->first();

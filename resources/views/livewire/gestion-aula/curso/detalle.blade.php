@@ -495,11 +495,14 @@
                                     Orientaciones Generales
                                 </label>
                                 <div wire:ignore>
-                                    <textarea class="form-control" wire:model.lazy="descripcion_orientaciones"
+                                    <textarea class="form-control required" wire:model.lazy="descripcion_orientaciones"
                                         id="descripcion_orientaciones">
                                         {{ $descripcion_orientaciones }}
                                     </textarea>
                                 </div>
+                                @error('descripcion_orientaciones')
+                                    <span class="error text-danger fs-5">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                     </div>
