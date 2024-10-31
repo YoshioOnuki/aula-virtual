@@ -147,11 +147,11 @@ Route::middleware(['throttle:100,1'])->group(function () {
                     Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/foro/{id_foro}', ForoDetalle::class)
                         ->name('cursos.detalle.foro.detalle');
                     // Respuesta Formulario - Crear y editar respuesta de un foro
-                    Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/foro/{id_foro}/formulario', RespuestaFormulario::class)
-                        ->name('cursos.detalle.foro.respuesta.formulario');
+                    Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/foro/{id_foro}/respuesta', RespuestaFormulario::class)
+                        ->name('cursos.detalle.foro.detalle.respuesta');
                     // Respuesta Formulario - Crear y editar respuesta de otra respuesta
-                    Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/foro/{id_foro}/respuesta/{id_foro_respuesta}/formulario', RespuestaFormulario::class)
-                        ->name('cursos.detalle.foro.respuesta.formulario.respuesta');
+                    Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/foro/{id_foro}/respuesta/{id_foro_respuesta}/{nivel}', RespuestaFormulario::class)
+                        ->name('cursos.detalle.foro.detalle.respuesta.respuesta');
                     // Asistencia
                     Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/asistencia', AsistenciaIndex::class)
                         ->name('cursos.detalle.asistencia');
@@ -195,11 +195,11 @@ Route::middleware(['throttle:100,1'])->group(function () {
                     Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/foro/{id_foro}', ForoDetalle::class)
                         ->name('carga-academica.detalle.foro.detalle');
                     // Respuesta Formulario - Crear y editar respuesta de un foro
-                    Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/foro/{id_foro}/formulario', RespuestaFormulario::class)
-                        ->name('carga-academica.detalle.foro.respuesta.formulario');
+                    Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/foro/{id_foro}/respuesta', RespuestaFormulario::class)
+                        ->name('carga-academica.detalle.foro.detalle.respuesta');
                     // Respuesta Formulario - Crear y editar respuesta de otra respuesta
-                    Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/foro/{id_foro}/respuesta/{id_foro_respuesta}/formulario', RespuestaFormulario::class)
-                        ->name('carga-academica.detalle.foro.respuesta.formulario.respuesta');
+                    Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/foro/{id_foro}/respuesta/{id_foro_respuesta}/{nivel}', RespuestaFormulario::class)
+                        ->name('carga-academica.detalle.foro.detalle.respuesta.respuesta');
                     // Asistencia
                     Route::get('/docente/{id_usuario}/{tipo_vista}/{id_curso}/asistencia', AsistenciaIndex::class)
                         ->name('carga-academica.detalle.asistencia');
