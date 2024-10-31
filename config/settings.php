@@ -39,7 +39,10 @@ return [
 
     'color-border-card-trabajo-academico' => 'blue',
     'color-border-card-recurso' => 'pink',
-    'color-border-card-foro' => 'cyan',
+    'color-border-card-respuesta-foro-0' => 'bg-cyan',
+    'color-border-card-respuesta-foro-1' => 'bg-orange',
+    'color-border-card-respuesta-foro-2' => 'bg-red',
+    'color-border-card-respuesta-foro-3' => 'bg-purple',
 
 
     /**
