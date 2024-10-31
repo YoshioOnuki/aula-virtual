@@ -97,6 +97,25 @@ class ForoRespuesta extends Model
 
 
     /**
+     * Contar total de respuestas
+     *
+     * @return int
+     */
+    public function contar_total_respuestas() : int
+    {
+        // Inicializamos el contador con la cantidad de respuestas hijas directas
+        $count = $this->hijos->count();
+
+        // Iteramos sobre cada hijo y contamos también sus respuestas anidadas
+        foreach ($this->hijos as $item) {
+            $count += $item->contar_total_respuestas();
+        }
+
+        return $count;
+    }
+
+
+    /**
      * The "booted" method of the model.
      *
      * @return void
