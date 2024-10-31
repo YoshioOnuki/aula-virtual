@@ -65,204 +65,108 @@
                                         {{-- Silabus --}}
                                         <div class="col-6 col-md-2 col-lg-4 col-xl-3">
                                             <span class="hide-theme-dark">
-                                                <a class="text-decoration-none text-dark"
-                                                    href="{{ $tipo_vista === 'cursos' ?
-                                                    route('cursos.detalle.silabus', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
-                                                    route('carga-academica.detalle.silabus', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}">
-                                                    <div
-                                                        class="image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
+                                                <div>
+                                                    <a href="{{ $tipo_vista === 'cursos' ?
+                                                        route('cursos.detalle.silabus', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
+                                                        route('carga-academica.detalle.silabus', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}"
+                                                        class="text-decoration-none text-dark image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-libro-info.webp" alt="Info"
                                                             style="width: 80px; height: 80px;">
                                                         <div class="text-content text-center mt-3 fw-semibold fs-3">
                                                             Silabus
                                                         </div>
-                                                    </div>
-                                                </a>
-                                            </span>
-                                            <span class="hide-theme-light">
-                                                <a class="dark-mode text-decoration-none text-white"
-                                                    href="{{ $tipo_vista === 'cursos' ?
-                                                    route('cursos.detalle.silabus', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
-                                                    route('carga-academica.detalle.silabus', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}">
-                                                    <div
-                                                        class="image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
-                                                        <img src="/media/icons/icon-libro-info.webp" alt="Info"
-                                                            style="width: 80px; height: 80px;">
-                                                        <div class="text-content text-center mt-3 fw-semibold fs-3">
-                                                            Silabus
-                                                        </div>
-                                                    </div>
-                                                </a>
+                                                    </a>
+                                                </div>
                                             </span>
                                         </div>
 
                                         {{-- Recursos --}}
                                         <div class="col-6 col-md-2 col-lg-4 col-xl-3">
                                             <span class="hide-theme-dark">
-                                                <a class="text-decoration-none text-dark"
-                                                    href="{{ $tipo_vista === 'cursos' ?
-                                                    route('cursos.detalle.recursos', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
-                                                    route('carga-academica.detalle.recursos', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}">
-                                                    <div
-                                                        class="image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
+                                                <div>
+                                                    <a href="{{ $tipo_vista === 'cursos' ?
+                                                        route('cursos.detalle.recursos', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
+                                                        route('carga-academica.detalle.recursos', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}"
+                                                        class="text-decoration-none text-dark image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-carpeta.webp" alt="Info"
                                                             style="width: 80px; height: 80px;">
                                                         <div class="text-content text-center mt-3 fw-semibold fs-3">
                                                             Recursos
                                                         </div>
-                                                    </div>
-                                                </a>
-                                            </span>
-                                            <span class="hide-theme-light">
-                                                <a class="dark-mode text-decoration-none text-white"
-                                                    href="{{ $tipo_vista === 'cursos' ?
-                                                    route('cursos.detalle.recursos', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
-                                                    route('carga-academica.detalle.recursos', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}">
-                                                    <div
-                                                        class="image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
-                                                        <img src="/media/icons/icon-carpeta.webp" alt="Info"
-                                                            style="width: 80px; height: 80px;">
-                                                        <div class="text-content text-center mt-3 fw-semibold fs-3">
-                                                            Recursos
-                                                        </div>
-                                                    </div>
-                                                </a>
+                                                    </a>
+                                                </div>
                                             </span>
                                         </div>
 
                                         {{-- Foro --}}
                                         <div class="col-6 col-md-2 col-lg-4 col-xl-3">
                                             <span class="hide-theme-dark">
-                                                <a class="text-decoration-none text-dark"
-                                                    href="{{ $tipo_vista === 'cursos' ?
-                                                    route('cursos.detalle.foro', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
-                                                    route('carga-academica.detalle.foro', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}">
-                                                    <div
-                                                        class="image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
+                                                <div>
+                                                    <a href="{{ $tipo_vista === 'cursos' ?
+                                                        route('cursos.detalle.foro', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
+                                                        route('carga-academica.detalle.foro', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}"
+                                                        class="text-decoration-none text-dark image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-foro-discusion.webp" alt="Info"
                                                             style="width: 80px; height: 80px;">
                                                         <div class="text-content text-center mt-3 fw-semibold fs-3">
                                                             Foro
                                                         </div>
-                                                    </div>
-                                                </a>
-                                            </span>
-                                            <span class="hide-theme-light">
-                                                <a class="dark-mode text-decoration-none text-white"
-                                                    href="{{ $tipo_vista === 'cursos' ?
-                                                    route('cursos.detalle.foro', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
-                                                    route('carga-academica.detalle.foro', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}">
-                                                    <div
-                                                        class="image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
-                                                        <img src="/media/icons/icon-foro-discusion.webp" alt="Info"
-                                                            style="width: 80px; height: 80px;">
-                                                        <div class="text-content text-center mt-3 fw-semibold fs-3">
-                                                            Foro
-                                                        </div>
-                                                    </div>
-                                                </a>
+                                                    </a>
+                                                </div>
                                             </span>
                                         </div>
 
                                         {{-- Asistencia --}}
                                         <div class="col-6 col-md-2 col-lg-4 col-xl-3">
                                             <span class="hide-theme-dark">
-                                                <a class="text-decoration-none text-dark"
-                                                    href="{{ $tipo_vista === 'cursos' ?
-                                                    route('cursos.detalle.asistencia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
-                                                    route('carga-academica.detalle.asistencia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}">
-                                                    <div
-                                                        class="image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
+                                                <div>
+                                                    <a href="{{ $tipo_vista === 'cursos' ?
+                                                        route('cursos.detalle.asistencia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
+                                                        route('carga-academica.detalle.asistencia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}"
+                                                        class="text-decoration-none text-dark image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-matricula.webp" alt="Info"
                                                             style="width: 80px; height: 80px;">
                                                         <div class="text-content text-center mt-3 fw-semibold fs-3">
                                                             Asistencia
                                                         </div>
-                                                    </div>
-                                                </a>
-                                            </span>
-                                            <span class="hide-theme-light">
-                                                <a class="dark-mode text-decoration-none text-white"
-                                                    href="{{ $tipo_vista === 'cursos' ?
-                                                    route('cursos.detalle.asistencia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
-                                                    route('carga-academica.detalle.asistencia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}">
-                                                    <div
-                                                        class="image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
-                                                        <img src="/media/icons/icon-matricula.webp" alt="Info"
-                                                            style="width: 80px; height: 80px;">
-                                                        <div class="text-content text-center mt-3 fw-semibold fs-3">
-                                                            Asistencia
-                                                        </div>
-                                                    </div>
-                                                </a>
+                                                    </a>
+                                                </div>
                                             </span>
                                         </div>
 
                                         {{-- Trabajos Academicos --}}
                                         <div class="col-6 col-md-2 col-lg-4 col-xl-3">
                                             <span class="hide-theme-dark">
-                                                <a class="text-decoration-none text-dark"
-                                                    href="{{ $tipo_vista === 'cursos' ?
-                                                    route('cursos.detalle.trabajo-academico', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
-                                                    route('carga-academica.detalle.trabajo-academico', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}">
-                                                    <div
-                                                        class="image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
+                                                <div>
+                                                    <a href="{{ $tipo_vista === 'cursos' ?
+                                                        route('cursos.detalle.trabajo-academico', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
+                                                        route('carga-academica.detalle.trabajo-academico', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}"
+                                                        class="text-decoration-none text-dark image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-curso-por-internet.webp" alt="Info"
                                                             style="width: 80px; height: 80px;">
                                                         <div class="text-content text-center mt-3 fw-semibold fs-3">
                                                             Trabajos Académicos
                                                         </div>
-                                                    </div>
-                                                </a>
-                                            </span>
-                                            <span class="hide-theme-light">
-                                                <a class="dark-mode text-decoration-none text-white"
-                                                    href="{{ $tipo_vista === 'cursos' ?
-                                                    route('cursos.detalle.trabajo-academico', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
-                                                    route('carga-academica.detalle.trabajo-academico', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}">
-                                                    <div
-                                                        class="image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
-                                                        <img src="/media/icons/icon-curso-por-internet.webp" alt="Info"
-                                                            style="width: 80px; height: 80px;">
-                                                        <div class="text-content text-center mt-3 fw-semibold fs-3">
-                                                            Trabajos Académicos
-                                                        </div>
-                                                    </div>
-                                                </a>
+                                                    </a>
+                                                </div>
                                             </span>
                                         </div>
 
                                         {{-- Webgrafia --}}
                                         <div class="col-6 col-md-2 col-lg-4 col-xl-3">
                                             <span class="hide-theme-dark">
-                                                <a class="text-decoration-none text-dark"
-                                                    href="{{ $tipo_vista === 'cursos' ?
-                                                    route('cursos.detalle.webgrafia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
-                                                    route('carga-academica.detalle.webgrafia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}">
-                                                    <div
-                                                        class="image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
+                                                <div>
+                                                    <a href="{{ $tipo_vista === 'cursos' ?
+                                                        route('cursos.detalle.webgrafia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
+                                                        route('carga-academica.detalle.webgrafia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}"
+                                                        class="text-decoration-none text-dark image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-ubicacion-ip.webp" alt="Info"
                                                             style="width: 80px; height: 80px;">
                                                         <div class="text-content text-center mt-3 fw-semibold fs-3">
                                                             Webgrafía
                                                         </div>
-                                                    </div>
-                                                </a>
-                                            </span>
-                                            <span class="hide-theme-light">
-                                                <a class="dark-mode text-decoration-none text-white"
-                                                    href="{{ $tipo_vista === 'cursos' ?
-                                                    route('cursos.detalle.webgrafia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
-                                                    route('carga-academica.detalle.webgrafia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}">
-                                                    <div
-                                                        class="image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
-                                                        <img src="/media/icons/icon-ubicacion-ip.webp" alt="Info"
-                                                            style="width: 80px; height: 80px;">
-                                                        <div class="text-content text-center mt-3 fw-semibold fs-3">
-                                                            Webgrafía
-                                                        </div>
-                                                    </div>
-                                                </a>
+                                                    </a>
+                                                </div>
                                             </span>
                                         </div>
 
@@ -271,22 +175,6 @@
                                         <div class="col-6 col-md-2 col-lg-4 col-xl-3">
                                             <span class="hide-theme-dark">
                                                 <div class="" wire:click="abrir_modal_link_clase"
-                                                    data-bs-toggle="modal" data-bs-target="#modal-link-clase">
-                                                    <div class="image-button image-button-docente position-relative">
-                                                        <img src="/media/icons/icon-link-hipervinculo.webp" alt="Info"
-                                                            style="width: 80px; height: 80px;">
-                                                        <div class="text-content text-center mt-3 fw-semibold fs-3">
-                                                            Subir Link de Clases
-                                                        </div>
-                                                        @if(!$link_clase_bool)
-                                                        <span
-                                                            class="badge bg-yellow badge-notification badge-blink badge-pill">!</span>
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                            </span>
-                                            <span class="hide-theme-light">
-                                                <div class="dark-mode" wire:click="abrir_modal_link_clase"
                                                     data-bs-toggle="modal" data-bs-target="#modal-link-clase">
                                                     <div class="image-button image-button-docente position-relative">
                                                         <img src="/media/icons/icon-link-hipervinculo.webp" alt="Info"
@@ -322,49 +210,21 @@
                                                     </div>
                                                 </div>
                                             </span>
-                                            <span class="hide-theme-light">
-                                                <div class="dark-mode" wire:click="abrir_modal_orientaciones"
-                                                    data-bs-toggle="modal" data-bs-target="#modal-orientaciones">
-                                                    <div class="image-button image-button-docente position-relative">
-                                                        <img src="/media/icons/icon-orien-presentacion2.webp" alt="Info"
-                                                            style="width: 80px; height: 80px;">
-                                                        <div class="text-content text-center mt-3 fw-semibold fs-3">
-                                                            Orientaciones Generales
-                                                        </div>
-                                                        @if(!$orientaciones_generales_bool)
-                                                        <span
-                                                            class="badge bg-yellow badge-notification badge-blink badge-pill">!</span>
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                            </span>
                                         </div>
 
                                         {{-- Alumnos --}}
                                         <div class="col-6 col-md-2 col-lg-4 col-xl-3">
                                             <span class="hide-theme-dark">
-                                                <a class="text-decoration-none text-dark"
-                                                    href="{{ route('carga-academica.detalle.alumnos', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}">
-                                                    <div class="image-button image-button-docente" style="z-index: 1;">
+                                                <div>
+                                                    <a href="{{ route('carga-academica.detalle.alumnos', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}"
+                                                        class="text-decoration-none text-dark image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
                                                         <img src="/media/icons/icon-registro.webp" alt="Info"
                                                             style="width: 80px; height: 80px;">
                                                         <div class="text-content text-center mt-3 fw-semibold fs-3">
                                                             Alumnos
                                                         </div>
-                                                    </div>
-                                                </a>
-                                            </span>
-                                            <span class="hide-theme-light">
-                                                <a class="dark-mode text-decoration-none text-white"
-                                                    href="{{ route('carga-academica.detalle.alumnos', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}">
-                                                    <div class="image-button image-button-docente">
-                                                        <img src="/media/icons/icon-registro.webp" alt="Info"
-                                                            style="width: 80px; height: 80px;">
-                                                        <div class="text-content text-center mt-3 fw-semibold fs-3">
-                                                            Alumnos
-                                                        </div>
-                                                    </div>
-                                                </a>
+                                                    </a>
+                                                </div>
                                             </span>
                                         </div>
                                         @endif
