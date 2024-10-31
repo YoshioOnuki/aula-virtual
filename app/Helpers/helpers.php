@@ -736,3 +736,22 @@ if (!function_exists('limpiar_editor_vacio')) {
         return $contenido;
     }
 }
+
+// Funcion para el color de las repuestas del foro segun el nivel
+if (!function_exists('color_respuesta_foro')) {
+    function color_respuesta_foro($nivel)
+    {
+        switch ($nivel) {
+            case 0:
+                return config('settings.color-border-card-respuesta-foro-0');
+            case 1:
+                return config('settings.color-border-card-respuesta-foro-1');
+            case 2:
+                return config('settings.color-border-card-respuesta-foro-2');
+            case 3:
+                return config('settings.color-border-card-respuesta-foro-3');
+            default:
+                return '';
+        }
+    }
+}
