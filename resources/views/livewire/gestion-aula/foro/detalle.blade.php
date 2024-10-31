@@ -6,6 +6,8 @@
     <div class="page-body">
         <div class="container-xl">
 
+            <div wire:init="mostrar_toast"></div>
+
             @if ($es_docente_invitado)
                 <livewire:components.navegacion.alert-docente-invitado />
             @endif
@@ -23,14 +25,15 @@
 
 
                     <div class="row g-3">
-                        <div class="col-lg-12">
-                            <livewire:components.foro.card-detalle-foro :tipo_vista=$tipo_vista :foro=$foro lazy />
-                        </div>
 
-                        @foreach($foro->foroRespuesta as $item)
-                            <livewire:components.foro.card-respuesta :tipo_vista=$tipo_vista
+                        <livewire:components.foro.card-detalle-foro :usuario=$usuario
+                            :tipo_vista=$tipo_vista :id_curso=$id_gestion_aula_hash
+                            :foro=$foro :modo_respuesta=0 lazy />
+                        @foreach($foro_respuestas as $item)
+                            <livewire:components.foro.card-respuesta :usuario=$usuario
+                                :tipo_vista=$tipo_vista :id_curso=$id_gestion_aula_hash
                                 :id_gestion_aula_alumno=$id_gestion_aula_alumno :foro_respuesta=$item
-                                wire:key="respuesta-{{ $item->id_foro_respuesta }}" lazy />
+                                wire:key="respuesta-{{ $item->id_foro_respuesta }}" :modo_respuesta=0 lazy />
                         @endforeach
 
                     </div>
@@ -95,8 +98,8 @@
                                         <div>
                                             <h4 class="alert-title text-dark">¡Alerta!</h4>
                                             <div class="text-dark">
-                                                Estás a punto de <strong>Eliminar</strong> la respuesta del foro, esta acción
-                                                no se puede deshacer.
+                                                Estás a punto de <strong>Eliminar</strong> la respuesta del foro, y todas las respuestas asociadas.
+                                                Esta acción no se puede deshacer.
                                             </div>
                                         </div>
                                     </div>

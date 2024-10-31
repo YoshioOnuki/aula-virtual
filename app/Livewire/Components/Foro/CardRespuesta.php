@@ -9,13 +9,16 @@ use Vinkla\Hashids\Facades\Hashids;
 class CardRespuesta extends Component
 {
     public $id_usuario_hash;
+    public $usuario;
     public $tipo_vista;
     public $id_gestion_aula_hash;
     public $id_gestion_aula_alumno;
     public $foro_respuesta;
     public $modo_respuesta;
+    public $nivel;
 
     public $es_propietario = false;
+    public $es_alumno = false;
 
 
     /**
@@ -34,7 +37,7 @@ class CardRespuesta extends Component
     {
         return <<<'HTML'
         <div class="col-12">
-            <div class="card placeholder-glow">
+            <div class="card placeholder-glow" style="margin-left: {{ $modo_respuesta ? 0 :$nivel * 2 }}rem;">
                 <div class="card-body p-4">
                     <div class="d-flex justify-content-between mb-5">
                         <div class="placeholder col-6" style="height: 1.5rem;"></div>
@@ -55,15 +58,19 @@ class CardRespuesta extends Component
     }
 
 
-    public function mount($usuario, $tipo_vista, $id_curso, $id_gestion_aula_alumno, $foro_respuesta, $modo_respuesta)
+    public function mount($usuario, $tipo_vista, $id_curso, $id_gestion_aula_alumno, $foro_respuesta, $modo_respuesta, $nivel = 0)
     {
         $this->id_usuario_hash = Hashids::encode($usuario->id_usuario);
+        $this->usuario = $usuario;
         $this->tipo_vista = $tipo_vista;
         $this->id_gestion_aula_hash = $id_curso;
         $this->id_gestion_aula_alumno = $id_gestion_aula_alumno;
-        $this->foro_respuesta = ForoRespuesta::with('gestionAulaAlumno.usuario')->find($foro_respuesta->id_foro_respuesta);
+        $this->foro_respuesta = ForoRespuesta::with('gestionAulaAlumno.usuario', 'hijos')->find($foro_respuesta->id_foro_respuesta);
         $this->modo_respuesta = $modo_respuesta === 1 ? true : false;
         $this->es_propietario = $this->foro_respuesta->id_gestion_aula_alumno === $this->id_gestion_aula_alumno;
+        $id_gestion_aula = Hashids::decode($id_curso)[0];
+        $this->es_alumno = $usuario->esAlumno($id_gestion_aula);
+        $this->nivel = $nivel;
     }
 
 

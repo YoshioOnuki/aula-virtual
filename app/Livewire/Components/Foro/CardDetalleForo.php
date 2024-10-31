@@ -16,6 +16,7 @@ class CardDetalleForo extends Component
     public $foro;
     public $modo_respuesta;
     public $es_docente = false;
+    public $es_alumno = false;
 
 
     /**
@@ -76,6 +77,7 @@ class CardDetalleForo extends Component
         $this->modo_respuesta = $modo_respuesta === 1 ? true : false;
 
         $this->es_docente = $this->usuario->esDocente($this->id_gestion_aula);
+        $this->es_alumno = $usuario->esAlumno($this->id_gestion_aula);
     }
 
 

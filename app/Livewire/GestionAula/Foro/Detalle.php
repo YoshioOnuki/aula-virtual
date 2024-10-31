@@ -22,6 +22,7 @@ class Detalle extends Component
 
     public $id_foro;
     public $foro;
+    public $foro_respuestas;
 
     // Variables para eliminar respuesta
     public $id_foro_respuesta_a_eliminar;
@@ -38,6 +39,25 @@ class Detalle extends Component
     public $regresar_page_header;
 
     protected $listeners = ['abrir_modal_eliminar_respuesta' => 'abrir_modal_eliminar_respuesta'];
+
+
+    /**
+     * Mostrar toast de éxito
+     */
+    public function mostrar_toast()
+    {
+        if (session('mensaje_exito_respuesta')) {
+            $mensaje_toast = session('mensaje_exito_respuesta');
+            // Aquí puedes limpiar la sesión si es necesario
+            session()->forget('mensaje_exito_respuesta');
+
+            $this->dispatch(
+                'toast-basico',
+                mensaje: $mensaje_toast,
+                type: 'success'
+            );
+        }
+    }
 
 
     /**
@@ -61,6 +81,17 @@ class Detalle extends Component
         $foro_respuesta = ForoRespuesta::find($this->id_foro_respuesta_a_eliminar);
 
         if ($foro_respuesta) {
+            //Eliminar archivos
+            $eliminar_archivos = eliminar_archivos_editor($foro_respuesta->descripcion_foro_respuesta, 'archivos/posgrado/media/editor-texto/foros/');
+
+            // Elimnar respuestas hijos
+            if ($foro_respuesta->hijos->count() > 0) {
+                foreach ($foro_respuesta->hijos as $hijo) {
+                    $eliminar_archivos_hijos = eliminar_archivos_editor($hijo->descripcion_foro_respuesta, 'archivos/posgrado/media/editor-texto/foros/');
+                    $hijo->delete();
+                }
+            }
+
             // Eliminar respuesta
             $foro_respuesta->delete();
             // Cerrar modal
@@ -193,10 +224,12 @@ class Detalle extends Component
         $this->foro = Foro::with([
             'foroRespuesta' => function ($query) {
                 $query->with('gestionAulaAlumno.usuario')
-                    ->orderBy('created_at', 'desc')
+                    ->where('id_respuesta_padre', null)
+                    ->orderBy('created_at', 'asc')
                     ->get();
             }
         ])->find($this->id_foro);
+        $this->foro_respuestas = $this->foro->foroRespuesta;
     }
 
 
