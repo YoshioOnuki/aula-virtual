@@ -34,10 +34,10 @@
                                 </div>
                                 <div class="col">
                                     <div class="font-weight-medium">
-                                        132 Aulas
+                                        {{ $cantidad_cursos }} Aulas
                                     </div>
                                     <div class="text-muted">
-                                        59 en curso
+                                        {{ $cantidad_cursos_en_curso }} en curso
                                     </div>
                                 </div>
                             </div>
@@ -66,10 +66,10 @@
                                 </div>
                                 <div class="col">
                                     <div class="font-weight-medium">
-                                        239 Usuarios
+                                        {{ $cantidad_usuarios }} Usuarios
                                     </div>
                                     <div class="text-muted">
-                                        15 nuevos este mes
+                                        {{ $cantidad_usuarios_nuevos }} nuevos este año
                                     </div>
                                 </div>
                             </div>
@@ -94,10 +94,10 @@
                                 </div>
                                 <div class="col">
                                     <div class="font-weight-medium">
-                                        129 Alumnos
+                                        {{ $cantidad_alumnos }} Alumnos
                                     </div>
                                     <div class="text-muted">
-                                        21 nuevos este mes
+                                        {{ $cantidad_alumnos_nuevos }} nuevos este año
                                     </div>
                                 </div>
                             </div>
@@ -122,10 +122,10 @@
                                 </div>
                                 <div class="col">
                                     <div class="font-weight-medium">
-                                        110 Docentes
+                                        {{ $cantidad_docentes }} Docentes
                                     </div>
                                     <div class="text-muted">
-                                        5 nuevos este mes
+                                        {{ $cantidad_docentes_nuevos }} nuevos este año
                                     </div>
                                 </div>
                             </div>

@@ -28,6 +28,16 @@ class Index extends Component
      * Variables para la vista Dashboard
      */
     public $acceso_auditoria;
+    public $cantidad_cursos;
+    public $cantidad_cursos_en_curso;
+    public $cantidad_usuarios;
+    public $cantidad_usuarios_nuevos;
+    public $cantidad_alumnos;
+    public $cantidad_alumnos_nuevos;
+    public $cantidad_docentes;
+    public $cantidad_docentes_nuevos;
+
+    public $almacenamiento;
 
 
     /**
@@ -83,7 +93,7 @@ class Index extends Component
 
 
     /**
-     * Funsiones para la vista Dashboard
+     * Función para cambiar accesos a la auditoría
      */
     public function estado_acceso_auditoria()
     {
@@ -103,12 +113,42 @@ class Index extends Component
     }
 
 
+    /**
+     * Función para mostrar cantidad de cursos, usuarios, alumnos y docentes
+     */
+    public function mostrar_cantidades()
+    {
+        $this->cantidad_cursos = GestionAula::count();
+        $this->cantidad_cursos_en_curso = GestionAula::enCurso(true)->count();
+        $this->cantidad_usuarios = Usuario::count();
+        $this->cantidad_usuarios_nuevos = Usuario::whereYear('created_at', now()->year)->count();
+        $this->cantidad_alumnos = Usuario::with('roles')
+            ->whereHas('roles', function ($query) {
+                $query->where('nombre_rol', 'ALUMNO');
+            })->count();
+        $this->cantidad_alumnos_nuevos = Usuario::with('roles')
+            ->whereHas('roles', function ($query) {
+                $query->where('nombre_rol', 'ALUMNO');
+            })->whereYear('created_at', now()->year)->count();
+        $this->cantidad_docentes = Usuario::with('roles')
+            ->whereHas('roles', function ($query) {
+            $query->where('nombre_rol', 'DOCENTE');
+        })->count();
+        $this->cantidad_docentes_nuevos = Usuario::with('roles')
+            ->whereHas('roles', function ($query) {
+            $query->where('nombre_rol', 'DOCENTE');
+        })->whereYear('created_at',now()->year)->count();
+    }
+
+
     public function mount()
     {
         $user = Auth::user();
         $this->usuario = Usuario::find($user->id_usuario);
 
-        if (!$this->usuario->esRol('ADMINISTRADOR')) {
+        if ($this->usuario->esRol('ADMINISTRADOR')) {
+            $this->mostrar_cantidades();
+        } else {
             $this->mostrar_cursos();
         }
 
