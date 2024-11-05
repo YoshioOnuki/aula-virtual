@@ -773,5 +773,13 @@ if (!function_exists('tamano_carpeta')) {
     }
 }
 
+// Funcion para obtener el porcentaje de uso de la carpeta
+if (!function_exists('porcentaje_uso')) {
+    function porcentaje_uso($total, $usado)
+    {
+        if ($total === 0) {
+            return 0;
+        }
+        return round(($usado / $total) * 100, 2);
     }
 }
