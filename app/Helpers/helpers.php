@@ -393,13 +393,9 @@ if (!function_exists('obtener_ruta_base')) {
                                     }
                                 ])->select('id_tipo_programa', 'nombre_tipo_programa', 'id_nivel_academico');
                             }
-                        ])->select('id_programa', 'nombre_programa', 'mencion_programa', 'id_tipo_programa');
-                    },
-                    'ciclo' => function ($query) {
-                        $query->select('id_ciclo', 'nombre_ciclo');
+                        ])->select('id_programa', 'id_tipo_programa');
                     }
-                ])
-                    ->select('id_curso', 'id_programa', 'nombre_curso', 'id_ciclo');
+                ])->select('id_curso', 'id_programa', 'nombre_curso');
             },
             'proceso' => function ($query) {
                 $query->select('id_proceso', 'nombre_proceso');
@@ -409,24 +405,24 @@ if (!function_exists('obtener_ruta_base')) {
             ->find($id_gestion_aula);
 
 
-        $nombre_curso = $curso->curso->nombre_curso . ' - ' . $curso->grupo_gestion_aula;
-        $proceso = $curso->proceso->nombre_proceso;
-        if ($curso->curso->programa->mencion_programa) {
-            $nombre_programa = $curso->curso->programa->nombre_programa . ' - ' . $curso->curso->programa->mencion_programa;
-        } else {
-            $nombre_programa = $curso->curso->nombre_programa;
-        }
-        $ciclo = $curso->curso->ciclo->nombre_ciclo;
-        $tipo_programa = $curso->curso->programa->tipoPrograma->nombre_tipo_programa;
         $nivel_academico = $curso->curso->programa->tipoPrograma->nivelAcademico->nombre_nivel_academico;
+        $proceso = $curso->proceso->nombre_proceso;
+        $tipo_programa = $curso->curso->programa->tipoPrograma->nombre_tipo_programa;
+        // if ($curso->curso->programa->mencion_programa) {
+        //     $nombre_programa = $curso->curso->programa->nombre_programa . ' - ' . $curso->curso->programa->mencion_programa;
+        // } else {
+        //     $nombre_programa = $curso->curso->nombre_programa;
+        // }
+        // $ciclo = $curso->curso->ciclo->nombre_ciclo;
+        // $nombre_curso = $curso->curso->nombre_curso . ' - ' . $curso->grupo_gestion_aula;
 
         $carpetas = [
             Str::slug($nivel_academico),
             Str::slug($proceso),
-            Str::slug($tipo_programa),
-            Str::slug($nombre_programa),
-            Str::slug($ciclo),
-            Str::slug($nombre_curso)
+            Str::slug($tipo_programa)
+            // Str::slug($nombre_programa),
+            // Str::slug($ciclo),
+            // Str::slug($nombre_curso)
         ];
 
         return $carpetas;
