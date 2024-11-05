@@ -764,11 +764,14 @@ if (!function_exists('tamano_carpeta')) {
         // foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($carpeta)) as $file) {
         //     $size += $file->getSize();
         // }
-        foreach (File::allFiles($carpeta) as $file) {
-            if ($file->isFile()) {
-                $size += $file->getSize();
+        if (file_exists($carpeta)) {
+            foreach (File::allFiles($carpeta) as $file) {
+                    $size += $file->getSize();
             }
         }
-        return format_bytes($size, 2);
+        return $size;
+    }
+}
+
     }
 }
