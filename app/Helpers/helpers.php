@@ -503,17 +503,22 @@ if (!function_exists('obtener_nombre_archivo')) {
 
 // Funcion para obtener los datos de un archivo
 if (!function_exists('format_bytes')) {
-    function format_bytes($bytes, $precision)
+    function format_bytes($bytes, $precision = 2)
     {
-        $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+        // Validación de entrada
+        if (!is_numeric($bytes) || $bytes < 0 || !is_int($precision) || $precision < 0) {
+            return "Invalid input";
+        }
 
-        $bytes = max($bytes, 0);
-        $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+        $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+        $pow = $bytes > 0 ? floor(log($bytes, 1024)) : 0;
         $pow = min($pow, count($units) - 1);
 
-        $bytes /= (1 << (10 * $pow));
+        // División utilizando pow para precisión
+        $bytes /= pow(1024, $pow);
 
-        return round($bytes, $precision) . ' ' . $units[$pow];
+        // Redondear a la precisión deseada y concatenar la unidad correcta
+        return number_format($bytes, $precision, '.', '') . ' ' . $units[$pow];
     }
 }
 
