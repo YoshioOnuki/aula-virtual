@@ -213,9 +213,6 @@ class Detalle extends Component
                 $orientaciones->save();
             }
 
-            throw new \Exception('Error al guardar las orientaciones');
-
-
             DB::commit();
 
             $this->cerrar_modal('#modal-orientaciones');
