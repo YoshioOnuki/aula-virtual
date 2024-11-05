@@ -3,6 +3,7 @@
 use App\Models\Accion;
 use App\Models\AccionUsuario;
 use App\Models\GestionAula;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Vinkla\Hashids\Facades\Hashids;
 
@@ -753,5 +754,22 @@ if (!function_exists('color_respuesta_foro')) {
             default:
                 return '';
         }
+    }
+}
+
+// Funcion para obtener el tamaño de una carpeta
+if (!function_exists('tamano_carpeta')) {
+    function tamano_carpeta($carpeta)
+    {
+        $size = 0;
+        // foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($carpeta)) as $file) {
+        //     $size += $file->getSize();
+        // }
+        foreach (File::allFiles($carpeta) as $file) {
+            if ($file->isFile()) {
+                $size += $file->getSize();
+            }
+        }
+        return format_bytes($size, 2);
     }
 }
