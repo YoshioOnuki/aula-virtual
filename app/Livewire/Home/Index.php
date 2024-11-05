@@ -37,7 +37,17 @@ class Index extends Component
     public $cantidad_docentes;
     public $cantidad_docentes_nuevos;
 
-    public $almacenamiento;
+    public $almacenamiento_total;
+    public $almacenamiento_trabajos_academicos;
+    public $almacenamiento_silabus;
+    public $almacenamiento_recursos;
+    public $almacenamiento_foros;
+    public $almacenamiento_orientaciones;
+    public $porcentaje_trabajos_academicos;
+    public $porcentaje_silabus;
+    public $porcentaje_recursos;
+    public $porcentaje_foros;
+    public $porcentaje_orientaciones;
 
 
     /**
@@ -141,6 +151,46 @@ class Index extends Component
     }
 
 
+    /**
+     * Función para calcular el almacenamiento de archivos
+     */
+    public function calcular_almacenamiento()
+    {
+        // Calcular el tamaño de trabajo académicos
+        $this->almacenamiento_trabajos_academicos += tamano_carpeta('archivos/posgrado/media/editor-texto/trabajos-academicos-alumnos/');
+        $this->almacenamiento_trabajos_academicos += tamano_carpeta('archivos/posgrado/maestria/trabajos-academicos-alumnos/');
+        $this->almacenamiento_trabajos_academicos += tamano_carpeta('archivos/posgrado/doctorado/trabajos-academicos-alumnos/');
+        $this->almacenamiento_trabajos_academicos += tamano_carpeta('archivos/posgrado/media/editor-texto/trabajos-academicos/');
+        $this->almacenamiento_trabajos_academicos += tamano_carpeta('archivos/posgrado/maestria/trabajos-academicos/');
+        $this->almacenamiento_trabajos_academicos += tamano_carpeta('archivos/posgrado/doctorado/trabajos-academicos/');
+
+        $this->almacenamiento_silabus = tamano_carpeta('archivos/posgrado/maestria/silabus/');
+        $this->almacenamiento_recursos = tamano_carpeta('archivos/posgrado/maestria/recursos/');
+        $this->almacenamiento_foros = tamano_carpeta('archivos/posgrado/media/editor-texto/foros/');
+        $this->almacenamiento_orientaciones = tamano_carpeta('archivos/posgrado/media/editor-texto/orientaciones/');
+
+        $this->almacenamiento_total = $this->almacenamiento_trabajos_academicos +
+            $this->almacenamiento_silabus +
+            $this->almacenamiento_recursos +
+            $this->almacenamiento_foros +
+            $this->almacenamiento_orientaciones;
+
+        $this->porcentaje_trabajos_academicos = porcentaje_uso($this->almacenamiento_total, $this->almacenamiento_trabajos_academicos);
+        $this->porcentaje_silabus = porcentaje_uso($this->almacenamiento_total, $this->almacenamiento_silabus);
+        $this->porcentaje_recursos = porcentaje_uso($this->almacenamiento_total, $this->almacenamiento_recursos);
+        $this->porcentaje_foros = porcentaje_uso($this->almacenamiento_total, $this->almacenamiento_foros);
+        $this->porcentaje_orientaciones = porcentaje_uso($this->almacenamiento_total, $this->almacenamiento_orientaciones);
+
+        $this->almacenamiento_total = format_bytes($this->almacenamiento_total);
+        $this->almacenamiento_trabajos_academicos = format_bytes($this->almacenamiento_trabajos_academicos);
+        $this->almacenamiento_silabus = format_bytes($this->almacenamiento_silabus);
+        $this->almacenamiento_recursos = format_bytes($this->almacenamiento_recursos);
+        $this->almacenamiento_foros = format_bytes($this->almacenamiento_foros);
+        $this->almacenamiento_orientaciones = format_bytes($this->almacenamiento_orientaciones);
+
+    }
+
+
     public function mount()
     {
         $user = Auth::user();
@@ -148,6 +198,7 @@ class Index extends Component
 
         if ($this->usuario->esRol('ADMINISTRADOR')) {
             $this->mostrar_cantidades();
+            $this->calcular_almacenamiento();
         } else {
             $this->mostrar_cursos();
         }

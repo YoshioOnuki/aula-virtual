@@ -136,43 +136,77 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <p class="mb-3">Almacenamiento utilizado: <strong>6854.45 MB </strong></p>
-                            <div class="progress progress-separated mb-3">
-                                <div class="progress-bar bg-blue" role="progressbar" style="width: 40%"
-                                    aria-label="Regular"></div>
-                                <div class="progress-bar bg-azure" role="progressbar" style="width: 20%"
-                                    aria-label="System"></div>
-                                <div class="progress-bar bg-teal" role="progressbar" style="width: 10%"
-                                    aria-label="Shared"></div>
-                                <div class="progress-bar bg-pink" role="progressbar" style="width: 30%"
-                                    aria-label="Shared"></div>
+                            <p class="mb-3">
+                                Almacenamiento utilizado: <strong>{{ $almacenamiento_total }}</strong>
+                            </p>
+                            <div class="progress progress-separated mb-3" style="height: 15px;">
+                                <div class="progress-bar bg-blue" role="progressbar" style="width: {{ $porcentaje_trabajos_academicos }}%"
+                                    aria-label="Trabajos académicos">
+                                    <span class="fs-6 fw-bold">
+                                        {{ $almacenamiento_trabajos_academicos }}
+                                    </span>
+                                </div>
+                                <div class="progress-bar bg-teal" role="progressbar" style="width: {{ $porcentaje_silabus }}%"
+                                    aria-label="Silabus">
+                                    <span class="fs-6 fw-bold">
+                                        {{ $almacenamiento_silabus }}
+                                    </span>
+                                </div>
+                                <div class="progress-bar bg-pink" role="progressbar" style="width: {{ $porcentaje_recursos }}%"
+                                    aria-label="Recursos">
+                                    <span class="fs-6 fw-bold">
+                                        {{ $almacenamiento_recursos }}
+                                    </span>
+                                </div>
+                                <div class="progress-bar bg-purple" role="progressbar" style="width: {{ $porcentaje_foros }}%"
+                                    aria-label="Foros">
+                                    <span class="fs-6 fw-bold">
+                                        {{ $almacenamiento_foros }}
+                                    </span>
+                                </div>
+                                <div class="progress-bar bg-azure" role="progressbar" style="width: {{ $porcentaje_orientaciones }}%"
+                                    aria-label="Orientaciones">
+                                    <span class="fs-6 fw-bold">
+                                        {{ $almacenamiento_orientaciones }}
+                                    </span>
+                                </div>
                             </div>
-                            <div class="row">
-                                <div class="col-auto d-flex align-items-center px-2">
-                                    <span class="legend me-2 bg-blue"></span>
-                                    <span>Trabajos de alumnos</span>
-                                    <span
-                                        class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">201MB - 40%</span>
+                            <div class="row d-flex align-items-center">
+                                <div class="col-auto px-2">
+                                    <span class="legend me-1 bg-blue"></span>
+                                    <span>Trabajos académicos</span>
+                                    <span class="d-none d-md-inline d-lg-inline d-xxl-inline ms-1 text-muted fs-5 ">
+                                        {{ $porcentaje_trabajos_academicos }}%
+                                    </span>
                                 </div>
-                                <div class="col-auto d-flex align-items-center ps-2">
-                                    <span class="legend me-2 bg-azure"></span>
-                                    <span>Trabajos de docentes</span>
-                                    <span
-                                        class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">612MB - 20%</span>
-                                </div>
-                                <div class="col-auto d-flex align-items-center pe-2">
-                                    <span class="legend me-2 bg-teal"></span>
+                                <div class="col-auto px-2">
+                                    <span class="legend me-1 bg-teal"></span>
                                     <span>Silabus</span>
-                                    <span
-                                        class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">915MB - 10%</span>
+                                    <span class="d-none d-md-inline d-lg-inline d-xxl-inline ms-1 text-muted fs-5 ">
+                                        {{ $porcentaje_silabus }}%
+                                    </span>
                                 </div>
-                                <div class="col-auto d-flex align-items-center px-2">
-                                    <span class="legend me-2 bg-pink"></span>
+                                <div class="col-auto px-2">
+                                    <span class="legend me-1 bg-pink"></span>
                                     <span>Recursos</span>
-                                    <span
-                                        class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">415MB - 30%</span>
+                                    <span class="d-none d-md-inline d-lg-inline d-xxl-inline ms-1 text-muted fs-5">
+                                        {{ $porcentaje_recursos }}%
+                                    </span>
                                 </div>
-
+                                <div class="col-auto px-2">
+                                    <span class="legend me-1 bg-purple"></span>
+                                    <span>Foros</span>
+                                    <span class="d-none d-md-inline d-lg-inline d-xxl-inline ms-1 text-muted fs-5">
+                                        {{ $porcentaje_foros }}%
+                                    </span>
+                                </div>
+                                <div class="col-auto ps-2">
+                                    <span class="legend me-1 bg-azure"></span>
+                                    <span>Orientaciones</span>
+                                    <span class="d-none d-md-inline d-lg-inline d-xxl-inline ms-1 text-muted fs-5">
+                                        {{ $porcentaje_orientaciones }}%
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
