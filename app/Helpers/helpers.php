@@ -758,6 +758,7 @@ if (!function_exists('tamano_carpeta')) {
     function tamano_carpeta($carpeta)
     {
         $size = 0;
+        $carpeta = public_path($carpeta);
         // foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($carpeta)) as $file) {
         //     $size += $file->getSize();
         // }
