@@ -56,6 +56,11 @@ class Detalle extends Component
     public $links_page_header = [];
     public $regresar_page_header;
 
+    protected $listeners = [
+        'abrir-modal-link-clase' => 'abrir_modal_link_clase',
+        'abrir-modal-orientaciones' => 'abrir_modal_orientaciones',
+    ];
+
 
     /**
      * Función para abrir el modal de Link de Clase
