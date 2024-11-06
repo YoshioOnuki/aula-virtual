@@ -25637,7 +25637,7 @@ img {
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    line-clamp: 2;
     line-height: 1.2;
     height: 2.4em;
     white-space: normal;
@@ -25657,23 +25657,15 @@ img {
     height: 170px;
 }
 
-.image-button-alumno {
-    border: 2px solid #0ca678;
-}
-
-.image-button-alumno:hover {
+.image-button-alumno-hover:hover {
     background-color: #e7f6f2;
 }
 
-.image-button-docente {
-    border: 2px solid #f76707;
-}
-
-.image-button-docente:hover {
+.image-button-docente-hover:hover {
     background-color: #fef0e6;
 }
 
-.image-button:hover {
+.image-button-hover:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0,0,0,0.3);
 }
@@ -25682,19 +25674,6 @@ img {
     max-width: 100%;
     height: auto;
 }
-
-
-.dark-mode .image-button-alumno:hover {
-    background-color: #006644;
-    box-shadow: 0 8px 16px rgba(255,255,255,0.3);
-}
-.dark-mode .image-button-docente:hover {
-    /* background-color: #37474F;  */
-    background-color: #70461E;
-    box-shadow: 0 8px 16px rgba(255,255,255,0.3);
-}
-
-
 
 .svg-small {
     transform: scale(1.3);
