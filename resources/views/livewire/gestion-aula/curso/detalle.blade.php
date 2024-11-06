@@ -25,7 +25,7 @@
                         @endif
 
                         <div class="col-12">
-                            <div class="card card-md card-stacked animate__animated animate__fadeIn ">
+                            <div class="card card-md card-stacked animate__animated animate__fadeIn">
                                 <div class="card-stamp card-stamp-lg">
                                     @if ($tipo_vista ==='carga-academica')
                                     <div class="card-stamp-icon bg-orange">
@@ -60,175 +60,12 @@
                                     </div>
                                     @endif
                                 </div>
-                                <div class="card-body d-flex justify-content-center">
-                                    <div class="row g-3">
-                                        {{-- Silabus --}}
-                                        <div class="col-6 col-md-2 col-lg-4 col-xl-3">
-                                            <span class="hide-theme-dark">
-                                                <div>
-                                                    <a href="{{ $tipo_vista === 'cursos' ?
-                                                        route('cursos.detalle.silabus', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
-                                                        route('carga-academica.detalle.silabus', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}"
-                                                        class="text-decoration-none text-dark image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
-                                                        <img src="/media/icons/icon-libro-info.webp" alt="Info"
-                                                            style="width: 80px; height: 80px;">
-                                                        <div class="text-content text-center mt-3 fw-semibold fs-3">
-                                                            Silabus
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </span>
-                                        </div>
-
-                                        {{-- Recursos --}}
-                                        <div class="col-6 col-md-2 col-lg-4 col-xl-3">
-                                            <span class="hide-theme-dark">
-                                                <div>
-                                                    <a href="{{ $tipo_vista === 'cursos' ?
-                                                        route('cursos.detalle.recursos', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
-                                                        route('carga-academica.detalle.recursos', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}"
-                                                        class="text-decoration-none text-dark image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
-                                                        <img src="/media/icons/icon-carpeta.webp" alt="Info"
-                                                            style="width: 80px; height: 80px;">
-                                                        <div class="text-content text-center mt-3 fw-semibold fs-3">
-                                                            Recursos
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </span>
-                                        </div>
-
-                                        {{-- Foro --}}
-                                        <div class="col-6 col-md-2 col-lg-4 col-xl-3">
-                                            <span class="hide-theme-dark">
-                                                <div>
-                                                    <a href="{{ $tipo_vista === 'cursos' ?
-                                                        route('cursos.detalle.foro', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
-                                                        route('carga-academica.detalle.foro', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}"
-                                                        class="text-decoration-none text-dark image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
-                                                        <img src="/media/icons/icon-foro-discusion.webp" alt="Info"
-                                                            style="width: 80px; height: 80px;">
-                                                        <div class="text-content text-center mt-3 fw-semibold fs-3">
-                                                            Foro
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </span>
-                                        </div>
-
-                                        {{-- Asistencia --}}
-                                        <div class="col-6 col-md-2 col-lg-4 col-xl-3">
-                                            <span class="hide-theme-dark">
-                                                <div>
-                                                    <a href="{{ $tipo_vista === 'cursos' ?
-                                                        route('cursos.detalle.asistencia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
-                                                        route('carga-academica.detalle.asistencia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}"
-                                                        class="text-decoration-none text-dark image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
-                                                        <img src="/media/icons/icon-matricula.webp" alt="Info"
-                                                            style="width: 80px; height: 80px;">
-                                                        <div class="text-content text-center mt-3 fw-semibold fs-3">
-                                                            Asistencia
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </span>
-                                        </div>
-
-                                        {{-- Trabajos Academicos --}}
-                                        <div class="col-6 col-md-2 col-lg-4 col-xl-3">
-                                            <span class="hide-theme-dark">
-                                                <div>
-                                                    <a href="{{ $tipo_vista === 'cursos' ?
-                                                        route('cursos.detalle.trabajo-academico', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
-                                                        route('carga-academica.detalle.trabajo-academico', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}"
-                                                        class="text-decoration-none text-dark image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
-                                                        <img src="/media/icons/icon-curso-por-internet.webp" alt="Info"
-                                                            style="width: 80px; height: 80px;">
-                                                        <div class="text-content text-center mt-3 fw-semibold fs-3">
-                                                            Trabajos Académicos
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </span>
-                                        </div>
-
-                                        {{-- Webgrafia --}}
-                                        <div class="col-6 col-md-2 col-lg-4 col-xl-3">
-                                            <span class="hide-theme-dark">
-                                                <div>
-                                                    <a href="{{ $tipo_vista === 'cursos' ?
-                                                        route('cursos.detalle.webgrafia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
-                                                        route('carga-academica.detalle.webgrafia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}"
-                                                        class="text-decoration-none text-dark image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
-                                                        <img src="/media/icons/icon-ubicacion-ip.webp" alt="Info"
-                                                            style="width: 80px; height: 80px;">
-                                                        <div class="text-content text-center mt-3 fw-semibold fs-3">
-                                                            Webgrafía
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </span>
-                                        </div>
-
-                                        @if($tipo_vista ==='carga-academica')
-                                        {{-- Link de Clases --}}
-                                        <div class="col-6 col-md-2 col-lg-4 col-xl-3">
-                                            <span class="hide-theme-dark">
-                                                <div class="" wire:click="abrir_modal_link_clase"
-                                                    data-bs-toggle="modal" data-bs-target="#modal-link-clase">
-                                                    <div class="image-button image-button-docente position-relative">
-                                                        <img src="/media/icons/icon-link-hipervinculo.webp" alt="Info"
-                                                            style="width: 80px; height: 80px;">
-                                                        <div class="text-content text-center mt-3 fw-semibold fs-3">
-                                                            Subir Link de Clases
-                                                        </div>
-                                                        @if(!$link_clase_bool)
-                                                        <span
-                                                            class="badge bg-yellow badge-notification badge-blink badge-pill">!</span>
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                            </span>
-                                        </div>
-
-                                        {{-- Orientaciones --}}
-                                        <div class="col-6 col-md-2 col-lg-4 col-xl-3">
-                                            <span class="hide-theme-dark">
-                                                <div class="" wire:click="abrir_modal_orientaciones"
-                                                    data-bs-toggle="modal" data-bs-target="#modal-orientaciones">
-                                                    <div class="image-button image-button-docente position-relative"
-                                                        style="z-index: 1;">
-                                                        <img src="/media/icons/icon-orien-presentacion2.webp" alt="Info"
-                                                            style="width: 80px; height: 80px;">
-                                                        <div class="text-content text-center mt-3 fw-semibold fs-3">
-                                                            Orientaciones Generales
-                                                        </div>
-                                                        @if(!$orientaciones_generales_bool)
-                                                        <span
-                                                            class="badge bg-yellow badge-notification badge-blink badge-pill">!</span>
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                            </span>
-                                        </div>
-
-                                        {{-- Alumnos --}}
-                                        <div class="col-6 col-md-2 col-lg-4 col-xl-3">
-                                            <span class="hide-theme-dark">
-                                                <div>
-                                                    <a href="{{ route('carga-academica.detalle.alumnos', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}"
-                                                        class="text-decoration-none text-dark image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
-                                                        <img src="/media/icons/icon-registro.webp" alt="Info"
-                                                            style="width: 80px; height: 80px;">
-                                                        <div class="text-content text-center mt-3 fw-semibold fs-3">
-                                                            Alumnos
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </span>
-                                        </div>
-                                        @endif
-
+                                <div class="card-body">
+                                    <div class="row g-4">
+                                        @foreach ($opciones_curso as $item)
+                                            <livewire:components.curso.opcion-curso :tipo_vista=$tipo_vista :opcion=$item
+                                                wire:key="opcion-{{ Str::slug($item['nombre']) }}" lazy />
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>

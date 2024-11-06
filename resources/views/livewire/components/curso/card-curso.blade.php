@@ -20,7 +20,8 @@
                     <div class="d-flex align-items-center cursor-pointer" style="height: 75px;">
                         <div>
                             <div class="text-muted">
-                                {{ $gestion_aula->curso->codigo_curso }}</div>
+                                {{ $gestion_aula->curso->codigo_curso }}
+                            </div>
                             <div class="text-uppercase">
                                 {{ $gestion_aula->curso->nombre_curso }} - GRUPO
                                 "{{ $gestion_aula->grupo_gestion_aula }}"
@@ -104,6 +105,7 @@
         </div>
 
     </div>
+    <!-- Spinner de carga que aparece inmediatamente antes de redirigir -->
     <div class="position-absolute top-50 start-50 translate-middle"
         wire:loading wire:target="redirigir_curso_detalle">
         <div class="spinner-border text-primary" role="status">
