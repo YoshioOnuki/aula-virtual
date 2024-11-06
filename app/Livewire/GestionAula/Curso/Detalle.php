@@ -16,23 +16,18 @@ class Detalle extends Component
 {
     use UsuarioTrait;
 
+    public $usuario;
+    public $id_usuario_hash;
     public $id_gestion_aula_hash;
     public $id_gestion_aula;
     public $curso;
     public $ruta_pagina;
+    public $opciones_curso = [];
 
     public $nombre_curso;
     public $grupo_gestion_aula;
-    public $orientaciones_generales_bool = true;
     public $orientaciones_generales;
     public $link_clase;
-    public $link_clase_bool = true;
-
-    public $cargando = true;
-    public $cargando_orientaciones = true;
-
-    public $usuario;
-    public $id_usuario_hash;
 
     // Variables para el modal de Link de Clase
     public $modo_link_clase = 1; // Modo 1 = Agregar / 0 = Editar
@@ -51,6 +46,10 @@ class Detalle extends Component
     public $modo_admin = false; // Modo admin, para saber si se esta en modo administrador
     public $tipo_vista; // Tipo de vista, si es alumno o docente
     public $es_docente_invitado = false; // Modo invitado, para saber si se esta en modo invitado
+    public $cargando = true;
+    public $cargando_orientaciones = true;
+    public $orientaciones_generales_bool = true;
+    public $link_clase_bool = true;
 
     // Variables para page-header
     public $titulo_page_header = 'Detalle';
@@ -64,6 +63,7 @@ class Detalle extends Component
     public function abrir_modal_link_clase()
     {
         $this->limpiar_modal();
+
         if (!$this->link_clase) {
             $this->modo_link_clase = 1; // Agregar
             $this->titulo_link_clase = 'Agregar Link de Clase';
@@ -131,6 +131,7 @@ class Detalle extends Component
             $this->cerrar_modal('#modal-link-clase');
             $this->limpiar_modal();
             $this->obtener_link_clase();
+            $this->obtener_opciones_curso();
 
             $this->dispatch(
                 'toast-basico',
@@ -218,6 +219,7 @@ class Detalle extends Component
             $this->cerrar_modal('#modal-orientaciones');
             $this->limpiar_modal();
             $this->mostrar_orientaciones();
+            $this->obtener_opciones_curso();
             $this->dispatch('actualizar_link_clase');
 
             $this->dispatch(
@@ -314,6 +316,100 @@ class Detalle extends Component
 
 
     /**
+     * Función para obtener opciones del detalle del curso
+     */
+    public function obtener_opciones_curso()
+    {
+        // Silabus
+        $this->opciones_curso[] = [
+            'nombre' => 'Silabus',
+            'ruta' => $this->tipo_vista === 'cursos' ?
+                route('cursos.detalle.silabus', ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]) :
+                route('carga-academica.detalle.silabus', ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]),
+            'icono' => '/media/icons/icon-libro-info.webp',
+            'notificacion' => false
+        ];
+
+        // Recursos
+        $this->opciones_curso[] = [
+            'nombre' => 'Recursos',
+            'ruta' => $this->tipo_vista === 'cursos' ?
+                route('cursos.detalle.recursos', ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' =>  $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]) :
+                route('carga-academica.detalle.recursos', ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' =>  $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]),
+            'icono' => '/media/icons/icon-carpeta.webp',
+            'notificacion' => false
+        ];
+
+        // Foro
+        $this->opciones_curso[] = [
+            'nombre' => 'Foro',
+            'ruta' => $this->tipo_vista === 'cursos' ?
+                route('cursos.detalle.foro', ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' =>  $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]) :
+                route('carga-academica.detalle.foro', ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' =>  $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]),
+            'icono' => '/media/icons/icon-foro-discusion.webp',
+            'notificacion' => false
+        ];
+
+        // Asistencia
+        $this->opciones_curso[] = [
+            'nombre' => 'Asistencia',
+            'ruta' => $this->tipo_vista === 'cursos' ?
+                route('cursos.detalle.asistencia', ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' =>  $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]) :
+                route('carga-academica.detalle.asistencia', ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' =>  $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]),
+            'icono' => '/media/icons/icon-matricula.webp',
+            'notificacion' => false
+        ];
+
+        // Trabajos Académicos
+        $this->opciones_curso[] = [
+            'nombre' => 'Trabajos Académicos',
+            'ruta' => $this->tipo_vista === 'cursos' ?
+                route('cursos.detalle.trabajo-academico', ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' =>  $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]) :
+                route('carga-academica.detalle.trabajo-academico', ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' =>  $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]),
+            'icono' => '/media/icons/icon-curso-por-internet.webp',
+            'notificacion' => false
+        ];
+
+        // Webgrafia
+        $this->opciones_curso[] = [
+            'nombre' => 'Webgrafía',
+            'ruta' => $this->tipo_vista === 'cursos' ?
+                route('cursos.detalle.webgrafia', ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' =>  $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]) :
+                route('carga-academica.detalle.webgrafia', ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' =>  $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]),
+            'icono' => '/media/icons/icon-ubicacion-ip.webp',
+            'notificacion' => false
+        ];
+
+        if ($this->tipo_vista === 'carga-academica') {
+            // Alumnos
+            $this->opciones_curso[] = [
+                'nombre' => 'Alumnos',
+                'ruta' => route('carga-academica.detalle.alumnos', ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' =>  $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]),
+                'icono' => '/media/icons/icon-registro.webp',
+                'notificacion' => false
+            ];
+
+            // Link de clases
+            $this->opciones_curso[] = [
+                'nombre' => 'Subir Link de Clases',
+                'ruta' => '#modal-link-clase',
+                'icono' => '/media/icons/icon-link-hipervinculo.webp',
+                'notificacion' => !$this->link_clase_bool ? true : false
+            ];
+
+            // Orientaciones Generales
+            $this->opciones_curso[] = [
+                'nombre' => 'Orientaciones Generales',
+                'ruta' => '#modal-orientaciones',
+                'icono' => '/media/icons/icon-orien-presentacion2.webp',
+                'notificacion' => !$this->orientaciones_generales_bool ? true : false
+            ];
+        }
+
+    }
+
+
+    /**
      * Función para obtener los datos del page header
      */
     public function obtener_datos_page_header()
@@ -376,6 +472,7 @@ class Detalle extends Component
         $this->mostrar_orientaciones();
         $this->obtener_link_clase();
         $this->descripcion_orientaciones = $this->orientaciones_generales->descripcion_presentacion ?? '';
+        $this->obtener_opciones_curso();
 
         $this->ruta_pagina = request()->route()->getName();
     }
