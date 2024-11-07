@@ -109,11 +109,11 @@
                                                 </span>
                                             </div>
 
-                                            <div class="row g-2">
+                                            <div class="row g-3">
                                                 @foreach ($trabajo_academico->archivoDocente as $archivo)
                                                     @if (file_exists($archivo->archivo_docente))
                                                         <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                                                            <a class="card p-3 mb-3 text-decoration-none cursor-pointer card-link card-link-pop"
+                                                            <button class="card p-3 card-link card-link-pop w-100"
                                                                 wire:click="descargar_archivo({{ $archivo->id_archivo_docente }})">
                                                                 <div class="d-flex align-items-center">
                                                                     <img src="{{ obtener_icono_archivo($archivo->archivo_docente) }}"
@@ -127,17 +127,17 @@
                                                                         </small>
                                                                     </div>
                                                                 </div>
-                                                            </a>
+                                                            </button>
                                                         </div>
                                                     @else
-                                                        <div class="col-6 col-md-3 col-lg-4 col-xl-4">
-                                                            <div class="card p-3 mb-3 background-gray">
+                                                        <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                                            <div class="card p-3 background-gray">
                                                                 <div class="d-flex align-items-center">
                                                                     <img src="/media/icons/icon-archivo-generico2.webp"
                                                                         alt="icono-recurso" class="me-2" width="40">
                                                                     <div>
                                                                         <h5 class="mb-0 text-danger">
-                                                                            {{ Str::limit("Archivo no disponible", 20) }}
+                                                                            {{ Str::limit("Archivo no disponible", 25) }}
                                                                         </h5>
                                                                         <small class="text-muted d-block mt-1 fw-light">
                                                                             No disponible
@@ -163,19 +163,19 @@
                                                 </a>
                                             </div>
                                         @else
-                                            <div class="card-footer d-flex justify-content-end align-items-center mt-4">
+                                            <div class="card-footer d-flex justify-content-end align-items-center mt-4 bg-white">
+                                                {{-- <button class="btn btn-primary" wire:click="abrir_modal_entrega_trabajo"
+                                                    data-bs-toggle="modal" data-bs-target="#modal-entrega">
+                                                    Editar entrega
+                                                </button> --}}
+
                                                 <span class="status 
                                                     status-{{ color_estado_trabajo_academico($trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico ?? 'No entregado') }}
                                                     px-3 py-2 h-100">
                                                     {{ $trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico ?? 'No entregado' }}
                                                 </span>
+
                                             </div>
-                                            {{-- <div class="card-footer d-flex justify-content-end align-items-center mt-4">
-                                                <a class="btn btn-primary" wire:click="abrir_modal_entrega_trabajo()"
-                                                    data-bs-toggle="modal" data-bs-target="#modal-entrega">
-                                                    Editar entrega
-                                                </a>
-                                            </div> --}}
                                         @endif
                                     @endif
                                 </div>
@@ -239,6 +239,9 @@
                                 </div>
                                 @enderror
                             </div>
+
+
+                            
                         </div>
                     </div>
 
