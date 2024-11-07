@@ -67,7 +67,6 @@ class Index extends Component
     {
         $this->validate();
 
-
         try
         {
             DB::beginTransaction();
