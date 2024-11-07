@@ -332,10 +332,11 @@ if (!function_exists('desencriptar')) {
 
 // Funcion para subir un archivo del curso
 if (!function_exists('subir_archivo')) {
-    function subir_archivo($archivo, $url_archiv, $carpetas, $extencion_archivo)
+    function subir_archivo($archivo, $url_archivo_antiguo, $carpetas, $extencion_archivo)
     {
-        if (file_exists($url_archiv)) {
-            unlink($url_archiv);
+        // Eliminar el archivo antiguo
+        if (file_exists($url_archivo_antiguo)) {
+            unlink($url_archivo_antiguo);
         }
 
         $base_path = 'archivos/';
