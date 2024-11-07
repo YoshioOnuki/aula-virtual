@@ -133,8 +133,9 @@
                         </a>
 
                         <div class="ms-auto">
-                            <div wire:loading.remove>
-                                <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn btn-primary"
+                                wire:loading.attr="disabled" wire:target="guardar_link_clase">
+                                <span wire:loading.remove wire:target="guardar_link_clase">
                                     @if ($modo_link_clase === 1)
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -157,14 +158,12 @@
                                     </svg>
                                     @endif
                                     {{ $accion_estado_link_clase }}
-                                </button>
-                            </div>
-                            <div wire:loading>
-                                <button type="submit" class="btn btn-primary" disabled>
+                                </span>
+                                <span wire:loading wire:target="guardar_link_clase">
                                     <div class="spinner-border spinner-border-sm me-2" role="status"></div>
                                     Cargando
-                                </button>
-                            </div>
+                                </span>
+                            </button>
                         </div>
 
                     </div>
@@ -217,8 +216,9 @@
                         </a>
 
                         <div class="ms-auto">
-                            <div wire:loading.remove>
-                                <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn btn-primary"
+                                wire:loading.attr="disabled" wire:target="guardar_orientaciones">
+                                <span wire:loading.remove wire:target="guardar_orientaciones">
                                     @if ($modo_orientaciones === 1)
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -241,14 +241,12 @@
                                     </svg>
                                     @endif
                                     {{ $accion_estado_orientaciones }}
-                                </button>
-                            </div>
-                            <div wire:loading>
-                                <button type="submit" class="btn btn-primary" disabled>
+                                </span>
+                                <span wire:loading wire:target="guardar_orientaciones">
                                     <div class="spinner-border spinner-border-sm me-2" role="status"></div>
                                     Cargando
-                                </button>
-                            </div>
+                                </span>
+                            </button>
                         </div>
 
                     </div>
