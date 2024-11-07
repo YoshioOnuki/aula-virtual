@@ -79,262 +79,276 @@
                         </div>
 
                         @if ($tipo_vista === 'carga-academica' && $es_docente)
-                        <div class="col-lg-4">
-                            @if($cargando_datos_curso)
-                            <div class="card card-stacked placeholder-glow">
-                                <div class="card-header {{ $tipo_vista === 'cursos' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
-                                    <div class="placeholder col-5 {{ $tipo_vista === 'cursos' ? 'bg-teal' : 'bg-orange' }}"
-                                        style="height: 1.5rem; width: 170.56px;"></div>
-                                </div>
-                                <div class="card-body row g-3 mb-0">
-                                    <div class="d-flex flex-column gap-2">
-                                        <div class="row g-3">
-                                            <div class="col-12">
-                                                <div class="row g-2">
+                            <div class="col-lg-4">
+                                @if($cargando_datos_curso)
+                                    <div class="card card-stacked placeholder-glow">
+                                        <div class="card-header {{ $tipo_vista === 'cursos' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
+                                            <div class="placeholder col-5 {{ $tipo_vista === 'cursos' ? 'bg-teal' : 'bg-orange' }}"
+                                                style="height: 1.5rem; width: 170.56px;"></div>
+                                        </div>
+                                        <div class="card-body row g-3 mb-0">
+                                            <div class="d-flex flex-column gap-2">
+                                                <div class="row g-3">
                                                     <div class="col-12">
-                                                        <div class="placeholder" style="height: 17px; width: 148.94px;">
+                                                        <div class="row g-2">
+                                                            <div class="col-12">
+                                                                <div class="placeholder" style="height: 17px; width: 148.94px;">
+                                                                </div>
+                                                                <div class="col-12"></div>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <div class="placeholder bg-secondary"
+                                                                    style="height: 17px; width: 148.94px;"></div>
+                                                                <div class="col-12"></div>
+                                                            </div>
                                                         </div>
-                                                        <div class="col-12"></div>
                                                     </div>
+
                                                     <div class="col-12">
-                                                        <div class="placeholder bg-secondary"
-                                                            style="height: 17px; width: 148.94px;"></div>
-                                                        <div class="col-12"></div>
+                                                        <div class="row g-2">
+                                                            <div class="col-12">
+                                                                <div class="placeholder" style="height: 17px; width: 117.06px;">
+                                                                </div>
+                                                                <div class="col-12"></div>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <div class="placeholder bg-secondary"
+                                                                    style="height: 17px; width: 43.3px;"></div>
+                                                                <div class="col-12"></div>
+                                                            </div>
+                                                        </div>
                                                     </div>
+
+                                                    <div class="col-12">
+                                                        <div class="row g-2">
+                                                            <div class="col-12">
+                                                                <div class="placeholder" style="height: 17px; width: 122.21px;">
+                                                                </div>
+                                                                <div class="col-12"></div>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <div class="placeholder col-12 bg-secondary"
+                                                                    style="height: 17px;">
+                                                                </div>
+                                                                <div class="col-12"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-4 d-flex justify-content-start">
+                                                        <div class="row g-2">
+                                                            <div class="col-12 d-flex justify-content-center">
+                                                                <div class="placeholder" style="height: 17px; width: 34.20px;">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 d-flex justify-content-center">
+                                                                <div class="placeholder bg-secondary"
+                                                                    style="height: 17px; width: 15px;"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-4 d-flex justify-content-center">
+                                                        <div class="row">
+                                                            <div class="col-12 d-flex justify-content-center">
+                                                                <div class="placeholder" style="height: 17px; width: 57.86px;">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 d-flex justify-content-center">
+                                                                <div class="placeholder bg-secondary"
+                                                                    style="height: 17px; width: 15px;"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-4 d-flex justify-content-end">
+                                                        <div class="row">
+                                                            <div class="col-12 d-flex justify-content-center">
+                                                                <div class="placeholder" style="height: 17px; width: 40.07px;">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 d-flex justify-content-center">
+                                                                <div class="placeholder bg-secondary"
+                                                                    style="height: 17px; width: 15px;"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-12">
+                                                        <div class="row g-2">
+                                                            <div class="col-12">
+                                                                <div class="placeholder" style="height: 17px; width: 104.33px;">
+                                                                </div>
+                                                                <div class="col-12"></div>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <div class="placeholder bg-secondary"
+                                                                    style="height: 17px; width: 64.44px;"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
                                             </div>
-
-                                            <div class="col-12">
-                                                <div class="row g-2">
-                                                    <div class="col-12">
-                                                        <div class="placeholder" style="height: 17px; width: 117.06px;">
-                                                        </div>
-                                                        <div class="col-12"></div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="placeholder bg-secondary"
-                                                            style="height: 17px; width: 43.3px;"></div>
-                                                        <div class="col-12"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-12">
-                                                <div class="row g-2">
-                                                    <div class="col-12">
-                                                        <div class="placeholder" style="height: 17px; width: 122.21px;">
-                                                        </div>
-                                                        <div class="col-12"></div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="placeholder col-12 bg-secondary"
-                                                            style="height: 17px;">
-                                                        </div>
-                                                        <div class="col-12"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-4 d-flex justify-content-start">
-                                                <div class="row g-2">
-                                                    <div class="col-12 d-flex justify-content-center">
-                                                        <div class="placeholder" style="height: 17px; width: 34.20px;">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12 d-flex justify-content-center">
-                                                        <div class="placeholder bg-secondary"
-                                                            style="height: 17px; width: 15px;"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-4 d-flex justify-content-center">
-                                                <div class="row">
-                                                    <div class="col-12 d-flex justify-content-center">
-                                                        <div class="placeholder" style="height: 17px; width: 57.86px;">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12 d-flex justify-content-center">
-                                                        <div class="placeholder bg-secondary"
-                                                            style="height: 17px; width: 15px;"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-4 d-flex justify-content-end">
-                                                <div class="row">
-                                                    <div class="col-12 d-flex justify-content-center">
-                                                        <div class="placeholder" style="height: 17px; width: 40.07px;">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12 d-flex justify-content-center">
-                                                        <div class="placeholder bg-secondary"
-                                                            style="height: 17px; width: 15px;"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-12">
-                                                <div class="row g-2">
-                                                    <div class="col-12">
-                                                        <div class="placeholder" style="height: 17px; width: 104.33px;">
-                                                        </div>
-                                                        <div class="col-12"></div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="placeholder bg-secondary"
-                                                            style="height: 17px; width: 64.44px;"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            @else
-                            <div class="card card-stacked animate__animated animate__fadeIn  ">
-                                <div class="card-header {{ $tipo_vista === 'cursos' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
-                                    <h3 class="card-title fw-semibold">
-                                        Información del Curso
-                                    </h3>
-                                </div>
-                                <div class="card-body row g-3 mb-0">
-                                    <div class="d-flex flex-column gap-2">
-                                        <div class="row g-3">
-                                            <div class="col-12">
-                                                <div class="row g-2">
-                                                    <div class="col-12">
-                                                        <strong>Programa de
-                                                            {{ $curso->programa->tipoPrograma->nombre_tipo_programa }}
-                                                        </strong>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        {{ $curso->programa->nombre_programa }}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            @if ($curso->programa->mencion_programa)
-                                            <div class="col-12">
-                                                <div class="row g-2">
-                                                    <div class="col-12">
-                                                        <strong>Mención:</strong>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        {{ $curso->programa->mencion->nombre_mencion }}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            @endif
-
-                                            <div class="col-12">
-                                                <div class="row g-2">
-                                                    <div class="col-12">
-                                                        <strong>Código del Curso</strong>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        {{ $curso->codigo_curso }}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-12">
-                                                <div class="row g-2">
-                                                    <div class="col-12">
-                                                        <strong>Nombre del Curso</strong>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        {{ $curso->nombre_curso }} - GRUPO {{ $gestion_aula->grupo_gestion_aula }}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-4 d-flex justify-content-start">
-                                                <div class="row g-2">
-                                                    <div class="col-12 d-flex justify-content-center">
-                                                        <strong>Ciclo</strong>
-                                                    </div>
-                                                    <div class="col-12 d-flex justify-content-center">
-                                                        {{ numero_a_romano($curso->ciclo->numero_ciclo) }}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-4 d-flex justify-content-center">
-                                                <div class="row">
-                                                    <div class="col-12 d-flex justify-content-center">
-                                                        <strong>Créditos</strong>
-                                                    </div>
-                                                    <div class="col-12 d-flex justify-content-center">
-                                                        {{ $curso->creditos_curso }}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-4 d-flex justify-content-end">
-                                                <div class="row">
-                                                    <div class="col-12 d-flex justify-content-center">
-                                                        <strong>Horas</strong>
-                                                    </div>
-                                                    <div class="col-12 d-flex justify-content-center">
-                                                        {{ $curso->horas_lectivas_curso }}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-12">
-                                                <div class="row g-2">
-                                                    <div class="col-12">
-                                                        <strong>Plan de Estudio</strong>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        {{ $curso->planEstudio->nombre_plan_estudio }}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <hr class="mt-5 mb-2 hide-theme-dark">
-                                            <hr class="mt-5 mb-2 hide-theme-light text-white">
-
-                                            <div class="col-12">
-                                                <label for="silabus" class="form-label required">
-                                                    Subir Sílabus
-                                                </label>
-                                                <input type="file"
-                                                    class="form-control @error('silabus') is-invalid @enderror"
-                                                    id="silabus" wire:model.live="silabus" accept=".pdf" />
-                                                @error('silabus')
-                                                <div class="invalid-feedback">
-                                                    {{ $message }}
-                                                </div>
-                                                @enderror
-                                                <small class="form-hint">
-                                                    Solo se permiten archivos en formato PDF.
-                                                </small>
-                                                <small class="form-hint">
-                                                    Máximo 4MB.
-                                                </small>
-                                            </div>
-                                            <div class="col-12">
-                                                <a class="btn btn-primary w-100 mt-3" style="cursor: pointer;"
-                                                    wire:click="guardar_silabus">
-                                                    <div wire:loading.remove>
-                                                        <span>Guardar Sílabus</span>
-                                                    </div>
-                                                    <div wire:loading>
-                                                        <div class="spinner-border spinner-border-sm" role="status">
+                                @else
+                                    <div class="card card-stacked animate__animated animate__fadeIn  ">
+                                        <div class="card-header {{ $tipo_vista === 'cursos' ? 'bg-teal-lt' : 'bg-orange-lt' }}">
+                                            <h3 class="card-title fw-semibold">
+                                                Información del Curso
+                                            </h3>
+                                        </div>
+                                        <div class="card-body row g-3 mb-0">
+                                            <div class="d-flex flex-column gap-2">
+                                                <form autocomplete="off" wire:submit="guardar_silabus" novalidate>
+                                                    <div class="row g-3">
+                                                        <div class="col-12">
+                                                            <div class="row g-2">
+                                                                <div class="col-12">
+                                                                    <strong>Programa de
+                                                                        {{ $curso->programa->tipoPrograma->nombre_tipo_programa }}
+                                                                    </strong>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    {{ $curso->programa->nombre_programa }}
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </a>
-                                            </div>
 
+                                                        @if ($curso->programa->mencion_programa)
+                                                        <div class="col-12">
+                                                            <div class="row g-2">
+                                                                <div class="col-12">
+                                                                    <strong>Mención:</strong>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    {{ $curso->programa->mencion->nombre_mencion }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        @endif
+
+                                                        <div class="col-12">
+                                                            <div class="row g-2">
+                                                                <div class="col-12">
+                                                                    <strong>Código del Curso</strong>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    {{ $curso->codigo_curso }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12">
+                                                            <div class="row g-2">
+                                                                <div class="col-12">
+                                                                    <strong>Nombre del Curso</strong>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    {{ $curso->nombre_curso }} - GRUPO {{ $gestion_aula->grupo_gestion_aula }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-4 d-flex justify-content-start">
+                                                            <div class="row g-2">
+                                                                <div class="col-12 d-flex justify-content-center">
+                                                                    <strong>Ciclo</strong>
+                                                                </div>
+                                                                <div class="col-12 d-flex justify-content-center">
+                                                                    {{ numero_a_romano($curso->ciclo->numero_ciclo) }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-4 d-flex justify-content-center">
+                                                            <div class="row">
+                                                                <div class="col-12 d-flex justify-content-center">
+                                                                    <strong>Créditos</strong>
+                                                                </div>
+                                                                <div class="col-12 d-flex justify-content-center">
+                                                                    {{ $curso->creditos_curso }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-4 d-flex justify-content-end">
+                                                            <div class="row">
+                                                                <div class="col-12 d-flex justify-content-center">
+                                                                    <strong>Horas</strong>
+                                                                </div>
+                                                                <div class="col-12 d-flex justify-content-center">
+                                                                    {{ $curso->horas_lectivas_curso }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12">
+                                                            <div class="row g-2">
+                                                                <div class="col-12">
+                                                                    <strong>Plan de Estudio</strong>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    {{ $curso->planEstudio->nombre_plan_estudio }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <hr class="mt-5 mb-2 hide-theme-dark">
+                                                        <hr class="mt-5 mb-2 hide-theme-light text-white">
+
+                                                        <div class="col-12">
+                                                            <label for="silabus" class="form-label required">
+                                                                Subir Sílabus
+                                                            </label>
+                                                            <input type="file"
+                                                                class="form-control @error('silabus') is-invalid @enderror"
+                                                                id="silabus" wire:model.live="silabus" accept=".pdf" />
+                                                            @error('silabus')
+                                                            <div class="invalid-feedback">
+                                                                {{ $message }}
+                                                            </div>
+                                                            @enderror
+                                                            <small class="form-hint">
+                                                                Solo se permiten archivos en formato PDF.
+                                                            </small>
+                                                            <small class="form-hint">
+                                                                Máximo 4MB.
+                                                            </small>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <button type="submit" class="btn btn-primary w-100 mt-3"
+                                                                wire:loading.attr="disabled" wire:target="guardar_silabus, silabus">
+                                                                <span wire:loading.remove wire:target="guardar_silabus, silabus">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-device-floppy">
+                                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                        <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
+                                                                        <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                                                                        <path d="M14 4l0 4l-6 0l0 -4" />
+                                                                    </svg>
+                                                                    Guardar Sílabus
+                                                                </span>
+                                                                <span wire:loading wire:target="silabus">
+                                                                    <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                                                                    Cargando Sílabus
+                                                                </span>
+                                                                <span wire:loading wire:target="guardar_silabus">
+                                                                    <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                                                                    Guardando Sílabus
+                                                                </span>
+                                                            </button>
+                                                        </div>
+
+                                                    </div>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                @endif
                             </div>
-                            @endif
-                        </div>
                         @endif
 
                     </div>

@@ -51,10 +51,10 @@ class Index extends Component
         $carpetas = obtener_ruta_base($this->id_gestion_aula);
 
         $archivo = $this->silabus;
-        $nombre_silabus = $this->silabus_pdf->archivo_silabus ?? null;
+        $nombre_silabus_antiguo = $this->silabus_pdf->archivo_silabus ?? null;
         array_push($carpetas, 'silabus');
         $extencion_archivo = 'pdf';
-        $nombre_bd = subir_archivo($archivo, $nombre_silabus, $carpetas, $extencion_archivo);
+        $nombre_bd = subir_archivo($archivo, $nombre_silabus_antiguo, $carpetas, $extencion_archivo);
 
         return $nombre_bd;
     }
@@ -86,7 +86,7 @@ class Index extends Component
 
             DB::commit();
 
-            $this->silabus_pdf = $gestion_aula->silabus;
+            $this->mostrar_silabus();
             $this->reset('silabus');
 
             $this->dispatch(
