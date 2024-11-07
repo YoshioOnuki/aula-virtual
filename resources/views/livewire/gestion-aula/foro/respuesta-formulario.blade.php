@@ -67,11 +67,10 @@
                                     </div>
 
                                     <div class="card-footer d-flex justify-content-between">
-
                                         <div class="ms-auto">
-                                            <button class="btn btn-primary w-100" type="submit" wire:loading.attr="disabled"
-                                                wire:target="guardar_respuesta">
-                                                <span wire:loading.remove wire:target="guardar_respuesta">
+                                            <button type="submit" class="btn btn-primary w-100 mt-3"
+                                                wire:loading.attr="disabled" wire:target="guardar_respuesta, descripcion_foro_respuesta">
+                                                <span wire:loading.remove wire:target="guardar_respuesta, descripcion_foro_respuesta">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                                                         class="icon icon-tabler icons-tabler-outline icon-tabler-message-plus">
@@ -82,15 +81,18 @@
                                                         <path d="M16 19h6" />
                                                         <path d="M19 16v6" />
                                                     </svg>
-                                                    Registrar
+                                                    Registrar Respuesta
+                                                </span>
+                                                <span wire:loading wire:target="descripcion_foro_respuesta">
+                                                    <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                                                    Cargando Contenido
                                                 </span>
                                                 <span wire:loading wire:target="guardar_respuesta">
                                                     <div class="spinner-border spinner-border-sm me-2" role="status"></div>
-                                                    Cargando
+                                                    Guardando Respuesta
                                                 </span>
                                             </button>
                                         </div>
-
                                     </div>
                                 </form>
 
