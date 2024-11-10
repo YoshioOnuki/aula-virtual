@@ -4,6 +4,7 @@ namespace App\Livewire\GestionAula\TrabajoAcademico;
 
 use App\Models\GestionAula;
 use App\Models\GestionAulaAlumno;
+use App\Models\GestionAulaDocente;
 use App\Models\TrabajoAcademico;
 use App\Models\TrabajoAcademicoAlumno;
 use App\Traits\UsuarioTrait;
@@ -26,6 +27,7 @@ class EntregaAcademica extends Component
     public $trabajo_academico_alumno;
     public $gestion_aula_alumno;
     public $id_gestion_aula_alumno;
+    public $id_gestion_aula_docente;
 
     public $modo_admin = false; // Modo admin, para saber si se esta en modo administrador
     public $es_docente_invitado = false;
@@ -180,6 +182,11 @@ class EntregaAcademica extends Component
             'estadoTrabajoAcademico',
             'comentarioTrabajoAcademico'
         ])->find($id_trabajo_academico_alumno[0]);
+
+        $this->id_gestion_aula_docente = GestionAulaDocente::where('id_usuario', $this->usuario->id_usuario)
+            ->gestionAula($this->id_gestion_aula)
+            ->first()
+            ->id_gestion_aula_docente;
 
         $this->gestion_aula_alumno = GestionAulaAlumno::with([
             'usuario'
