@@ -18,7 +18,7 @@
 
                 <div class="col-lg-10 col-md-12 col-sm-12">
                     @if($modo_admin)
-                    <livewire:components.curso.admin-info-usuario :usuario=$usuario :tipo_vista=$tipo_vista lazy />
+                        <livewire:components.curso.admin-info-usuario :usuario=$usuario :tipo_vista=$tipo_vista lazy />
                     @endif
 
                     <div class="row g-3">
@@ -26,39 +26,39 @@
                             <div class="card card-md card-stacked animate__animated animate__fadeIn  ">
                                 <div class="card-stamp card-stamp-lg">
                                     @if ($tipo_vista === 'cursos')
-                                    <div class="card-stamp-icon bg-teal">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-list-details">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M13 5h8" />
-                                            <path d="M13 9h5" />
-                                            <path d="M13 15h8" />
-                                            <path d="M13 19h5" />
-                                            <path
-                                                d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
-                                            <path
-                                                d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
-                                        </svg>
-                                    </div>
+                                        <div class="card-stamp-icon bg-teal">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round"
+                                                class="icon icon-tabler icons-tabler-outline icon-tabler-list-details">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M13 5h8" />
+                                                <path d="M13 9h5" />
+                                                <path d="M13 15h8" />
+                                                <path d="M13 19h5" />
+                                                <path
+                                                    d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+                                                <path
+                                                    d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+                                            </svg>
+                                        </div>
                                     @elseif($tipo_vista === 'carga-academica')
-                                    <div class="card-stamp-icon bg-orange">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-list-details">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M13 5h8" />
-                                            <path d="M13 9h5" />
-                                            <path d="M13 15h8" />
-                                            <path d="M13 19h5" />
-                                            <path
-                                                d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
-                                            <path
-                                                d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
-                                        </svg>
-                                    </div>
+                                        <div class="card-stamp-icon bg-orange">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round"
+                                                class="icon icon-tabler icons-tabler-outline icon-tabler-list-details">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M13 5h8" />
+                                                <path d="M13 9h5" />
+                                                <path d="M13 15h8" />
+                                                <path d="M13 19h5" />
+                                                <path
+                                                    d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+                                                <path
+                                                    d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+                                            </svg>
+                                        </div>
                                     @endif
                                 </div>
                                 <div class="card-body">
@@ -112,7 +112,7 @@
                                             <div class="row g-3">
                                                 @foreach ($trabajo_academico->archivoDocente as $archivo)
                                                     @if (file_exists($archivo->archivo_docente))
-                                                        <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                                        <div class="col-12 col-md-6 col-lg-6 col-xl-6" wire:key="archivo-{{ $archivo->id_archivo_docente }}">
                                                             <button class="card p-3 card-link card-link-pop w-100"
                                                                 wire:click="descargar_archivo({{ $archivo->id_archivo_docente }})">
                                                                 <div class="d-flex align-items-center">
@@ -122,7 +122,7 @@
                                                                         <h5 class="mb-0">
                                                                             {{ Str::limit($archivo->nombre_archivo_docente, 25) }}
                                                                         </h5>
-                                                                        <small class="text-muted d-block mt-1 fw-light">
+                                                                        <small class="text-muted d-block mt-1 fw-light d-flex align-items-start">
                                                                             {{ formato_tamano_archivo(filesize($archivo->archivo_docente)) }}
                                                                         </small>
                                                                     </div>
@@ -130,7 +130,7 @@
                                                             </button>
                                                         </div>
                                                     @else
-                                                        <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                                        <div class="col-12 col-md-6 col-lg-6 col-xl-6" wire:key="archivo-{{ $archivo->id_archivo_docente }}">
                                                             <div class="card p-3 background-gray">
                                                                 <div class="d-flex align-items-center">
                                                                     <img src="/media/icons/icon-archivo-generico2.webp"
@@ -156,22 +156,22 @@
                                         @if($entrega_trabajo === false)
                                             <div class="card-footer d-flex justify-content-end align-items-center mt-4">
                                                 <a class="btn btn-primary
-                                                            {{ verificar_fecha_trabajo($trabajo_academico->fecha_inicio_trabajo_academico, $trabajo_academico->fecha_fin_trabajo_academico) ? '' : 'disabled' }}"
-                                                    wire:click="abrir_modal_entrega_trabajo()" data-bs-toggle="modal"
+                                                    {{ verificar_fecha_trabajo($trabajo_academico->fecha_inicio_trabajo_academico, $trabajo_academico->fecha_fin_trabajo_academico) ? '' : 'disabled' }}"
+                                                    wire:click="abrir_modal_entrega_trabajo" data-bs-toggle="modal"
                                                     data-bs-target="#modal-entrega">
                                                     Agregar entrega
                                                 </a>
                                             </div>
                                         @else
-                                            <div class="card-footer d-flex justify-content-end align-items-center mt-4 bg-white">
+                                            <div
+                                                class="card-footer d-flex justify-content-end align-items-center mt-4 bg-white">
                                                 {{-- <button class="btn btn-primary" wire:click="abrir_modal_entrega_trabajo"
                                                     data-bs-toggle="modal" data-bs-target="#modal-entrega">
                                                     Editar entrega
                                                 </button> --}}
 
-                                                <span class="status 
-                                                    status-{{ color_estado_trabajo_academico($trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico ?? 'No entregado') }}
-                                                    px-3 py-2 h-100">
+                                                <span class="status px-3 py-2 h-100
+                                                    status-{{ color_estado_trabajo_academico($trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico ?? 'No entregado') }}">
                                                     {{ $trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico ?? 'No entregado' }}
                                                 </span>
 
@@ -184,8 +184,7 @@
 
                         <div class="col-lg-4">
                             <livewire:components.trabajo-academico.card-estado-trabajo :id_usuario_hash=$id_usuario_hash
-                                :tipo_vista=$tipo_vista :id_curso=$id_gestion_aula
-                                :trabajo_academico=$trabajo_academico
+                                :tipo_vista=$tipo_vista :id_curso=$id_gestion_aula :trabajo_academico=$trabajo_academico
                                 :lista_alumnos=true lazy />
                         </div>
 
@@ -211,7 +210,7 @@
                     <div class="modal-body">
                         <div class="row g-3">
                             <div class="col-lg-12">
-                                <label for="descripcion_recurso" class="form-label">
+                                <label for="descripcion_trabajo_academico_alumno" class="form-label">
                                     Descripción del trabajo académico
                                 </label>
                                 <div wire:ignore>
@@ -239,14 +238,12 @@
                                 </div>
                                 @enderror
                             </div>
-
-
-                            
                         </div>
                     </div>
 
                     <div class="modal-footer">
-                        <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="limpiar_modal">
+                        <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal"
+                            wire:click="limpiar_modal">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-ban">
@@ -258,41 +255,96 @@
                         </a>
 
                         <div class="ms-auto">
-                            <button class="btn btn-primary" type="submit" wire:loading.attr="disabled"
-                                wire:target="guardar_entrega_trabajo">
-                                <span wire:loading.remove wire:target="guardar_entrega_trabajo">
+                            <button type="submit" class="btn btn-primary w-100" wire:loading.attr="disabled"
+                                wire:target="guardar_entrega_trabajo, archivos_trabajo_alumno, descripcion_trabajo_academico_alumno">
+                                <span wire:loading.remove
+                                    wire:target="guardar_entrega_trabajo, archivos_trabajo_alumno, descripcion_trabajo_academico_alumno">
                                     @if ($modo === 1)
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M12 5l0 14" />
-                                        <path d="M5 12l14 0" />
-                                    </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M12 5l0 14" />
+                                            <path d="M5 12l14 0" />
+                                        </svg>
                                     @else
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                        <path
-                                            d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                        <path d="M16 5l3 3" />
-                                    </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                            <path
+                                                d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                            <path d="M16 5l3 3" />
+                                        </svg>
                                     @endif
                                     {{ $accion_modal }}
                                 </span>
+                                <span wire:loading
+                                    wire:target="archivos_trabajo_alumno, descripcion_trabajo_academico_alumno">
+                                    <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                                    Cargando Contenido
+                                </span>
                                 <span wire:loading wire:target="guardar_entrega_trabajo">
                                     <div class="spinner-border spinner-border-sm me-2" role="status"></div>
-                                    Cargando
+                                    Guardando Trabajo
                                 </span>
                             </button>
                         </div>
 
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal para mostrar comentarios --}}
+    <div wire:ignore.self class="modal fade" id="modal-comentarios" tabindex="-1" data-bs-backdrop="static">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        Comentarios de la entrega
+                    </h5>
+                    <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3">
+                        @forelse($comentarios as $comentario)
+                            <div class="col-lg-12" wire:key="comentario-{{ $comentario->id_comentario_trabajo_academico }}">
+                                <div class="hr-text hr-text-center">
+                                    <span>
+                                        {{ $comentario->gestionAulaDocente->usuario->nombre_completo }} -
+                                        <small class="text-muted">
+                                            {{ format_fecha_completa($comentario->created_at) }}
+                                        </small>
+                                    </span>
+                                </div>
+                                {!! $comentario->descripcion_comentario_trabajo_academico !!}
+                            </div>
+                        @empty
+                            <div class="alert alert-info">
+                                No se encontraron comentarios
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-ban">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                            <path d="M5.7 5.7l12.6 12.6" />
+                        </svg>
+                        Cerrar
+                    </button>
+                </div>
             </div>
         </div>
     </div>

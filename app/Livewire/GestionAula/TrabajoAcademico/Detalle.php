@@ -42,6 +42,7 @@ class Detalle extends Component
     public $archivos_trabajo_alumno = [];
     public $nombre_archivo_trabajo_academico = [];
     public $iteration = 1;
+    public $comentarios;
 
     public $modo_admin = false; // Modo admin, para saber si se esta en modo administrador
     public $es_docente_invitado = false;
@@ -51,6 +52,26 @@ class Detalle extends Component
     public $titulo_page_header = 'Trabajo académico';
     public $links_page_header = [];
     public $regresar_page_header;
+
+    protected $listeners = ['abrir-modal-comentarios' => 'abrir_modal_comentarios'];
+
+
+    /**
+     * Abrir modal de comentarios
+     */
+    public function abrir_modal_comentarios()
+    {
+        // $this->comentarios = $this->trabajo_academico_alumno->comentariosTrabajoAcademico;
+        if (count($this->comentarios) <= 0) {
+            $this->dispatch(
+                'toast-basico',
+                mensaje: 'No se han encontrado comentarios para esta entrega de trabajo académico',
+                type: 'info'
+            );
+        } else {
+            $this->comentarios = $this->comentarios;
+        }
+    }
 
 
     /**
@@ -402,6 +423,22 @@ class Detalle extends Component
 
         $id_trabajo_academico = Hashids::decode($id_trabajo_academico);
         $this->trabajo_academico = TrabajoAcademico::with('archivoDocente')->find($id_trabajo_academico[0]);
+
+        if ($this->tipo_vista === 'cursos')
+        {
+            $id_gestion_aula_alumno = GestionAulaAlumno::where('id_usuario', $this->usuario->id_usuario)
+                ->gestionAula($this->id_gestion_aula)
+                ->first()->id_gestion_aula_alumno ?? null;
+            $id_trabajo_academico = $this->trabajo_academico->id_trabajo_academico;
+            $this->comentarios = TrabajoAcademicoAlumno::with([
+                'comentarioTrabajoAcademico' => function ($query) {
+                    $query->with('gestionAulaDocente.usuario');
+                }
+            ])
+                ->where('id_gestion_aula_alumno', $id_gestion_aula_alumno)
+                ->where('id_trabajo_academico', $id_trabajo_academico)
+                ->first()->comentarioTrabajoAcademico ?? [];
+        }
 
         $this->obtener_datos_page_header();
         $this->verificar_entrega_trabajo();
