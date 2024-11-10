@@ -65,7 +65,7 @@ class Index extends Component
      */
     public function abrir_modal_recurso_editar(Recurso $recurso)
     {
-        $this->limpiar_modal();
+        // $this->limpiar_modal();
 
         $this->modo = 0;
         $this->titulo_modal = 'Editar Recurso';
@@ -83,7 +83,7 @@ class Index extends Component
      */
     public function abrir_modal_recurso_agregar()
     {
-        $this->limpiar_modal();
+        // $this->limpiar_modal();
 
         $this->modo = 1;
         $this->titulo_modal = 'Agregar Recurso';
