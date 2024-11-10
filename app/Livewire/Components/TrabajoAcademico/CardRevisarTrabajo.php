@@ -5,6 +5,7 @@ namespace App\Livewire\Components\TrabajoAcademico;
 use App\Models\ComentarioTrabajoAcademico;
 use App\Models\EstadoTrabajoAcademico;
 use App\Models\GestionAulaAlumno;
+use App\Models\GestionAulaDocente;
 use App\Models\TrabajoAcademicoAlumno;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Validate;
@@ -16,7 +17,7 @@ class CardRevisarTrabajo extends Component
     public $tipo_vista;
     public $usuario;
     public $id_usuario_hash;
-    public $id_gestion_aula_alumno;
+    public $id_gestion_aula_docente;
     public $trabajo_academico_alumno;
     public $validar_entrega = false;
     public $editar_entrega = false;
@@ -56,7 +57,7 @@ class CardRevisarTrabajo extends Component
                 $comentario_trabajo_academico = new ComentarioTrabajoAcademico();
                 $comentario_trabajo_academico->descripcion_comentario_trabajo_academico = $this->descripcion_comentario_trabajo_academico;
                 $comentario_trabajo_academico->id_trabajo_academico_alumno = $this->trabajo_academico_alumno->id_trabajo_academico_alumno;
-                $comentario_trabajo_academico->id_gestion_aula_alumno = $this->id_gestion_aula_alumno;
+                $comentario_trabajo_academico->id_gestion_aula_docente = $this->id_gestion_aula_docente;
                 $comentario_trabajo_academico->save();
             }
 
@@ -80,7 +81,7 @@ class CardRevisarTrabajo extends Component
             $this->dispatch('actualizar_estado_entrega');
         } catch (\Exception $e) {
             DB::rollBack();
-
+            dd($e);
             $this->dispatch(
                 'toast-basico',
                 mensaje: 'Ha ocurrido un error al revisar el trabajo académico.',
@@ -163,16 +164,16 @@ class CardRevisarTrabajo extends Component
     }
 
 
-    public function mount($tipo_vista, $usuario, $id_gestion_aula_alumno, $trabajo_academico_alumno)
+    public function mount($tipo_vista, $usuario, $id_gestion_aula_docente, $trabajo_academico_alumno)
     {
         $this->tipo_vista = $tipo_vista;
         $this->usuario = $usuario;
-        $this->id_gestion_aula_alumno = $id_gestion_aula_alumno;
+        $this->id_gestion_aula_docente = $id_gestion_aula_docente;
         $this->id_usuario_hash = Hashids::encode($usuario->id_usuario);
 
         $this->trabajo_academico_alumno = $trabajo_academico_alumno;
 
-        $id_gestion_aula = GestionAulaAlumno::find($id_gestion_aula_alumno)->id_gestion_aula;
+        $id_gestion_aula = GestionAulaDocente::find($id_gestion_aula_docente)->id_gestion_aula;
         $this->es_docente_invitado = $usuario->esDocenteInvitado($id_gestion_aula) && $tipo_vista === 'carga-academica' ? true : false;
 
         $this->cargar_datos();

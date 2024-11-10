@@ -89,7 +89,6 @@
                     ['font', ['bold', 'underline', 'clear']],
                     ['color', ['color']],
                     ['para', ['ul', 'ol']],
-                    ['insert', ['link', 'picture']],
                 ],
                 callbacks: {
                     // Evitar cualquier tipo de archivo de imagen (png, jpg, jpeg, gif, etc.)
