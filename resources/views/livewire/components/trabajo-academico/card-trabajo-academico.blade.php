@@ -1,5 +1,5 @@
 <div>
-    <div class="col-lg-12 mb-3 animate__animated animate__zoomIn animate__faster">
+    <div class="col-lg-12 animate__animated animate__zoomIn animate__faster">
         <a class="card d-block card-trabajo-academico"
             href="{{ $tipo_vista === 'cursos' ?
             route('cursos.detalle.trabajo-academico.detalle', [
