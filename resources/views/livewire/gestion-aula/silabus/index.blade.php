@@ -18,7 +18,7 @@
 
                 <div class="col-lg-10 col-md-12 col-sm-12">
                     @if($modo_admin)
-                    <livewire:components.curso.admin-info-usuario :usuario=$usuario :tipo_vista=$tipo_vista lazy />
+                        <livewire:components.curso.admin-info-usuario :usuario=$usuario :tipo_vista=$tipo_vista lazy />
                     @endif
 
                     <div class="row g-3">
@@ -59,11 +59,11 @@
                                                         </h4>
                                                         <div class="text-yellow">
                                                             @if ($es_docente)
-                                                            Por favor, sube el sílabus del curso para que los alumnos puedan
-                                                            acceder a él.
+                                                                Por favor, sube el sílabus del curso para que los alumnos puedan
+                                                                acceder a él.
                                                             @else
-                                                            Por favor, verifica más tarde o contacta con el docente asignado
-                                                            para más información.
+                                                                Por favor, verifica más tarde o contacta con el docente asignado
+                                                                para más información.
                                                             @endif
                                                         </div>
                                                     </div>
@@ -217,16 +217,16 @@
                                                         </div>
 
                                                         @if ($curso->programa->mencion_programa)
-                                                        <div class="col-12">
-                                                            <div class="row g-2">
-                                                                <div class="col-12">
-                                                                    <strong>Mención:</strong>
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    {{ $curso->programa->mencion->nombre_mencion }}
+                                                            <div class="col-12">
+                                                                <div class="row g-2">
+                                                                    <div class="col-12">
+                                                                        <strong>Mención:</strong>
+                                                                    </div>
+                                                                    <div class="col-12">
+                                                                        {{ $curso->programa->mencion->nombre_mencion }}
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
                                                         @endif
 
                                                         <div class="col-12">
@@ -306,9 +306,9 @@
                                                                 class="form-control @error('silabus') is-invalid @enderror"
                                                                 id="silabus" wire:model.live="silabus" accept=".pdf" />
                                                             @error('silabus')
-                                                            <div class="invalid-feedback">
-                                                                {{ $message }}
-                                                            </div>
+                                                                <div class="invalid-feedback">
+                                                                    {{ $message }}
+                                                                </div>
                                                             @enderror
                                                             <small class="form-hint">
                                                                 Solo se permiten archivos en formato PDF.
@@ -318,25 +318,32 @@
                                                             </small>
                                                         </div>
                                                         <div class="col-12">
-                                                            <button type="submit" class="btn btn-primary w-100 mt-3"
-                                                                wire:loading.attr="disabled" wire:target="guardar_silabus, silabus">
-                                                                <span wire:loading.remove wire:target="guardar_silabus, silabus">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                            <button type="submit" class="btn btn-primary w-100"
+                                                                wire:loading.attr="disabled"
+                                                                wire:target="guardar_silabus, silabus">
+                                                                <span wire:loading.remove
+                                                                    wire:target="guardar_silabus, silabus">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                        height="24" viewBox="0 0 24 24" fill="none"
+                                                                        stroke="currentColor" stroke-width="2"
+                                                                        stroke-linecap="round" stroke-linejoin="round"
                                                                         class="icon icon-tabler icons-tabler-outline icon-tabler-device-floppy">
                                                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                        <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
+                                                                        <path
+                                                                            d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
                                                                         <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
                                                                         <path d="M14 4l0 4l-6 0l0 -4" />
                                                                     </svg>
                                                                     Guardar Sílabus
                                                                 </span>
                                                                 <span wire:loading wire:target="silabus">
-                                                                    <div class="spinner-border spinner-border-sm me-2" role="status"></div>
-                                                                    Cargando Sílabus
+                                                                    <div class="spinner-border spinner-border-sm me-2"
+                                                                        role="status"></div>
+                                                                    Cargando Archivo
                                                                 </span>
                                                                 <span wire:loading wire:target="guardar_silabus">
-                                                                    <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                                                                    <div class="spinner-border spinner-border-sm me-2"
+                                                                        role="status"></div>
                                                                     Guardando Sílabus
                                                                 </span>
                                                             </button>
