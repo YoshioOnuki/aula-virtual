@@ -34,16 +34,18 @@ class Index extends Component
     public $nombre_trabajo_academico;
     #[Validate('nullable')]
     public $descripcion_trabajo_academico;
-    #[Validate('required|before_or_equal:fecha_fin_trabajo_academico|date')]
+    #[Validate('required')]
     public $fecha_inicio_trabajo_academico;
-    #[Validate('required|after_or_equal:fecha_inicio_trabajo_academico|date')]
+    #[Validate('required')]
     public $fecha_fin_trabajo_academico;
-    #[Validate('required|date_format:H:i|before_or_equal:hora_fin_trabajo_academico')]
+    #[Validate('required')]
     public $hora_inicio_trabajo_academico;
-    #[Validate('required|date_format:H:i|after_or_equal:hora_inicio_trabajo_academico')]
+    #[Validate('required')]
     public $hora_fin_trabajo_academico;
     #[Validate(['archivos_trabajo_academico.*' => 'nullable|file|mimes:pdf,xls,xlsx,doc,docx,ppt,pptx,txt,jpg,jpeg,png|max:4096'])]
     public $archivos_trabajo_academico = [];
+    public $archivos_docente;
+    public $archivos_eliminar_docente = [];
     public $nombre_archivo_trabajo_academico = [];
     public $iteration = 1;
 
@@ -90,6 +92,49 @@ class Index extends Component
         $this->fecha_fin_trabajo_academico = date('Y-m-d', strtotime($this->editar_trabajo_academico->fecha_fin_trabajo_academico));
         $this->hora_inicio_trabajo_academico = date('H:i', strtotime($this->editar_trabajo_academico->fecha_inicio_trabajo_academico));
         $this->hora_fin_trabajo_academico = date('H:i', strtotime($this->editar_trabajo_academico->fecha_fin_trabajo_academico));
+
+        $this->cargar_archivos_docente($id_trabajo_academico);
+    }
+
+
+    /**
+     * Cargar archivos a eliminar del trabajo académico
+     */
+    public function cargar_archivo_eliminar_docente($id_archivo_docente)
+    {
+        $this->archivos_eliminar_docente[$id_archivo_docente] = !$this->archivos_eliminar_docente[$id_archivo_docente];
+    }
+
+
+    /**
+     * Cargar archivos existentes del trabajo académico
+     */
+    public function cargar_archivos_docente($id_trabajo_academico)
+    {
+        $this->archivos_docente = ArchivoDocente::where('id_trabajo_academico', $id_trabajo_academico)->get();
+        // Cargar archivos como false en archivos_eliminar_docente, para que no se eliminen
+        foreach ($this->archivos_docente as $archivo) {
+            $this->archivos_eliminar_docente[$archivo->id_archivo_docente] = false;
+        }
+    }
+
+
+    /**
+     * Eliminar archivos que el docente ingresó en el trabajo académico
+     */
+    public function eliminar_archivos_docente()
+    {
+        $cargar = false;
+        foreach ($this->archivos_eliminar_docente as $id_archivo_docente => $eliminar) {
+            if ($eliminar) {
+                $archivo = ArchivoDocente::find($id_archivo_docente);
+                eliminar_archivo($archivo->archivo_docente);
+                $archivo->delete();
+                if (!$cargar) {
+                    $cargar = true;
+                }
+            }
+        }
     }
 
 
@@ -184,6 +229,8 @@ class Index extends Component
                 $trabajo_academico->fecha_fin_trabajo_academico = $this->fecha_fin_trabajo_academico . ' ' . $this->hora_fin_trabajo_academico;
                 $trabajo_academico->save();
 
+                $this->eliminar_archivos_docente();
+
                 // Guardar el archivos
                 if (count($this->archivos_trabajo_academico) > 0) {
                     foreach ($nombres_bd as $nombre_bd) {
@@ -203,19 +250,11 @@ class Index extends Component
             // Evento para actualizar la lista de trabajos académicos
             $this->dispatch('actualizar-trabajos-academicos');
 
-            if (count($this->archivos_trabajo_academico) <= 0) {
-                $this->dispatch(
-                    'toast-basico',
-                    mensaje: 'El trabajo académico se ha guardado correctamente, pero no se ha subido ningún archivo',
-                    type: 'info'
-                );
-            } else {
-                $this->dispatch(
-                    'toast-basico',
-                    mensaje: 'El trabajo académico se ha guardado correctamente',
-                    type: 'success'
-                );
-            }
+            $this->dispatch(
+                'toast-basico',
+                mensaje: 'El trabajo académico se ha guardado correctamente',
+                type: 'success'
+            );
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -261,7 +300,10 @@ class Index extends Component
             'fecha_fin_trabajo_academico',
             'hora_inicio_trabajo_academico',
             'hora_fin_trabajo_academico',
-            'archivos_trabajo_academico'
+            'archivos_trabajo_academico',
+            'archivos_docente',
+            'archivos_eliminar_docente',
+            'nombre_archivo_trabajo_academico',
         ]);
         $this->iteration++;
 

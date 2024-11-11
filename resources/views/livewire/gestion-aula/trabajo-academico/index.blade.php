@@ -103,17 +103,17 @@
 
                                         @forelse($trabajos_academicos as $item)
                                             <livewire:components.trabajo-academico.card-trabajo-academico
-                                                :tipo_vista=$tipo_vista :usuario=$usuario
-                                                :id_curso=$id_gestion_aula :trabajo_academico=$item
+                                                :tipo_vista=$tipo_vista :usuario=$usuario :id_curso=$id_gestion_aula
+                                                :trabajo_academico=$item
                                                 wire:key="card-trabajo-academico-{{ $item->id_trabajo_academico }}" lazy />
                                         @empty
-                                        <div class="col-lg-12">
-                                            <div class="d-flex justify-content-center align-items-center">
-                                                <div class="text-muted">
-                                                    No hay trabajos académicos registrados
+                                            <div class="col-lg-12">
+                                                <div class="d-flex justify-content-center align-items-center">
+                                                    <div class="text-muted">
+                                                        No hay trabajos académicos registrados
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
                                         @endforelse
                                     </div>
                                 </div>
@@ -226,9 +226,9 @@
                             <div class="col-lg-12">
                                 <label for="archivos_trabajo_academico" class="form-label">
                                     @if ($modo === 1)
-                                    Archivos del trabajo académico
+                                        Archivos del trabajo académico
                                     @else
-                                    Agregar archivos al trabajo académico
+                                        Agregar archivos al trabajo académico
                                     @endif
                                 </label>
                                 <input type="file" class="form-control @error('archivos_trabajo_academico') is-invalid @enderror
@@ -237,16 +237,164 @@
                                     wire:model.live="archivos_trabajo_academico" id="upload{{ $iteration }}"
                                     accept=".pdf,.xls,.xlsx,.doc,.docx,.ppt,.pptx,.txt,.jpg,.jpeg,.png" multiple>
                                 @error('archivos_trabajo_academico.*')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
                                 @enderror
                             </div>
+
+                            @if ($modo === 0)
+                                <div class="hr-text hr-text-center mt-6">
+                                    <span>
+                                        Archivos adjuntos
+                                    </span>
+                                </div>
+
+                                <div class="row g-3 mt-0">
+                                    @forelse ($archivos_docente ?? [] as $archivo)
+                                        @if (file_exists($archivo->archivo_docente))
+                                            <div class="col-12 col-md-6 col-lg-6 col-xl-6"
+                                                wire:key="archivo-docente-{{ $archivo->id_archivo_docente }}">
+                                                <div class="card p-3 w-100">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <div class="d-flex align-items-center">
+                                                            <img src="{{ !$archivos_eliminar_docente[$archivo->id_archivo_docente] ? obtener_icono_archivo($archivo->archivo_docente) : '/media/icons/icon-archivo-eliminado.webp' }}"
+                                                                alt="icono-recurso" class="me-2" width="40">
+                                                            <div>
+                                                                <h5 class="mb-0">
+                                                                    {{ Str::limit($archivo->nombre_archivo_docente, 25) }}
+                                                                </h5>
+                                                                <small
+                                                                    class="text-muted d-block mt-1 fw-light d-flex align-items-start">
+                                                                    {{ formato_tamano_archivo(filesize($archivo->archivo_docente)) }}
+                                                                </small>
+                                                            </div>
+                                                        </div>
+                                                        <button
+                                                            class="btn btn-outline-{{ !$archivos_eliminar_docente[$archivo->id_archivo_docente] ? 'danger' : 'vk' }} p-1"
+                                                            wire:click.prevent="cargar_archivo_eliminar_docente({{ $archivo->id_archivo_docente }})"
+                                                            wire:loading.attr="disabled"
+                                                            wire:target="cargar_archivo_eliminar_docente"
+                                                        >
+                                                            <span wire:loading.remove
+                                                                wire:target="cargar_archivo_eliminar_docente( {{ $archivo->id_archivo_docente }} )">
+                                                                @if (!$archivos_eliminar_docente[$archivo->id_archivo_docente])
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
+                                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                        <path d="M4 7l16 0" />
+                                                                        <path d="M10 11l0 6" />
+                                                                        <path d="M14 11l0 6" />
+                                                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                                                    </svg>
+                                                                @else
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-trash-off m-0">
+                                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                        <path d="M3 3l18 18" />
+                                                                        <path d="M4 7h3m4 0h9" />
+                                                                        <path d="M10 11l0 6" />
+                                                                        <path d="M14 14l0 3" />
+                                                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l.077 -.923" />
+                                                                        <path d="M18.384 14.373l.616 -7.373" />
+                                                                        <path d="M9 5v-1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                                                    </svg>
+                                                                @endif
+                                                            </span>
+                                                            <span wire:loading
+                                                                wire:target="cargar_archivo_eliminar_docente( {{ $archivo->id_archivo_docente }} )">
+                                                                <div class="spinner-border spinner-border-sm" role="status"></div>
+                                                            </span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @else
+                                            <div class="col-12 col-md-6 col-lg-6 col-xl-6"
+                                                wire:key="archivo-docente-{{ $archivo->id_archivo_docente }}">
+                                                <div class="card p-3 background-gray">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <div class="d-flex align-items-center">
+                                                            <img src="{{ !$archivos_eliminar_docente[$archivo->id_archivo_docente] ? '/media/icons/icon-archivo-generico2.webp' : '/media/icons/icon-archivo-eliminado.webp' }}"
+                                                                alt="icono-recurso" class="me-2" width="40">
+                                                            <div>
+                                                                <h5 class="mb-0 text-danger">
+                                                                    {{ Str::limit("Archivo no disponible", 25) }}
+                                                                </h5>
+                                                                <small
+                                                                    class="text-muted d-block mt-1 fw-light d-flex align-items-start">
+                                                                    No disponible
+                                                                </small>
+                                                            </div>
+                                                        </div>
+                                                        <button
+                                                            class="btn btn-outline-{{ !$archivos_eliminar_docente[$archivo->id_archivo_docente] ? 'danger' : 'vk' }} p-1"
+                                                            wire:click.prevent="cargar_archivo_eliminar_docente({{ $archivo->id_archivo_docente }})"
+                                                            wire:loading.attr="disabled"
+                                                            wire:target="cargar_archivo_eliminar_docente"
+                                                        >
+                                                            <span wire:loading.remove
+                                                                wire:target="cargar_archivo_eliminar_docente( {{ $archivo->id_archivo_docente }} )">
+                                                                @if (!$archivos_eliminar_docente[$archivo->id_archivo_docente])
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-trash m-0">
+                                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                        <path d="M4 7l16 0" />
+                                                                        <path d="M10 11l0 6" />
+                                                                        <path d="M14 11l0 6" />
+                                                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                                                    </svg>
+                                                                @else
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-trash-off m-0">
+                                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                        <path d="M3 3l18 18" />
+                                                                        <path d="M4 7h3m4 0h9" />
+                                                                        <path d="M10 11l0 6" />
+                                                                        <path d="M14 14l0 3" />
+                                                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l.077 -.923" />
+                                                                        <path d="M18.384 14.373l.616 -7.373" />
+                                                                        <path d="M9 5v-1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                                                    </svg>
+                                                                @endif
+                                                            </span>
+                                                            <span wire:loading
+                                                                wire:target="cargar_archivo_eliminar_docente( {{ $archivo->id_archivo_docente }} )">
+                                                                <div class="spinner-border spinner-border-sm" role="status"></div>
+                                                            </span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @empty
+                                        <div class="col-12">
+                                            <div class="d-flex justify-content-center align-items-center">
+                                                <div class="text-muted
+                                                            {{ $modo === 1 ? 'text-danger' : '' }}">
+                                                    No hay archivos adjuntos
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforelse
+                                </div>
+                            @endif
                         </div>
                     </div>
 
                     <div class="modal-footer">
-                        <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="limpiar_modal">
+                        <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal"
+                            wire:click="limpiar_modal">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-ban">
@@ -258,38 +406,41 @@
                         </a>
 
                         <div class="ms-auto">
-                            <div wire:loading.remove>
-                                <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn btn-primary w-100" wire:loading.attr="disabled"
+                                wire:target="guardar_trabajo, archivos_trabajo_academico">
+                                <span wire:loading.remove wire:target="guardar_trabajo, archivos_trabajo_academico">
                                     @if ($modo === 1)
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M12 5l0 14" />
-                                        <path d="M5 12l14 0" />
-                                    </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M12 5l0 14" />
+                                            <path d="M5 12l14 0" />
+                                        </svg>
                                     @else
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                        <path
-                                            d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                        <path d="M16 5l3 3" />
-                                    </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                            <path
+                                                d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                            <path d="M16 5l3 3" />
+                                        </svg>
                                     @endif
                                     {{ $accion_modal }}
-                                </button>
-                            </div>
-                            <div wire:loading>
-                                <button type="submit" class="btn btn-primary" disabled>
+                                </span>
+                                <span wire:loading wire:target="archivos_trabajo_academico">
                                     <div class="spinner-border spinner-border-sm me-2" role="status"></div>
-                                    Cargando
-                                </button>
-                            </div>
+                                    Cargando Archivos
+                                </span>
+                                <span wire:loading wire:target="guardar_trabajo">
+                                    <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                                    Guardando Trabajo
+                                </span>
+                            </button>
                         </div>
 
                     </div>
