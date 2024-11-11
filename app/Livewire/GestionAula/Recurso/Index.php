@@ -37,7 +37,7 @@ class Index extends Component
 
     // Variables para el modal de Recursos
     public $modo = 1; // Modo 1 = Agregar / 0 = Editar
-    public $titulo_modal = 'Estado de Usuario';
+    public $titulo_modal = 'Agregar Recurso';
     public $accion_estado = 'Agregar';
     #[Validate('required')]
     public $nombre_recurso;
@@ -191,7 +191,7 @@ class Index extends Component
     public function limpiar_modal()
     {
         $this->modo = 1;
-        $this->titulo_modal = 'Estado de Usuario';
+        $this->titulo_modal = 'Agregar Recurso';
         $this->accion_estado = 'Agregar';
         $this->nombre_recurso = '';
         $this->editar_recurso = null;

@@ -259,22 +259,22 @@
 
                                 <div class="card-footer {{ $webgrafias->hasPages() ? 'py-0' : '' }}">
                                     @if ($webgrafias->hasPages())
-                                    <div class="d-flex justify-content-between">
-                                        <div class="d-flex align-items-center text-secondary">
-                                            Mostrando {{ $webgrafias->firstItem() }} - {{ $webgrafias->lastItem() }} de
-                                            {{ $webgrafias->total() }} registros
+                                        <div class="d-flex justify-content-between">
+                                            <div class="d-flex align-items-center text-secondary">
+                                                Mostrando {{ $webgrafias->firstItem() }} - {{ $webgrafias->lastItem() }} de
+                                                {{ $webgrafias->total() }} registros
+                                            </div>
+                                            <div class="mt-3">
+                                                {{ $webgrafias->links() }}
+                                            </div>
                                         </div>
-                                        <div class="mt-3">
-                                            {{ $webgrafias->links() }}
-                                        </div>
-                                    </div>
                                     @else
-                                    <div class="d-flex justify-content-between">
-                                        <div class="d-flex align-items-center text-secondary">
-                                            Mostrando {{ $webgrafias->firstItem() }} - {{ $webgrafias->lastItem() }} de
-                                            {{ $webgrafias->total() }} registros
+                                        <div class="d-flex justify-content-between">
+                                            <div class="d-flex align-items-center text-secondary">
+                                                Mostrando {{ $webgrafias->firstItem() }} - {{ $webgrafias->lastItem() }} de
+                                                {{ $webgrafias->total() }} registros
+                                            </div>
                                         </div>
-                                    </div>
                                     @endif
                                 </div>
 
@@ -310,9 +310,9 @@
                                     id="descripcion_webgrafia" wire:model.live="descripcion_webgrafia"
                                     placeholder="Ingrese la descripción" />
                                 @error('descripcion_webgrafia')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
                                 @enderror
                             </div>
                             <div class="col-lg-12">
@@ -324,9 +324,9 @@
                                     id="link_webgrafia" wire:model.live="link_webgrafia"
                                     placeholder="Ingrese el link" />
                                 @error('link_webgrafia')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
                                 @enderror
                             </div>
                         </div>
@@ -348,25 +348,25 @@
                             <div wire:loading.remove>
                                 <button type="submit" class="btn btn-primary">
                                     @if ($modo === 1)
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M12 5l0 14" />
-                                        <path d="M5 12l14 0" />
-                                    </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M12 5l0 14" />
+                                            <path d="M5 12l14 0" />
+                                        </svg>
                                     @else
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                        <path
-                                            d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                        <path d="M16 5l3 3" />
-                                    </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                            <path
+                                                d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                            <path d="M16 5l3 3" />
+                                        </svg>
                                     @endif
                                     {{ $accion_estado }}
                                 </button>

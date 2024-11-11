@@ -93,7 +93,7 @@
                                         @if ($tipo_vista === 'carga-academica' && $es_docente)
                                             {{-- Agregar recurso --}}
                                             <div class="col-lg-12">
-                                                <a class="card cursor-pointer card-link card-link-pop" wire:click="abrir_modal_recurso_agregar()"
+                                                <a class="card cursor-pointer card-link card-link-pop" wire:click="abrir_modal_recurso_agregar"
                                                     data-bs-toggle="modal" data-bs-target="#modal-recursos">
                                                     <div class="card-body text-secondary">
                                                         <div class="row g-2">
@@ -186,47 +186,55 @@
 
 
     <div wire:ignore.self class="modal fade" id="modal-recursos" tabindex="-1" data-bs-backdrop="static">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
+        <div class="modal-dialog modal-lg"
+            role="document">
+            <div class="modal-content {{ $estado_carga_modal ? 'cursor-progress' : '' }}"> 
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        {{ $titulo_modal }}
+                        {{ !$estado_carga_modal ? $titulo_modal : '***' }}
                     </h5>
                     <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal"
                         aria-label="Close" wire:click="limpiar_modal"></button>
                 </div>
                 <form autocomplete="off" wire:submit="guardar_recurso">
-                    <div class="modal-body">
-                        <div class="row g-3">
-                            <div class="col-lg-12">
-                                <label for="nombre_recurso" class="form-label required">
-                                    Nombre del Recurso
-                                </label>
-                                <input type="text" name="nombre_recurso"
-                                    class="form-control @error('nombre_recurso') is-invalid @elseif(strlen($nombre_recurso) > 0) is-valid @enderror"
-                                    id="nombre_recurso" wire:model.live="nombre_recurso"
-                                    placeholder="Ingrese su correo electrónico" />
-                                @error('nombre_recurso')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
+                    @if (!$estado_carga_modal)
+                        <div class="modal-body">
+                            <div class="row g-3">
+                                <div class="col-lg-12">
+                                    <label for="nombre_recurso" class="form-label required">
+                                        Nombre del Recurso
+                                    </label>
+                                    <input type="text" name="nombre_recurso"
+                                        class="form-control @error('nombre_recurso') is-invalid @elseif(strlen($nombre_recurso) > 0) is-valid @enderror"
+                                        id="nombre_recurso" wire:model.live="nombre_recurso"
+                                        placeholder="Ingrese su correo electrónico" />
+                                    @error('nombre_recurso')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
                                 </div>
-                                @enderror
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="archivo_recurso" class="form-label required">
-                                    Archivo
-                                </label>
-                                <input type="file" class="form-control @error('archivo_recurso') is-invalid @enderror"
-                                    id="archivo_recurso" wire:model.live="archivo_recurso"
-                                    accept=".pdf,.xls,.xlsx,.doc,.docx,.ppt,.pptx,.txt" />
-                                @error('archivo_recurso')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
+                                <div class="col-lg-12">
+                                    <label for="archivo_recurso" class="form-label required">
+                                        Archivo
+                                    </label>
+                                    <input type="file" class="form-control @error('archivo_recurso') is-invalid @elseif(strlen($archivo_recurso) > 0) is-valid @enderror"
+                                        id="archivo_recurso" wire:model.live="archivo_recurso"
+                                        accept=".pdf,.xls,.xlsx,.doc,.docx,.ppt,.pptx,.txt" />
+                                    @error('archivo_recurso')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
                                 </div>
-                                @enderror
                             </div>
                         </div>
-                    </div>
+                    @else
+                        <!-- Spinner de carga para que aparezca mientras se están cargando los datos -->
+                        <div class="my-5 d-flex justify-content-center align-items-center">
+                            <div class="spinner-border text-primary" role="status"></div>
+                        </div>
+                    @endif
 
                     <div class="modal-footer">
                         <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="limpiar_modal">
@@ -241,8 +249,9 @@
                         </a>
 
                         <div class="ms-auto">
-                            <button type="submit" class="btn btn-primary w-100 mt-3"
-                                wire:loading.attr="disabled" wire:target="guardar_recurso, archivo_recurso">
+                            <button type="submit" class="btn btn-primary w-100"
+                                wire:loading.attr="disabled" wire:target="guardar_recurso, archivo_recurso"
+                                {{ $estado_carga_modal ? 'disabled cursor-progress' : '' }}>
                                 <span wire:loading.remove wire:target="guardar_recurso, archivo_recurso">
                                     @if ($modo === 1)
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
