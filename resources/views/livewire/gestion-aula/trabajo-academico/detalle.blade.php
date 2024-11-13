@@ -313,7 +313,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="row g-3">
-                        @forelse($comentarios as $comentario)
+                        @forelse($comentarios ?? [] as $comentario)
                             <div class="col-lg-12" wire:key="comentario-{{ $comentario->id_comentario_trabajo_academico }}">
                                 <div class="hr-text hr-text-center">
                                     <span>
