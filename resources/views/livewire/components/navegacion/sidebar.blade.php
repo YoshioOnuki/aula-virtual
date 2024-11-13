@@ -508,18 +508,28 @@
 
             </ul>
             <div class="mt-2 mb-4 mb-lg-0 w-full ps-3">
-                <button type="button" class="btn btn-outline-red w-100 mt-2 mb-lg-5" wire:click="logout">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-bar-to-left"
-                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                        fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                        <path d="M10 12l10 0"></path>
-                        <path d="M10 12l4 4"></path>
-                        <path d="M10 12l4 -4"></path>
-                        <path d="M4 4l0 16"></path>
-                    </svg>
-                    Cerrar sesión
-                </button>
+                <form autocomplete="off" wire:submit="logout">
+                    <button type="submit" class="btn btn-outline-red w-100 mt-2 mb-lg-5"
+                        wire:loading.attr="disabled" wire:target="logout">
+                        <span wire:loading.remove wire:target="logout">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-bar-to-left"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M10 12l10 0"></path>
+                                <path d="M10 12l4 4"></path>
+                                <path d="M10 12l4 -4"></path>
+                                <path d="M4 4l0 16"></path>
+                            </svg>
+                            Cerrar sesión
+                        </span>
+                        <span wire:loading wire:target="logout">
+                            <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                            Cerrando sesión
+                        </span>
+                    </button>
+                </form>
+
             </div>
         </div>
     </div>
