@@ -334,9 +334,9 @@ class Index extends Component
 
             if (verificar_hora_actual($this->hora_inicio_asistencia_a_enviar, $this->hora_fin_asistencia_a_enviar, $this->fecha_asistencia_a_enviar)) {
                 $asistencia_alumno = new AsistenciaAlumno();
-                $asistencia_alumno->id_asistencia = $this->id_asistencia_enviar;
                 $asistencia_alumno->id_estado_asistencia = $this->estado_asistencia;
-                $asistencia_alumno->id_gestion_aula = $this->id_gestion_aula;
+                $asistencia_alumno->id_asistencia = $this->id_asistencia_enviar;
+                $asistencia_alumno->id_gestion_aula_alumno = $this->id_gestion_aula_alumno;
                 $asistencia_alumno->save();
             } else {
                 $this->cerrar_modal('#modal-enviar-asistencia');
