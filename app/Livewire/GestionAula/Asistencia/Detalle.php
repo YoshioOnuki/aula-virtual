@@ -197,7 +197,7 @@ class Detalle extends Component
             );
         } catch (\Exception $e) {
             DB::rollBack();
-            dd($e);
+            // dd($e);
             $this->dispatch(
                 'toast-basico',
                 mensaje: 'Ha ocurrido un error al enviar la asistencia.' . $e->getMessage(),
