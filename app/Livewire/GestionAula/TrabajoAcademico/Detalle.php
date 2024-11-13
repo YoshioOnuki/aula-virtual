@@ -258,20 +258,11 @@ class Detalle extends Component
                 $this->dispatch('actualizar_estado_trabajo');
                 $this->verificar_entrega_trabajo();
 
-                if (count($this->archivos_trabajo_alumno) <= 0)
-                {
-                    $this->dispatch(
-                        'toast-basico',
-                        mensaje: 'La entrega del trabajo académico se ha guardado correctamente, pero no se ha subido ningún archivo',
-                        type: 'info'
-                    );
-                } else {
-                    $this->dispatch(
-                        'toast-basico',
-                        mensaje: 'La entrega del trabajo académico se ha guardado correctamente',
-                        type: 'success'
-                    );
-                }
+                $this->dispatch(
+                    'toast-basico',
+                    mensaje: 'La entrega del trabajo académico se ha guardado correctamente',
+                    type: 'success'
+                );
 
             }
         } catch (\Exception $e) {
