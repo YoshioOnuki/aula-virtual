@@ -234,6 +234,46 @@
                         @endif
 
                         <div class="row g-3">
+
+                            <div class="col-12">
+                                <div class="alert alert-azure bg-azure-lt mb-0 alert-dismissible animate__animated animate__fadeIn" role="alert">
+                                    <div class="d-flex">
+                                        <div>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24"
+                                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"></path>
+                                                <path d="M12 9h.01"></path>
+                                                <path d="M11 12h1v4h1"></path>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h4 class="alert-title">
+                                                Tipos de Asistencia:
+                                            </h4>
+                                            <div class="text-azure">
+                                                <ul class="mb-0">
+                                                    <li>
+                                                        <strong>
+                                                            Asistencia Autónoma:
+                                                        </strong>
+                                                        El alumno es responsable de registrar su propia asistencia de manera independiente.
+                                                    </li>
+                                                    <li>
+                                                        <strong>
+                                                            Asistencia Supervisada:
+                                                        </strong>
+                                                        En este caso, el docente es quien registra la asistencia del alumno, asegurando que el control de asistencia sea supervisado.
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="col-12">
                                 <div class="card animate__animated animate__fadeIn">
 
@@ -372,28 +412,44 @@
                                                         </td>
                                                         <td class="text-center">
                                                             @if ($item->asistenciaAlumno->isEmpty())
-                                                                <button type="button"
-                                                                    class="btn btn-outline-primary btn-sm
-                                                                        {{ verificar_hora_actual($item->hora_inicio_asistencia, $item->hora_fin_asistencia, $item->fecha_asistencia) ? '' : 'disabled' }}"
-                                                                    wire:click="abrir_modal_enviar_asistencia({{ $item->id_asistencia }})"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#modal-enviar-asistencia">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                        height="24" viewBox="0 0 24 24" fill="none"
-                                                                        stroke="currentColor" stroke-width="2"
-                                                                        stroke-linecap="round" stroke-linejoin="round"
-                                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-checks">
-                                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                        <path d="M7 12l5 5l10 -10" />
-                                                                        <path d="M2 12l5 5m5 -5l5 -5" />
-                                                                    </svg>
-                                                                    Enviar Asistencia
-                                                                </button>
+                                                                @if ($item->tipoAsistencia->nombre_tipo_asistencia === 'Asistencia Supervisada')
+                                                                    <span wire:key="{{ $alumno->id_asistencia_alumno }}"
+                                                                        class="status status-info px-3 py-2">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-eye">
+                                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                            <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                                                                            <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+                                                                        </svg>
+                                                                        Supervisada
+                                                                    </span>
+                                                                @else
+                                                                    <button type="button"
+                                                                        class="btn btn-outline-primary btn-sm"
+                                                                            @if (!verificar_hora_actual($item->hora_inicio_asistencia, $item->hora_fin_asistencia, $item->fecha_asistencia))
+                                                                                disabled
+                                                                            @endif
+                                                                        wire:click="abrir_modal_enviar_asistencia({{ $item->id_asistencia }})"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#modal-enviar-asistencia">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                            height="24" viewBox="0 0 24 24" fill="none"
+                                                                            stroke="currentColor" stroke-width="2"
+                                                                            stroke-linecap="round" stroke-linejoin="round"
+                                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-checks">
+                                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                            <path d="M7 12l5 5l10 -10" />
+                                                                            <path d="M2 12l5 5m5 -5l5 -5" />
+                                                                        </svg>
+                                                                        Enviar Asistencia
+                                                                    </button>
+                                                                @endif
                                                             @else
                                                                 @foreach ($item->asistenciaAlumno as $alumno)
                                                                     @if ($alumno->estadoAsistencia->nombre_estado_asistencia === 'Presente')
                                                                         <span wire:key="{{ $alumno->id_asistencia_alumno }}"
-                                                                            class="status status-teal px-1 py-1">
+                                                                            class="status status-teal p-1">
                                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                                 height="24" viewBox="0 0 24 24" fill="none"
                                                                                 stroke="currentColor" stroke-width="2"
@@ -414,7 +470,7 @@
                                                                         @break
                                                                     @elseif($alumno->estadoAsistencia->nombre_estado_asistencia === 'Tarde')
                                                                         <span wire:key="{{ $alumno->id_asistencia_alumno }}"
-                                                                            class="status status-yellow px-1 py-1">
+                                                                            class="status status-yellow p-1">
                                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                                 height="24" viewBox="0 0 24 24" fill="none"
                                                                                 stroke="currentColor" stroke-width="2"
@@ -436,7 +492,7 @@
                                                                         @break
                                                                     @elseif($alumno->estadoAsistencia->nombre_estado_asistencia === 'Ausente')
                                                                         <span wire:key="{{ $alumno->id_asistencia_alumno }}"
-                                                                            class="status status-red px-1 py-1">
+                                                                            class="status status-red p-1">
                                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                                 height="24" viewBox="0 0 24 24" fill="none"
                                                                                 stroke="currentColor" stroke-width="2"
@@ -458,7 +514,7 @@
                                                                         @break
                                                                     @elseif($alumno->estadoAsistencia->nombre_estado_asistencia === 'Justificado')
                                                                         <span wire:key="{{ $alumno->id_asistencia_alumno }}"
-                                                                            class="status status-azure px-1 py-1">
+                                                                            class="status status-azure p-1">
                                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                                 height="24" viewBox="0 0 24 24" fill="none"
                                                                                 stroke="currentColor" stroke-width="2"
