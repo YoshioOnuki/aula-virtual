@@ -57,6 +57,20 @@
             background-attachment: fixed;
         }
     </style>
+
+    <script>
+        window.addEventListener('load', () => {
+            const loadingScreen = document.querySelector('.loading-screen');
+            if (loadingScreen) {
+                loadingScreen.classList.add('hidden'); // Añadir clase `hidden` para transición (si tienes alguna animación)
+                setTimeout(() => {
+                    loadingScreen.remove(); // Eliminar completamente el elemento del DOM
+                }, 500); // Ajusta el tiempo si tienes animación en `.hidden`
+            }
+        });
+    </script>
+
+
     <!-- Tabler Core -->
     <script src="{{ asset('assets/dist/js/tabler.min.js?1684106062') }}" defer></script>
     <script src="{{ asset('assets/dist/js/demo.min.js?1684106062') }}" defer></script>
@@ -65,7 +79,6 @@
     <script src="{{ asset('assets/dist/libs/tom-select/dist/js/tom-select.base.min.js?1684106062') }}" defer></script>
     <script src="{{ asset('js/mobile-detect/mobile-detect.min.js') }}"></script>
 
-
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 
 </head>
@@ -73,6 +86,24 @@
 <body class="layout-fluid">
     <script src="{{ asset('assets/dist/js/demo-theme.min.js?1684106062') }}"></script>
 
+    @if (request()->routeIs('inicio') || request()->routeIs('dashboard'))
+        <div class="page page-center cursor-progress loading-screen">
+            <div class="container container-slim py-4 d-flex justify-content-center align-items-center">
+                <div class="text-center" style="width: 256px;">
+                    <div class="mb-3">
+                        <div class="navbar-brand navbar-brand-autodark">
+                            <img src="{{ asset('/media/logo-pg.webp') }}"
+                                height="150" alt="Logo Posgrado">
+                        </div>
+                    </div>
+                    <div class="text-muted mb-3">Preparando la aplicación</div>
+                    <div class="progress progress-sm">
+                        <div class="progress-bar progress-bar-indeterminate bg-teal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 
     <div class="page">
 
