@@ -25771,3 +25771,7 @@ img {
     opacity: 0;
     pointer-events: none;
 }
+
+#nprogress .bar {
+	background: #0ca678 !important;
+}
