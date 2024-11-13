@@ -197,6 +197,8 @@ class Index extends Component
         try {
             DB::beginTransaction();
 
+            $nombres_bd = [];
+
             if (!empty($this->archivos_trabajo_academico)) {
                 $nombres_bd = $this->subir_archivo_trabajo();
             }
@@ -247,6 +249,7 @@ class Index extends Component
 
             $this->cerrar_modal();
             $this->limpiar_modal();
+            $this->mostrar_trabajos();
             // Evento para actualizar la lista de trabajos académicos
             $this->dispatch('actualizar-trabajos-academicos');
 
@@ -262,7 +265,7 @@ class Index extends Component
             if (isset($nombres_bd)) {
                 $this->eliminar_archivo_trabajo($nombres_bd);
             }
-            // dd($e);
+            dd($e);
             $this->dispatch(
                 'toast-basico',
                 mensaje: 'Ha ocurrido un error al guardar el trabajo academico',
