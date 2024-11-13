@@ -140,9 +140,9 @@ if (!function_exists('verificar_hora_actual')) {
         $fecha = date('Y-m-d', strtotime($fecha));
 
         // Aumentarle un minuto a la hora de fin
-        $hora_fin = date('H:i:s', strtotime('+1 minute', strtotime($hora_fin)));
+        // $hora_fin = date('H:i:s', strtotime('+1 minute', strtotime($hora_fin)));
         if ($fecha_actual === $fecha) {
-            if ($hora_actual >= $hora_inicio && $hora_actual < $hora_fin) {
+            if ($hora_actual >= $hora_inicio && $hora_actual <= $hora_fin) {
                 return true;
             }
         }
