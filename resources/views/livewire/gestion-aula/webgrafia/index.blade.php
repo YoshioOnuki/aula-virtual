@@ -144,89 +144,89 @@
                                             $i = 1;
                                             @endphp
                                             @forelse ($webgrafias as $item)
-                                            <tr>
-                                                <td>
-                                                    <span class="text-secondary">{{ $i++ }}</span>
-                                                </td>
-                                                <td>
-                                                    {{ $item->descripcion_webgrafia }}
-                                                </td>
-                                                <td>
-                                                    {{ $item->link_webgrafia }}
-                                                </td>
-                                                <td>
-                                                    @if ($es_docente && $tipo_vista === 'carga-academica')
-                                                        <div class="btn-list flex-nowrap">
-                                                            <div class="dropdown">
-                                                                <button class="btn dropdown-toggle align-text-top"
-                                                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                                                    Acciones
-                                                                </button>
-                                                                <div class="dropdown-menu dropdown-menu-end">
-                                                                    <div x-data="{ link: '{{ $item->link_webgrafia }}' }">
-                                                                        <div x-data="{
-                                                                            link: '{{ $item->link_webgrafia ? $item->link_webgrafia : '' }}',
-                                                                            handleClick() {
-                                                                                if (!this.link) {
-                                                                                    this.$dispatch('toast-basico', {
-                                                                                        mensaje: 'El link de la webgrafía no está disponible',
-                                                                                        type: 'error'
-                                                                                    });
-                                                                                } else {
-                                                                                    window.open(this.link, '_blank');
+                                                <tr wire:key="{{ $item->id_webgrafia }}">
+                                                    <td>
+                                                        <span class="text-secondary">{{ $i++ }}</span>
+                                                    </td>
+                                                    <td>
+                                                        {{ $item->descripcion_webgrafia }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $item->link_webgrafia }}
+                                                    </td>
+                                                    <td>
+                                                        @if ($es_docente && $tipo_vista === 'carga-academica')
+                                                            <div class="btn-list flex-nowrap">
+                                                                <div class="dropdown">
+                                                                    <button class="btn dropdown-toggle align-text-top"
+                                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                                        Acciones
+                                                                    </button>
+                                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                                        <div x-data="{ link: '{{ $item->link_webgrafia }}' }">
+                                                                            <div x-data="{
+                                                                                link: '{{ $item->link_webgrafia ? $item->link_webgrafia : '' }}',
+                                                                                handleClick() {
+                                                                                    if (!this.link) {
+                                                                                        this.$dispatch('toast-basico', {
+                                                                                            mensaje: 'El link de la webgrafía no está disponible',
+                                                                                            type: 'error'
+                                                                                        });
+                                                                                    } else {
+                                                                                        window.open(this.link, '_blank');
+                                                                                    }
                                                                                 }
-                                                                            }
-                                                                        }">
+                                                                            }">
+                                                                            <a class="dropdown-item cursor-pointer"
+                                                                                @click="handleClick">
+                                                                                Ir al link
+                                                                            </a>
+                                                                        </div>
+
                                                                         <a class="dropdown-item cursor-pointer"
-                                                                            @click="handleClick">
-                                                                            Ir al link
+                                                                            wire:click="abrir_modal_webgrafia_editar({{ $item->id_webgrafia }})"
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-target="#modal-webgrafia">
+                                                                            Editar
                                                                         </a>
                                                                     </div>
-
-                                                                    <a class="dropdown-item cursor-pointer"
-                                                                        wire:click="abrir_modal_webgrafia_editar({{ $item->id_webgrafia }})"
-                                                                        data-bs-toggle="modal"
-                                                                        data-bs-target="#modal-webgrafia">
-                                                                        Editar
-                                                                    </a>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    @else
-                                                        <div x-data="{ link: '{{ $item->link_webgrafia }}' }">
-                                                            <div x-data="{
-                                                                link: '{{ $item->link_webgrafia ? $item->link_webgrafia : '' }}',
-                                                                handleClick() {
-                                                                    if (!this.link) {
-                                                                        this.$dispatch('toast-basico', {
-                                                                            mensaje: 'El link de la webgrafía no está disponible',
-                                                                            type: 'error'
-                                                                        });
-                                                                    } else {
-                                                                        window.open(this.link, '_blank');
+                                                        @else
+                                                            <div x-data="{ link: '{{ $item->link_webgrafia }}' }">
+                                                                <div x-data="{
+                                                                    link: '{{ $item->link_webgrafia ? $item->link_webgrafia : '' }}',
+                                                                    handleClick() {
+                                                                        if (!this.link) {
+                                                                            this.$dispatch('toast-basico', {
+                                                                                mensaje: 'El link de la webgrafía no está disponible',
+                                                                                type: 'error'
+                                                                            });
+                                                                        } else {
+                                                                            window.open(this.link, '_blank');
+                                                                        }
                                                                     }
-                                                                }
-                                                            }">
-                                                            <button type="button" class="btn btn-outline-primary"
-                                                                @click="handleClick">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                    height="24" viewBox="0 0 24 24" fill="none"
-                                                                    stroke="currentColor" stroke-width="2"
-                                                                    stroke-linecap="round" stroke-linejoin="round"
-                                                                    class="icon icon-tabler icons-tabler-outline icon-tabler-link">
-                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                    <path d="M9 15l6 -6" />
-                                                                    <path
-                                                                        d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464" />
-                                                                    <path
-                                                                        d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463" />
-                                                                </svg>
-                                                                Ir al link
-                                                            </button>
-                                                        </div>
-                                                    @endif
-                                                </td>
-                                            </tr>
+                                                                }">
+                                                                <button type="button" class="btn btn-outline-primary"
+                                                                    @click="handleClick">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                        height="24" viewBox="0 0 24 24" fill="none"
+                                                                        stroke="currentColor" stroke-width="2"
+                                                                        stroke-linecap="round" stroke-linejoin="round"
+                                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-link">
+                                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                        <path d="M9 15l6 -6" />
+                                                                        <path
+                                                                            d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464" />
+                                                                        <path
+                                                                            d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463" />
+                                                                    </svg>
+                                                                    Ir al link
+                                                                </button>
+                                                            </div>
+                                                        @endif
+                                                    </td>
+                                                </tr>
                                             @empty
                                                 @if ($webgrafias->count() == 0 && $search != '')
                                                     <tr>

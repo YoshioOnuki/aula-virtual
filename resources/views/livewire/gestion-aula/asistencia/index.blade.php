@@ -654,8 +654,9 @@
                                     id="tipo_asistencia" wire:model.live="tipo_asistencia">
                                     <option value="">Seleccione el tipo de asistencia</option>
                                     @foreach ($tipo_asistencias as $item)
-                                    <option value="{{ $item->id_tipo_asistencia }}">{{ $item->nombre_tipo_asistencia }}
-                                    </option>
+                                        <option value="{{ $item->id_tipo_asistencia }}" wire:key="{{ $item->id_tipo_asistencia }}">
+                                            {{ $item->nombre_tipo_asistencia }}
+                                        </option>
                                     @endforeach
                                 </select>
                                 @error('tipo_asistencia')
@@ -946,8 +947,9 @@
                                     id="estado_asistencia" wire:model.live="estado_asistencia">
                                     <option value="">Seleccione el tipo de asistencia</option>
                                     @foreach ($estados as $item)
-                                    <option value="{{ $item->id_estado_asistencia }}">{{ $item->nombre_estado_asistencia
-                                        }}</option>
+                                        <option value="{{ $item->id_estado_asistencia }}" wire:key="{{ $item->id_estado_asistencia }}">
+                                            {{ $item->nombre_estado_asistencia}}
+                                        </option>
                                     @endforeach
                                 </select>
                                 @error('estado_asistencia')

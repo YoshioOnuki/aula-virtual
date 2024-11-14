@@ -153,7 +153,7 @@
                                 </thead>
                                 <tbody>
                                     @forelse ($foros as $item)
-                                        <tr>
+                                        <tr wire:key="foro-{{ $item->id_foro }}">
                                             <td>
                                                 <a href="{{ $tipo_vista === 'carga-academica' ? 
                                                     route('carga-academica.detalle.foro.detalle', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash, 'id_foro' => Hashids::encode($item->id_foro)]) :

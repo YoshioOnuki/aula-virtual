@@ -100,23 +100,26 @@
                             <div
                                 class="d-flex flex-column align-items-cent justify-content-center gap-5 animate__animated animate__fadeInUpBig animate__faster">
                                 @forelse($autoridades_model as $item)
-                                <div class="form-selectgroup-label-content d-flex align-items-start">
-                                    <img src="{{ asset($item->mostrar_foto ?? '/media/avatar-none.webp') }}"
-                                        alt="avatar" class="avatar me-3 rounded avatar-static">
-                                    <div>
-                                        <div class="fs-3">{{ $item->nombre_autoridad }}</div>
-                                        <div class="text-muted fs-4">
-                                            {{ $item->cargo->nombre_cargo }}
-                                            {{ $item->facultad ? 'de la ' . $item->facultad->nombre_facultad : '' }}
+                                    <div
+                                        class="form-selectgroup-label-content d-flex align-items-start"
+                                        wire:key="autoridades-{{ $item->id_autoridad }}"
+                                    >
+                                        <img src="{{ asset($item->mostrar_foto ?? '/media/avatar-none.webp') }}"
+                                            alt="avatar" class="avatar me-3 rounded avatar-static">
+                                        <div>
+                                            <div class="fs-3">{{ $item->nombre_autoridad }}</div>
+                                            <div class="text-muted fs-4">
+                                                {{ $item->cargo->nombre_cargo }}
+                                                {{ $item->facultad ? 'de la ' . $item->facultad->nombre_facultad : '' }}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
                                 @empty
-                                <div class="form-selectgroup-label-content d-flex align-items-start">
-                                    <div class="fs-3 text-center">
-                                        No se encontraron Autoridades.
+                                    <div class="form-selectgroup-label-content d-flex align-items-start">
+                                        <div class="fs-3 text-center">
+                                            No se encontraron Autoridades.
+                                        </div>
                                     </div>
-                                </div>
                                 @endforelse
                             </div>
                         </div>

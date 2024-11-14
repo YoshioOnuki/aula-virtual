@@ -17,7 +17,7 @@
                 </div>
 
                 <div class="col-lg-10 col-md-12 col-sm-12">
-                    @if($modo_admin)
+                    @if ($modo_admin)
                         <livewire:components.curso.admin-info-usuario :usuario=$usuario :tipo_vista=$tipo_vista lazy />
                     @endif
 
@@ -28,8 +28,9 @@
                                 <div class="card-stamp card-stamp-lg">
                                     {{-- Icono de la tarjeta (Lado derecho de la esquina superior) --}}
                                     <div class="card-stamp-icon bg-orange">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round"
                                             class="icon icon-tabler icons-tabler-outline icon-tabler-school">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                             <path d="M22 9l-10 -4l-10 4l10 4l10 -4v6" />
@@ -78,95 +79,100 @@
                                         </thead>
                                         <tbody>
                                             @php
-                                            $i = 1;
+                                                $i = 1;
                                             @endphp
                                             @forelse ($alumnos as $item)
-                                            <tr
-                                                class="{{ !$item->usuario->gestionAulaAlumno[0]->estado_gestion_aula_alumno ? 'bg-red text-white fw-bold' : '' }}">
-                                                <td>
-                                                    <span
-                                                        class="{{ !$item->usuario->gestionAulaAlumno[0]->estado_gestion_aula_alumno ? 'text-white' : 'text-secondary' }}">
-                                                        {{ $i++ }}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    {{ $item->codigo_alumno_persona }}
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex py-1 align-items-center">
-                                                        <img src="{{ asset($item->usuario->mostrarFoto('azure')) }}"
-                                                            alt="avatar" class="avatar rounded avatar-static me-2">
-                                                        <div class="flex-fill">
-                                                            <div class="font-weight-medium">{{
-                                                                $item->nombre_completo
-                                                                }}
-                                                            </div>
+                                                <tr
+                                                    class="{{ !$item->usuario->gestionAulaAlumno[0]->estado_gestion_aula_alumno ? 'bg-red text-white fw-bold' : '' }}"
+                                                    wire:key="alumno-{{ $item->usuario->gestionAulaAlumno[0]->id_gestion_aula_alumno }}"
+                                                >
+                                                    <td>
+                                                        <span
+                                                            class="{{ !$item->usuario->gestionAulaAlumno[0]->estado_gestion_aula_alumno ? 'text-white' : 'text-secondary' }}">
+                                                            {{ $i++ }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        {{ $item->codigo_alumno_persona }}
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex py-1 align-items-center">
+                                                            <img src="{{ asset($item->usuario->mostrarFoto('azure')) }}"
+                                                                alt="avatar"
+                                                                class="avatar rounded avatar-static me-2">
+                                                            <div class="flex-fill">
+                                                                <div class="font-weight-medium">
+                                                                    {{ $item->nombre_completo }}
+                                                                </div>
 
-                                                            <div x-data="{ isCopied: false }"
-                                                                class="col-auto {{ !$item->usuario->gestionAulaAlumno[0]->estado_gestion_aula_alumno ? 'text-white' : 'text-secondary' }}">
-                                                                <a class="text-reset cursor-pointer copy-to-clipboard"
-                                                                    @click="navigator.clipboard.writeText('{{ $item->usuario->persona->documento_persona }}')
+                                                                <div x-data="{ isCopied: false }"
+                                                                    class="col-auto {{ !$item->usuario->gestionAulaAlumno[0]->estado_gestion_aula_alumno ? 'text-white' : 'text-secondary' }}">
+                                                                    <a class="text-reset cursor-pointer copy-to-clipboard"
+                                                                        @click="navigator.clipboard.writeText('{{ $item->usuario->persona->documento_persona }}')
                                                                         .then(() => {
                                                                             isCopied = true;
                                                                             setTimeout(() => isCopied = false, 1000);
                                                                         }).catch(err => console.error('Error al copiar al portapapeles: ', err))"
-                                                                    x-show="!isCopied">
-                                                                    {{ $item->documento_persona }}
-                                                                </a>
+                                                                        x-show="!isCopied">
+                                                                        {{ $item->documento_persona }}
+                                                                    </a>
 
-                                                                <span x-show="isCopied" class="text-primary">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                        height="24" viewBox="0 0 24 24" fill="none"
-                                                                        stroke="currentColor" stroke-width="2"
-                                                                        stroke-linecap="round" stroke-linejoin="round"
-                                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-copy-check">
-                                                                        <path stroke="none" d="M0 0h24v24H0z"
-                                                                            fill="none" />
-                                                                        <path stroke="none" d="M0 0h24v24H0z" />
-                                                                        <path
-                                                                            d="M7 9.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" />
-                                                                        <path
-                                                                            d="M4.012 16.737a2 2 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" />
-                                                                        <path d="M11 14l2 2l4 -4" />
-                                                                    </svg>
-                                                                    Copiado
-                                                                </span>
+                                                                    <span x-show="isCopied" class="text-primary">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="24" height="24"
+                                                                            viewBox="0 0 24 24" fill="none"
+                                                                            stroke="currentColor" stroke-width="2"
+                                                                            stroke-linecap="round"
+                                                                            stroke-linejoin="round"
+                                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-copy-check">
+                                                                            <path stroke="none" d="M0 0h24v24H0z"
+                                                                                fill="none" />
+                                                                            <path stroke="none" d="M0 0h24v24H0z" />
+                                                                            <path
+                                                                                d="M7 9.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" />
+                                                                            <path
+                                                                                d="M4.012 16.737a2 2 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" />
+                                                                            <path d="M11 14l2 2l4 -4" />
+                                                                        </svg>
+                                                                        Copiado
+                                                                    </span>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    {{ $item->usuario->correo_usuario }}
-                                                </td>
-                                                <td class="{{ !$item->usuario->auditoria->last() ? 'text-red' : '' }}">
-                                                    {{ $item->usuario->auditoria->last() === null ? 'Sin conexión' : ultima_conexion($item->usuario->auditoria->last()->fecha_auditoria) }}
-                                                </td>
-                                            </tr>
+                                                    </td>
+                                                    <td>
+                                                        {{ $item->usuario->correo_usuario }}
+                                                    </td>
+                                                    <td
+                                                        class="{{ !$item->usuario->auditoria->last() ? 'text-red' : '' }}">
+                                                        {{ $item->usuario->auditoria->last() === null ? 'Sin conexión' : ultima_conexion($item->usuario->auditoria->last()->fecha_auditoria) }}
+                                                    </td>
+                                                </tr>
                                             @empty
-                                            @if ($alumnos->count() == 0 && $search != '')
-                                            <tr>
-                                                <td colspan="5">
-                                                    <div class="text-center"
-                                                        style="padding-bottom: 2rem; padding-top: 2rem;">
-                                                        <span class="text-secondary">
-                                                            No se encontraron resultados para
-                                                            "<strong>{{ $search }}</strong>"
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            @else
-                                            <tr>
-                                                <td colspan="5">
-                                                    <div class="text-center"
-                                                        style="padding-bottom: 2rem; padding-top: 2rem;">
-                                                        <span class="text-secondary">
-                                                            No hay alumnos matriculados
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            @endif
+                                                @if ($alumnos->count() == 0 && $search != '')
+                                                    <tr>
+                                                        <td colspan="5">
+                                                            <div class="text-center"
+                                                                style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                                <span class="text-secondary">
+                                                                    No se encontraron resultados para
+                                                                    "<strong>{{ $search }}</strong>"
+                                                                </span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                @else
+                                                    <tr>
+                                                        <td colspan="5">
+                                                            <div class="text-center"
+                                                                style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                                <span class="text-secondary">
+                                                                    No hay alumnos matriculados
+                                                                </span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                @endif
                                             @endforelse
                                         </tbody>
                                     </table>
@@ -174,22 +180,22 @@
 
                                 <div class="card-footer {{ $alumnos->hasPages() ? 'py-0' : '' }}">
                                     @if ($alumnos->hasPages())
-                                    <div class="d-flex justify-content-between">
-                                        <div class="d-flex align-items-center text-secondary">
-                                            Mostrando {{ $alumnos->firstItem() }} - {{ $alumnos->lastItem() }} de
-                                            {{ $alumnos->total() }} registros
+                                        <div class="d-flex justify-content-between">
+                                            <div class="d-flex align-items-center text-secondary">
+                                                Mostrando {{ $alumnos->firstItem() }} - {{ $alumnos->lastItem() }} de
+                                                {{ $alumnos->total() }} registros
+                                            </div>
+                                            <div class="mt-3">
+                                                {{ $alumnos->links() }}
+                                            </div>
                                         </div>
-                                        <div class="mt-3">
-                                            {{ $alumnos->links() }}
-                                        </div>
-                                    </div>
                                     @else
-                                    <div class="d-flex justify-content-between">
-                                        <div class="d-flex align-items-center text-secondary">
-                                            Mostrando {{ $alumnos->firstItem() }} - {{ $alumnos->lastItem() }} de
-                                            {{ $alumnos->total() }} registros
+                                        <div class="d-flex justify-content-between">
+                                            <div class="d-flex align-items-center text-secondary">
+                                                Mostrando {{ $alumnos->firstItem() }} - {{ $alumnos->lastItem() }} de
+                                                {{ $alumnos->total() }} registros
+                                            </div>
                                         </div>
-                                    </div>
                                     @endif
                                 </div>
                             </div>

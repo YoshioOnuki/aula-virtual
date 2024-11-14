@@ -126,7 +126,7 @@
 
                                         @forelse ($recursos as $item)
                                             <livewire:components.recurso.card-recurso :tipo_vista=$tipo_vista :usuario=$usuario
-                                            :id_curso=$id_gestion_aula :recurso=$item wire:key="recurso-{{ $item->id_recurso }}" lazy />
+                                                :id_curso=$id_gestion_aula :recurso=$item wire:key="recurso-{{ $item->id_recurso }}" lazy />
                                         @empty
 
                                             @if ($recursos->count() == 0 && $search != '')
@@ -188,7 +188,7 @@
     <div wire:ignore.self class="modal fade" id="modal-recursos" tabindex="-1" data-bs-backdrop="static">
         <div class="modal-dialog modal-lg"
             role="document">
-            <div class="modal-content {{ $estado_carga_modal ? 'cursor-progress' : '' }}"> 
+            <div class="modal-content {{ $estado_carga_modal ? 'cursor-progress' : '' }}">
                 <div class="modal-header">
                     <h5 class="modal-title">
                         {{ !$estado_carga_modal ? $titulo_modal : '***' }}

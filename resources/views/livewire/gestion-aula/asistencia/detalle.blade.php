@@ -350,7 +350,9 @@
                                                 @endphp
                                                 @forelse ($alumnos as $item)
                                                     <tr
-                                                        class="{{ !$item->usuario->gestionAulaAlumno[0]->estado_gestion_aula_alumno ? 'bg-red text-white fw-bold' : '' }}">
+                                                        class="{{ !$item->usuario->gestionAulaAlumno->first()->estado_gestion_aula_alumno ? 'bg-red text-white fw-bold' : '' }}"
+                                                        wire:key="{{ $item->usuario->gestionAulaAlumno->first()->id_gestion_aula_alumno }}"
+                                                    >
                                                         <td>
                                                             <input class="form-check-input" type="checkbox"
                                                                 wire:model.live="check_alumno.{{ $item->usuario->gestionAulaAlumno[0]->id_gestion_aula_alumno }}"

@@ -64,25 +64,25 @@
                                         </thead>
                                         <tbody>
                                             @forelse ($entregas_academicas as $item)
-                                            <tr>
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>
-                                                    <div class="d-flex py-1 align-items-center">
-                                                        <div class="flex-fill">
-                                                            <div class="font-weight-medium">
-                                                                {{ $item->usuario->nombre_completo }}
-                                                            </div>
-                                                            <div x-data="{ isCopied: false }"
-                                                                class="col-auto text-secondary">
-                                                                <a class="text-reset cursor-pointer copy-to-clipboard"
-                                                                    @click="navigator.clipboard.writeText('{{ $item->usuario->persona->codigo_alumno_persona }}')
-                                                                            .then(() => {
-                                                                                isCopied = true;
-                                                                                setTimeout(() => isCopied = false, 1000);
-                                                                            }).catch(err => console.error('Error al copiar al portapapeles: ', err))"
-                                                                    x-show="!isCopied">
-                                                                    {{ $item->usuario->persona->codigo_alumno_persona }}
-                                                                </a>
+                                                <tr wire:key="{{ $item->id_gestion_aula_alumno }}">
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>
+                                                        <div class="d-flex py-1 align-items-center">
+                                                            <div class="flex-fill">
+                                                                <div class="font-weight-medium">
+                                                                    {{ $item->usuario->nombre_completo }}
+                                                                </div>
+                                                                <div x-data="{ isCopied: false }"
+                                                                    class="col-auto text-secondary">
+                                                                    <a class="text-reset cursor-pointer copy-to-clipboard"
+                                                                        @click="navigator.clipboard.writeText('{{ $item->usuario->persona->codigo_alumno_persona }}')
+                                                                                .then(() => {
+                                                                                    isCopied = true;
+                                                                                    setTimeout(() => isCopied = false, 1000);
+                                                                                }).catch(err => console.error('Error al copiar al portapapeles: ', err))"
+                                                                        x-show="!isCopied">
+                                                                        {{ $item->usuario->persona->codigo_alumno_persona }}
+                                                                    </a>
 
                                                                 <span x-show="isCopied" class="text-primary">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24"
