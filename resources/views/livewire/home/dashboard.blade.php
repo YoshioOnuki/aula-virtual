@@ -387,26 +387,26 @@
                                 </thead>
                                 <tbody>
                                     @for($i = 0; $i < 5; $i++)
-                                    <tr>
-                                        <td>
-                                            Aurelio Yoshio Onuki Navas
-                                        </td>
-                                        <td>
-                                            Actualizar
-                                        </td>
-                                        <td>
-                                            Webgrafia
-                                        </td>
-                                        <td>
-                                            Windows
-                                        </td>
-                                        <td>
-                                            {{ Str::limit('https://aula-virtual.test/gestion-aula/docente/Zew7KwPM/carga-academica/lMylOwk6/webgrafia', 40) }}
-                                        </td>
-                                        <td>
-                                            {{ format_fecha_horas(now()) }}
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <td>
+                                                Aurelio Yoshio Onuki Navas
+                                            </td>
+                                            <td>
+                                                Actualizar
+                                            </td>
+                                            <td>
+                                                Webgrafia
+                                            </td>
+                                            <td>
+                                                Windows
+                                            </td>
+                                            <td>
+                                                {{ Str::limit('https://aula-virtual.test/gestion-aula/docente/Zew7KwPM/carga-academica/lMylOwk6/webgrafia', 40) }}
+                                            </td>
+                                            <td>
+                                                {{ format_fecha_horas(now()) }}
+                                            </td>
+                                        </tr>
                                     @endfor
 
                                     {{-- @forelse ($webgrafias as $item)

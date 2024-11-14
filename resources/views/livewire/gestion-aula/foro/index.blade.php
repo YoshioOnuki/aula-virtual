@@ -143,8 +143,8 @@
                                 <thead>
                                     <tr>
                                         <th>Título del foro</th>
-                                        <th class="col-2">Creado por</th>
-                                        <th class="col-2">Última respuesta</th>
+                                        <th class="col-3">Creado por</th>
+                                        <th class="col-3">Última respuesta</th>
                                         <th class="col-1 text-center">Respuestas</th>
                                         @if($usuario->esDocente($id_gestion_aula))
                                             <th class="w-1 text-center"></th>
@@ -159,7 +159,11 @@
                                                     route('carga-academica.detalle.foro.detalle', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash, 'id_foro' => Hashids::encode($item->id_foro)]) :
                                                     route('cursos.detalle.foro.detalle', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash, 'id_foro' => Hashids::encode($item->id_foro)]) }}"
                                                     class="text-reset">
-                                                    {{ $item->titulo_foro }}
+                                                    @if($usuario->esDocente($id_gestion_aula))
+                                                        {{ Str::limit($item->titulo_foro, 50) }}
+                                                    @else
+                                                        {{ Str::limit($item->titulo_foro, 55) }}
+                                                    @endif
                                                 </a>
                                             </td>
                                             <td>
@@ -168,7 +172,7 @@
                                                         class="avatar me-2 rounded avatar-static">
                                                     <div class="flex-fill">
                                                         <div class="font-weight-medium">
-                                                            {{ Str::limit($item->gestionAulaDocente->usuario->nombre_completo, 20) }}
+                                                            {{ Str::limit($item->gestionAulaDocente->usuario->nombre_completo, 26) }}
                                                         </div>
                                                         <div class="text-secondary">
                                                             <a href="{{ $tipo_vista === 'carga-academica' ? 
@@ -193,7 +197,7 @@
                                                             class="avatar me-2 rounded avatar-static">
                                                         <div class="flex-fill">
                                                             <div class="font-weight-medium">
-                                                                {{ Str::limit($item->foroRespuesta->last()->gestionAulaAlumno->usuario->nombre_completo, 20) }}
+                                                                {{ Str::limit($item->foroRespuesta->last()->gestionAulaAlumno->usuario->nombre_completo, 26) }}
                                                             </div>
                                                             <div class="text-secondary">
                                                                 <a href="{{ $tipo_vista === 'carga-academica' ? 
