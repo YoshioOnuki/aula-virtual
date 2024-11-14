@@ -30,10 +30,9 @@ class Index extends Component
     public $id_gestion_aula;
 
     // Variables para el modal de Recursos
-    public $modo = 1; // Modo 1 = Agregar / 0 = Editar
-    public $titulo_modal = 'Agregar Webgrafía';
-    public $accion_estado = 'Agregar';
-    #[Validate('nullable')]
+    public $modo = 1; // Modo 1 = Registrar / 0 = Editar
+    public $titulo_modal = 'Registrar Webgrafía';
+    public $accion_estado = 'Registrar';
     public $descripcion_webgrafia;
     #[Validate('required|url')]
     public $link_webgrafia;

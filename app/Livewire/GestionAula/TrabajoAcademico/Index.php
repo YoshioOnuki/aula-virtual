@@ -26,9 +26,9 @@ class Index extends Component
     public $trabajos_academicos;
 
     // Variables para el modal de Trabajo Académico
-    public $modo = 1; // Modo 1 = Agregar / 0 = Editar
-    public $titulo_modal = 'Agregar Trabajo Académico';
-    public $accion_modal = 'Agregar';
+    public $modo = 1; // Modo 1 = Registrar / 0 = Editar
+    public $titulo_modal = 'Registrar Trabajo Académico';
+    public $accion_modal = 'Registrar';
     public $editar_trabajo_academico;
     #[Validate('required')]
     public $nombre_trabajo_academico;
@@ -64,14 +64,14 @@ class Index extends Component
 
 
     /**
-     * Abrir modal para agregar trabajo académico
+     * Abrir modal para Registrar trabajo académico
      */
-    public function abrir_modal_agregar_trabajo()
+    public function abrir_modal_registrar_trabajo()
     {
         $this->limpiar_modal();
         $this->modo = 1;
-        $this->titulo_modal = 'Agregar Trabajo Académico';
-        $this->accion_modal = 'Agregar';
+        $this->titulo_modal = 'Registrar Trabajo Académico';
+        $this->accion_modal = 'Registrar';
     }
 
 
@@ -203,7 +203,7 @@ class Index extends Component
                 $nombres_bd = $this->subir_archivo_trabajo();
             }
 
-            if ($this->modo === 1) // Modo agregar
+            if ($this->modo === 1) // Modo Registrar
             {
                 $trabajo_academico = new TrabajoAcademico();
                 $trabajo_academico->titulo_trabajo_academico = $this->nombre_trabajo_academico;
@@ -294,8 +294,8 @@ class Index extends Component
     public function limpiar_modal()
     {
         $this->modo = 1;
-        $this->titulo_modal = 'Agregar Trabajo Académico';
-        $this->accion_modal = 'Agregar';
+        $this->titulo_modal = 'Registrar Trabajo Académico';
+        $this->accion_modal = 'Registrar';
         $this->reset([
             'nombre_trabajo_academico',
             'descripcion_trabajo_academico',

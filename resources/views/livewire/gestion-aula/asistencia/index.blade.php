@@ -337,7 +337,7 @@
                                                 @if ($es_docente && $tipo_vista === 'carga-academica')
                                                     <div class="col-lg-5 col-3 d-flex justify-content-end">
                                                         <a class="btn btn-primary d-none d-md-inline-block"
-                                                            wire:click="abrir_modal_asistencias_agregar"
+                                                            wire:click="abrir_modal_asistencias_registrar"
                                                             data-bs-toggle="modal" data-bs-target="#modal-asistencia">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
                                                                 height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -350,7 +350,7 @@
                                                             Crear Asistencia
                                                         </a>
                                                         <a class="btn btn-primary d-md-none btn-icon"
-                                                            wire:click="abrir_modal_asistencias_agregar"
+                                                            wire:click="abrir_modal_asistencias_registrar"
                                                             data-bs-toggle="modal" data-bs-target="#modal-asistencia">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
                                                                 height="24" viewBox="0 0 24 24" stroke-width="2"

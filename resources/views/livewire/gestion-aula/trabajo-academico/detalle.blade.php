@@ -159,7 +159,7 @@
                                                     {{ verificar_fecha_trabajo($trabajo_academico->fecha_inicio_trabajo_academico, $trabajo_academico->fecha_fin_trabajo_academico) ? '' : 'disabled' }}"
                                                     wire:click="abrir_modal_entrega_trabajo" data-bs-toggle="modal"
                                                     data-bs-target="#modal-entrega">
-                                                    Agregar entrega
+                                                    Registrar entrega
                                                 </a>
                                             </div>
                                         @else

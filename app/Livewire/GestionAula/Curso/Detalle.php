@@ -30,16 +30,16 @@ class Detalle extends Component
     public $link_clase;
 
     // Variables para el modal de Link de Clase
-    public $modo_link_clase = 1; // Modo 1 = Agregar / 0 = Editar
-    public $titulo_link_clase = 'Agregar Link de Clase';
-    public $accion_estado_link_clase = 'Agregar';
+    public $modo_link_clase = 1; // Modo 1 = Registrar / 0 = Editar
+    public $titulo_link_clase = 'Registrar Link de Clase';
+    public $accion_estado_link_clase = 'Registrar';
     #[Validate('required|url')]
     public $nombre_link_clase;
 
     // Variables para el modal de Orientaciones
-    public $modo_orientaciones = 1; // Modo 1 = Agregar / 0 = Editar
-    public $titulo_orientaciones = 'Agregar Orientaciones';
-    public $accion_estado_orientaciones = 'Agregar';
+    public $modo_orientaciones = 1; // Modo 1 = Registrar / 0 = Editar
+    public $titulo_orientaciones = 'Registrar Orientaciones';
+    public $accion_estado_orientaciones = 'Registrar';
     #[Validate('required')]
     public $descripcion_orientaciones;
 
@@ -70,9 +70,9 @@ class Detalle extends Component
         $this->limpiar_modal();
 
         if (!$this->link_clase) {
-            $this->modo_link_clase = 1; // Agregar
-            $this->titulo_link_clase = 'Agregar Link de Clase';
-            $this->accion_estado_link_clase = 'Agregar';
+            $this->modo_link_clase = 1; // Registrar
+            $this->titulo_link_clase = 'Registrar Link de Clase';
+            $this->accion_estado_link_clase = 'Registrar';
         } else {
             $this->modo_link_clase = 0; // Editar
             $this->titulo_link_clase = 'Editar Link de Clase';
@@ -90,9 +90,9 @@ class Detalle extends Component
         $this->limpiar_modal();
 
         if (!$this->orientaciones_generales) {
-            $this->modo_orientaciones = 1; // Agregar
-            $this->titulo_orientaciones = 'Agregar Orientaciones';
-            $this->accion_estado_orientaciones = 'Agregar';
+            $this->modo_orientaciones = 1; // Registrar
+            $this->titulo_orientaciones = 'Registrar Orientaciones';
+            $this->accion_estado_orientaciones = 'Registrar';
         } else {
             $this->modo_orientaciones = 0; // Editar
             $this->titulo_orientaciones = 'Editar Orientaciones';
@@ -116,7 +116,7 @@ class Detalle extends Component
         try {
             DB::beginTransaction();
 
-            if ($this->modo_link_clase === 1) // Agregar
+            if ($this->modo_link_clase === 1) // Registrar
             {
                 $link_clase = new LinkClase();
                 $link_clase->nombre_link_clase = $this->nombre_link_clase;
@@ -206,7 +206,7 @@ class Detalle extends Component
                 // dd($deletedFiles);
             }
 
-            if ($this->modo_orientaciones === 1) // Agregar
+            if ($this->modo_orientaciones === 1) // Registrar
             {
                 $orientaciones = new Presentacion();
                 $orientaciones->descripcion_presentacion = $mensaje;
@@ -265,13 +265,13 @@ class Detalle extends Component
     {
         // Variables de link de clase
         $this->modo_link_clase = 1;
-        $this->titulo_link_clase = 'Agregar Link de Clase';
-        $this->accion_estado_link_clase = 'Agregar';
+        $this->titulo_link_clase = 'Registrar Link de Clase';
+        $this->accion_estado_link_clase = 'Registrar';
 
         // Variables de Orientaciones
         $this->modo_orientaciones = 1;
-        $this->titulo_orientaciones = 'Agregar Orientaciones';
-        $this->accion_estado_orientaciones = 'Agregar';
+        $this->titulo_orientaciones = 'Registrar Orientaciones';
+        $this->accion_estado_orientaciones = 'Registrar';
 
         $this->reset([
             'descripcion_orientaciones',

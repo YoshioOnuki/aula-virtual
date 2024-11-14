@@ -90,7 +90,7 @@ class ForoFormulario extends Component
                 // dd($deletedFiles);
             }
 
-            if ($this->modo === 1) // Modo agregar
+            if ($this->modo === 1) // Modo Registrar
             {
                 $id_gestion_aula_docente = GestionAulaDocente::where('id_usuario', $this->usuario->id_usuario)
                     ->gestionAula($this->id_gestion_aula)

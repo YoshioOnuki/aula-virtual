@@ -36,9 +36,9 @@ class Index extends Component
     public $cargando_datos_curso = true;
 
     // Variables para el modal de Recursos
-    public $modo = 1; // Modo 1 = Agregar / 0 = Editar
-    public $titulo_modal = 'Agregar Recurso';
-    public $accion_estado = 'Agregar';
+    public $modo = 1; // Modo 1 = Registrar / 0 = Editar
+    public $titulo_modal = 'Registrar Recurso';
+    public $accion_estado = 'Registrar';
     #[Validate('required')]
     public $nombre_recurso;
     #[Validate('required|file|mimes:pdf,xls,xlsx,doc,docx,ppt,pptx,txt|max:4096')]
@@ -79,15 +79,15 @@ class Index extends Component
 
 
     /**
-     * Abrir modal para agregar un recurso
+     * Abrir modal para registrar un recurso
      */
-    public function abrir_modal_recurso_agregar()
+    public function abrir_modal_recurso_registrar()
     {
         // $this->limpiar_modal();
 
         $this->modo = 1;
-        $this->titulo_modal = 'Agregar Recurso';
-        $this->accion_estado = 'Agregar';
+        $this->titulo_modal = 'Registrar Recurso';
+        $this->accion_estado = 'Registrar';
 
         $this->estado_carga_modal = false;
     }
@@ -191,8 +191,8 @@ class Index extends Component
     public function limpiar_modal()
     {
         $this->modo = 1;
-        $this->titulo_modal = 'Agregar Recurso';
-        $this->accion_estado = 'Agregar';
+        $this->titulo_modal = 'Registrar Recurso';
+        $this->accion_estado = 'Registrar';
         $this->nombre_recurso = '';
         $this->editar_recurso = null;
         $this->reset('archivo_recurso');

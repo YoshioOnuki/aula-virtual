@@ -65,11 +65,11 @@
                                 <div class="card-body">
                                     <div class="row row-cards d-flex justify-content-start">
 
-                                        {{-- Boton de agregar --}}
+                                        {{-- Boton de registrar --}}
                                         @if ($tipo_vista === 'carga-academica' && $es_docente)
                                             <div class="col-lg-12">
                                                 <a class="card card-link card-link-pop cursor-pointer"
-                                                    wire:click="abrir_modal_agregar_trabajo()" data-bs-toggle="modal"
+                                                    wire:click="abrir_modal_registrar_trabajo()" data-bs-toggle="modal"
                                                     data-bs-target="#modal-trabajo-academico">
                                                     <div class="card-body text-secondary">
                                                         <div class="row g-2">
@@ -92,7 +92,7 @@
                                                             <div
                                                                 class="col-12 d-flex justify-content-center align-items-center">
                                                                 <span class="text-muted fs-5">
-                                                                    Agregar trabajo académico
+                                                                    Registrar trabajo académico
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -228,7 +228,7 @@
                                     @if ($modo === 1)
                                         Archivos del trabajo académico
                                     @else
-                                        Agregar archivos al trabajo académico
+                                        Registrar archivos al trabajo académico
                                     @endif
                                 </label>
                                 <input type="file" class="form-control @error('archivos_trabajo_academico') is-invalid @enderror

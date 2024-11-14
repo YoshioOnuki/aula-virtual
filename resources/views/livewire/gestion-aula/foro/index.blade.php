@@ -97,7 +97,7 @@
                                                 Registrar
                                             </a>
                                             {{-- <a class="btn btn-primary d-none d-md-inline-block"
-                                                wire:click="abrir_modal_agregar_foro()" data-bs-toggle="modal"
+                                                wire:click="abrir_modal_registrar_foro()" data-bs-toggle="modal"
                                                 data-bs-target="#modal-foro">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
                                                     height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -121,7 +121,7 @@
                                                 </svg>
                                             </a>
                                             {{-- <a class="btn btn-primary d-md-none btn-icon"
-                                                wire:click="abrir_modal_agregar_foro()" data-bs-toggle="modal"
+                                                wire:click="abrir_modal_registrar_foro()" data-bs-toggle="modal"
                                                 data-bs-target="#modal-foro">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
                                                     height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -319,7 +319,7 @@
     </div>
 
 
-    {{-- Modal para agregar y editar foro <==> DE BAJA --}}
+    {{-- Modal para registrar y editar foro <==> DE BAJA --}}
     <div wire:ignore.self class="modal fade" id="modal-foro" tabindex="-1" data-bs-backdrop="static">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">

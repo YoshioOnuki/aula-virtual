@@ -33,9 +33,9 @@ class Detalle extends Component
     public $trabajo_academico_alumno;
 
     // Variables para el modal de Trabajo Académico
-    public $modo = 1; // Modo 1 = Agregar / 0 = Editar
-    public $titulo_modal = 'Agregar Entrega de Trabajo Académico';
-    public $accion_modal = 'Agregar';
+    public $modo = 1; // Modo 1 = Registrar / 0 = Editar
+    public $titulo_modal = 'Registrar Entrega de Trabajo Académico';
+    public $accion_modal = 'Registrar';
     #[Validate('nullable')]
     public $descripcion_trabajo_academico_alumno;
     #[Validate(['archivos_trabajo_alumno.*' => 'nullable|file|mimes:pdf,xls,xlsx,doc,docx,ppt,pptx,txt,jpg,jpeg,png,webp|max:4096'])]
@@ -75,15 +75,15 @@ class Detalle extends Component
 
 
     /**
-     * Abrir modal para agregar entrega de trabajo académico
+     * Abrir modal para registrar entrega de trabajo académico
      */
     public function abrir_modal_entrega_trabajo()
     {
         $this->limpiar_modal();
 
         $this->modo = 1;
-        $this->titulo_modal = 'Agregar Entrega de Trabajo Académico';
-        $this->accion_modal = 'Agregar';
+        $this->titulo_modal = 'Registrar Entrega de Trabajo Académico';
+        $this->accion_modal = 'Registrar';
     }
 
 
@@ -218,7 +218,7 @@ class Detalle extends Component
                 // Obtener el texto de la descripción del trabajo
                 $descripcion_trabajo = subir_archivo_editor($this->descripcion_trabajo_academico_alumno, 'archivos/posgrado/media/editor-texto/trabajos-academicos-alumnos/');
 
-                if ($this->modo === 1) // Modo agregar
+                if ($this->modo === 1) // Modo Registrar
                 {
                     // Obtener el estado del trabajo académico
                     $estado_trabajo = EstadoTrabajoAcademico::where('nombre_estado_trabajo_academico', 'Entregado')->first();
@@ -300,8 +300,8 @@ class Detalle extends Component
     public function limpiar_modal()
     {
         $this->modo = 1;
-        $this->titulo_modal = 'Agregar Entrega de Trabajo Académico';
-        $this->accion_modal = 'Agregar';
+        $this->titulo_modal = 'Registrar Entrega de Trabajo Académico';
+        $this->accion_modal = 'Registrar';
         $this->reset([
             'descripcion_trabajo_academico_alumno',
             'archivos_trabajo_alumno'

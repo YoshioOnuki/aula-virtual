@@ -99,7 +99,7 @@
                                             @if ($es_docente && $tipo_vista === 'carga-academica')
                                                 <div class="col-lg-5 col-3 d-flex justify-content-end">
                                                     <a class="btn btn-primary d-none d-md-inline-block"
-                                                        wire:click="abrir_modal_webgrafia_agregar()" data-bs-toggle="modal"
+                                                        wire:click="abrir_modal_webgrafia_registrar()" data-bs-toggle="modal"
                                                         data-bs-target="#modal-webgrafia">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
                                                             height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -112,7 +112,7 @@
                                                         Registrar
                                                     </a>
                                                     <a class="btn btn-primary d-md-none btn-icon"
-                                                        wire:click="abrir_modal_webgrafia_agregar()" data-bs-toggle="modal"
+                                                        wire:click="abrir_modal_webgrafia_registrar()" data-bs-toggle="modal"
                                                         data-bs-target="#modal-webgrafia">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
                                                             height="24" viewBox="0 0 24 24" stroke-width="2"

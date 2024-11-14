@@ -42,9 +42,9 @@ class Index extends Component
     public $es_docente_invitado = false;
 
     // Variables para el modal de Asistencias
-    public $modo_asistencias = 1; // Modo 1 = Agregar / 0 = Editar
-    public $titulo_asistencias = 'Agregar Link de Clase';
-    public $accion_asistencias = 'Agregar';
+    public $modo_asistencias = 1; // Modo 1 = Registrar / 0 = Editar
+    public $titulo_asistencias = 'Registrar Link de Clase';
+    public $accion_asistencias = 'Registrar';
     public $id_asistencia_editar;
     #[Validate('required')]
     public $tipo_asistencia;
@@ -99,15 +99,15 @@ class Index extends Component
 
 
     /**
-     * Abrir modal para agregar asistencia
+     * Abrir modal para Registrar asistencia
      */
-    public function abrir_modal_asistencias_agregar()
+    public function abrir_modal_asistencias_registrar()
     {
         $this->limpiar_modal();
 
-        $this->modo_asistencias = 1; // Agregar
-        $this->titulo_asistencias = 'Agregar Asistencia';
-        $this->accion_asistencias = 'Agregar';
+        $this->modo_asistencias = 1; // Registrar
+        $this->titulo_asistencias = 'Registrar Asistencia';
+        $this->accion_asistencias = 'Registrar';
     }
 
 
@@ -180,9 +180,9 @@ class Index extends Component
 
 
     /**
-     * Agregar asistencia
+     * Registrar asistencia
      */
-    public function agregar_asistenca()
+    public function registrar_asistenca()
     {
         $asistencia = new Asistencia();
         $asistencia->fecha_asistencia = $this->fecha_asistencia;
@@ -389,8 +389,8 @@ class Index extends Component
     public function limpiar_modal()
     {
         $this->modo_asistencias = 1;
-        $this->titulo_asistencias = 'Agregar Asistencia';
-        $this->accion_asistencias = 'Agregar';
+        $this->titulo_asistencias = 'Registrar Asistencia';
+        $this->accion_asistencias = 'Registrar';
         $this->tipo_asistencia = '';
         $this->fecha_asistencia = '';
         $this->fecha_asistencia_temporal = '';

@@ -91,9 +91,9 @@
                                     <div class="row row-cards d-flex justify-content-start">
 
                                         @if ($tipo_vista === 'carga-academica' && $es_docente)
-                                            {{-- Agregar recurso --}}
+                                            {{-- Registrar recurso --}}
                                             <div class="col-lg-12">
-                                                <a class="card cursor-pointer card-link card-link-pop" wire:click="abrir_modal_recurso_agregar"
+                                                <a class="card cursor-pointer card-link card-link-pop" wire:click="abrir_modal_recurso_registrar"
                                                     data-bs-toggle="modal" data-bs-target="#modal-recursos">
                                                     <div class="card-body text-secondary">
                                                         <div class="row g-2">
@@ -115,7 +115,7 @@
                                                             <div
                                                                 class="col-12 d-flex justify-content-center align-items-center">
                                                                 <span class="text-muted fs-5">
-                                                                    Agregar recursos
+                                                                    Registrar recursos
                                                                 </span>
                                                             </div>
                                                         </div>
