@@ -139,10 +139,25 @@ if (!function_exists('verificar_hora_actual')) {
         $fecha_actual = date('Y-m-d');
         $fecha = date('Y-m-d', strtotime($fecha));
 
-        // Aumentarle un minuto a la hora de fin
-        // $hora_fin = date('H:i:s', strtotime('+1 minute', strtotime($hora_fin)));
         if ($fecha_actual === $fecha) {
             if ($hora_actual >= $hora_inicio && $hora_actual <= $hora_fin) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+// Funcion para verificar si la hora de comparacion está entre la hora de inicio y fin en la fecha ingresada
+if (!function_exists('verificar_hora_comparacion')) {
+    function verificar_hora_comparacion($fecha_comparacion, $fecha, $hora_inicio, $hora_fin)
+    {
+        $hora_creacion = date('H:i:s', strtotime($fecha_comparacion));
+        $fecha_creacion = date('Y-m-d', strtotime($fecha_comparacion));
+        $fecha = date('Y-m-d', strtotime($fecha));
+
+        if ($fecha_creacion === $fecha) {
+            if ($hora_creacion >= $hora_inicio && $hora_creacion <= $hora_fin) {
                 return true;
             }
         }
@@ -162,40 +177,32 @@ if (!function_exists('verificar_fecha_trabajo')) {
     }
 }
 
-// Funcion para verificar si la hora ingresada está entre la hora de inicio y fin en la fecha ingresada en formato Y-m-d H:i:s
-if (!function_exists('verificar_hora')) {
-    function verificar_hora($hora_inicio, $hora_fin, $fecha, $fecha_comparar)
-    {
-        $hora_actual = date('H:i:s', strtotime($fecha_comparar));
-        $fecha_actual = date('Y-m-d', strtotime($fecha_comparar));
-        // Aumentarle un minuto a la hora de fin
-        $hora_fin = date('H:i:s', strtotime('+1 minute', strtotime($hora_fin)));
-        if ($fecha_actual === $fecha) {
-            if ($hora_actual >= $hora_inicio && $hora_actual < $hora_fin) {
-                return true;
-            }
-        }
-        return false;
-    }
-}
-
 // funcion para verificar cuanto tiempo paso desde la fecha ingresada en formato Y-m-d H:i:s, y si no a pasado el tiempo establecido, que no muestre nada
 if (!function_exists('tiempo_transcurrido')) {
     function tiempo_transcurrido($fecha_comparacion, $fecha, $hora_inicio, $hora_fin)
     {
-        if (verificar_hora($hora_inicio, $hora_fin, $fecha, $fecha_comparacion)) {
+        if (verificar_hora_comparacion($fecha_comparacion, $fecha, $hora_inicio, $hora_fin)) {
             return '';
         }
 
         $mensaje = '';
         // Formato de dias, horas, minutos y segundos
-        $fecha_actual = date('Y-m-d H:i:s', strtotime($fecha_comparacion));
-        $fecha_entrada = date('Y-m-d H:i:s', strtotime($fecha . ' ' . $hora_inicio));
-        $diferencia = strtotime($fecha_actual) - strtotime($fecha_entrada);
-        $dias = floor($diferencia / (60 * 60 * 24));
-        $horas = floor(($diferencia - ($dias * 60 * 60 * 24)) / (60 * 60));
-        $minutos = floor(($diferencia - ($dias * 60 * 60 * 24) - ($horas * 60 * 60)) / 60);
-        $segundos = floor($diferencia - ($dias * 60 * 60 * 24) - ($horas * 60 * 60) - ($minutos * 60));
+        $fecha_creacion = date('Y-m-d H:i:s', strtotime($fecha_comparacion));
+        $fecha = date('Y-m-d', strtotime($fecha));
+        $fecha_entrada = date('Y-m-d H:i:s', strtotime($fecha . ' ' . $hora_fin));
+
+        // Convierte las fechas a objetos DateTime
+        $datetime_actual = new DateTime($fecha_creacion);
+        $datetime_entrada = new DateTime($fecha_entrada);
+
+        // Calcula la diferencia
+        $diferencia = $datetime_actual->diff($datetime_entrada);
+
+        // Obtén los días, horas, minutos y segundos de diferencia
+        $dias = $diferencia->days;
+        $horas = $diferencia->h;
+        $minutos = $diferencia->i;
+        $segundos = $diferencia->s;
 
         if ($dias > 0) {
             $mensaje .= $dias . ' día(s) ';
@@ -210,7 +217,7 @@ if (!function_exists('tiempo_transcurrido')) {
             $mensaje .= $segundos . ' segundo(s) ';
         }
 
-        return $mensaje;
+        return $mensaje. ' tarde.';
     }
 }
 
