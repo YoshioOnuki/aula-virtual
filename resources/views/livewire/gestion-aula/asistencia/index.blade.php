@@ -401,19 +401,19 @@
                                                         </td>
                                                         @if ($tipo_vista === 'cursos')
                                                         <td class="text-center">
-                                                            @forelse ($item->asistenciaAlumno as $alumno)
-                                                                <span wire:key="{{ $alumno->id_asistencia_alumno }}"
-                                                                    class="status status-{{ color_estado_asistencia($alumno->estadoAsistencia->nombre_estado_asistencia) }} px-3 py-2">
-                                                                    {{ $alumno->estadoAsistencia->nombre_estado_asistencia }}
+                                                            @if ($item->asistenciaAlumno->first())
+                                                                <span"
+                                                                    class="status status-{{ color_estado_asistencia($item->asistenciaAlumno->first()->estadoAsistencia->nombre_estado_asistencia) }} px-3 py-2">
+                                                                    {{ $item->asistenciaAlumno->first()->estadoAsistencia->nombre_estado_asistencia }}
                                                                 </span>
-                                                            @empty
+                                                            @else
                                                                 ?
-                                                            @endforelse
+                                                            @endif
                                                         </td>
                                                         <td class="text-center">
-                                                            @if ($item->asistenciaAlumno->isEmpty())
+                                                            @if (!$item->asistenciaAlumno->first())
                                                                 @if ($item->tipoAsistencia->nombre_tipo_asistencia === 'Asistencia Supervisada')
-                                                                    <span wire:key="{{ $alumno->id_asistencia_alumno }}"
+                                                                    <span"
                                                                         class="status status-info px-3 py-2">
                                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -446,95 +446,85 @@
                                                                     </button>
                                                                 @endif
                                                             @else
-                                                                @foreach ($item->asistenciaAlumno as $alumno)
-                                                                    @if ($alumno->estadoAsistencia->nombre_estado_asistencia === 'Presente')
-                                                                        <span wire:key="{{ $alumno->id_asistencia_alumno }}"
-                                                                            class="status status-teal p-1">
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                                height="24" viewBox="0 0 24 24" fill="none"
-                                                                                stroke="currentColor" stroke-width="2"
-                                                                                stroke-linecap="round" stroke-linejoin="round"
-                                                                                class="icon icon-tabler icons-tabler-outline icon-tabler-circle-dashed-letter-p text-teal">
-                                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                                <path d="M10 12h2a2 2 0 1 0 0 -4h-2v8" />
-                                                                                <path d="M8.56 3.69a9 9 0 0 0 -2.92 1.95" />
-                                                                                <path d="M3.69 8.56a9 9 0 0 0 -.69 3.44" />
-                                                                                <path d="M3.69 15.44a9 9 0 0 0 1.95 2.92" />
-                                                                                <path d="M8.56 20.31a9 9 0 0 0 3.44 .69" />
-                                                                                <path d="M15.44 20.31a9 9 0 0 0 2.92 -1.95" />
-                                                                                <path d="M20.31 15.44a9 9 0 0 0 .69 -3.44" />
-                                                                                <path d="M20.31 8.56a9 9 0 0 0 -1.95 -2.92" />
-                                                                                <path d="M15.44 3.69a9 9 0 0 0 -3.44 -.69" />
-                                                                            </svg>
-                                                                        </span>
-                                                                        @break
-                                                                    @elseif($alumno->estadoAsistencia->nombre_estado_asistencia === 'Tarde')
-                                                                        <span wire:key="{{ $alumno->id_asistencia_alumno }}"
-                                                                            class="status status-yellow p-1">
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                                height="24" viewBox="0 0 24 24" fill="none"
-                                                                                stroke="currentColor" stroke-width="2"
-                                                                                stroke-linecap="round" stroke-linejoin="round"
-                                                                                class="icon icon-tabler icons-tabler-outline icon-tabler-circle-dashed-letter-t text-yellow">
-                                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                                <path d="M10 8h4" />
-                                                                                <path d="M12 8v8" />
-                                                                                <path d="M8.56 3.69a9 9 0 0 0 -2.92 1.95" />
-                                                                                <path d="M3.69 8.56a9 9 0 0 0 -.69 3.44" />
-                                                                                <path d="M3.69 15.44a9 9 0 0 0 1.95 2.92" />
-                                                                                <path d="M8.56 20.31a9 9 0 0 0 3.44 .69" />
-                                                                                <path d="M15.44 20.31a9 9 0 0 0 2.92 -1.95" />
-                                                                                <path d="M20.31 15.44a9 9 0 0 0 .69 -3.44" />
-                                                                                <path d="M20.31 8.56a9 9 0 0 0 -1.95 -2.92" />
-                                                                                <path d="M15.44 3.69a9 9 0 0 0 -3.44 -.69" />
-                                                                            </svg>
-                                                                        </span>
-                                                                        @break
-                                                                    @elseif($alumno->estadoAsistencia->nombre_estado_asistencia === 'Ausente')
-                                                                        <span wire:key="{{ $alumno->id_asistencia_alumno }}"
-                                                                            class="status status-red p-1">
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                                height="24" viewBox="0 0 24 24" fill="none"
-                                                                                stroke="currentColor" stroke-width="2"
-                                                                                stroke-linecap="round" stroke-linejoin="round"
-                                                                                class="icon icon-tabler icons-tabler-outline icon-tabler-circle-dashed-letter-a text-red">
-                                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                                <path d="M10 16v-6a2 2 0 1 1 4 0v6" />
-                                                                                <path d="M10 13h4" />
-                                                                                <path d="M8.56 3.69a9 9 0 0 0 -2.92 1.95" />
-                                                                                <path d="M3.69 8.56a9 9 0 0 0 -.69 3.44" />
-                                                                                <path d="M3.69 15.44a9 9 0 0 0 1.95 2.92" />
-                                                                                <path d="M8.56 20.31a9 9 0 0 0 3.44 .69" />
-                                                                                <path d="M15.44 20.31a9 9 0 0 0 2.92 -1.95" />
-                                                                                <path d="M20.31 15.44a9 9 0 0 0 .69 -3.44" />
-                                                                                <path d="M20.31 8.56a9 9 0 0 0 -1.95 -2.92" />
-                                                                                <path d="M15.44 3.69a9 9 0 0 0 -3.44 -.69" />
-                                                                            </svg>
-                                                                        </span>
-                                                                        @break
-                                                                    @elseif($alumno->estadoAsistencia->nombre_estado_asistencia === 'Justificado')
-                                                                        <span wire:key="{{ $alumno->id_asistencia_alumno }}"
-                                                                            class="status status-azure p-1">
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                                height="24" viewBox="0 0 24 24" fill="none"
-                                                                                stroke="currentColor" stroke-width="2"
-                                                                                stroke-linecap="round" stroke-linejoin="round"
-                                                                                class="icon icon-tabler icons-tabler-outline icon-tabler-circle-dashed-letter-j text-azure">
-                                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                                <path d="M10 8h4v6a2 2 0 1 1 -4 0" />
-                                                                                <path d="M8.56 3.69a9 9 0 0 0 -2.92 1.95" />
-                                                                                <path d="M3.69 8.56a9 9 0 0 0 -.69 3.44" />
-                                                                                <path d="M3.69 15.44a9 9 0 0 0 1.95 2.92" />
-                                                                                <path d="M8.56 20.31a9 9 0 0 0 3.44 .69" />
-                                                                                <path d="M15.44 20.31a9 9 0 0 0 2.92 -1.95" />
-                                                                                <path d="M20.31 15.44a9 9 0 0 0 .69 -3.44" />
-                                                                                <path d="M20.31 8.56a9 9 0 0 0 -1.95 -2.92" />
-                                                                                <path d="M15.44 3.69a9 9 0 0 0 -3.44 -.69" />
-                                                                            </svg>
-                                                                        </span>
-                                                                        @break
-                                                                    @endif
-                                                                @endforeach
+                                                                @if ($item->asistenciaAlumno->first()->estadoAsistencia->nombre_estado_asistencia === 'Presente')
+                                                                    <span class="status status-teal p-1">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                            height="24" viewBox="0 0 24 24" fill="none"
+                                                                            stroke="currentColor" stroke-width="2"
+                                                                            stroke-linecap="round" stroke-linejoin="round"
+                                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-circle-dashed-letter-p text-teal">
+                                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                            <path d="M10 12h2a2 2 0 1 0 0 -4h-2v8" />
+                                                                            <path d="M8.56 3.69a9 9 0 0 0 -2.92 1.95" />
+                                                                            <path d="M3.69 8.56a9 9 0 0 0 -.69 3.44" />
+                                                                            <path d="M3.69 15.44a9 9 0 0 0 1.95 2.92" />
+                                                                            <path d="M8.56 20.31a9 9 0 0 0 3.44 .69" />
+                                                                            <path d="M15.44 20.31a9 9 0 0 0 2.92 -1.95" />
+                                                                            <path d="M20.31 15.44a9 9 0 0 0 .69 -3.44" />
+                                                                            <path d="M20.31 8.56a9 9 0 0 0 -1.95 -2.92" />
+                                                                            <path d="M15.44 3.69a9 9 0 0 0 -3.44 -.69" />
+                                                                        </svg>
+                                                                    </span>
+                                                                @elseif($item->asistenciaAlumno->first()->estadoAsistencia->nombre_estado_asistencia === 'Tarde')
+                                                                    <span class="status status-yellow p-1">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                            height="24" viewBox="0 0 24 24" fill="none"
+                                                                            stroke="currentColor" stroke-width="2"
+                                                                            stroke-linecap="round" stroke-linejoin="round"
+                                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-circle-dashed-letter-t text-yellow">
+                                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                            <path d="M10 8h4" />
+                                                                            <path d="M12 8v8" />
+                                                                            <path d="M8.56 3.69a9 9 0 0 0 -2.92 1.95" />
+                                                                            <path d="M3.69 8.56a9 9 0 0 0 -.69 3.44" />
+                                                                            <path d="M3.69 15.44a9 9 0 0 0 1.95 2.92" />
+                                                                            <path d="M8.56 20.31a9 9 0 0 0 3.44 .69" />
+                                                                            <path d="M15.44 20.31a9 9 0 0 0 2.92 -1.95" />
+                                                                            <path d="M20.31 15.44a9 9 0 0 0 .69 -3.44" />
+                                                                            <path d="M20.31 8.56a9 9 0 0 0 -1.95 -2.92" />
+                                                                            <path d="M15.44 3.69a9 9 0 0 0 -3.44 -.69" />
+                                                                        </svg>
+                                                                    </span>
+                                                                @elseif($item->asistenciaAlumno->first()->estadoAsistencia->nombre_estado_asistencia === 'Ausente')
+                                                                    <span class="status status-red p-1">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                            height="24" viewBox="0 0 24 24" fill="none"
+                                                                            stroke="currentColor" stroke-width="2"
+                                                                            stroke-linecap="round" stroke-linejoin="round"
+                                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-circle-dashed-letter-a text-red">
+                                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                            <path d="M10 16v-6a2 2 0 1 1 4 0v6" />
+                                                                            <path d="M10 13h4" />
+                                                                            <path d="M8.56 3.69a9 9 0 0 0 -2.92 1.95" />
+                                                                            <path d="M3.69 8.56a9 9 0 0 0 -.69 3.44" />
+                                                                            <path d="M3.69 15.44a9 9 0 0 0 1.95 2.92" />
+                                                                            <path d="M8.56 20.31a9 9 0 0 0 3.44 .69" />
+                                                                            <path d="M15.44 20.31a9 9 0 0 0 2.92 -1.95" />
+                                                                            <path d="M20.31 15.44a9 9 0 0 0 .69 -3.44" />
+                                                                            <path d="M20.31 8.56a9 9 0 0 0 -1.95 -2.92" />
+                                                                            <path d="M15.44 3.69a9 9 0 0 0 -3.44 -.69" />
+                                                                        </svg>
+                                                                    </span>
+                                                                @elseif($item->asistenciaAlumno->first()->estadoAsistencia->nombre_estado_asistencia === 'Justificado')
+                                                                    <span class="status status-azure p-1">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                            height="24" viewBox="0 0 24 24" fill="none"
+                                                                            stroke="currentColor" stroke-width="2"
+                                                                            stroke-linecap="round" stroke-linejoin="round"
+                                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-circle-dashed-letter-j text-azure">
+                                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                            <path d="M10 8h4v6a2 2 0 1 1 -4 0" />
+                                                                            <path d="M8.56 3.69a9 9 0 0 0 -2.92 1.95" />
+                                                                            <path d="M3.69 8.56a9 9 0 0 0 -.69 3.44" />
+                                                                            <path d="M3.69 15.44a9 9 0 0 0 1.95 2.92" />
+                                                                            <path d="M8.56 20.31a9 9 0 0 0 3.44 .69" />
+                                                                            <path d="M15.44 20.31a9 9 0 0 0 2.92 -1.95" />
+                                                                            <path d="M20.31 15.44a9 9 0 0 0 .69 -3.44" />
+                                                                            <path d="M20.31 8.56a9 9 0 0 0 -1.95 -2.92" />
+                                                                            <path d="M15.44 3.69a9 9 0 0 0 -3.44 -.69" />
+                                                                        </svg>
+                                                                    </span>
+                                                                @endif
                                                             @endif
                                                         </td>
                                                         @elseif ($tipo_vista === 'carga-academica' && ($es_docente || $es_docente_invitado))
@@ -660,7 +650,7 @@
                                     @endforeach
                                 </select>
                                 @error('tipo_asistencia')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                                 <small class="form-hint">
                                     <font style="vertical-align: inherit;">
@@ -685,7 +675,7 @@
                                     wire:model.live="fecha_asistencia"
                                     min="{{ date('Y-m-d') }}">
                                 @error('fecha_asistencia')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="col-lg-6">
@@ -710,7 +700,7 @@
                                 @elseif($hora_fin_asistencia) is-valid @endif" wire:model.live="hora_fin_asistencia" {{
                                     $modo_asistencias===0 && $this->validate_fecha() ? 'disabled' : '' }}>
                                 @error('hora_fin_asistencia')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>

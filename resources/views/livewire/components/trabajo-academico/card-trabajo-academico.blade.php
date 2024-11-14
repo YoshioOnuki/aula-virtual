@@ -62,16 +62,18 @@
                             </button>
                         @endif
                         @if ($usuario->esAlumno($id_gestion_aula) && $this->tipo_vista === 'cursos')
-                            @forelse ($trabajo_academico->trabajoAcademicoAlumno as $trabajo_academico_alumno)
-                                <span class="status status-{{ color_estado_trabajo_academico($trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico) }}
-                                    px-3 py-2 h-100">
-                                    {{ $trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico }}
+                            @if ($trabajo_academico->trabajoAcademicoAlumno()->first())
+                                <span
+                                    class="status px-3 py-2 h-100
+                                    status-{{ color_estado_trabajo_academico($trabajo_academico->trabajoAcademicoAlumno()->first()->estadoTrabajoAcademico->nombre_estado_trabajo_academico) }}"
+                                >
+                                    {{ $trabajo_academico->trabajoAcademicoAlumno()->first()->estadoTrabajoAcademico->nombre_estado_trabajo_academico }}
                                 </span>
-                            @empty
+                            @else
                                 <span class="status status-red px-3 py-2 h-100">
                                     No entregado
                                 </span>
-                            @endforelse
+                            @endif
                         @endif
                     </div>
                 </div>

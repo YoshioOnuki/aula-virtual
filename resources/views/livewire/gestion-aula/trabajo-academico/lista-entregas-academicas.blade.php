@@ -84,73 +84,73 @@
                                                                         {{ $item->usuario->persona->codigo_alumno_persona }}
                                                                     </a>
 
-                                                                <span x-show="isCopied" class="text-primary">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                        height="24" viewBox="0 0 24 24" fill="none"
-                                                                        stroke="currentColor" stroke-width="2"
-                                                                        stroke-linecap="round" stroke-linejoin="round"
-                                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-copy-check">
-                                                                        <path stroke="none" d="M0 0h24v24H0z"
-                                                                            fill="none" />
-                                                                        <path stroke="none" d="M0 0h24v24H0z" />
-                                                                        <path
-                                                                            d="M7 9.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" />
-                                                                        <path
-                                                                            d="M4.012 16.737a2 2 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" />
-                                                                        <path d="M11 14l2 2l4 -4" />
-                                                                    </svg>
-                                                                    Copiado
-                                                                </span>
+                                                                    <span x-show="isCopied" class="text-primary">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                            height="24" viewBox="0 0 24 24" fill="none"
+                                                                            stroke="currentColor" stroke-width="2"
+                                                                            stroke-linecap="round" stroke-linejoin="round"
+                                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-copy-check">
+                                                                            <path stroke="none" d="M0 0h24v24H0z"
+                                                                                fill="none" />
+                                                                            <path stroke="none" d="M0 0h24v24H0z" />
+                                                                            <path
+                                                                                d="M7 9.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" />
+                                                                            <path
+                                                                                d="M4.012 16.737a2 2 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" />
+                                                                            <path d="M11 14l2 2l4 -4" />
+                                                                        </svg>
+                                                                        Copiado
+                                                                    </span>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </td>
-                                                <td class="text-center">
-                                                    @forelse ($item->trabajoAcademicoAlumno as $trabajo)
-                                                        @if($trabajo->created_at > $trabajo_academico->fecha_fin_trabajo_academico)
-                                                            <span class="text-danger">
-                                                                {{ $trabajo->created_at->diff($trabajo_academico->fecha_fin_trabajo_academico) }} tarde
-                                                            </span>
-                                                        @else
-                                                            {{ format_fecha_horas($trabajo->created_at) }}
-                                                        @endif
-                                                    @empty
-                                                        <span class="text-secondary">-</span>
-                                                    @endforelse
-                                                </td>
-                                                <td class="text-center">
-                                                    @forelse ($item->trabajoAcademicoAlumno as $trabajo)
-                                                        @if($trabajo->nota_trabajo_academico_alumno >= 0)
-                                                            <span
-                                                                class="{{ $trabajo->nota_trabajo_academico_alumno >= 11 ? 'text-teal' : 'text-danger' }}">
-                                                                {{ $trabajo->nota_trabajo_academico_alumno }}
-                                                            </span>
-                                                        @else
-                                                            <span class="text-secondary">Sin calificar</span>
-                                                        @endif
-                                                    @empty
-                                                        <span class="text-secondary">-</span>
-                                                    @endforelse
-                                                </td>
-                                                <td>
-                                                    @if(count($item->trabajoAcademicoAlumno) > 0)
-                                                        <a href="{{ route('carga-academica.detalle.trabajo-academico.alumnos.entrega',
-                                                                    ['id_usuario' => $id_usuario_hash, 'tipo_vista' => $tipo_vista,
-                                                                    'id_curso' => Hashids::encode($id_gestion_aula),
-                                                                    'id_trabajo_academico' => Hashids::encode($trabajo_academico->id_trabajo_academico),
-                                                                    'id_trabajo_academico_alumno' => Hashids::encode($item->trabajoAcademicoAlumno[0]->id_trabajo_academico_alumno)
-                                                                    ]) }}" class="btn btn-sm btn-primary">
-                                                            @if($item->trabajoAcademicoAlumno[0]->estadoTrabajoAcademico->nombre_estado_trabajo_academico === 'Entregado')
-                                                                Revisar entrega
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @if ($item->trabajoAcademicoAlumno->first())
+                                                            @if($item->trabajoAcademicoAlumno->first()->created_at > $trabajo_academico->fecha_fin_trabajo_academico)
+                                                                <span class="text-danger">
+                                                                    {{ $item->trabajoAcademicoAlumno->first()->created_at->diff($trabajo_academico->fecha_fin_trabajo_academico) }} tarde
+                                                                </span>
                                                             @else
-                                                                Ver entrega
+                                                                {{ format_fecha_horas($item->trabajoAcademicoAlumno->first()->created_at) }}
                                                             @endif
-                                                        </a>
-                                                    @else
-                                                        <span class="text-secondary">Sin entrega</span>
-                                                    @endif
-                                                </td>
-                                            </tr>
+                                                        @else
+                                                            <span class="text-secondary">-</span>
+                                                        @endif
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @if ($item->trabajoAcademicoAlumno->first())
+                                                            @if($item->trabajoAcademicoAlumno->first()->nota_trabajo_academico_alumno >= 0)
+                                                                <span
+                                                                    class="{{ $item->trabajoAcademicoAlumno->first()->nota_trabajo_academico_alumno >= 11 ? 'text-teal' : 'text-danger' }}">
+                                                                    {{ $item->trabajoAcademicoAlumno->first()->nota_trabajo_academico_alumno }}
+                                                                </span>
+                                                            @else
+                                                                <span class="text-secondary">Sin calificar</span>
+                                                            @endif
+                                                        @else
+                                                            <span class="text-secondary">-</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if(count($item->trabajoAcademicoAlumno) > 0)
+                                                            <a href="{{ route('carga-academica.detalle.trabajo-academico.alumnos.entrega',
+                                                                        ['id_usuario' => $id_usuario_hash, 'tipo_vista' => $tipo_vista,
+                                                                        'id_curso' => Hashids::encode($id_gestion_aula),
+                                                                        'id_trabajo_academico' => Hashids::encode($trabajo_academico->id_trabajo_academico),
+                                                                        'id_trabajo_academico_alumno' => Hashids::encode($item->trabajoAcademicoAlumno[0]->id_trabajo_academico_alumno)
+                                                                        ]) }}" class="btn btn-sm btn-primary">
+                                                                @if($item->trabajoAcademicoAlumno[0]->estadoTrabajoAcademico->nombre_estado_trabajo_academico === 'Entregado')
+                                                                    Revisar entrega
+                                                                @else
+                                                                    Ver entrega
+                                                                @endif
+                                                            </a>
+                                                        @else
+                                                            <span class="text-secondary">Sin entrega</span>
+                                                        @endif
+                                                    </td>
+                                                </tr>
                                             @empty
                                                 @if ($entregas_academicas->count() == 0 && $search != '')
                                                     <tr>

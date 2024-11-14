@@ -297,7 +297,7 @@
 
                                                 @if (in_array(true, $this->check_alumno) && $es_docente)
                                                     <div class="col-lg-5 col-3 d-flex justify-content-end">
-                                                        <a class="btn btn-outline-primary d-none d-md-inline-block"
+                                                        <a class="btn btn-primary d-none d-md-inline-block"
                                                             wire:click="abrir_modal_enviar_asistencias">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -310,7 +310,7 @@
                                                             </svg>
                                                             Enviar Asistencias
                                                         </a>
-                                                        <a class="btn btn-outline-primary d-md-none btn-icon"
+                                                        <a class="btn btn-primary d-md-none btn-icon"
                                                             wire:click="abrir_modal_enviar_asistencias">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -355,13 +355,13 @@
                                                     >
                                                         <td>
                                                             <input class="form-check-input" type="checkbox"
-                                                                wire:model.live="check_alumno.{{ $item->usuario->gestionAulaAlumno[0]->id_gestion_aula_alumno }}"
-                                                                {{ !$item->usuario->gestionAulaAlumno[0]->estado_gestion_aula_alumno ||
-                                                            !$item->usuario->gestionAulaAlumno[0]->asistenciaAlumno->isEmpty() ? 'disabled' : '' }}>
+                                                                wire:model.live="check_alumno.{{ $item->usuario->gestionAulaAlumno->first()->id_gestion_aula_alumno }}"
+                                                                {{ !$item->usuario->gestionAulaAlumno->first()->estado_gestion_aula_alumno ||
+                                                            !$item->usuario->gestionAulaAlumno->first()->asistenciaAlumno->isEmpty() ? 'disabled' : '' }}>
                                                         </td>
                                                         <td>
                                                             <span
-                                                                class="{{ $item->usuario->gestionAulaAlumno[0]->estado_gestion_aula_alumno === 0 ? 'text-white' : 'text-secondary' }}">
+                                                                class="{{ $item->usuario->gestionAulaAlumno->first()->estado_gestion_aula_alumno === 0 ? 'text-white' : 'text-secondary' }}">
                                                                 {{ $i++ }}
                                                             </span>
                                                         </td>
@@ -378,7 +378,7 @@
                                                                         $item->nombre_completo }}
                                                                     </div>
                                                                     <div
-                                                                        class="{{ !$item->usuario->gestionAulaAlumno[0]->estado_gestion_aula_alumno ? 'text-white' : 'text-secondary' }}">
+                                                                        class="{{ !$item->usuario->gestionAulaAlumno->first()->estado_gestion_aula_alumno ? 'text-white' : 'text-secondary' }}">
                                                                         <a href="#" class="text-reset">
                                                                             {{ $item->documento_persona }}
                                                                         </a>
@@ -387,38 +387,34 @@
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            @forelse ($item->usuario->gestionAulaAlumno[0]->asistenciaAlumno as $asistencias)
-                                                                {{ format_fecha_horas($asistencias->created_at) }}
-                                                                @if(tiempo_transcurrido($asistencias->created_at,
-                                                                    $asistencias->asistencia->fecha_asistencia,
-                                                                    $asistencias->asistencia->hora_inicio_asistencia,
-                                                                    $asistencias->asistencia->hora_fin_asistencia) !== '')
-                                                                    <span class="text-red ms-2">
-                                                                        <br>
-                                                                        {{ tiempo_transcurrido($asistencias->created_at,
-                                                                        $asistencias->asistencia->fecha_asistencia,
-                                                                        $asistencias->asistencia->hora_inicio_asistencia,
-                                                                        $asistencias->asistencia->hora_fin_asistencia) }}
-                                                                        tarde.
-                                                                    </span>
-                                                                @endif
-                                                            @empty
+                                                            @if ($item->usuario->gestionAulaAlumno->first()->asistenciaAlumno->first())
+                                                                {{ format_fecha_horas($item->usuario->gestionAulaAlumno->first()->asistenciaAlumno->first()->created_at) }}
+                                                                <span class="text-red ms-2">
+                                                                    <br>
+                                                                    {{ tiempo_transcurrido($item->usuario->gestionAulaAlumno->first()->asistenciaAlumno->first()->created_at,
+                                                                    $item->usuario->gestionAulaAlumno->first()->asistenciaAlumno->first()->asistencia->fecha_asistencia,
+                                                                    $item->usuario->gestionAulaAlumno->first()->asistenciaAlumno->first()->asistencia->hora_inicio_asistencia,
+                                                                    $item->usuario->gestionAulaAlumno->first()->asistenciaAlumno->first()->asistencia->hora_fin_asistencia) ?? '' }}
+                                                                </span>
+                                                            @else
                                                                 <span class="text-secondary">
                                                                     Sin asistencia
                                                                 </span>
-                                                            @endforelse
+                                                            @endif
                                                         </td>
                                                         <td class="text-center">
-                                                            @forelse ($item->usuario->gestionAulaAlumno[0]->asistenciaAlumno as $alumno)
-                                                                <span wire:key="{{ $alumno->id_asistencia_alumno }}"
-                                                                    class="status status-{{ color_estado_asistencia($alumno->estadoAsistencia->nombre_estado_asistencia) }} px-3 py-2">
-                                                                    {{ $alumno->estadoAsistencia->nombre_estado_asistencia }}
+                                                            @if ($item->usuario->gestionAulaAlumno->first()->asistenciaAlumno->first())
+                                                                <span
+                                                                    class="status px-3 py-2
+                                                                    status-{{ color_estado_asistencia($item->usuario->gestionAulaAlumno->first()->asistenciaAlumno->first()->estadoAsistencia->nombre_estado_asistencia) }}"
+                                                                >
+                                                                    {{ $item->usuario->gestionAulaAlumno->first()->asistenciaAlumno->first()->estadoAsistencia->nombre_estado_asistencia }}
                                                                 </span>
-                                                            @empty
+                                                            @else
                                                                 @if ($es_docente)
                                                                     <button type="button"
                                                                         class="btn btn-outline-primary btn-sm {{ in_array(true, $this->check_alumno) ? 'disabled' : '' }}"
-                                                                        wire:click="abrir_modal_enviar_asistencia({{ $item->usuario->gestionAulaAlumno[0]->id_gestion_aula_alumno }})">
+                                                                        wire:click="abrir_modal_enviar_asistencia({{ $item->usuario->gestionAulaAlumno->first()->id_gestion_aula_alumno }})">
                                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                             height="24" viewBox="0 0 24 24" fill="none"
                                                                             stroke="currentColor" stroke-width="2"
@@ -433,7 +429,7 @@
                                                                 @else
                                                                     -
                                                                 @endif
-                                                            @endforelse
+                                                            @endif
                                                         </td>
                                                     </tr>
                                                 @empty
@@ -543,8 +539,9 @@
                                     id="estado_asistencia" wire:model.live="estado_asistencia">
                                     <option value="">Seleccione el tipo de asistencia</option>
                                     @foreach ($estados as $item)
-                                    <option value="{{ $item->id_estado_asistencia }}">{{ $item->nombre_estado_asistencia
-                                        }}</option>
+                                        <option value="{{ $item->id_estado_asistencia }}" wire:key="estado-{{ $item->id_estado_asistencia }}">
+                                            {{ $item->nombre_estado_asistencia}}
+                                        </option>
                                     @endforeach
                                 </select>
                                 @error('estado_asistencia')
