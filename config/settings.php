@@ -28,8 +28,8 @@ return [
     'bg-docente-lt' => 'orange-lt',
 
     'color-asistencia-presente' => 'teal',
-    'color-asistencia-tarde' => 'yellow',
-    'color-asistencia-ausente' => 'red',
+    'color-asistencia-tarde' => 'red',
+    'color-asistencia-ausente' => 'yellow',
     'color-asistencia-justificado' => 'azure',
 
     'color-trabajo-academico-entregado' => 'teal',
