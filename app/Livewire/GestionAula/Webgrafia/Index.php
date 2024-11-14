@@ -68,15 +68,15 @@ class Index extends Component
 
 
     /**
-     * Abrir modal para agregar webgrafía
+     * Abrir modal para registrar webgrafía
      */
-    public function abrir_modal_webgrafia_agregar()
+    public function abrir_modal_webgrafia_registrar()
     {
         $this->limpiar_modal();
 
         $this->modo = 1;
-        $this->titulo_modal = 'Agregar webgrafia';
-        $this->accion_estado = 'Agregar';
+        $this->titulo_modal = 'Registrar webgrafia';
+        $this->accion_estado = 'Registrar';
     }
 
 
@@ -91,7 +91,7 @@ class Index extends Component
         {
             DB::beginTransaction();
 
-            if($this->modo === 1) // Agregar
+            if($this->modo === 1) // Registrar
             {
                 $webgrafia = new Webgrafia();
                 $webgrafia->descripcion_webgrafia = $this->descripcion_webgrafia ?? null;

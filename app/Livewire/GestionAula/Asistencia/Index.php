@@ -149,12 +149,12 @@ class Index extends Component
             try {
                 DB::beginTransaction();
 
-                if ($this->modo_asistencias == 1) // Agregar
-                {
-                    $this->agregar_asistenca();
-                } else {
-                    $this->editar_asistencia();
-                }
+            if ($this->modo_asistencias == 1) // Registrar
+            {
+                $this->registrar_asistenca();
+            } else {
+                $this->editar_asistencia();
+            }
 
                 DB::commit();
 
