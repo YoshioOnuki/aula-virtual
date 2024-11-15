@@ -97,7 +97,6 @@ class Index extends Component
     }
 
 
-
     /**
      * Abrir modal para Registrar asistencia
      */
@@ -143,11 +142,8 @@ class Index extends Component
             'hora_fin_asistencia' => 'required|date_format:H:i|after:hora_inicio_asistencia',
         ]);
 
-        if ($this->validate_hora_inicio() && $this->modo_asistencias == 1) {
-            $this->addError('hora_inicio_asistencia', 'La hora de inicio no puede ser menor a la hora actual.');
-        } else {
-            try {
-                DB::beginTransaction();
+        try {
+            DB::beginTransaction();
 
             if ($this->modo_asistencias == 1) // Registrar
             {
@@ -156,25 +152,24 @@ class Index extends Component
                 $this->editar_asistencia();
             }
 
-                DB::commit();
+            DB::commit();
 
-                $this->cerrar_modal('#modal-asistencia');
-                $this->limpiar_modal();
+            $this->cerrar_modal('#modal-asistencia');
+            $this->limpiar_modal();
 
-                $this->dispatch(
-                    'toast-basico',
-                    mensaje: 'La asistencia se ha guardado correctamente',
-                    type: 'success'
-                );
-            } catch (\Exception $e) {
-                DB::rollBack();
-                // dd($e);
-                $this->dispatch(
-                    'toast-basico',
-                    mensaje: 'Ha ocurrido un error al guardar la asistencia: ',
-                    type: 'error'
-                );
-            }
+            $this->dispatch(
+                'toast-basico',
+                mensaje: 'La asistencia se ha guardado correctamente',
+                type: 'success'
+            );
+        } catch (\Exception $e) {
+            DB::rollBack();
+            // dd($e);
+            $this->dispatch(
+                'toast-basico',
+                mensaje: 'Ha ocurrido un error al guardar la asistencia: ',
+                type: 'error'
+            );
         }
     }
 
@@ -209,37 +204,6 @@ class Index extends Component
         $asistencia->hora_fin_asistencia = $hora_fin->format('H:i:s');
         $asistencia->id_tipo_asistencia = $this->tipo_asistencia;
         $asistencia->save();
-    }
-
-
-    /**
-     * Validar hora de inicio
-     */
-    public function validate_hora_inicio()
-    {
-        $horaActual = Carbon::now()->format('H:i');
-        $fechaActual = Carbon::today()->toDateString();
-
-        if ($this->fecha_asistencia == $fechaActual && $this->hora_inicio_asistencia < $horaActual) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-
-    /**
-     * Validar fecha
-     */
-    public function validate_fecha()
-    {
-        $fechaActual = Carbon::today()->toDateString();
-
-        if ($this->fecha_asistencia < $fechaActual) {
-            return true;
-        }
-
-        return false;
     }
 
 
@@ -282,6 +246,7 @@ class Index extends Component
 
         } catch (\Exception $e) {
             DB::rollBack();
+            //dd(e);
             $this->dispatch(
                 'toast-basico',
                 mensaje: 'Ha ocurrido un error al eliminar la asistencia.',
