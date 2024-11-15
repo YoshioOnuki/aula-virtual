@@ -183,10 +183,12 @@
                                                                             </a>
                                                                         </div>
 
-                                                                        <a class="dropdown-item cursor-pointer"
+                                                                        <a
+                                                                            class="dropdown-item cursor-pointer"
                                                                             wire:click="abrir_modal_webgrafia_editar({{ $item->id_webgrafia }})"
                                                                             data-bs-toggle="modal"
-                                                                            data-bs-target="#modal-webgrafia">
+                                                                            data-bs-target="#modal-webgrafia"
+                                                                        >
                                                                             Editar
                                                                         </a>
                                                                     </div>
@@ -207,8 +209,10 @@
                                                                         }
                                                                     }
                                                                 }">
-                                                                <button type="button" class="btn btn-outline-primary"
-                                                                    @click="handleClick">
+                                                                <button
+                                                                    type="button" class="btn btn-outline-primary"
+                                                                    @click="handleClick"
+                                                                >
                                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                         height="24" viewBox="0 0 24 24" fill="none"
                                                                         stroke="currentColor" stroke-width="2"
@@ -302,7 +306,7 @@
                     <div class="modal-body">
                         <div class="row g-3">
                             <div class="col-lg-12">
-                                <label for="descripcion_webgrafia" class="form-label">
+                                <label for="descripcion_webgrafia" class="form-label required">
                                     Descripcion de Webgrafia
                                 </label>
                                 <input type="text" name="descripcion_webgrafia"
@@ -345,8 +349,10 @@
                         </a>
 
                         <div class="ms-auto">
-                            <div wire:loading.remove>
-                                <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn btn-primary w-100" wire:loading.attr="disabled"
+                                wire:target="guardar_webgrafia">
+                                <span wire:loading.remove
+                                    wire:target="guardar_webgrafia">
                                     @if ($modo === 1)
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -369,14 +375,12 @@
                                         </svg>
                                     @endif
                                     {{ $accion_estado }}
-                                </button>
-                            </div>
-                            <div wire:loading>
-                                <button type="submit" class="btn btn-primary" disabled>
+                                </span>
+                                <span wire:loading wire:target="guardar_webgrafia">
                                     <div class="spinner-border spinner-border-sm me-2" role="status"></div>
-                                    Cargando
-                                </button>
-                            </div>
+                                    Guardando Webgrafía
+                                </span>
+                            </button>
                         </div>
 
                     </div>

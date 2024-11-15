@@ -33,6 +33,7 @@ class Index extends Component
     public $modo = 1; // Modo 1 = Registrar / 0 = Editar
     public $titulo_modal = 'Registrar Webgrafía';
     public $accion_estado = 'Registrar';
+    #[Validate('required')]
     public $descripcion_webgrafia;
     #[Validate('required|url')]
     public $link_webgrafia;
