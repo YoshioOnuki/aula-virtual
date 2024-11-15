@@ -244,17 +244,10 @@ class Detalle extends Component
         $this->titulo_page_header = 'Detalle de Asistencia';
 
         // Regresar
-        if ($this->tipo_vista === 'cursos') {
-            $this->regresar_page_header = [
-                'route' => 'cursos.detalle.asistencia',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]
-            ];
-        } else {
-            $this->regresar_page_header = [
-                'route' => 'carga-academica.detalle.asistencia',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]
-            ];
-        }
+        $this->regresar_page_header = [
+            'route' => 'carga-academica.detalle.asistencia',
+            'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]
+        ];
 
         // Links --> Inicio
         $this->links_page_header = [
@@ -265,52 +258,29 @@ class Detalle extends Component
             ]
         ];
 
-        // Links --> Cursos o Carga Académica
-        if ($this->tipo_vista === 'cursos') {
-            $this->links_page_header[] = [
-                'name' => 'Mis Cursos',
-                'route' => 'cursos',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista]
-            ];
-        } else {
-            $this->links_page_header[] = [
-                'name' => 'Carga Académica',
-                'route' => 'carga-academica',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista]
-            ];
-        }
+        // Links --> Carga Académica
+        $this->links_page_header[] = [
+            'name' => 'Carga Académica',
+            'route' => 'carga-academica',
+            'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista]
+        ];
 
         $gestion_aula = GestionAula::with('curso')->find($this->id_gestion_aula);
+        $nombre_curso = $gestion_aula->curso->nombre_curso . ' GRUPO ' . $gestion_aula->grupo_gestion_aula;
 
-        // Links --> Detalle del curso o carga académica
-        if ($this->tipo_vista === 'cursos') {
-            $this->links_page_header[] = [
-                'name' => $gestion_aula->curso->nombre_curso,
-                'route' => 'cursos.detalle',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]
-            ];
-        } else {
-            $this->links_page_header[] = [
-                'name' => $gestion_aula->curso->nombre_curso,
-                'route' => 'carga-academica.detalle',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]
-            ];
-        }
+        // Links --> Detalle de la carga académica
+        $this->links_page_header[] = [
+            'name' => $nombre_curso,
+            'route' => 'carga-academica.detalle',
+            'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]
+        ];
 
         // Links --> Asistencia
-        if ($this->tipo_vista === 'cursos') {
             $this->links_page_header[] = [
-                'name' => 'Asistencia',
-                'route' => 'cursos.detalle.asistencia',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]
-            ];
-        } else {
-            $this->links_page_header[] = [
-                'name' => 'Asistencia',
-                'route' => 'carga-academica.detalle.asistencia',
-                'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]
-            ];
-        }
+            'name' => 'Asistencia',
+            'route' => 'carga-academica.detalle.asistencia',
+            'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]
+        ];
     }
 
 

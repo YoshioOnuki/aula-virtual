@@ -155,9 +155,6 @@ Route::middleware(['throttle:100,1'])->group(function () {
                     // Asistencia
                     Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/asistencia', AsistenciaIndex::class)
                         ->name('cursos.detalle.asistencia');
-                    // Detalle de asistencia
-                    Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/asistencia/{id_asistencia}', AsistenciaDetalle::class)
-                        ->name('cursos.detalle.asistencia.detalle');
                     // Trabajos academicos
                     Route::get('/alumno/{id_usuario}/{tipo_vista}/{id_curso}/trabajo-academico', TrabajoAcademicoIndex::class)
                         ->name('cursos.detalle.trabajo-academico');
