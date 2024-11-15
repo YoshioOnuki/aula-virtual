@@ -23,6 +23,7 @@ class CardRevisarTrabajo extends Component
     public $editar_entrega = false;
 
     public $es_docente_invitado = false;
+    public $estado_carga = true;
 
     // Variables para la revisión de trabajos
     #[Validate('required|numeric|min:0|max:20')]
@@ -72,6 +73,8 @@ class CardRevisarTrabajo extends Component
 
             DB::commit();
 
+            $this->estado_carga = true;
+
             $this->dispatch(
                 'toast-basico',
                 mensaje: 'Se ha revisado el trabajo académico correctamente.',
@@ -79,6 +82,7 @@ class CardRevisarTrabajo extends Component
             );
 
             $this->dispatch('actualizar_estado_entrega');
+
         } catch (\Exception $e) {
             DB::rollBack();
             dd($e);
@@ -102,6 +106,7 @@ class CardRevisarTrabajo extends Component
             $comentario_trabajo_academico = ComentarioTrabajoAcademico::where('id_trabajo_academico_alumno', $this->trabajo_academico_alumno->id_trabajo_academico_alumno)->first();
             $this->descripcion_comentario_trabajo_academico = $comentario_trabajo_academico ? $comentario_trabajo_academico->descripcion_comentario_trabajo_academico : '';
         }
+        $this->estado_carga = false;
     }
 
 
@@ -120,6 +125,7 @@ class CardRevisarTrabajo extends Component
     public function editar_trabajo_academico()
     {
         $this->editar_entrega = true;
+        $this->validar_entrega = true;
     }
 
 
@@ -131,6 +137,7 @@ class CardRevisarTrabajo extends Component
         $this->trabajo_academico_alumno = TrabajoAcademicoAlumno::find($this->trabajo_academico_alumno->id_trabajo_academico_alumno);
         $this->cargar_datos();
         $this->validar_entrega();
+        $this->estado_carga = false;
     }
 
 
