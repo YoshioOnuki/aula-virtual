@@ -504,7 +504,7 @@
                         aria-label="Close" wire:click="limpiar_modal"></button>
                 </div>
                 <form autocomplete="off" wire:submit="enviar_asistencia" novalidate>
-                    <div class="modal-status bg-teal"></div>
+                    <div class="modal-status bg-primary"></div>
                     <div class="modal-body">
                         <div class="row g-3">
                             <div class="col-lg-12">
@@ -564,8 +564,10 @@
                         </a>
 
                         <div class="ms-auto">
-                            <div wire:loading.remove>
-                                <button type="submit" class="btn btn-teal">
+                            <button type="submit" class="btn btn-primary w-100" wire:loading.attr="disabled"
+                                wire:target="enviar_asistencia">
+                                <span wire:loading.remove
+                                    wire:target="enviar_asistencia">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                         stroke-linejoin="round"
@@ -575,14 +577,12 @@
                                         <path d="M2 12l5 5m5 -5l5 -5" />
                                     </svg>
                                     Enviar Asistencia
-                                </button>
-                            </div>
-                            <div wire:loading>
-                                <button type="submit" class="btn btn-teal" disabled>
+                                </span>
+                                <span wire:loading wire:target="enviar_asistencia">
                                     <div class="spinner-border spinner-border-sm me-2" role="status"></div>
-                                    Cargando
-                                </button>
-                            </div>
+                                    Guardando Asistencia
+                                </span>
+                            </button>
                         </div>
 
                     </div>
