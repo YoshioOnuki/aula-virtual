@@ -185,7 +185,7 @@
     </div>
 
 
-    <div wire:ignore.self class="modal fade" id="modal-recursos" tabindex="-1" data-bs-backdrop="static">
+    <div wire:ignore.self class="modal fade" id="modal-recursos" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" data-bs-keyboard="false">
         <div class="modal-dialog modal-lg"
             role="document">
             <div class="modal-content {{ $estado_carga_modal ? 'cursor-progress' : '' }}">
@@ -249,9 +249,12 @@
                         </a>
 
                         <div class="ms-auto">
-                            <button type="submit" class="btn btn-primary w-100"
-                                wire:loading.attr="disabled" wire:target="guardar_recurso, archivo_recurso"
-                                {{ $estado_carga_modal ? 'disabled cursor-progress' : '' }}>
+                            <button
+                                type="submit" class="btn btn-primary w-100"
+                                wire:loading.attr="disabled"
+                                wire:target="guardar_recurso, archivo_recurso"
+                                {{ $estado_carga_modal ? 'disabled cursor-progress' : '' }}
+                            >
                                 <span wire:loading.remove wire:target="guardar_recurso, archivo_recurso">
                                     @if ($modo === 1)
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"

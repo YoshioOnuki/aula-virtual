@@ -320,7 +320,7 @@
 
 
     {{-- Modal para registrar y editar foro <==> DE BAJA --}}
-    <div wire:ignore.self class="modal fade" id="modal-foro" tabindex="-1" data-bs-backdrop="static">
+    <div wire:ignore.self class="modal fade" id="modal-foro" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -472,7 +472,7 @@
     </div>
 
     {{-- Modal para eliminar foro --}}
-    <div wire:ignore.self class="modal fade" id="modal-eliminar" tabindex="-1" data-bs-backdrop="static">
+    <div wire:ignore.self class="modal fade" id="modal-eliminar" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -604,7 +604,7 @@
     </div>
 
     {{-- Modal para duplicar foro --}}
-    <div wire:ignore.self class="modal fade" id="modal-duplicar" tabindex="-1" data-bs-backdrop="static">
+    <div wire:ignore.self class="modal fade" id="modal-duplicar" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">

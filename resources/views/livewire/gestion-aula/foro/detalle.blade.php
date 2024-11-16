@@ -45,7 +45,7 @@
 
 
     {{-- Modal para eliminar foro --}}
-    <div wire:ignore.self class="modal fade" id="modal-eliminar-respuesta" tabindex="-1" data-bs-backdrop="static">
+    <div wire:ignore.self class="modal fade" id="modal-eliminar-respuesta" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">

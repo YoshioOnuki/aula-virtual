@@ -196,7 +196,7 @@
     </div>
 
     {{-- Modal para entrega de trabajo academico --}}
-    <div wire:ignore.self class="modal fade" id="modal-entrega" tabindex="-1" data-bs-backdrop="static">
+    <div wire:ignore.self class="modal fade" id="modal-entrega" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -301,7 +301,7 @@
     </div>
 
     {{-- Modal para mostrar comentarios --}}
-    <div wire:ignore.self class="modal fade" id="modal-comentarios" tabindex="-1" data-bs-backdrop="static">
+    <div wire:ignore.self class="modal fade" id="modal-comentarios" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">

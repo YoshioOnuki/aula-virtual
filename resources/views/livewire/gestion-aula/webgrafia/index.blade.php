@@ -292,7 +292,7 @@
     </div>
 
     {{-- Modal para crear y editar webgrafia --}}
-    <div wire:ignore.self class="modal fade" id="modal-webgrafia" tabindex="-1" data-bs-backdrop="static">
+    <div wire:ignore.self class="modal fade" id="modal-webgrafia" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
