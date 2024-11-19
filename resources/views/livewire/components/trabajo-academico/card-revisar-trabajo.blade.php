@@ -11,60 +11,147 @@
                     <div class="spinner-border spinner-border-lg text-primary" role="status"></div>
                 </span>
             @else
-                <form autocomplete="off" wire:submit="revisar_trabajo_academico" novalidate>
+                <form
+                    autocomplete="off"
+                    wire:submit="revisar_trabajo_academico"
+                    novalidate
+                    x-data="{ validar_entrega: $wire.validar_entrega, key: 0 }"
+                >
                     <tbody>
-                        <div class="row g-3">
-                            <div class="col-lg-12">
+                        <div class="row g-3" >
+                            <div
+                                class="col-lg-12"
+                                x-show="!validar_entrega"
+                                x-cloak
+                                x-transition
+                            >
+                                <label for="nota_trabajo_academico" class="form-label">
+                                    Nota
+                                </label>
+                                <input
+                                    type="number"
+                                    class="form-control {{ $nota_trabajo_academico === null || $nota_trabajo_academico === '' ? 'bg-gray-400' : '' }}
+                                    {{ $nota_trabajo_academico >= 11 ? 'border-teal' : 'border-danger' }}"
+                                    id="nota_trabajo_academico" disabled
+                                    wire:model.lazy="nota_trabajo_academico"
+                                >
+                            </div>
+                            <div
+                                class="col-lg-12"
+                                x-show="validar_entrega"
+                                x-cloak
+                                x-transition
+                            >
                                 <label for="nota_trabajo_academico" class="form-label required">
                                     Nota
                                 </label>
-                                @if (!$validar_entrega)
-                                    <input type="number" class="form-control {{ $nota_trabajo_academico === null || $nota_trabajo_academico === '' ? 'bg-gray-400' : '' }}
-                                        {{ $nota_trabajo_academico >= 11 ? 'border-teal' : 'border-danger' }}"
-                                        id="nota_trabajo_academico" disabled wire:model="nota_trabajo_academico">
-                                @else
-                                    <input type="number" class="form-control @error('nota_trabajo_academico') is-invalid @elseif(strlen($nota_trabajo_academico) > 0) is-valid @enderror"
-                                        wire:model.lazy="nota_trabajo_academico" id="nota_trabajo_academico"
-                                        placeholder="0.00">
-                                    @error('nota_trabajo_academico')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                @endif
+                                <input
+                                    type="number"
+                                    class="form-control @error('nota_trabajo_academico') is-invalid @elseif(strlen($nota_trabajo_academico) > 0) is-valid @enderror"
+                                    id="nota_trabajo_academico"
+                                    wire:model.lazy="nota_trabajo_academico"
+                                    placeholder="0.00"
+                                >
+                                @error('nota_trabajo_academico')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
+
                             <div class="col-lg-12">
                                 <label for="descripcion_comentario_trabajo_academico" class="form-label">
                                     Observación del Trabajo Académico
                                 </label>
-                                @if (!$validar_entrega)
-                                    @if ($descripcion_comentario_trabajo_academico === null || $descripcion_comentario_trabajo_academico === '')
-                                        <textarea class="form-control" disabled>Sin observaciones</textarea>
-                                    @else
-                                        <span class="form-control text-muted bg-gray-400">
-                                            {!! $descripcion_comentario_trabajo_academico !!}
-                                        </span>
-                                    @endif
-                                @else
-                                    <div wire:ignore>
+                                <div
+                                    x-show="!validar_entrega"
+                                    x-cloak
+                                    x-collapse
+                                >
+                                    <template x-if="$wire.descripcion_comentario_trabajo_academico === '' || $wire.descripcion_comentario_trabajo_academico === null">
                                         <textarea
                                             class="form-control"
-                                            wire:model.lazy="descripcion_comentario_trabajo_academico"
-                                            id="descripcion_comentario_trabajo_academico"
+                                            disabled
+                                            x-show="!validar_entrega"
+                                            x-cloak
+                                            x-collapse
+                                        >Sin observaciones</textarea>
+                                    </template>
+                                    <template x-if="$wire.descripcion_comentario_trabajo_academico !== '' && $wire.descripcion_comentario_trabajo_academico !== null">
+                                        <span
+                                            class="form-control text-muted bg-gray-400"
+                                            x-show="!validar_entrega"
+                                            x-cloak
+                                            x-collapse
                                         >
-                                            {{ $descripcion_comentario_trabajo_academico }}
-                                        </textarea>
-                                    </div>
-                                @endif
+                                            {!! $descripcion_comentario_trabajo_academico !!}
+                                        </span>
+                                    </template>
+                                </div>
+
+                                <div
+                                    x-show="validar_entrega"
+                                    x-cloak
+                                    wire:ignore
+                                    x-collapse
+                                    :key="key"
+                                    x-data="{ descripcion: $wire.descripcion_comentario_trabajo_academico }"
+                                >
+                                    <textarea
+                                        class="form-control"
+                                        id="descripcion_comentario_trabajo_academico"
+                                        x-model="descripcion"
+                                    >
+                                    </textarea>
+                                </div>
+
                             </div>
+
+                            <div class="col-lg-12">
+                                <div
+                                    x-show="!validar_entrega"
+                                    x-cloak
+                                    x-collapse
+                                >
+                                    <!-- Botón para mostrar/ocultar el editor -->
+                                    <button
+                                        class="btn btn-primary w-100"
+                                        type="button"
+                                        x-on:click="validar_entrega = !$wire.validar_entrega, $wire.editar_entrega = true"
+                                        x-show="!validar_entrega"
+                                        x-cloak
+                                        x-collapse
+                                    >
+                                        <span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                                <path d="M16 5l3 3" />
+                                            </svg>
+                                            Editar Entrega
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+
                         </div>
                     </tbody>
-                    @if ($validar_entrega || $editar_entrega === true)
-                        <div class="form-footer">
+                    {{-- @if ($validar_entrega || $validar_entrega === true) --}}
+                        <div
+                            class="form-footer"
+                            x-show="validar_entrega"
+                            x-cloak
+                            x-collapse
+                        >
                             <button
-                                type="submit" class="btn btn-primary w-100"
+                                type="submit"
+                                class="btn btn-primary w-100"
                                 wire:loading.attr="disabled"
                                 wire:target="revisar_trabajo_academico, descripcion_comentario_trabajo_academico"
+                                x-on:click="validar_entrega = !$wire.validar_entrega, key = key + 1"
                             >
                                 <span wire:loading.remove wire:target="revisar_trabajo_academico, descripcion_comentario_trabajo_academico">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -100,7 +187,7 @@
                                 </span>
                             </button>
                         </div> --}}
-                    @endif
+                    {{-- @endif --}}
                 </form>
             @endif
         </div>
