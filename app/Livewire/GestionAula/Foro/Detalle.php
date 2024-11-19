@@ -46,17 +46,12 @@ class Detalle extends Component
      */
     public function mostrar_toast()
     {
-        if (session('mensaje_exito_respuesta')) {
-            $mensaje_toast = session('mensaje_exito_respuesta');
-            // Aquí puedes limpiar la sesión si es necesario
-            session()->forget('mensaje_exito_respuesta');
-
-            $this->dispatch(
-                'toast-basico',
-                mensaje: $mensaje_toast,
-                type: 'success'
-            );
-        }
+        dd($this->mensaje);
+        $this->dispatch(
+            'toast-basico',
+            mensaje: 'La respuesta se guardó correctamente.',
+            type: 'success'
+        );
     }
 
 

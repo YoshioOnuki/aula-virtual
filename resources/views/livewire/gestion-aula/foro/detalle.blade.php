@@ -6,7 +6,9 @@
     <div class="page-body">
         <div class="container-xl">
 
-            <div wire:init="mostrar_toast"></div>
+            @if (session('mensaje_exito_respuesta'))
+                <div wire:init="mostrar_toast"></div>
+            @endif
 
             @if ($es_docente_invitado)
                 <livewire:components.navegacion.alert-docente-invitado />
