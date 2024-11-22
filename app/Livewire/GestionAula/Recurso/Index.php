@@ -44,12 +44,11 @@ class Index extends Component
     #[Validate('required|file|mimes:pdf,xls,xlsx,doc,docx,ppt,pptx,txt|max:4096')]
     public $archivo_recurso;
     public $editar_recurso;
-    public $cerrar_modal = false;
-    public $estado_carga_modal = true; // Para manejar el estado de carga del modal
 
     public $modo_admin = false;// Modo admin, para saber si se esta en modo administrador
     public $es_docente = false;
     public $es_docente_invitado = false;
+    public $estado_carga_modal = true; // Para manejar el estado de carga del modal
     public $tipo_vista;
 
     // Variables para page-header
@@ -57,7 +56,9 @@ class Index extends Component
     public $links_page_header = [];
     public $regresar_page_header;
 
-    protected $listeners = ['abrir-modal-recurso-editar' => 'abrir_modal_recurso_editar'];
+    protected $listeners = [
+        'abrir-modal-recurso-editar' => 'abrir_modal_recurso_editar',
+    ];
 
 
     /**
@@ -65,8 +66,6 @@ class Index extends Component
      */
     public function abrir_modal_recurso_editar(Recurso $recurso)
     {
-        // $this->limpiar_modal();
-
         $this->modo = 0;
         $this->titulo_modal = 'Editar Recurso';
         $this->accion_estado = 'Editar';
@@ -83,8 +82,6 @@ class Index extends Component
      */
     public function abrir_modal_recurso_registrar()
     {
-        // $this->limpiar_modal();
-
         $this->modo = 1;
         $this->titulo_modal = 'Registrar Recurso';
         $this->accion_estado = 'Registrar';
@@ -190,6 +187,8 @@ class Index extends Component
      */
     public function limpiar_modal()
     {
+        $this->estado_carga_modal = true;
+
         $this->modo = 1;
         $this->titulo_modal = 'Registrar Recurso';
         $this->accion_estado = 'Registrar';
@@ -199,7 +198,6 @@ class Index extends Component
         // Reiniciar errores
         $this->resetErrorBag();
         // Reiniciar estado de carga
-        $this->estado_carga_modal = true;
     }
 
 
