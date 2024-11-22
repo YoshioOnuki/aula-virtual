@@ -109,22 +109,25 @@ class RespuestaFormulario extends Component
 
             DB::commit();
 
-            session(['mensaje_exito_respuesta' => 'La respuesta se guardó correctamente.']);
-
+            // session([
+            //     'mensaje_exito_respuesta' => 'La respuesta se guardó correctamente.',
+            //     'id' => $this->id_foro
+            // ]);
+            
             if ($this->tipo_vista === 'cursos') {
                 return redirect()->route('cursos.detalle.foro.detalle', [
                     'id_usuario' => $this->id_usuario_hash,
                     'tipo_vista' => $this->tipo_vista,
                     'id_curso' => $this->id_gestion_aula_hash,
                     'id_foro' => $this->id_foro_hash
-                ]);
+                ])->with('mensaje_exito_respuesta', 'La respuesta se guardó correctamente.');
             } else {
                 return redirect()->route('carga-academica.detalle.foro.detalle', [
                     'id_usuario' => $this->id_usuario_hash,
                     'tipo_vista' => $this->tipo_vista,
                     'id_curso' => $this->id_gestion_aula_hash,
                     'id_foro' => $this->id_foro_hash
-                ]);
+                ])->with('mensaje_exito_respuesta', 'La respuesta se guardó correctamente.');
             }
         } catch (\Exception $e) {
             DB::rollBack();

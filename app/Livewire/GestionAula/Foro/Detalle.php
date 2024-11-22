@@ -46,7 +46,6 @@ class Detalle extends Component
      */
     public function mostrar_toast()
     {
-        dd($this->mensaje);
         $this->dispatch(
             'toast-basico',
             mensaje: 'La respuesta se guardó correctamente.',
