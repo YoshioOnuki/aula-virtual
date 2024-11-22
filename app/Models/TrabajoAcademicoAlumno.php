@@ -82,7 +82,7 @@ class TrabajoAcademicoAlumno extends Model
      */
     public function comentarioTrabajoAcademico()
     {
-        return $this->hasMany(ComentarioTrabajoAcademico::class, 'id_trabajo_academico_alumno');
+        return $this->hasOne(ComentarioTrabajoAcademico::class, 'id_trabajo_academico_alumno');
     }
 
     /**
