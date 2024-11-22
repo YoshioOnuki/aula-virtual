@@ -65,8 +65,8 @@ Sigue estos pasos para configurar el proyecto en tu máquina local:
 ### 1. Clonar el Repositorio
 
 ```bash
-git clone https://github.com/tu-usuario/aula-virtual-posgrado.git
-cd aula-virtual-posgrado
+git clone https://github.com/YoshioOnuki/aula-virtual.git
+cd aula-virtual
 ```
 
 ### 2. Instalar Dependencias
