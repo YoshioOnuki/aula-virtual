@@ -13,6 +13,30 @@
   <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+
+<br/>
+<br/>
+
+<p align="center">
+    <a href="https://livewire.laravel.com" target="_blank">
+      <img width="300" src="public/media/logo.svg" alt="Livewire Logo">
+    </a>
+</p>
+
+<p align="center">
+    <a href="https://packagist.org/packages/livewire/livewire">
+        <img src="https://poser.pugx.org/livewire/livewire/d/total.svg" alt="Total Downloads">
+    </a>
+    <a href="https://packagist.org/packages/livewire/livewire">
+        <img src="https://poser.pugx.org/livewire/livewire/v/stable.svg" alt="Latest Stable Version">
+    </a>
+    <a href="https://packagist.org/packages/livewire/livewire">
+        <img src="https://poser.pugx.org/livewire/livewire/license.svg" alt="License">
+    </a>
+</p>
+
+<br/>
+
 ---
 
 
