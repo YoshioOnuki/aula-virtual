@@ -54,6 +54,7 @@ class Index extends Component
     public $modo_admin = false; // Modo admin, para saber si se esta en modo administrador
     public $es_docente = false;
     public $es_docente_invitado = false;
+    public $estado_carga_modal = true; // Para manejar el estado de carga del modal
     public $tipo_vista;
 
     // Variables para page-header
@@ -72,6 +73,8 @@ class Index extends Component
         $this->modo = 1;
         $this->titulo_modal = 'Registrar Trabajo Académico';
         $this->accion_modal = 'Registrar';
+
+        $this->estado_carga_modal = false;
     }
 
 
@@ -94,6 +97,8 @@ class Index extends Component
         $this->hora_fin_trabajo_academico = date('H:i', strtotime($this->editar_trabajo_academico->fecha_fin_trabajo_academico));
 
         $this->cargar_archivos_docente($id_trabajo_academico);
+
+        $this->estado_carga_modal = false;
     }
 
 
@@ -293,6 +298,8 @@ class Index extends Component
      */
     public function limpiar_modal()
     {
+        $this->estado_carga_modal = true;
+
         $this->modo = 1;
         $this->titulo_modal = 'Registrar Trabajo Académico';
         $this->accion_modal = 'Registrar';
