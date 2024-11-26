@@ -73,6 +73,7 @@ class Index extends Component
     public $hora_fin_asistencia_a_enviar;
 
     public $modo_admin = false; // Modo admin, para saber si se esta en modo administrador
+    public $estado_carga_modal = true; // Para manejar el estado de carga del modal
     public $tipo_vista;
 
     // Variables para page-header
@@ -107,6 +108,8 @@ class Index extends Component
         $this->modo_asistencias = 1; // Registrar
         $this->titulo_asistencias = 'Registrar Asistencia';
         $this->accion_asistencias = 'Registrar';
+
+        $this->estado_carga_modal = false;
     }
 
 
@@ -127,6 +130,41 @@ class Index extends Component
         $this->fecha_asistencia_temporal = $asistencia->fecha_asistencia;
         $this->hora_inicio_asistencia = Carbon::createFromFormat('H:i:s', $asistencia->hora_inicio_asistencia)->format('H:i');
         $this->hora_fin_asistencia = Carbon::createFromFormat('H:i:s', $asistencia->hora_fin_asistencia)->format('H:i');
+
+        $this->estado_carga_modal = false;
+    }
+
+
+    /**
+     * Abrir modal para enviar asistencia
+     */
+    public function abrir_modal_enviar_asistencia(Asistencia $asistencia)
+    {
+        $this->limpiar_modal_enviar();
+
+        $this->id_asistencia_enviar = $asistencia->id_asistencia;
+        $this->estados = EstadoAsistencia::estado(true)->get();
+        $this->tipo_asistencia_a_enviar = $asistencia->tipoAsistencia->nombre_tipo_asistencia;
+        $this->fecha_asistencia_a_enviar = $asistencia->fecha_asistencia;
+        $this->hora_inicio_asistencia_a_enviar = $asistencia->hora_inicio_asistencia;
+        $this->hora_fin_asistencia_a_enviar = $asistencia->hora_fin_asistencia;
+
+        $this->estado_carga_modal = false;
+    }
+
+
+    /**
+     * Abrir modal para eliminar asistencia
+     */
+    public function abrir_modal_eliminar(Asistencia $asistencia)
+    {
+        $this->id_asistencia_a_eliminar = $asistencia->id_asistencia;
+        $this->tipo_asistencia_a_eliminar = $asistencia->tipoAsistencia->nombre_tipo_asistencia;
+        $this->fecha_asistencia_a_eliminar = $asistencia->fecha_asistencia;
+        $this->hora_inicio_asistencia_a_eliminar = format_hora($asistencia->hora_inicio_asistencia);
+        $this->hora_fin_asistencia_a_eliminar = format_hora($asistencia->hora_fin_asistencia);
+
+        $this->estado_carga_modal = false;
     }
 
 
@@ -208,19 +246,6 @@ class Index extends Component
 
 
     /**
-     * Abrir modal para eliminar asistencia
-     */
-    public function abrir_modal_eliminar(Asistencia $asistencia)
-    {
-        $this->id_asistencia_a_eliminar = $asistencia->id_asistencia;
-        $this->tipo_asistencia_a_eliminar = $asistencia->tipoAsistencia->nombre_tipo_asistencia;
-        $this->fecha_asistencia_a_eliminar = $asistencia->fecha_asistencia;
-        $this->hora_inicio_asistencia_a_eliminar = format_hora($asistencia->hora_inicio_asistencia);
-        $this->hora_fin_asistencia_a_eliminar = format_hora($asistencia->hora_fin_asistencia);
-    }
-
-
-    /**
      * Eliminar asistencia
      */
     public function eliminar_asistencia(Asistencia $asistencia)
@@ -261,27 +286,13 @@ class Index extends Component
      */
     public function limpiar_modal_eliminar()
     {
+        $this->estado_carga_modal = true;
+
         $this->id_asistencia_a_eliminar = null;
         $this->tipo_asistencia_a_eliminar = '';
         $this->fecha_asistencia_a_eliminar = '';
         $this->hora_inicio_asistencia_a_eliminar = '';
         $this->hora_fin_asistencia_a_eliminar = '';
-    }
-
-
-    /**
-     * Abrir modal para enviar asistencia
-     */
-    public function abrir_modal_enviar_asistencia(Asistencia $asistencia)
-    {
-        $this->limpiar_modal_enviar();
-
-        $this->id_asistencia_enviar = $asistencia->id_asistencia;
-        $this->estados = EstadoAsistencia::estado(true)->get();
-        $this->tipo_asistencia_a_enviar = $asistencia->tipoAsistencia->nombre_tipo_asistencia;
-        $this->fecha_asistencia_a_enviar = $asistencia->fecha_asistencia;
-        $this->hora_inicio_asistencia_a_enviar = $asistencia->hora_inicio_asistencia;
-        $this->hora_fin_asistencia_a_enviar = $asistencia->hora_fin_asistencia;
     }
 
 
@@ -305,6 +316,7 @@ class Index extends Component
                 $asistencia_alumno->save();
             } else {
                 $this->cerrar_modal('#modal-enviar-asistencia');
+                $this->limpiar_modal_enviar();
                 $this->dispatch(
                     'toast-basico',
                     mensaje: 'No se puede enviar la asistencia,  el horario permitido para marcar asistencia ha finalizado.',
@@ -353,6 +365,8 @@ class Index extends Component
      */
     public function limpiar_modal()
     {
+        $this->estado_carga_modal = true;
+
         $this->modo_asistencias = 1;
         $this->titulo_asistencias = 'Registrar Asistencia';
         $this->accion_asistencias = 'Registrar';
@@ -371,6 +385,8 @@ class Index extends Component
      */
     public function limpiar_modal_enviar()
     {
+        $this->estado_carga_modal = true;
+
         $this->id_asistencia_enviar = null;
         $this->estado_asistencia = '';
         $this->tipo_asistencia_a_enviar = '';
