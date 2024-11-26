@@ -46,17 +46,11 @@ class Detalle extends Component
      */
     public function mostrar_toast()
     {
-        if (session('mensaje_exito_respuesta')) {
-            $mensaje_toast = session('mensaje_exito_respuesta');
-            // Aquí puedes limpiar la sesión si es necesario
-            session()->forget('mensaje_exito_respuesta');
-
-            $this->dispatch(
-                'toast-basico',
-                mensaje: $mensaje_toast,
-                type: 'success'
-            );
-        }
+        $this->dispatch(
+            'toast-basico',
+            mensaje: 'La respuesta se guardó correctamente.',
+            type: 'success'
+        );
     }
 
 
@@ -183,17 +177,18 @@ class Detalle extends Component
         }
 
         $gestion_aula = GestionAula::with('curso')->find($this->id_gestion_aula);
+        $nombre_curso = $gestion_aula->curso->nombre_curso . ' GRUPO ' . $gestion_aula->grupo_gestion_aula;
 
         // Links --> Detalle del curso o carga académica
         if ($this->tipo_vista === 'cursos') {
             $this->links_page_header[] = [
-                'name' => $gestion_aula->curso->nombre_curso,
+                'name' => $nombre_curso,
                 'route' => 'cursos.detalle',
                 'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]
             ];
         } else {
             $this->links_page_header[] = [
-                'name' => $gestion_aula->curso->nombre_curso,
+                'name' => $nombre_curso,
                 'route' => 'carga-academica.detalle',
                 'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]
             ];

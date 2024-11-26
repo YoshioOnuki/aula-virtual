@@ -91,9 +91,9 @@
                                     <div class="row row-cards d-flex justify-content-start">
 
                                         @if ($tipo_vista === 'carga-academica' && $es_docente)
-                                            {{-- Agregar recurso --}}
+                                            {{-- Registrar recurso --}}
                                             <div class="col-lg-12">
-                                                <a class="card cursor-pointer card-link card-link-pop" wire:click="abrir_modal_recurso_agregar()"
+                                                <a class="card cursor-pointer card-link card-link-pop" wire:click="abrir_modal_recurso_registrar"
                                                     data-bs-toggle="modal" data-bs-target="#modal-recursos">
                                                     <div class="card-body text-secondary">
                                                         <div class="row g-2">
@@ -115,7 +115,7 @@
                                                             <div
                                                                 class="col-12 d-flex justify-content-center align-items-center">
                                                                 <span class="text-muted fs-5">
-                                                                    Agregar recursos
+                                                                    Registrar recursos
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -126,7 +126,7 @@
 
                                         @forelse ($recursos as $item)
                                             <livewire:components.recurso.card-recurso :tipo_vista=$tipo_vista :usuario=$usuario
-                                            :id_curso=$id_gestion_aula :recurso=$item wire:key="recurso-{{ $item->id_recurso }}" lazy />
+                                                :id_curso=$id_gestion_aula :recurso=$item wire:key="recurso-{{ $item->id_recurso }}" lazy />
                                         @empty
 
                                             @if ($recursos->count() == 0 && $search != '')
@@ -185,18 +185,24 @@
     </div>
 
 
-    <div wire:ignore.self class="modal fade" id="modal-recursos" tabindex="-1" data-bs-backdrop="static">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
+    <div wire:ignore.self class="modal fade" id="modal-recursos" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" data-bs-keyboard="false">
+        <div class="modal-dialog modal-lg"
+            role="document">
+            <div class="modal-content {{ $estado_carga_modal ? 'cursor-progress' : '' }}">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        {{ $titulo_modal }}
+                        {{ !$estado_carga_modal ? $titulo_modal : '***' }}
                     </h5>
                     <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal"
                         aria-label="Close" wire:click="limpiar_modal"></button>
                 </div>
                 <form autocomplete="off" wire:submit="guardar_recurso">
-                    <div class="modal-body">
+                    <div
+                        class="modal-body"
+                        x-show="!$wire.estado_carga_modal"
+                        x-cloak
+                        x-collapse
+                    >
                         <div class="row g-3">
                             <div class="col-lg-12">
                                 <label for="nombre_recurso" class="form-label required">
@@ -216,7 +222,7 @@
                                 <label for="archivo_recurso" class="form-label required">
                                     Archivo
                                 </label>
-                                <input type="file" class="form-control @error('archivo_recurso') is-invalid @enderror"
+                                <input type="file" class="form-control @error('archivo_recurso') is-invalid @elseif(strlen($archivo_recurso) > 0) is-valid @enderror"
                                     id="archivo_recurso" wire:model.live="archivo_recurso"
                                     accept=".pdf,.xls,.xlsx,.doc,.docx,.ppt,.pptx,.txt" />
                                 @error('archivo_recurso')
@@ -227,6 +233,13 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Spinner de carga para que aparezca mientras se están cargando los datos -->
+                    <template x-if="$wire.estado_carga_modal">
+                        <div class="my-5 d-flex justify-content-center align-items-center">
+                            <div class="spinner-border text-primary" role="status"></div>
+                        </div>
+                    </template>
 
                     <div class="modal-footer">
                         <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="limpiar_modal">
@@ -241,38 +254,45 @@
                         </a>
 
                         <div class="ms-auto">
-                            <div wire:loading.remove>
-                                <button type="submit" class="btn btn-primary">
+                            <button
+                                type="submit" class="btn btn-primary w-100"
+                                wire:loading.attr="disabled"
+                                wire:target="guardar_recurso, archivo_recurso"
+                                {{ $estado_carga_modal ? 'disabled cursor-progress' : '' }}
+                            >
+                                <span wire:loading.remove wire:target="guardar_recurso, archivo_recurso">
                                     @if ($modo === 1)
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M12 5l0 14" />
-                                        <path d="M5 12l14 0" />
-                                    </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M12 5l0 14" />
+                                            <path d="M5 12l14 0" />
+                                        </svg>
                                     @else
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                        <path
-                                            d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                        <path d="M16 5l3 3" />
-                                    </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                            <path
+                                                d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                            <path d="M16 5l3 3" />
+                                        </svg>
                                     @endif
                                     {{ $accion_estado }}
-                                </button>
-                            </div>
-                            <div wire:loading>
-                                <button type="submit" class="btn btn-primary" disabled>
+                                </span>
+                                <span wire:loading wire:target="archivo_recurso">
                                     <div class="spinner-border spinner-border-sm me-2" role="status"></div>
-                                    Cargando
-                                </button>
-                            </div>
+                                    Cargando Archivo
+                                </span>
+                                <span wire:loading wire:target="guardar_recurso">
+                                    <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                                    Guardando Recurso
+                                </span>
+                            </button>
                         </div>
 
                     </div>

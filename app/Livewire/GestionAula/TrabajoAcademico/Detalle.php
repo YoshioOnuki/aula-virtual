@@ -33,18 +33,20 @@ class Detalle extends Component
     public $trabajo_academico_alumno;
 
     // Variables para el modal de Trabajo Académico
-    public $modo = 1; // Modo 1 = Agregar / 0 = Editar
-    public $titulo_modal = 'Agregar Entrega de Trabajo Académico';
-    public $accion_modal = 'Agregar';
+    public $modo = 1; // Modo 1 = Registrar / 0 = Editar
+    public $titulo_modal = 'Registrar Entrega de Trabajo Académico';
+    public $accion_modal = 'Registrar';
     #[Validate('nullable')]
     public $descripcion_trabajo_academico_alumno;
     #[Validate(['archivos_trabajo_alumno.*' => 'nullable|file|mimes:pdf,xls,xlsx,doc,docx,ppt,pptx,txt,jpg,jpeg,png,webp|max:4096'])]
     public $archivos_trabajo_alumno = [];
     public $nombre_archivo_trabajo_academico = [];
     public $iteration = 1;
+    public $comentarios;
 
     public $modo_admin = false; // Modo admin, para saber si se esta en modo administrador
     public $es_docente_invitado = false;
+    public $estado_carga_modal = true; // Para manejar el estado de carga del modal
     public $tipo_vista;
 
     // Variables para page-header
@@ -52,17 +54,40 @@ class Detalle extends Component
     public $links_page_header = [];
     public $regresar_page_header;
 
+    protected $listeners = ['abrir-modal-comentarios' => 'abrir_modal_comentarios'];
+
 
     /**
-     * Abrir modal para agregar entrega de trabajo académico
+     * Abrir modal de comentarios
+     */
+    public function abrir_modal_comentarios()
+    {
+        // $this->comentarios = $this->trabajo_academico_alumno->comentariosTrabajoAcademico;
+        if (count($this->comentarios) <= 0) {
+            $this->dispatch(
+                'toast-basico',
+                mensaje: 'No se han encontrado comentarios para esta entrega de trabajo académico',
+                type: 'info'
+            );
+        } else {
+            $this->comentarios = $this->comentarios;
+        }
+        $this->estado_carga_modal = false;
+    }
+
+
+    /**
+     * Abrir modal para registrar entrega de trabajo académico
      */
     public function abrir_modal_entrega_trabajo()
     {
         $this->limpiar_modal();
 
         $this->modo = 1;
-        $this->titulo_modal = 'Agregar Entrega de Trabajo Académico';
-        $this->accion_modal = 'Agregar';
+        $this->titulo_modal = 'Registrar Entrega de Trabajo Académico';
+        $this->accion_modal = 'Registrar';
+
+        $this->estado_carga_modal = false;
     }
 
 
@@ -197,7 +222,7 @@ class Detalle extends Component
                 // Obtener el texto de la descripción del trabajo
                 $descripcion_trabajo = subir_archivo_editor($this->descripcion_trabajo_academico_alumno, 'archivos/posgrado/media/editor-texto/trabajos-academicos-alumnos/');
 
-                if ($this->modo === 1) // Modo agregar
+                if ($this->modo === 1) // Modo Registrar
                 {
                     // Obtener el estado del trabajo académico
                     $estado_trabajo = EstadoTrabajoAcademico::where('nombre_estado_trabajo_academico', 'Entregado')->first();
@@ -237,20 +262,11 @@ class Detalle extends Component
                 $this->dispatch('actualizar_estado_trabajo');
                 $this->verificar_entrega_trabajo();
 
-                if (count($this->archivos_trabajo_alumno) <= 0)
-                {
-                    $this->dispatch(
-                        'toast-basico',
-                        mensaje: 'La entrega del trabajo académico se ha guardado correctamente, pero no se ha subido ningún archivo',
-                        type: 'info'
-                    );
-                } else {
-                    $this->dispatch(
-                        'toast-basico',
-                        mensaje: 'La entrega del trabajo académico se ha guardado correctamente',
-                        type: 'success'
-                    );
-                }
+                $this->dispatch(
+                    'toast-basico',
+                    mensaje: 'La entrega del trabajo académico se ha guardado correctamente',
+                    type: 'success'
+                );
 
             }
         } catch (\Exception $e) {
@@ -287,9 +303,11 @@ class Detalle extends Component
      */
     public function limpiar_modal()
     {
+        $this->estado_carga_modal = true;
+
         $this->modo = 1;
-        $this->titulo_modal = 'Agregar Entrega de Trabajo Académico';
-        $this->accion_modal = 'Agregar';
+        $this->titulo_modal = 'Registrar Entrega de Trabajo Académico';
+        $this->accion_modal = 'Registrar';
         $this->reset([
             'descripcion_trabajo_academico_alumno',
             'archivos_trabajo_alumno'
@@ -298,6 +316,15 @@ class Detalle extends Component
 
         // Reiniciar errores
         $this->resetErrorBag();
+    }
+
+
+    /**
+     * Limpiar modal de Comentarios
+     */
+    public function limpiar_modal_comentarios()
+    {
+        $this->estado_carga_modal = true;
     }
 
 
@@ -356,17 +383,18 @@ class Detalle extends Component
         }
 
         $gestion_aula = GestionAula::with('curso')->find($this->id_gestion_aula);
+        $nombre_curso = $gestion_aula->curso->nombre_curso . ' GRUPO ' . $gestion_aula->grupo_gestion_aula;
 
         // Links --> Detalle del curso o carga académica
         if ($this->tipo_vista === 'cursos') {
             $this->links_page_header[] = [
-                'name' => $gestion_aula->curso->nombre_curso,
+                'name' => $nombre_curso,
                 'route' => 'cursos.detalle',
                 'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]
             ];
         } else {
             $this->links_page_header[] = [
-                'name' => $gestion_aula->curso->nombre_curso,
+                'name' => $nombre_curso,
                 'route' => 'carga-academica.detalle',
                 'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]
             ];
@@ -402,6 +430,22 @@ class Detalle extends Component
 
         $id_trabajo_academico = Hashids::decode($id_trabajo_academico);
         $this->trabajo_academico = TrabajoAcademico::with('archivoDocente')->find($id_trabajo_academico[0]);
+
+        if ($this->tipo_vista === 'cursos')
+        {
+            $id_gestion_aula_alumno = GestionAulaAlumno::where('id_usuario', $this->usuario->id_usuario)
+                ->gestionAula($this->id_gestion_aula)
+                ->first()->id_gestion_aula_alumno ?? null;
+            $id_trabajo_academico = $this->trabajo_academico->id_trabajo_academico;
+            $this->comentarios = TrabajoAcademicoAlumno::with([
+                'comentarioTrabajoAcademico' => function ($query) {
+                    $query->with('gestionAulaDocente.usuario');
+                }
+            ])
+                ->where('id_gestion_aula_alumno', $id_gestion_aula_alumno)
+                ->where('id_trabajo_academico', $id_trabajo_academico)
+                ->first()->comentarioTrabajoAcademico ?? [];
+        }
 
         $this->obtener_datos_page_header();
         $this->verificar_entrega_trabajo();

@@ -97,7 +97,7 @@
                                                 Registrar
                                             </a>
                                             {{-- <a class="btn btn-primary d-none d-md-inline-block"
-                                                wire:click="abrir_modal_agregar_foro()" data-bs-toggle="modal"
+                                                wire:click="abrir_modal_registrar_foro()" data-bs-toggle="modal"
                                                 data-bs-target="#modal-foro">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
                                                     height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -121,7 +121,7 @@
                                                 </svg>
                                             </a>
                                             {{-- <a class="btn btn-primary d-md-none btn-icon"
-                                                wire:click="abrir_modal_agregar_foro()" data-bs-toggle="modal"
+                                                wire:click="abrir_modal_registrar_foro()" data-bs-toggle="modal"
                                                 data-bs-target="#modal-foro">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
                                                     height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -143,8 +143,8 @@
                                 <thead>
                                     <tr>
                                         <th>Título del foro</th>
-                                        <th class="col-2">Creado por</th>
-                                        <th class="col-2">Última respuesta</th>
+                                        <th class="col-3">Creado por</th>
+                                        <th class="col-3">Última respuesta</th>
                                         <th class="col-1 text-center">Respuestas</th>
                                         @if($usuario->esDocente($id_gestion_aula))
                                             <th class="w-1 text-center"></th>
@@ -153,13 +153,17 @@
                                 </thead>
                                 <tbody>
                                     @forelse ($foros as $item)
-                                        <tr>
+                                        <tr wire:key="foro-{{ $item->id_foro }}">
                                             <td>
                                                 <a href="{{ $tipo_vista === 'carga-academica' ? 
                                                     route('carga-academica.detalle.foro.detalle', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash, 'id_foro' => Hashids::encode($item->id_foro)]) :
                                                     route('cursos.detalle.foro.detalle', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash, 'id_foro' => Hashids::encode($item->id_foro)]) }}"
                                                     class="text-reset">
-                                                    {{ $item->titulo_foro }}
+                                                    @if($usuario->esDocente($id_gestion_aula))
+                                                        {{ Str::limit($item->titulo_foro, 50) }}
+                                                    @else
+                                                        {{ Str::limit($item->titulo_foro, 55) }}
+                                                    @endif
                                                 </a>
                                             </td>
                                             <td>
@@ -168,7 +172,7 @@
                                                         class="avatar me-2 rounded avatar-static">
                                                     <div class="flex-fill">
                                                         <div class="font-weight-medium">
-                                                            {{ Str::limit($item->gestionAulaDocente->usuario->nombre_completo, 20) }}
+                                                            {{ Str::limit($item->gestionAulaDocente->usuario->nombre_completo, 26) }}
                                                         </div>
                                                         <div class="text-secondary">
                                                             <a href="{{ $tipo_vista === 'carga-academica' ? 
@@ -193,7 +197,7 @@
                                                             class="avatar me-2 rounded avatar-static">
                                                         <div class="flex-fill">
                                                             <div class="font-weight-medium">
-                                                                {{ Str::limit($item->foroRespuesta->last()->gestionAulaAlumno->usuario->nombre_completo, 20) }}
+                                                                {{ Str::limit($item->foroRespuesta->last()->gestionAulaAlumno->usuario->nombre_completo, 26) }}
                                                             </div>
                                                             <div class="text-secondary">
                                                                 <a href="{{ $tipo_vista === 'carga-academica' ? 
@@ -315,8 +319,8 @@
     </div>
 
 
-    {{-- Modal para agregar y editar foro <==> DE BAJA --}}
-    <div wire:ignore.self class="modal fade" id="modal-foro" tabindex="-1" data-bs-backdrop="static">
+    {{-- Modal para registrar y editar foro <==> DE BAJA --}}
+    <div wire:ignore.self class="modal fade" id="modal-foro" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -468,7 +472,7 @@
     </div>
 
     {{-- Modal para eliminar foro --}}
-    <div wire:ignore.self class="modal fade" id="modal-eliminar" tabindex="-1" data-bs-backdrop="static">
+    <div wire:ignore.self class="modal fade" id="modal-eliminar" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -600,7 +604,7 @@
     </div>
 
     {{-- Modal para duplicar foro --}}
-    <div wire:ignore.self class="modal fade" id="modal-duplicar" tabindex="-1" data-bs-backdrop="static">
+    <div wire:ignore.self class="modal fade" id="modal-duplicar" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">

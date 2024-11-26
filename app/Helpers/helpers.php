@@ -3,6 +3,7 @@
 use App\Models\Accion;
 use App\Models\AccionUsuario;
 use App\Models\GestionAula;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Vinkla\Hashids\Facades\Hashids;
 
@@ -138,10 +139,25 @@ if (!function_exists('verificar_hora_actual')) {
         $fecha_actual = date('Y-m-d');
         $fecha = date('Y-m-d', strtotime($fecha));
 
-        // Aumentarle un minuto a la hora de fin
-        $hora_fin = date('H:i:s', strtotime('+1 minute', strtotime($hora_fin)));
         if ($fecha_actual === $fecha) {
-            if ($hora_actual >= $hora_inicio && $hora_actual < $hora_fin) {
+            if ($hora_actual >= $hora_inicio && $hora_actual <= $hora_fin) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+// Funcion para verificar si la hora de comparacion está entre la hora de inicio y fin en la fecha ingresada
+if (!function_exists('verificar_hora_comparacion')) {
+    function verificar_hora_comparacion($fecha_comparacion, $fecha, $hora_inicio, $hora_fin)
+    {
+        $hora_creacion = date('H:i:s', strtotime($fecha_comparacion));
+        $fecha_creacion = date('Y-m-d', strtotime($fecha_comparacion));
+        $fecha = date('Y-m-d', strtotime($fecha));
+
+        if ($fecha_creacion === $fecha) {
+            if ($hora_creacion >= $hora_inicio && $hora_creacion <= $hora_fin) {
                 return true;
             }
         }
@@ -161,40 +177,32 @@ if (!function_exists('verificar_fecha_trabajo')) {
     }
 }
 
-// Funcion para verificar si la hora ingresada está entre la hora de inicio y fin en la fecha ingresada en formato Y-m-d H:i:s
-if (!function_exists('verificar_hora')) {
-    function verificar_hora($hora_inicio, $hora_fin, $fecha, $fecha_comparar)
-    {
-        $hora_actual = date('H:i:s', strtotime($fecha_comparar));
-        $fecha_actual = date('Y-m-d', strtotime($fecha_comparar));
-        // Aumentarle un minuto a la hora de fin
-        $hora_fin = date('H:i:s', strtotime('+1 minute', strtotime($hora_fin)));
-        if ($fecha_actual === $fecha) {
-            if ($hora_actual >= $hora_inicio && $hora_actual < $hora_fin) {
-                return true;
-            }
-        }
-        return false;
-    }
-}
-
 // funcion para verificar cuanto tiempo paso desde la fecha ingresada en formato Y-m-d H:i:s, y si no a pasado el tiempo establecido, que no muestre nada
 if (!function_exists('tiempo_transcurrido')) {
     function tiempo_transcurrido($fecha_comparacion, $fecha, $hora_inicio, $hora_fin)
     {
-        if (verificar_hora($hora_inicio, $hora_fin, $fecha, $fecha_comparacion)) {
+        if (verificar_hora_comparacion($fecha_comparacion, $fecha, $hora_inicio, $hora_fin)) {
             return '';
         }
 
         $mensaje = '';
         // Formato de dias, horas, minutos y segundos
-        $fecha_actual = date('Y-m-d H:i:s', strtotime($fecha_comparacion));
-        $fecha_entrada = date('Y-m-d H:i:s', strtotime($fecha . ' ' . $hora_inicio));
-        $diferencia = strtotime($fecha_actual) - strtotime($fecha_entrada);
-        $dias = floor($diferencia / (60 * 60 * 24));
-        $horas = floor(($diferencia - ($dias * 60 * 60 * 24)) / (60 * 60));
-        $minutos = floor(($diferencia - ($dias * 60 * 60 * 24) - ($horas * 60 * 60)) / 60);
-        $segundos = floor($diferencia - ($dias * 60 * 60 * 24) - ($horas * 60 * 60) - ($minutos * 60));
+        $fecha_creacion = date('Y-m-d H:i:s', strtotime($fecha_comparacion));
+        $fecha = date('Y-m-d', strtotime($fecha));
+        $fecha_entrada = date('Y-m-d H:i:s', strtotime($fecha . ' ' . $hora_fin));
+
+        // Convierte las fechas a objetos DateTime
+        $datetime_actual = new DateTime($fecha_creacion);
+        $datetime_entrada = new DateTime($fecha_entrada);
+
+        // Calcula la diferencia
+        $diferencia = $datetime_actual->diff($datetime_entrada);
+
+        // Obtén los días, horas, minutos y segundos de diferencia
+        $dias = $diferencia->days;
+        $horas = $diferencia->h;
+        $minutos = $diferencia->i;
+        $segundos = $diferencia->s;
 
         if ($dias > 0) {
             $mensaje .= $dias . ' día(s) ';
@@ -209,7 +217,7 @@ if (!function_exists('tiempo_transcurrido')) {
             $mensaje .= $segundos . ' segundo(s) ';
         }
 
-        return $mensaje;
+        return $mensaje. ' tarde.';
     }
 }
 
@@ -331,10 +339,11 @@ if (!function_exists('desencriptar')) {
 
 // Funcion para subir un archivo del curso
 if (!function_exists('subir_archivo')) {
-    function subir_archivo($archivo, $url_archiv, $carpetas, $extencion_archivo)
+    function subir_archivo($archivo, $url_archivo_antiguo, $carpetas, $extencion_archivo)
     {
-        if (file_exists($url_archiv)) {
-            unlink($url_archiv);
+        // Eliminar el archivo antiguo
+        if (file_exists($url_archivo_antiguo)) {
+            unlink($url_archivo_antiguo);
         }
 
         $base_path = 'archivos/';
@@ -392,40 +401,33 @@ if (!function_exists('obtener_ruta_base')) {
                                     }
                                 ])->select('id_tipo_programa', 'nombre_tipo_programa', 'id_nivel_academico');
                             }
-                        ])->select('id_programa', 'nombre_programa', 'mencion_programa', 'id_tipo_programa');
-                    },
-                    'ciclo' => function ($query) {
-                        $query->select('id_ciclo', 'nombre_ciclo');
+                        ])->select('id_programa', 'id_tipo_programa');
                     }
-                ])
-                    ->select('id_curso', 'id_programa', 'nombre_curso', 'id_ciclo');
-            },
-            'proceso' => function ($query) {
-                $query->select('id_proceso', 'nombre_proceso');
+                ])->select('id_curso', 'id_programa', 'nombre_curso');
             }
         ])
             ->select('id_gestion_aula', 'id_curso', 'id_proceso')
             ->find($id_gestion_aula);
 
 
-        $nombre_curso = $curso->curso->nombre_curso . ' - ' . $curso->grupo_gestion_aula;
-        $proceso = $curso->proceso->nombre_proceso;
-        if ($curso->curso->programa->mencion_programa) {
-            $nombre_programa = $curso->curso->programa->nombre_programa . ' - ' . $curso->curso->programa->mencion_programa;
-        } else {
-            $nombre_programa = $curso->curso->nombre_programa;
-        }
-        $ciclo = $curso->curso->ciclo->nombre_ciclo;
-        $tipo_programa = $curso->curso->programa->tipoPrograma->nombre_tipo_programa;
         $nivel_academico = $curso->curso->programa->tipoPrograma->nivelAcademico->nombre_nivel_academico;
+        // $proceso = $curso->proceso->nombre_proceso;
+        $tipo_programa = $curso->curso->programa->tipoPrograma->nombre_tipo_programa;
+        // if ($curso->curso->programa->mencion_programa) {
+        //     $nombre_programa = $curso->curso->programa->nombre_programa . ' - ' . $curso->curso->programa->mencion_programa;
+        // } else {
+        //     $nombre_programa = $curso->curso->nombre_programa;
+        // }
+        // $ciclo = $curso->curso->ciclo->nombre_ciclo;
+        // $nombre_curso = $curso->curso->nombre_curso . ' - ' . $curso->grupo_gestion_aula;
 
         $carpetas = [
             Str::slug($nivel_academico),
-            Str::slug($proceso),
-            Str::slug($tipo_programa),
-            Str::slug($nombre_programa),
-            Str::slug($ciclo),
-            Str::slug($nombre_curso)
+            // Str::slug($proceso),
+            Str::slug($tipo_programa)
+            // Str::slug($nombre_programa),
+            // Str::slug($ciclo),
+            // Str::slug($nombre_curso)
         ];
 
         return $carpetas;
@@ -506,17 +508,22 @@ if (!function_exists('obtener_nombre_archivo')) {
 
 // Funcion para obtener los datos de un archivo
 if (!function_exists('format_bytes')) {
-    function format_bytes($bytes, $precision)
+    function format_bytes($bytes, $precision = 2)
     {
-        $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+        // Validación de entrada
+        if (!is_numeric($bytes) || $bytes < 0 || !is_int($precision) || $precision < 0) {
+            return "Invalid input";
+        }
 
-        $bytes = max($bytes, 0);
-        $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+        $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+        $pow = $bytes > 0 ? floor(log($bytes, 1024)) : 0;
         $pow = min($pow, count($units) - 1);
 
-        $bytes /= (1 << (10 * $pow));
+        // División utilizando pow para precisión
+        $bytes /= pow(1024, $pow);
 
-        return round($bytes, $precision) . ' ' . $units[$pow];
+        // Redondear a la precisión deseada y concatenar la unidad correcta
+        return number_format($bytes, $precision, '.', '') . ' ' . $units[$pow];
     }
 }
 
@@ -753,5 +760,34 @@ if (!function_exists('color_respuesta_foro')) {
             default:
                 return '';
         }
+    }
+}
+
+// Funcion para obtener el tamaño de una carpeta
+if (!function_exists('tamano_carpeta')) {
+    function tamano_carpeta($carpeta)
+    {
+        $size = 0;
+        $carpeta = public_path($carpeta);
+        // foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($carpeta)) as $file) {
+        //     $size += $file->getSize();
+        // }
+        if (file_exists($carpeta)) {
+            foreach (File::allFiles($carpeta) as $file) {
+                    $size += $file->getSize();
+            }
+        }
+        return $size;
+    }
+}
+
+// Funcion para obtener el porcentaje de uso de la carpeta
+if (!function_exists('porcentaje_uso')) {
+    function porcentaje_uso($total, $usado)
+    {
+        if ($total === 0) {
+            return 0;
+        }
+        return round(($usado / $total) * 100, 2);
     }
 }

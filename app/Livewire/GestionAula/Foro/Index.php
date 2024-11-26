@@ -31,9 +31,9 @@ class Index extends Component
     public $id_gestion_aula;
 
     // Variables para el modal de Foros
-    public $modo = 1; // Modo 1 = Agregar / 0 = Editar
-    public $titulo_modal = 'Agregar Foro';
-    public $accion_modal = 'Agregar';
+    public $modo = 1; // Modo 1 = Registrar / 0 = Editar
+    public $titulo_modal = 'Registrar Foro';
+    public $accion_modal = 'Registrar';
     public $editar_foro;
     #[Validate('required')]
     public $titulo_foro;
@@ -94,14 +94,14 @@ class Index extends Component
 
 
     /**
-     * Abrir modal para agregar un foro
+     * Abrir modal para Registrar un foro
      */
-    public function abrir_modal_agregar_foro()
+    public function abrir_modal_registrar_foro()
     {
         $this->limpiar_modal();
         $this->modo = 1;
-        $this->titulo_modal = 'Agregar Foro';
-        $this->accion_modal = 'Agregar';
+        $this->titulo_modal = 'Registrar Foro';
+        $this->accion_modal = 'Registrar';
     }
 
 
@@ -168,7 +168,7 @@ class Index extends Component
         try {
             DB::beginTransaction();
 
-            if ($this->modo === 1) // Modo agregar
+            if ($this->modo === 1) // Modo Registrar
             {
                 $id_gestion_aula_docente = GestionAulaDocente::where('id_usuario', $this->usuario->id_usuario)
                     ->gestionAula($this->id_gestion_aula)
@@ -331,8 +331,8 @@ class Index extends Component
     public function limpiar_modal()
     {
         $this->modo = 1;
-        $this->titulo_modal = 'Agregar Foro';
-        $this->accion_modal = 'Agregar';
+        $this->titulo_modal = 'Registrar Foro';
+        $this->accion_modal = 'Registrar';
         $this->reset([
             'titulo_foro',
             'descripcion_foro',
@@ -426,17 +426,18 @@ class Index extends Component
         }
 
         $gestion_aula = GestionAula::with('curso')->find($this->id_gestion_aula);
+        $nombre_curso = $gestion_aula->curso->nombre_curso . ' GRUPO ' . $gestion_aula->grupo_gestion_aula;
 
         // Links --> Detalle del curso o carga académica
         if ($this->tipo_vista === 'cursos') {
             $this->links_page_header[] = [
-                'name' => $gestion_aula->curso->nombre_curso,
+                'name' => $nombre_curso,
                 'route' => 'cursos.detalle',
                 'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]
             ];
         } else {
             $this->links_page_header[] = [
-                'name' => $gestion_aula->curso->nombre_curso,
+                'name' => $nombre_curso,
                 'route' => 'carga-academica.detalle',
                 'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]
             ];

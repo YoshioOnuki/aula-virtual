@@ -27,7 +27,7 @@
                         </strong>
                     </div>
                     <div class="text-azure">
-                        <ul>
+                        <ul class="mb-0">
                             <li>Nombre completo</li>
                             <li>Número de documento</li>
                             @if ($tipo_vista === 'cursos')
@@ -69,7 +69,7 @@
             </thead>
             <tbody>
                 @forelse ($usuarios as $item)
-                    <tr>
+                    <tr wire:key="{{ $item->id_usuario }}">
                         @if($tipo_vista === 'cursos')
                             <td>
                                 {{ $item->persona->codigo_alumno_persona ?? 'N/A'}}

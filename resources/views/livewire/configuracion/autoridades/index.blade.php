@@ -46,9 +46,10 @@
                                     </div>
                                     <div class="col-lg-5 col-3 d-flex justify-content-end">
                                         <a href="" class="btn btn-primary d-none d-md-inline-block">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                                stroke-linecap="round" stroke-linejoin="round">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                                                height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                stroke="currentColor" fill="none" stroke-linecap="round"
+                                                stroke-linejoin="round">
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                                 <path d="M12 5l0 14" />
                                                 <path d="M5 12l14 0" />
@@ -56,9 +57,10 @@
                                             Crear Autoridad
                                         </a>
                                         <a href="" class="btn btn-primary d-md-none btn-icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                                stroke-linecap="round" stroke-linejoin="round">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                                                height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                stroke="currentColor" fill="none" stroke-linecap="round"
+                                                stroke-linejoin="round">
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                                 <path d="M12 5l0 14" />
                                                 <path d="M5 12l14 0" />
@@ -80,109 +82,110 @@
                                 </thead>
                                 <tbody>
                                     @php
-                                    $i = $autoridades->count() ?? 0;
+                                        $i = $autoridades->count() ?? 0;
                                     @endphp
                                     @forelse ($autoridades as $item)
-                                    <tr>
-                                        <td>
-                                            <span class="text-secondary">
-                                                {{ $i-- }}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <div class="form-selectgroup-label-content d-flex align-items-start">
-                                                <img src="{{ asset($item->mostrar_foto ?? '/media/avatar-none.webp') }}"
-                                                    alt="avatar" class="avatar me-3 rounded avatar-static">
-                                                <div>
-                                                    <div class="fs-3">{{ $item->nombre_autoridad }}</div>
-                                                    <div class="text-muted fs-4">
-                                                        {{ $item->cargo->nombre_cargo }}
-                                                        {{ $item->facultad ? 'de la ' . $item->facultad->nombre_facultad
-                                                        : '' }}
+                                        <tr wire:key="autoridad-{{ $item->id_autoridad }}">
+                                            <td>
+                                                <span class="text-secondary">
+                                                    {{ $i-- }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div class="form-selectgroup-label-content d-flex align-items-start">
+                                                    <img src="{{ asset($item->mostrar_foto ?? '/media/avatar-none.webp') }}"
+                                                        alt="avatar" class="avatar me-3 rounded avatar-static">
+                                                    <div>
+                                                        <div class="fs-3">{{ $item->nombre_autoridad }}</div>
+                                                        <div class="text-muted fs-4">
+                                                            {{ $item->cargo->nombre_cargo }}
+                                                            {{ $item->facultad ? 'de la ' . $item->facultad->nombre_facultad : '' }}
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            @if ($item->estado_autoridad == 1)
-                                            <a wire:click="abrir_modal_estado({{ $item->id_autoridad }}, 0)"
-                                                class="text-decoration-none cursor-pointer">
-                                                <span class="badge bg-teal-lt status-teal px-3 py-2 fs-4">
-                                                    <span class="status-dot status-dot-animated me-2"></span>
-                                                    Activo
-                                                </span>
-                                            </a>
-                                            @elseif ($item->estado_usuario == 0)
-                                            <a wire:click="abrir_modal_estado({{ $item->id_autoridad }}, 1)"
-                                                class="text-decoration-none cursor-pointer">
-                                                <span class="badge bg-red-lt status-red px-3 py-2 fs-4">
-                                                    <span class="status-dot status-dot-animated me-2"></span>
-                                                    Inactivo
-                                                </span>
-                                            </a>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <div class="btn-list flex-nowrap">
-                                                <div class="dropdown">
-                                                    <button class="btn dropdown-toggle align-text-top"
-                                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                                        Acciones
-                                                    </button>
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        <a class="dropdown-item" style="cursor: pointer;">
-                                                            Editar
-                                                        </a>
+                                            </td>
+                                            <td>
+                                                @if ($item->estado_autoridad == 1)
+                                                    <a wire:click="abrir_modal_estado({{ $item->id_autoridad }}, 0)"
+                                                        class="text-decoration-none cursor-pointer">
+                                                        <span class="badge bg-teal-lt status-teal px-3 py-2 fs-4">
+                                                            <span class="status-dot status-dot-animated me-2"></span>
+                                                            Activo
+                                                        </span>
+                                                    </a>
+                                                @elseif ($item->estado_usuario == 0)
+                                                    <a wire:click="abrir_modal_estado({{ $item->id_autoridad }}, 1)"
+                                                        class="text-decoration-none cursor-pointer">
+                                                        <span class="badge bg-red-lt status-red px-3 py-2 fs-4">
+                                                            <span class="status-dot status-dot-animated me-2"></span>
+                                                            Inactivo
+                                                        </span>
+                                                    </a>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <div class="btn-list flex-nowrap">
+                                                    <div class="dropdown">
+                                                        <button class="btn dropdown-toggle align-text-top"
+                                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                                            Acciones
+                                                        </button>
+                                                        <div class="dropdown-menu dropdown-menu-end">
+                                                            <a class="dropdown-item" style="cursor: pointer;">
+                                                                Editar
+                                                            </a>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                        </tr>
                                     @empty
-                                    @if ($autoridades->count() == 0 && $search != '')
-                                    <tr>
-                                        <td colspan="9">
-                                            <div class="text-center" style="padding-bottom: 2rem; padding-top: 2rem;">
-                                                <span class="text-secondary">
-                                                    No se encontraron resultados para
-                                                    "<strong>{{ $search }}</strong>"
-                                                </span>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @else
-                                    <tr>
-                                        <td colspan="9">
-                                            <div class="text-center" style="padding-bottom: 2rem; padding-top: 2rem;">
-                                                <span class="text-secondary">
-                                                    No hay usuarios registrados
-                                                </span>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @endif
+                                        @if ($autoridades->count() == 0 && $search != '')
+                                            <tr>
+                                                <td colspan="9">
+                                                    <div class="text-center"
+                                                        style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                        <span class="text-secondary">
+                                                            No se encontraron resultados para
+                                                            "<strong>{{ $search }}</strong>"
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @else
+                                            <tr>
+                                                <td colspan="9">
+                                                    <div class="text-center"
+                                                        style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                        <span class="text-secondary">
+                                                            No hay usuarios registrados
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endif
                                     @endforelse
                                 </tbody>
                             </table>
                         </div>
                         <div class="card-footer {{ $autoridades->hasPages() ? 'py-0' : '' }}">
                             @if ($autoridades->hasPages())
-                            <div class="d-flex justify-content-between">
-                                <div class="d-flex align-items-center text-secondary">
-                                    Mostrando {{ $autoridades->firstItem() }} - {{ $autoridades->lastItem() }} de
-                                    {{ $autoridades->total() }} registros
+                                <div class="d-flex justify-content-between">
+                                    <div class="d-flex align-items-center text-secondary">
+                                        Mostrando {{ $autoridades->firstItem() }} - {{ $autoridades->lastItem() }} de
+                                        {{ $autoridades->total() }} registros
+                                    </div>
+                                    <div class="mt-3">
+                                        {{ $autoridades->links() }}
+                                    </div>
                                 </div>
-                                <div class="mt-3">
-                                    {{ $autoridades->links() }}
-                                </div>
-                            </div>
                             @else
-                            <div class="d-flex justify-content-between">
-                                <div class="d-flex align-items-center text-secondary">
-                                    Mostrando {{ $autoridades->firstItem() }} - {{ $autoridades->lastItem() }} de
-                                    {{ $autoridades->total() }} registros
+                                <div class="d-flex justify-content-between">
+                                    <div class="d-flex align-items-center text-secondary">
+                                        Mostrando {{ $autoridades->firstItem() }} - {{ $autoridades->lastItem() }} de
+                                        {{ $autoridades->total() }} registros
+                                    </div>
                                 </div>
-                            </div>
                             @endif
                         </div>
                     </div>
@@ -192,7 +195,7 @@
     </div>
 
 
-    <div wire:ignore.self class="modal fade" id="modal-estado-autoridad" tabindex="-1" data-bs-backdrop="static">
+    <div wire:ignore.self class="modal fade" id="modal-estado-autoridad" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -207,25 +210,25 @@
                     <div class="modal-body px-6">
                         <div class="row g-3">
                             <div class="col-lg-12 mt-2 text-center">
-                                @if($modo === 1)
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="#0ca678" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="icon icon-tabler icons-tabler-outline icon-tabler-lock-open svg-extra-large my-6">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path
-                                        d="M5 11m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z" />
-                                    <path d="M12 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
-                                    <path d="M8 11v-5a4 4 0 0 1 8 0" />
-                                </svg>
+                                @if ($modo === 1)
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="#0ca678" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-lock-open svg-extra-large my-6">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path
+                                            d="M5 11m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z" />
+                                        <path d="M12 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                        <path d="M8 11v-5a4 4 0 0 1 8 0" />
+                                    </svg>
                                 @else
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="#d63939"
-                                    class="icon icon-tabler icons-tabler-filled icon-tabler-lock svg-extra-large my-6">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path
-                                        d="M12 2a5 5 0 0 1 5 5v3a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-10a3 3 0 0 1 -3 -3v-6a3 3 0 0 1 3 -3v-3a5 5 0 0 1 5 -5m0 12a2 2 0 0 0 -1.995 1.85l-.005 .15a2 2 0 1 0 2 -2m0 -10a3 3 0 0 0 -3 3v3h6v-3a3 3 0 0 0 -3 -3" />
-                                </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="#d63939"
+                                        class="icon icon-tabler icons-tabler-filled icon-tabler-lock svg-extra-large my-6">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path
+                                            d="M12 2a5 5 0 0 1 5 5v3a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-10a3 3 0 0 1 -3 -3v-6a3 3 0 0 1 3 -3v-3a5 5 0 0 1 5 -5m0 12a2 2 0 0 0 -1.995 1.85l-.005 .15a2 2 0 1 0 2 -2m0 -10a3 3 0 0 0 -3 3v3h6v-3a3 3 0 0 0 -3 -3" />
+                                    </svg>
                                 @endif
                             </div>
                             <div class="col-lg-12 mt-2 text-center">
@@ -255,7 +258,8 @@
                                             <h4 class="alert-title text-dark">¡Alerta!</h4>
                                             <div class="text-dark">
                                                 Estás a punto de <strong>{{ $accion_estado }}</strong> a la autoridad.
-                                                Esto {{ $modo === 1 ? 'permitirá' : 'restringirá' }} su visualización en
+                                                Esto {{ $modo === 1 ? 'permitirá' : 'restringirá' }} su visualización
+                                                en
                                                 el sistema.
                                             </div>
                                         </div>
@@ -272,11 +276,11 @@
                                         <strong>Cargo:</strong>
                                         <span class="text-secondary">{{ $cargo_autoridad }}</span>
                                     </li>
-                                    @if($facultad_autoridad)
-                                    <li class="">
-                                        <strong>Facultad:</strong>
-                                        <span class="text-secondary">{{ $facultad_autoridad }}</span>
-                                    </li>
+                                    @if ($facultad_autoridad)
+                                        <li class="">
+                                            <strong>Facultad:</strong>
+                                            <span class="text-secondary">{{ $facultad_autoridad }}</span>
+                                        </li>
                                     @endif
                                 </ul>
                             </div>
@@ -292,24 +296,25 @@
                         <div class="ms-auto">
                             <div wire:loading.remove>
                                 <button type="submit" class="btn btn-{{ $modo === 1 ? 'teal' : 'red' }}">
-                                    @if($modo === 1)
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        class="icon icon-tabler icons-tabler-outline icon-tabler-lock-open">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path
-                                            d="M5 11m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z" />
-                                        <path d="M12 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
-                                        <path d="M8 11v-5a4 4 0 0 1 8 0" />
-                                    </svg>
+                                    @if ($modo === 1)
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-lock-open">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path
+                                                d="M5 11m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z" />
+                                            <path d="M12 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                            <path d="M8 11v-5a4 4 0 0 1 8 0" />
+                                        </svg>
                                     @else
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="#ffffff" class="icon icon-tabler icons-tabler-filled icon-tabler-lock">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path
-                                            d="M12 2a5 5 0 0 1 5 5v3a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-10a3 3 0 0 1 -3 -3v-6a3 3 0 0 1 3 -3v-3a5 5 0 0 1 5 -5m0 12a2 2 0 0 0 -1.995 1.85l-.005 .15a2 2 0 1 0 2 -2m0 -10a3 3 0 0 0 -3 3v3h6v-3a3 3 0 0 0 -3 -3" />
-                                    </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="#ffffff"
+                                            class="icon icon-tabler icons-tabler-filled icon-tabler-lock">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path
+                                                d="M12 2a5 5 0 0 1 5 5v3a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-10a3 3 0 0 1 -3 -3v-6a3 3 0 0 1 3 -3v-3a5 5 0 0 1 5 -5m0 12a2 2 0 0 0 -1.995 1.85l-.005 .15a2 2 0 1 0 2 -2m0 -10a3 3 0 0 0 -3 3v3h6v-3a3 3 0 0 0 -3 -3" />
+                                        </svg>
                                     @endif
                                     {{ $accion_estado }}
                                 </button>

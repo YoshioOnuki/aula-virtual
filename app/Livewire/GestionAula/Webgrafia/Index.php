@@ -30,10 +30,10 @@ class Index extends Component
     public $id_gestion_aula;
 
     // Variables para el modal de Recursos
-    public $modo = 1; // Modo 1 = Agregar / 0 = Editar
-    public $titulo_modal = 'Agregar Webgrafía';
-    public $accion_estado = 'Agregar';
-    #[Validate('nullable')]
+    public $modo = 1; // Modo 1 = Registrar / 0 = Editar
+    public $titulo_modal = 'Registrar Webgrafía';
+    public $accion_estado = 'Registrar';
+    #[Validate('required')]
     public $descripcion_webgrafia;
     #[Validate('required|url')]
     public $link_webgrafia;
@@ -43,6 +43,7 @@ class Index extends Component
     public $modo_admin = false;// Modo admin, para saber si se esta en modo administrador
     public $es_docente = false;
     public $es_docente_invitado = false;
+    public $estado_carga_modal = true; // Para manejar el estado de carga del modal
     public $tipo_vista;
 
     // Variables para page-header
@@ -65,19 +66,23 @@ class Index extends Component
         $this->editar_webgrafia = Webgrafia::find($webgrafia->id_webgrafia);
         $this->descripcion_webgrafia = $this->editar_webgrafia->descripcion_webgrafia;
         $this->link_webgrafia = $this->editar_webgrafia->link_webgrafia;
+
+        $this->estado_carga_modal = false;
     }
 
 
     /**
-     * Abrir modal para agregar webgrafía
+     * Abrir modal para registrar webgrafía
      */
-    public function abrir_modal_webgrafia_agregar()
+    public function abrir_modal_webgrafia_registrar()
     {
         $this->limpiar_modal();
 
         $this->modo = 1;
-        $this->titulo_modal = 'Agregar webgrafia';
-        $this->accion_estado = 'Agregar';
+        $this->titulo_modal = 'Registrar webgrafia';
+        $this->accion_estado = 'Registrar';
+
+        $this->estado_carga_modal = false;
     }
 
 
@@ -92,7 +97,7 @@ class Index extends Component
         {
             DB::beginTransaction();
 
-            if($this->modo === 1) // Agregar
+            if($this->modo === 1) // Registrar
             {
                 $webgrafia = new Webgrafia();
                 $webgrafia->descripcion_webgrafia = $this->descripcion_webgrafia ?? null;
@@ -151,6 +156,8 @@ class Index extends Component
      */
     public function limpiar_modal()
     {
+        $this->estado_carga_modal = true;
+
         $this->modo = 1;
         $this->titulo_modal = 'Crear Webgrafía';
         $this->accion_estado = 'Crear';
@@ -208,18 +215,19 @@ class Index extends Component
         }
 
         $gestion_aula = GestionAula::with('curso')->find($this->id_gestion_aula);
+        $nombre_curso = $gestion_aula->curso->nombre_curso . ' GRUPO ' . $gestion_aula->grupo_gestion_aula;
 
         // Links --> Detalle del curso o carga académica
         if ($this->tipo_vista === 'cursos')
         {
             $this->links_page_header[] = [
-                'name' => $gestion_aula->curso->nombre_curso,
+                'name' => $nombre_curso,
                 'route' => 'cursos.detalle',
                 'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]
             ];
         } else {
             $this->links_page_header[] = [
-                'name' => $gestion_aula->curso->nombre_curso,
+                'name' => $nombre_curso,
                 'route' => 'carga-academica.detalle',
                 'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]
             ];

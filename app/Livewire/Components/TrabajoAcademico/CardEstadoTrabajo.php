@@ -18,14 +18,27 @@ class CardEstadoTrabajo extends Component
     public $id_gestion_aula;
     public $id_gestion_aula_alumno;
     public $trabajo_academico;
+
     public $trabajo_academico_alumno;
+    public $cantidad_comentarios;
+
     public $cantidad_alumnos;
     public $cantidad_alumnos_entregados;
     public $cantidad_alumnos_revisados;
     public $cantidad_alumnos_observados;
+
     public bool $lista_alumnos;
 
     protected $listeners = ['actualizar_estado_trabajo' => 'actualizar_estado_trabajo'];
+
+
+    /**
+     * Evento para abrir el modal de comentarios
+     */
+    public function abrir_modal_comentarios()
+    {
+        $this->dispatch('abrir-modal-comentarios');
+    }
 
 
     /**
@@ -33,32 +46,38 @@ class CardEstadoTrabajo extends Component
      */
     public function actualizar_estado_trabajo()
     {
-        $this->trabajo_academico_alumno = TrabajoAcademicoAlumno::with('estadoTrabajoAcademico')
-            ->where('id_trabajo_academico', $this->trabajo_academico->id_trabajo_academico)
-            ->where('id_gestion_aula_alumno', $this->id_gestion_aula_alumno)
-            ->first();
-
-        $this->cantidad_alumnos_entregados = TrabajoAcademicoAlumno::where('id_trabajo_academico', $this->trabajo_academico->id_trabajo_academico)
+        if ($this->tipo_vista === 'carga-academica')
+        {
+            // Cantidad de alumnos que han entregado el trabajo
+            $this->cantidad_alumnos_entregados = TrabajoAcademicoAlumno::where('id_trabajo_academico', $this->trabajo_academico->id_trabajo_academico)
             ->count();
 
-        $this->cantidad_alumnos_revisados = TrabajoAcademicoAlumno::with('estadoTrabajoAcademico')
-            ->where('id_trabajo_academico', $this->trabajo_academico->id_trabajo_academico)
-            ->whereHas('estadoTrabajoAcademico', function ($query) {
-                $query->where('nombre_estado_trabajo_academico', '!=', 'Entregado');
-            })
-            ->count();
+            // Cantidad de alumnos que han sido revisados
+            $this->cantidad_alumnos_revisados = TrabajoAcademicoAlumno::with('estadoTrabajoAcademico')
+                ->where('id_trabajo_academico', $this->trabajo_academico->id_trabajo_academico)
+                ->whereHas('estadoTrabajoAcademico', function ($query) {
+                    $query->where('nombre_estado_trabajo_academico', '!=', 'Entregado');
+                })
+                ->count();
 
-        $this->cantidad_alumnos_observados = TrabajoAcademicoAlumno::with('estadoTrabajoAcademico')
-            ->where('id_trabajo_academico', $this->trabajo_academico->id_trabajo_academico)
-            ->whereHas('estadoTrabajoAcademico', function ($query) {
-                $query->where('nombre_estado_trabajo_academico', 'Observado');
-            })
-            ->count();
+            // Cantidad de alumnos que han sido observados
+            $this->cantidad_alumnos_observados = TrabajoAcademicoAlumno::with('estadoTrabajoAcademico')
+                ->where('id_trabajo_academico', $this->trabajo_academico->id_trabajo_academico)
+                ->whereHas('estadoTrabajoAcademico', function ($query) {
+                    $query->where('nombre_estado_trabajo_academico', 'Observado');
+                })
+                ->count();
 
-        // Cantida de alumnos del curso
-        $this->cantidad_alumnos = GestionAulaAlumno::where('id_gestion_aula', $this->id_gestion_aula)
-        ->estado(true)
-        ->count();
+            // Cantida de alumnos del curso
+            $this->cantidad_alumnos = GestionAulaAlumno::where('id_gestion_aula', $this->id_gestion_aula)
+                ->estado(true)
+                ->count();
+        }else{
+            $this->trabajo_academico_alumno = TrabajoAcademicoAlumno::with('estadoTrabajoAcademico')
+                ->where('id_trabajo_academico', $this->trabajo_academico->id_trabajo_academico)
+                ->where('id_gestion_aula_alumno', $this->id_gestion_aula_alumno)
+                ->first();
+        }
     }
 
 
@@ -155,34 +174,40 @@ class CardEstadoTrabajo extends Component
         ->first()
         ->id_gestion_aula_alumno ?? null;
 
-        $this->trabajo_academico_alumno = TrabajoAcademicoAlumno::where('id_trabajo_academico', $this->trabajo_academico->id_trabajo_academico)
-            ->where('id_gestion_aula_alumno', $this->id_gestion_aula_alumno)
-            ->first();
+        if ($this->tipo_vista === 'carga-academica')
+        {
+            // Cantidad de alumnos que han entregado el trabajo
+            $this->cantidad_alumnos_entregados = TrabajoAcademicoAlumno::where('id_trabajo_academico', $this->trabajo_academico->id_trabajo_academico)
+                ->count();
 
-        // Cantidad de alumnos que han entregado el trabajo
-        $this->cantidad_alumnos_entregados = TrabajoAcademicoAlumno::where('id_trabajo_academico', $this->trabajo_academico->id_trabajo_academico)
-            ->count();
+            // Cantidad de alumnos que han sido revisados
+            $this->cantidad_alumnos_revisados = TrabajoAcademicoAlumno::with('estadoTrabajoAcademico')
+                ->where('id_trabajo_academico', $this->trabajo_academico->id_trabajo_academico)
+                ->whereHas('estadoTrabajoAcademico', function ($query) {
+                    $query->where('nombre_estado_trabajo_academico',  '!=', 'Entregado');
+                })
+                ->count();
 
-        // Cantidad de alumnos que han sido revisados
-        $this->cantidad_alumnos_revisados = TrabajoAcademicoAlumno::with('estadoTrabajoAcademico')
-            ->where('id_trabajo_academico', $this->trabajo_academico->id_trabajo_academico)
-            ->whereHas('estadoTrabajoAcademico', function ($query) {
-                $query->where('nombre_estado_trabajo_academico',  '!=', 'Entregado');
-            })
-            ->count();
+            // Cantidad de alumnos que han sido observados
+            $this->cantidad_alumnos_observados = TrabajoAcademicoAlumno::with('estadoTrabajoAcademico')
+                ->where('id_trabajo_academico', $this->trabajo_academico->id_trabajo_academico)
+                ->whereHas('estadoTrabajoAcademico', function ($query) {
+                    $query->where('nombre_estado_trabajo_academico', 'Observado');
+                })
+                ->count();
 
-        // Cantidad de alumnos que han sido observados
-        $this->cantidad_alumnos_observados = TrabajoAcademicoAlumno::with('estadoTrabajoAcademico')
-            ->where('id_trabajo_academico', $this->trabajo_academico->id_trabajo_academico)
-            ->whereHas('estadoTrabajoAcademico', function ($query) {
-                $query->where('nombre_estado_trabajo_academico', 'Observado');
-            })
-            ->count();
+            // Cantida de alumnos del curso
+            $this->cantidad_alumnos = GestionAulaAlumno::where('id_gestion_aula', $this->id_gestion_aula)
+                ->estado(true)
+                ->count();
+        }else{
+            $this->trabajo_academico_alumno = TrabajoAcademicoAlumno::with('comentarioTrabajoAcademico')
+                ->where('id_trabajo_academico', $this->trabajo_academico->id_trabajo_academico)
+                ->where('id_gestion_aula_alumno', $this->id_gestion_aula_alumno)
+                ->first() ?? null;
 
-        // Cantida de alumnos del curso
-        $this->cantidad_alumnos = GestionAulaAlumno::where('id_gestion_aula', $this->id_gestion_aula)
-            ->estado(true)
-            ->count();
+            $this->cantidad_comentarios = $this->trabajo_academico_alumno ? $this->trabajo_academico_alumno->comentarioTrabajoAcademico->count() : 0;
+        }
     }
 
 

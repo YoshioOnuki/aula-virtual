@@ -6,7 +6,9 @@
     <div class="page-body">
         <div class="container-xl">
 
-            <div wire:init="mostrar_toast"></div>
+            @if (session('mensaje_exito_respuesta'))
+                <div wire:init="mostrar_toast"></div>
+            @endif
 
             @if ($es_docente_invitado)
                 <livewire:components.navegacion.alert-docente-invitado />
@@ -45,7 +47,7 @@
 
 
     {{-- Modal para eliminar foro --}}
-    <div wire:ignore.self class="modal fade" id="modal-eliminar-respuesta" tabindex="-1" data-bs-backdrop="static">
+    <div wire:ignore.self class="modal fade" id="modal-eliminar-respuesta" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">

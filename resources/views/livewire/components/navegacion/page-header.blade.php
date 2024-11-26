@@ -6,11 +6,11 @@
                     <ol class="breadcrumb breadcrumb-arrows" aria-label="breadcrumbs">
 
                         @foreach ($linksArray as $item)
-                        <li class="breadcrumb-item">
-                            <a href="{{ route($item['route'], $item['params']) }}">
-                                {{ $item['name'] }}
-                            </a>
-                        </li>
+                            <li class="breadcrumb-item" wire:key="navegacion-{{ $item['name'] }}">
+                                <a href="{{ route($item['route'], $item['params']) }}">
+                                    {{ $item['name'] }}
+                                </a>
+                            </li>
                         @endforeach
 
                         <li class="breadcrumb-item active" aria-current="page">

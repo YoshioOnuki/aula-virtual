@@ -97,8 +97,8 @@
 
                                             <div class="row g-2">
                                                 @foreach ($trabajo_academico_alumno->archivoAlumno as $archivo)
-                                                    @if (file_exists($archivo->archivo_alumno))
-                                                        <div class="col-6 col-md-3 col-lg-4 col-xl-4">
+                                                    <div class="col-6 col-md-3 col-lg-4 col-xl-4" wire:key="archivo-{{ $archivo->id_archivo_alumno }}">
+                                                        @if (file_exists($archivo->archivo_alumno))
                                                             <a class="card p-3 mb-3 text-decoration-none cursor-pointer"
                                                                 wire:click="descargar_archivo({{ $archivo->id_archivo_alumno }})">
                                                                 <div class="d-flex align-items-center">
@@ -114,9 +114,7 @@
                                                                     </div>
                                                                 </div>
                                                             </a>
-                                                        </div>
-                                                    @else
-                                                        <div class="col-6 col-md-3 col-lg-4 col-xl-4">
+                                                        @else
                                                             <div class="card p-3 mb-3 background-gray">
                                                                 <div class="d-flex align-items-center">
                                                                     <img src="/media/icons/icon-archivo-generico2.webp"
@@ -131,8 +129,8 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    @endif
+                                                        @endif
+                                                    </div>
                                                 @endforeach
                                             </div>
                                         </div>
@@ -143,7 +141,7 @@
 
                         <div class="col-lg-4">
                             <livewire:components.trabajo-academico.card-revisar-trabajo :tipo_vista=$tipo_vista
-                                :usuario=$usuario :id_gestion_aula_alumno=$id_gestion_aula_alumno
+                                :usuario=$usuario :id_gestion_aula_docente=$id_gestion_aula_docente
                                 :trabajo_academico_alumno=$trabajo_academico_alumno
                                 wire:key="card-revisar-trabajo-{{ $trabajo_academico_alumno->id_trabajo_academico_alumno }}"
                                 lazy />

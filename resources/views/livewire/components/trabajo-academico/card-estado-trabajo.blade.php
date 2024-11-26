@@ -85,7 +85,12 @@
                         </tr>
                         <tr>
                             <th scope="row">Comentarios de la entrega</th>
-                            <td><a href="#">Comentarios (0)</a></td>
+                            <td>
+                                <a class="cursor-pointer" wire:click="abrir_modal_comentarios"
+                                    @if($cantidad_comentarios > 0) data-bs-toggle="modal" data-bs-target="#modal-comentarios" @endif>
+                                    Comentarios ({{ $cantidad_comentarios }})
+                                </a>
+                            </td>
                         </tr>
                         @endif
 

@@ -25,7 +25,7 @@
                         @endif
 
                         <div class="col-12">
-                            <div class="card card-md card-stacked animate__animated animate__fadeIn ">
+                            <div class="card card-md card-stacked animate__animated animate__fadeIn">
                                 <div class="card-stamp card-stamp-lg">
                                     @if ($tipo_vista ==='carga-academica')
                                     <div class="card-stamp-icon bg-orange">
@@ -60,175 +60,12 @@
                                     </div>
                                     @endif
                                 </div>
-                                <div class="card-body d-flex justify-content-center">
-                                    <div class="row g-3">
-                                        {{-- Silabus --}}
-                                        <div class="col-6 col-md-2 col-lg-4 col-xl-3">
-                                            <span class="hide-theme-dark">
-                                                <div>
-                                                    <a href="{{ $tipo_vista === 'cursos' ?
-                                                        route('cursos.detalle.silabus', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
-                                                        route('carga-academica.detalle.silabus', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}"
-                                                        class="text-decoration-none text-dark image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
-                                                        <img src="/media/icons/icon-libro-info.webp" alt="Info"
-                                                            style="width: 80px; height: 80px;">
-                                                        <div class="text-content text-center mt-3 fw-semibold fs-3">
-                                                            Silabus
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </span>
-                                        </div>
-
-                                        {{-- Recursos --}}
-                                        <div class="col-6 col-md-2 col-lg-4 col-xl-3">
-                                            <span class="hide-theme-dark">
-                                                <div>
-                                                    <a href="{{ $tipo_vista === 'cursos' ?
-                                                        route('cursos.detalle.recursos', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
-                                                        route('carga-academica.detalle.recursos', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}"
-                                                        class="text-decoration-none text-dark image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
-                                                        <img src="/media/icons/icon-carpeta.webp" alt="Info"
-                                                            style="width: 80px; height: 80px;">
-                                                        <div class="text-content text-center mt-3 fw-semibold fs-3">
-                                                            Recursos
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </span>
-                                        </div>
-
-                                        {{-- Foro --}}
-                                        <div class="col-6 col-md-2 col-lg-4 col-xl-3">
-                                            <span class="hide-theme-dark">
-                                                <div>
-                                                    <a href="{{ $tipo_vista === 'cursos' ?
-                                                        route('cursos.detalle.foro', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
-                                                        route('carga-academica.detalle.foro', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}"
-                                                        class="text-decoration-none text-dark image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
-                                                        <img src="/media/icons/icon-foro-discusion.webp" alt="Info"
-                                                            style="width: 80px; height: 80px;">
-                                                        <div class="text-content text-center mt-3 fw-semibold fs-3">
-                                                            Foro
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </span>
-                                        </div>
-
-                                        {{-- Asistencia --}}
-                                        <div class="col-6 col-md-2 col-lg-4 col-xl-3">
-                                            <span class="hide-theme-dark">
-                                                <div>
-                                                    <a href="{{ $tipo_vista === 'cursos' ?
-                                                        route('cursos.detalle.asistencia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
-                                                        route('carga-academica.detalle.asistencia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}"
-                                                        class="text-decoration-none text-dark image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
-                                                        <img src="/media/icons/icon-matricula.webp" alt="Info"
-                                                            style="width: 80px; height: 80px;">
-                                                        <div class="text-content text-center mt-3 fw-semibold fs-3">
-                                                            Asistencia
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </span>
-                                        </div>
-
-                                        {{-- Trabajos Academicos --}}
-                                        <div class="col-6 col-md-2 col-lg-4 col-xl-3">
-                                            <span class="hide-theme-dark">
-                                                <div>
-                                                    <a href="{{ $tipo_vista === 'cursos' ?
-                                                        route('cursos.detalle.trabajo-academico', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
-                                                        route('carga-academica.detalle.trabajo-academico', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}"
-                                                        class="text-decoration-none text-dark image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
-                                                        <img src="/media/icons/icon-curso-por-internet.webp" alt="Info"
-                                                            style="width: 80px; height: 80px;">
-                                                        <div class="text-content text-center mt-3 fw-semibold fs-3">
-                                                            Trabajos Académicos
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </span>
-                                        </div>
-
-                                        {{-- Webgrafia --}}
-                                        <div class="col-6 col-md-2 col-lg-4 col-xl-3">
-                                            <span class="hide-theme-dark">
-                                                <div>
-                                                    <a href="{{ $tipo_vista === 'cursos' ?
-                                                        route('cursos.detalle.webgrafia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) :
-                                                        route('carga-academica.detalle.webgrafia', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}"
-                                                        class="text-decoration-none text-dark image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
-                                                        <img src="/media/icons/icon-ubicacion-ip.webp" alt="Info"
-                                                            style="width: 80px; height: 80px;">
-                                                        <div class="text-content text-center mt-3 fw-semibold fs-3">
-                                                            Webgrafía
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </span>
-                                        </div>
-
-                                        @if($tipo_vista ==='carga-academica')
-                                        {{-- Link de Clases --}}
-                                        <div class="col-6 col-md-2 col-lg-4 col-xl-3">
-                                            <span class="hide-theme-dark">
-                                                <div class="" wire:click="abrir_modal_link_clase"
-                                                    data-bs-toggle="modal" data-bs-target="#modal-link-clase">
-                                                    <div class="image-button image-button-docente position-relative">
-                                                        <img src="/media/icons/icon-link-hipervinculo.webp" alt="Info"
-                                                            style="width: 80px; height: 80px;">
-                                                        <div class="text-content text-center mt-3 fw-semibold fs-3">
-                                                            Subir Link de Clases
-                                                        </div>
-                                                        @if(!$link_clase_bool)
-                                                        <span
-                                                            class="badge bg-yellow badge-notification badge-blink badge-pill">!</span>
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                            </span>
-                                        </div>
-
-                                        {{-- Orientaciones --}}
-                                        <div class="col-6 col-md-2 col-lg-4 col-xl-3">
-                                            <span class="hide-theme-dark">
-                                                <div class="" wire:click="abrir_modal_orientaciones"
-                                                    data-bs-toggle="modal" data-bs-target="#modal-orientaciones">
-                                                    <div class="image-button image-button-docente position-relative"
-                                                        style="z-index: 1;">
-                                                        <img src="/media/icons/icon-orien-presentacion2.webp" alt="Info"
-                                                            style="width: 80px; height: 80px;">
-                                                        <div class="text-content text-center mt-3 fw-semibold fs-3">
-                                                            Orientaciones Generales
-                                                        </div>
-                                                        @if(!$orientaciones_generales_bool)
-                                                        <span
-                                                            class="badge bg-yellow badge-notification badge-blink badge-pill">!</span>
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                            </span>
-                                        </div>
-
-                                        {{-- Alumnos --}}
-                                        <div class="col-6 col-md-2 col-lg-4 col-xl-3">
-                                            <span class="hide-theme-dark">
-                                                <div>
-                                                    <a href="{{ route('carga-academica.detalle.alumnos', ['id_usuario' => $id_usuario_hash, 'tipo_vista' =>  $tipo_vista, 'id_curso' => $id_gestion_aula_hash]) }}"
-                                                        class="text-decoration-none text-dark image-button {{ $tipo_vista ==='cursos' ? 'image-button-alumno' : 'image-button-docente'}}">
-                                                        <img src="/media/icons/icon-registro.webp" alt="Info"
-                                                            style="width: 80px; height: 80px;">
-                                                        <div class="text-content text-center mt-3 fw-semibold fs-3">
-                                                            Alumnos
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </span>
-                                        </div>
-                                        @endif
-
+                                <div class="card-body">
+                                    <div class="row g-4">
+                                        @foreach ($opciones_curso as $item)
+                                            <livewire:components.curso.opcion-curso :tipo_vista=$tipo_vista :opcion=$item
+                                                wire:key="opcion-{{ Str::slug($item['nombre']) }}" lazy />
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
@@ -253,18 +90,23 @@
 
 
     {{-- Modal Link de Clase --}}
-    <div wire:ignore.self class="modal fade" id="modal-link-clase" tabindex="-1" data-bs-backdrop="static">
+    <div wire:ignore.self class="modal fade" id="modal-link-clase" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
+            <div class="modal-content {{ $estado_carga_modal ? 'cursor-progress' : '' }}">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        {{ $titulo_link_clase }}
+                        {{ !$estado_carga_modal ? $titulo_link_clase : '***' }}
                     </h5>
                     <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal"
                         aria-label="Close" wire:click="limpiar_modal"></button>
                 </div>
                 <form autocomplete="off" wire:submit="guardar_link_clase">
-                    <div class="modal-body">
+                    <div
+                        class="modal-body"
+                        x-show="!$wire.estado_carga_modal"
+                        x-cloak
+                        x-collapse
+                    >
                         <div class="row g-3">
                             <div class="col-lg-12">
                                 <label for="nombre_link_clase" class="form-label required">
@@ -283,6 +125,13 @@
                         </div>
                     </div>
 
+                    <!-- Spinner de carga para que aparezca mientras se están cargando los datos -->
+                    <template x-if="$wire.estado_carga_modal">
+                        <div class="my-5 d-flex justify-content-center align-items-center">
+                            <div class="spinner-border text-primary" role="status"></div>
+                        </div>
+                    </template>
+
                     <div class="modal-footer">
                         <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="limpiar_modal">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -296,8 +145,14 @@
                         </a>
 
                         <div class="ms-auto">
-                            <div wire:loading.remove>
-                                <button type="submit" class="btn btn-primary">
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                                wire:loading.attr="disabled"
+                                wire:target="guardar_link_clase"
+                                {{ $estado_carga_modal ? 'disabled cursor-progress' : '' }}
+                            >
+                                <span wire:loading.remove wire:target="guardar_link_clase">
                                     @if ($modo_link_clase === 1)
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -320,14 +175,12 @@
                                     </svg>
                                     @endif
                                     {{ $accion_estado_link_clase }}
-                                </button>
-                            </div>
-                            <div wire:loading>
-                                <button type="submit" class="btn btn-primary" disabled>
+                                </span>
+                                <span wire:loading wire:target="guardar_link_clase">
                                     <div class="spinner-border spinner-border-sm me-2" role="status"></div>
                                     Cargando
-                                </button>
-                            </div>
+                                </span>
+                            </button>
                         </div>
 
                     </div>
@@ -337,27 +190,40 @@
     </div>
 
     {{-- Modal Orientaciones --}}
-    <div wire:ignore.self class="modal fade" id="modal-orientaciones" tabindex="-1" data-bs-backdrop="static">
+    <div wire:ignore.self class="modal fade" id="modal-orientaciones" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
+            <div class="modal-content {{ $estado_carga_modal ? 'cursor-progress' : '' }}">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        {{ $titulo_orientaciones }}
+                        {{ !$estado_carga_modal ? $titulo_orientaciones : '***' }}
                     </h5>
                     <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal"
                         aria-label="Close" wire:click="limpiar_modal"></button>
                 </div>
-                <form autocomplete="off" wire:submit="guardar_orientaciones">
-                    <div class="modal-body">
+                <form
+                    autocomplete="off"
+                    wire:submit="guardar_orientaciones"
+                >
+                    <div
+                        class="modal-body"
+                        x-show="!$wire.estado_carga_modal"
+                        x-cloak
+                        x-collapse
+                        x-data="{ descripcion_orientaciones: $wire.descripcion_orientaciones }"
+                    >
                         <div class="row g-3">
                             <div class="col-lg-12">
                                 <label for="descripcion_orientaciones" class="form-label required">
                                     Orientaciones Generales
                                 </label>
-                                <div wire:ignore>
-                                    <textarea class="form-control required" wire:model.lazy="descripcion_orientaciones"
-                                        id="descripcion_orientaciones">
-                                        {{ $descripcion_orientaciones }}
+                                <div
+                                    wire:ignore
+                                >
+                                    <textarea
+                                        class="form-control required"
+                                        id="descripcion_orientaciones"
+                                        x-model="descripcion_orientaciones"
+                                    >
                                     </textarea>
                                 </div>
                                 @error('descripcion_orientaciones')
@@ -366,6 +232,13 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Spinner de carga para que aparezca mientras se están cargando los datos -->
+                    <template x-if="$wire.estado_carga_modal">
+                        <div class="my-5 d-flex justify-content-center align-items-center">
+                            <div class="spinner-border text-primary" role="status"></div>
+                        </div>
+                    </template>
 
                     <div class="modal-footer">
                         <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="limpiar_modal">
@@ -380,8 +253,14 @@
                         </a>
 
                         <div class="ms-auto">
-                            <div wire:loading.remove>
-                                <button type="submit" class="btn btn-primary">
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                                wire:loading.attr="disabled"
+                                wire:target="guardar_orientaciones"
+                                {{ $estado_carga_modal ? 'disabled cursor-progress' : '' }}
+                            >
+                                <span wire:loading.remove wire:target="guardar_orientaciones">
                                     @if ($modo_orientaciones === 1)
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -404,14 +283,12 @@
                                     </svg>
                                     @endif
                                     {{ $accion_estado_orientaciones }}
-                                </button>
-                            </div>
-                            <div wire:loading>
-                                <button type="submit" class="btn btn-primary" disabled>
+                                </span>
+                                <span wire:loading wire:target="guardar_orientaciones">
                                     <div class="spinner-border spinner-border-sm me-2" role="status"></div>
                                     Cargando
-                                </button>
-                            </div>
+                                </span>
+                            </button>
                         </div>
 
                     </div>

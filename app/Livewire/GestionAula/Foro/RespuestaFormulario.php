@@ -109,22 +109,25 @@ class RespuestaFormulario extends Component
 
             DB::commit();
 
-            session(['mensaje_exito_respuesta' => 'La respuesta se guardó correctamente.']);
-
+            // session([
+            //     'mensaje_exito_respuesta' => 'La respuesta se guardó correctamente.',
+            //     'id' => $this->id_foro
+            // ]);
+            
             if ($this->tipo_vista === 'cursos') {
                 return redirect()->route('cursos.detalle.foro.detalle', [
                     'id_usuario' => $this->id_usuario_hash,
                     'tipo_vista' => $this->tipo_vista,
                     'id_curso' => $this->id_gestion_aula_hash,
                     'id_foro' => $this->id_foro_hash
-                ]);
+                ])->with('mensaje_exito_respuesta', 'La respuesta se guardó correctamente.');
             } else {
                 return redirect()->route('carga-academica.detalle.foro.detalle', [
                     'id_usuario' => $this->id_usuario_hash,
                     'tipo_vista' => $this->tipo_vista,
                     'id_curso' => $this->id_gestion_aula_hash,
                     'id_foro' => $this->id_foro_hash
-                ]);
+                ])->with('mensaje_exito_respuesta', 'La respuesta se guardó correctamente.');
             }
         } catch (\Exception $e) {
             DB::rollBack();
@@ -197,17 +200,18 @@ class RespuestaFormulario extends Component
         }
 
         $gestion_aula = GestionAula::with('curso')->find($this->id_gestion_aula);
+        $nombre_curso = $gestion_aula->curso->nombre_curso . ' GRUPO ' . $gestion_aula->grupo_gestion_aula;
 
         // Links --> Detalle del curso o carga académica
         if ($this->tipo_vista === 'cursos') {
             $this->links_page_header[] = [
-                'name' => $gestion_aula->curso->nombre_curso,
+                'name' => $nombre_curso,
                 'route' => 'cursos.detalle',
                 'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]
             ];
         } else {
             $this->links_page_header[] = [
-                'name' => $gestion_aula->curso->nombre_curso,
+                'name' => $nombre_curso,
                 'route' => 'carga-academica.detalle',
                 'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]
             ];

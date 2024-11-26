@@ -51,10 +51,10 @@ class Index extends Component
         $carpetas = obtener_ruta_base($this->id_gestion_aula);
 
         $archivo = $this->silabus;
-        $nombre_silabus = $this->silabus_pdf->archivo_silabus ?? null;
+        $nombre_silabus_antiguo = $this->silabus_pdf->archivo_silabus ?? null;
         array_push($carpetas, 'silabus');
         $extencion_archivo = 'pdf';
-        $nombre_bd = subir_archivo($archivo, $nombre_silabus, $carpetas, $extencion_archivo);
+        $nombre_bd = subir_archivo($archivo, $nombre_silabus_antiguo, $carpetas, $extencion_archivo);
 
         return $nombre_bd;
     }
@@ -66,7 +66,6 @@ class Index extends Component
     public function guardar_silabus()
     {
         $this->validate();
-
 
         try
         {
@@ -86,7 +85,7 @@ class Index extends Component
 
             DB::commit();
 
-            $this->silabus_pdf = $gestion_aula->silabus;
+            $this->mostrar_silabus();
             $this->reset('silabus');
 
             $this->dispatch(
@@ -190,17 +189,20 @@ class Index extends Component
             ];
         }
 
+        $gestion_aula = GestionAula::with('curso')->find($this->id_gestion_aula);
+        $nombre_curso = $gestion_aula->curso->nombre_curso . ' GRUPO ' . $gestion_aula->grupo_gestion_aula;
+
         // Links --> Detalle del curso o carga académica
         if ($this->tipo_vista === 'cursos')
         {
             $this->links_page_header[] = [
-                'name' => $this->curso->nombre_curso,
+                'name' => $nombre_curso,
                 'route' => 'cursos.detalle',
                 'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]
             ];
         } else {
             $this->links_page_header[] = [
-                'name' => $this->curso->nombre_curso,
+                'name' => $nombre_curso,
                 'route' => 'carga-academica.detalle',
                 'params' => ['id_usuario' => $this->id_usuario_hash, 'tipo_vista' => $this->tipo_vista, 'id_curso' => $this->id_gestion_aula_hash]
             ];

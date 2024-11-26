@@ -34,10 +34,10 @@
                                 </div>
                                 <div class="col">
                                     <div class="font-weight-medium">
-                                        132 Aulas
+                                        {{ $cantidad_cursos }} Aulas
                                     </div>
                                     <div class="text-muted">
-                                        59 en curso
+                                        {{ $cantidad_cursos_en_curso }} en curso
                                     </div>
                                 </div>
                             </div>
@@ -66,10 +66,10 @@
                                 </div>
                                 <div class="col">
                                     <div class="font-weight-medium">
-                                        239 Usuarios
+                                        {{ $cantidad_usuarios }} Usuarios
                                     </div>
                                     <div class="text-muted">
-                                        15 nuevos este mes
+                                        {{ $cantidad_usuarios_nuevos }} nuevos este año
                                     </div>
                                 </div>
                             </div>
@@ -94,10 +94,10 @@
                                 </div>
                                 <div class="col">
                                     <div class="font-weight-medium">
-                                        129 Alumnos
+                                        {{ $cantidad_alumnos }} Alumnos
                                     </div>
                                     <div class="text-muted">
-                                        21 nuevos este mes
+                                        {{ $cantidad_alumnos_nuevos }} nuevos este año
                                     </div>
                                 </div>
                             </div>
@@ -122,10 +122,10 @@
                                 </div>
                                 <div class="col">
                                     <div class="font-weight-medium">
-                                        110 Docentes
+                                        {{ $cantidad_docentes }} Docentes
                                     </div>
                                     <div class="text-muted">
-                                        5 nuevos este mes
+                                        {{ $cantidad_docentes_nuevos }} nuevos este año
                                     </div>
                                 </div>
                             </div>
@@ -136,43 +136,77 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <p class="mb-3">Almacenamiento utilizado: <strong>6854.45 MB </strong></p>
-                            <div class="progress progress-separated mb-3">
-                                <div class="progress-bar bg-blue" role="progressbar" style="width: 40%"
-                                    aria-label="Regular"></div>
-                                <div class="progress-bar bg-azure" role="progressbar" style="width: 20%"
-                                    aria-label="System"></div>
-                                <div class="progress-bar bg-teal" role="progressbar" style="width: 10%"
-                                    aria-label="Shared"></div>
-                                <div class="progress-bar bg-pink" role="progressbar" style="width: 30%"
-                                    aria-label="Shared"></div>
+                            <p class="mb-3">
+                                Almacenamiento utilizado: <strong>{{ $almacenamiento_total }}</strong>
+                            </p>
+                            <div class="progress progress-separated mb-3" style="height: 15px;">
+                                <div class="progress-bar bg-blue" role="progressbar" style="width: {{ $porcentaje_trabajos_academicos }}%"
+                                    aria-label="Trabajos académicos">
+                                    <span class="fs-6 fw-bold">
+                                        {{ $almacenamiento_trabajos_academicos }}
+                                    </span>
+                                </div>
+                                <div class="progress-bar bg-teal" role="progressbar" style="width: {{ $porcentaje_silabus }}%"
+                                    aria-label="Silabus">
+                                    <span class="fs-6 fw-bold">
+                                        {{ $almacenamiento_silabus }}
+                                    </span>
+                                </div>
+                                <div class="progress-bar bg-pink" role="progressbar" style="width: {{ $porcentaje_recursos }}%"
+                                    aria-label="Recursos">
+                                    <span class="fs-6 fw-bold">
+                                        {{ $almacenamiento_recursos }}
+                                    </span>
+                                </div>
+                                <div class="progress-bar bg-purple" role="progressbar" style="width: {{ $porcentaje_foros }}%"
+                                    aria-label="Foros">
+                                    <span class="fs-6 fw-bold">
+                                        {{ $almacenamiento_foros }}
+                                    </span>
+                                </div>
+                                <div class="progress-bar bg-azure" role="progressbar" style="width: {{ $porcentaje_orientaciones }}%"
+                                    aria-label="Orientaciones">
+                                    <span class="fs-6 fw-bold">
+                                        {{ $almacenamiento_orientaciones }}
+                                    </span>
+                                </div>
                             </div>
-                            <div class="row">
-                                <div class="col-auto d-flex align-items-center px-2">
-                                    <span class="legend me-2 bg-blue"></span>
-                                    <span>Trabajos de alumnos</span>
-                                    <span
-                                        class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">201MB - 40%</span>
+                            <div class="row d-flex align-items-center">
+                                <div class="col-auto px-2">
+                                    <span class="legend me-1 bg-blue"></span>
+                                    <span>Trabajos académicos</span>
+                                    <span class="d-none d-md-inline d-lg-inline d-xxl-inline ms-1 text-muted fs-5 ">
+                                        {{ $porcentaje_trabajos_academicos }}%
+                                    </span>
                                 </div>
-                                <div class="col-auto d-flex align-items-center ps-2">
-                                    <span class="legend me-2 bg-azure"></span>
-                                    <span>Trabajos de docentes</span>
-                                    <span
-                                        class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">612MB - 20%</span>
-                                </div>
-                                <div class="col-auto d-flex align-items-center pe-2">
-                                    <span class="legend me-2 bg-teal"></span>
+                                <div class="col-auto px-2">
+                                    <span class="legend me-1 bg-teal"></span>
                                     <span>Silabus</span>
-                                    <span
-                                        class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">915MB - 10%</span>
+                                    <span class="d-none d-md-inline d-lg-inline d-xxl-inline ms-1 text-muted fs-5 ">
+                                        {{ $porcentaje_silabus }}%
+                                    </span>
                                 </div>
-                                <div class="col-auto d-flex align-items-center px-2">
-                                    <span class="legend me-2 bg-pink"></span>
+                                <div class="col-auto px-2">
+                                    <span class="legend me-1 bg-pink"></span>
                                     <span>Recursos</span>
-                                    <span
-                                        class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">415MB - 30%</span>
+                                    <span class="d-none d-md-inline d-lg-inline d-xxl-inline ms-1 text-muted fs-5">
+                                        {{ $porcentaje_recursos }}%
+                                    </span>
                                 </div>
-
+                                <div class="col-auto px-2">
+                                    <span class="legend me-1 bg-purple"></span>
+                                    <span>Foros</span>
+                                    <span class="d-none d-md-inline d-lg-inline d-xxl-inline ms-1 text-muted fs-5">
+                                        {{ $porcentaje_foros }}%
+                                    </span>
+                                </div>
+                                <div class="col-auto ps-2">
+                                    <span class="legend me-1 bg-azure"></span>
+                                    <span>Orientaciones</span>
+                                    <span class="d-none d-md-inline d-lg-inline d-xxl-inline ms-1 text-muted fs-5">
+                                        {{ $porcentaje_orientaciones }}%
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -353,26 +387,26 @@
                                 </thead>
                                 <tbody>
                                     @for($i = 0; $i < 5; $i++)
-                                    <tr>
-                                        <td>
-                                            Aurelio Yoshio Onuki Navas
-                                        </td>
-                                        <td>
-                                            Actualizar
-                                        </td>
-                                        <td>
-                                            Webgrafia
-                                        </td>
-                                        <td>
-                                            Windows
-                                        </td>
-                                        <td>
-                                            {{ Str::limit('https://aula-virtual.test/gestion-aula/docente/Zew7KwPM/carga-academica/lMylOwk6/webgrafia', 40) }}
-                                        </td>
-                                        <td>
-                                            {{ format_fecha_horas(now()) }}
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <td>
+                                                Aurelio Yoshio Onuki Navas
+                                            </td>
+                                            <td>
+                                                Actualizar
+                                            </td>
+                                            <td>
+                                                Webgrafia
+                                            </td>
+                                            <td>
+                                                Windows
+                                            </td>
+                                            <td>
+                                                {{ Str::limit('https://aula-virtual.test/gestion-aula/docente/Zew7KwPM/carga-academica/lMylOwk6/webgrafia', 40) }}
+                                            </td>
+                                            <td>
+                                                {{ format_fecha_horas(now()) }}
+                                            </td>
+                                        </tr>
                                     @endfor
 
                                     {{-- @forelse ($webgrafias as $item)

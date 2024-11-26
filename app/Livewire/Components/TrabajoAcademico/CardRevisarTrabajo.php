@@ -5,6 +5,7 @@ namespace App\Livewire\Components\TrabajoAcademico;
 use App\Models\ComentarioTrabajoAcademico;
 use App\Models\EstadoTrabajoAcademico;
 use App\Models\GestionAulaAlumno;
+use App\Models\GestionAulaDocente;
 use App\Models\TrabajoAcademicoAlumno;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Validate;
@@ -16,12 +17,13 @@ class CardRevisarTrabajo extends Component
     public $tipo_vista;
     public $usuario;
     public $id_usuario_hash;
-    public $id_gestion_aula_alumno;
+    public $id_gestion_aula_docente;
     public $trabajo_academico_alumno;
     public $validar_entrega = false;
     public $editar_entrega = false;
 
     public $es_docente_invitado = false;
+    public $estado_carga = true;
 
     // Variables para la revisión de trabajos
     #[Validate('required|numeric|min:0|max:20')]
@@ -46,18 +48,37 @@ class CardRevisarTrabajo extends Component
             'nota_trabajo_academico' => 'required|numeric|min:0|max:20'
         ]);
 
+        // dd($this->editar_entrega);
+
         try {
             DB::beginTransaction();
 
             $this->descripcion_comentario_trabajo_academico = limpiar_editor_vacio($this->descripcion_comentario_trabajo_academico);
 
-            if ($this->descripcion_comentario_trabajo_academico !== '') {
-                // Crear comentario nuevo
-                $comentario_trabajo_academico = new ComentarioTrabajoAcademico();
-                $comentario_trabajo_academico->descripcion_comentario_trabajo_academico = $this->descripcion_comentario_trabajo_academico;
-                $comentario_trabajo_academico->id_trabajo_academico_alumno = $this->trabajo_academico_alumno->id_trabajo_academico_alumno;
-                $comentario_trabajo_academico->id_gestion_aula_alumno = $this->id_gestion_aula_alumno;
-                $comentario_trabajo_academico->save();
+            if ($this->editar_entrega) {
+                $comentario_trabajo_academico = ComentarioTrabajoAcademico::where('id_trabajo_academico_alumno', $this->trabajo_academico_alumno->id_trabajo_academico_alumno)->first();
+                if ($comentario_trabajo_academico) {
+                    $comentario_trabajo_academico->descripcion_comentario_trabajo_academico = $this->descripcion_comentario_trabajo_academico;
+                    $comentario_trabajo_academico->save();
+                } else {
+                    // Crear comentario nuevo
+                    $comentario_trabajo_academico = new ComentarioTrabajoAcademico();
+                    $comentario_trabajo_academico->descripcion_comentario_trabajo_academico = $this->descripcion_comentario_trabajo_academico;
+                    $comentario_trabajo_academico->id_trabajo_academico_alumno = $this->trabajo_academico_alumno->id_trabajo_academico_alumno;
+                    $comentario_trabajo_academico->id_gestion_aula_docente = $this->id_gestion_aula_docente;
+                    $comentario_trabajo_academico->save();
+                }
+
+
+            } else{
+                if ($this->descripcion_comentario_trabajo_academico !== '') {
+                    // Crear comentario nuevo
+                    $comentario_trabajo_academico = new ComentarioTrabajoAcademico();
+                    $comentario_trabajo_academico->descripcion_comentario_trabajo_academico = $this->descripcion_comentario_trabajo_academico;
+                    $comentario_trabajo_academico->id_trabajo_academico_alumno = $this->trabajo_academico_alumno->id_trabajo_academico_alumno;
+                    $comentario_trabajo_academico->id_gestion_aula_docente = $this->id_gestion_aula_docente;
+                    $comentario_trabajo_academico->save();
+                }
             }
 
             $comentario_trabajo_academico = ComentarioTrabajoAcademico::where('id_trabajo_academico_alumno', $this->trabajo_academico_alumno->id_trabajo_academico_alumno)->first();
@@ -71,16 +92,21 @@ class CardRevisarTrabajo extends Component
 
             DB::commit();
 
+            $this->estado_carga = true;
+
             $this->dispatch(
                 'toast-basico',
                 mensaje: 'Se ha revisado el trabajo académico correctamente.',
                 type: 'success'
             );
 
+            $this->dispatch('$refresh');
+
             $this->dispatch('actualizar_estado_entrega');
+
         } catch (\Exception $e) {
             DB::rollBack();
-
+            dd($e);
             $this->dispatch(
                 'toast-basico',
                 mensaje: 'Ha ocurrido un error al revisar el trabajo académico.',
@@ -101,24 +127,16 @@ class CardRevisarTrabajo extends Component
             $comentario_trabajo_academico = ComentarioTrabajoAcademico::where('id_trabajo_academico_alumno', $this->trabajo_academico_alumno->id_trabajo_academico_alumno)->first();
             $this->descripcion_comentario_trabajo_academico = $comentario_trabajo_academico ? $comentario_trabajo_academico->descripcion_comentario_trabajo_academico : '';
         }
+        $this->estado_carga = false;
     }
 
 
     /**
      * Validar si el trabajo académico ha sido entregado
      */
-    public function validar_entrega()
+    public function funcion_validar_entrega()
     {
         $this->trabajo_academico_alumno->estadoTrabajoAcademico->nombre_estado_trabajo_academico === 'Entregado' ? $this->validar_entrega = true : $this->validar_entrega = false;
-    }
-
-
-    /**
-     * Estado de la entrega del trabajo académico
-     */
-    public function editar_trabajo_academico()
-    {
-        $this->editar_entrega = true;
     }
 
 
@@ -129,7 +147,8 @@ class CardRevisarTrabajo extends Component
     {
         $this->trabajo_academico_alumno = TrabajoAcademicoAlumno::find($this->trabajo_academico_alumno->id_trabajo_academico_alumno);
         $this->cargar_datos();
-        $this->validar_entrega();
+        $this->funcion_validar_entrega();
+        $this->estado_carga = false;
     }
 
 
@@ -163,20 +182,20 @@ class CardRevisarTrabajo extends Component
     }
 
 
-    public function mount($tipo_vista, $usuario, $id_gestion_aula_alumno, $trabajo_academico_alumno)
+    public function mount($tipo_vista, $usuario, $id_gestion_aula_docente, $trabajo_academico_alumno)
     {
         $this->tipo_vista = $tipo_vista;
         $this->usuario = $usuario;
-        $this->id_gestion_aula_alumno = $id_gestion_aula_alumno;
+        $this->id_gestion_aula_docente = $id_gestion_aula_docente;
         $this->id_usuario_hash = Hashids::encode($usuario->id_usuario);
 
         $this->trabajo_academico_alumno = $trabajo_academico_alumno;
 
-        $id_gestion_aula = GestionAulaAlumno::find($id_gestion_aula_alumno)->id_gestion_aula;
+        $id_gestion_aula = GestionAulaDocente::find($id_gestion_aula_docente)->id_gestion_aula;
         $this->es_docente_invitado = $usuario->esDocenteInvitado($id_gestion_aula) && $tipo_vista === 'carga-academica' ? true : false;
 
         $this->cargar_datos();
-        $this->validar_entrega();
+        $this->funcion_validar_entrega();
     }
 
 

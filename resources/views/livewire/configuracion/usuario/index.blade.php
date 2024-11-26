@@ -19,7 +19,6 @@
     </div>
     <div class="page-body">
         <div class="container-xl">
-            {{-- <div wire:init="mostrar_toast"></div> --}}
             <div class="row g-3">
                 <div class="col-12">
                     <div class="card animate__animated animate__fadeIn  ">
@@ -48,9 +47,10 @@
                                     </div>
                                     <div class="col-lg-5 col-3 d-flex justify-content-end">
                                         <a href="" class="btn btn-primary d-none d-md-inline-block">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                                stroke-linecap="round" stroke-linejoin="round">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                                                height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                stroke="currentColor" fill="none" stroke-linecap="round"
+                                                stroke-linejoin="round">
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                                 <path d="M12 5l0 14" />
                                                 <path d="M5 12l14 0" />
@@ -58,9 +58,10 @@
                                             Crear usuario
                                         </a>
                                         <a href="" class="btn btn-primary d-md-none btn-icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                                stroke-linecap="round" stroke-linejoin="round">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                                                height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                stroke="currentColor" fill="none" stroke-linecap="round"
+                                                stroke-linejoin="round">
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                                 <path d="M12 5l0 14" />
                                                 <path d="M5 12l14 0" />
@@ -84,117 +85,119 @@
                                 </thead>
                                 <tbody>
                                     @php
-                                    $i = $usuarios->count() ?? 0;
+                                        $i = $usuarios->count() ?? 0;
                                     @endphp
                                     @forelse ($usuarios as $item)
-                                    <tr>
-                                        <td>
-                                            <span class="text-secondary">
-                                                {{ $i-- }}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex py-1 align-items-center">
-                                                <img src="{{ asset($item->mostrarFoto('alumno')) }}" alt="avatar"
-                                                    class="avatar me-2 rounded avatar-static">
-                                                <div class="flex-fill">
-                                                    <div class="font-weight-medium">{{ $item->nombre_completo }}
-                                                    </div>
-                                                    <div class="text-secondary"><a href="#" class="text-reset">{{
-                                                            $item->persona->documento_persona }}</a>
+                                        <tr wire:key="usuario-{{ $item->id_usuario }}">
+                                            <td>
+                                                <span class="text-secondary">
+                                                    {{ $i-- }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex py-1 align-items-center">
+                                                    <img src="{{ asset($item->mostrarFoto('alumno')) }}" alt="avatar"
+                                                        class="avatar me-2 rounded avatar-static">
+                                                    <div class="flex-fill">
+                                                        <div class="font-weight-medium">{{ $item->nombre_completo }}
+                                                        </div>
+                                                        <div class="text-secondary"><a href="#"
+                                                                class="text-reset">{{ $item->persona->documento_persona }}</a>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            {{ $item->correo_usuario }}
-                                        </td>
-                                        <td>
-                                            {{ $item->mostrarRoles() }}
-                                        </td>
-                                        <td>
-                                            @if ($item->estado_usuario == 1)
-                                            <a wire:click="abrir_modal_estado({{ $item->id_usuario }}, 0)"
-                                                class="text-decoration-none cursor-pointer">
-                                                <span class="badge bg-teal-lt status-teal px-3 py-2 fs-4">
-                                                    <span class="status-dot status-dot-animated me-2"></span>
-                                                    Activo
-                                                </span>
-                                            </a>
-                                            @elseif ($item->estado_usuario == 0)
-                                            <a wire:click="abrir_modal_estado({{ $item->id_usuario }}, 1)"
-                                                class="text-decoration-none cursor-pointer">
-                                                <span class="badge bg-red-lt status-red px-3 py-2 fs-4">
-                                                    <span class="status-dot status-dot-animated me-2"></span>
-                                                    Inactivo
-                                                </span>
-                                            </a>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <div class="btn-list flex-nowrap">
-                                                <div class="dropdown">
-                                                    <button class="btn dropdown-toggle align-text-top"
-                                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                                        Acciones
-                                                    </button>
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        <a class="dropdown-item" style="cursor: pointer;">
-                                                            Ver
-                                                        </a>
-                                                        <a class="dropdown-item" style="cursor: pointer;">
-                                                            Editar
-                                                        </a>
+                                            </td>
+                                            <td>
+                                                {{ $item->correo_usuario }}
+                                            </td>
+                                            <td>
+                                                {{ $item->mostrarRoles() }}
+                                            </td>
+                                            <td>
+                                                @if ($item->estado_usuario == 1)
+                                                    <a wire:click="abrir_modal_estado({{ $item->id_usuario }}, 0)"
+                                                        class="text-decoration-none cursor-pointer">
+                                                        <span class="badge bg-teal-lt status-teal px-3 py-2 fs-4">
+                                                            <span class="status-dot status-dot-animated me-2"></span>
+                                                            Activo
+                                                        </span>
+                                                    </a>
+                                                @elseif ($item->estado_usuario == 0)
+                                                    <a wire:click="abrir_modal_estado({{ $item->id_usuario }}, 1)"
+                                                        class="text-decoration-none cursor-pointer">
+                                                        <span class="badge bg-red-lt status-red px-3 py-2 fs-4">
+                                                            <span class="status-dot status-dot-animated me-2"></span>
+                                                            Inactivo
+                                                        </span>
+                                                    </a>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <div class="btn-list flex-nowrap">
+                                                    <div class="dropdown">
+                                                        <button class="btn dropdown-toggle align-text-top"
+                                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                                            Acciones
+                                                        </button>
+                                                        <div class="dropdown-menu dropdown-menu-end">
+                                                            <a class="dropdown-item" style="cursor: pointer;">
+                                                                Ver
+                                                            </a>
+                                                            <a class="dropdown-item" style="cursor: pointer;">
+                                                                Editar
+                                                            </a>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                        </tr>
                                     @empty
-                                    @if ($usuarios->count() == 0 && $search != '')
-                                    <tr>
-                                        <td colspan="9">
-                                            <div class="text-center" style="padding-bottom: 2rem; padding-top: 2rem;">
-                                                <span class="text-secondary">
-                                                    No se encontraron resultados para
-                                                    "<strong>{{ $search }}</strong>"
-                                                </span>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @else
-                                    <tr>
-                                        <td colspan="9">
-                                            <div class="text-center" style="padding-bottom: 2rem; padding-top: 2rem;">
-                                                <span class="text-secondary">
-                                                    No hay usuarios registrados
-                                                </span>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @endif
+                                        @if ($usuarios->count() == 0 && $search != '')
+                                            <tr>
+                                                <td colspan="9">
+                                                    <div class="text-center"
+                                                        style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                        <span class="text-secondary">
+                                                            No se encontraron resultados para
+                                                            "<strong>{{ $search }}</strong>"
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @else
+                                            <tr>
+                                                <td colspan="9">
+                                                    <div class="text-center"
+                                                        style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                        <span class="text-secondary">
+                                                            No hay usuarios registrados
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endif
                                     @endforelse
                                 </tbody>
                             </table>
                         </div>
                         <div class="card-footer {{ $usuarios->hasPages() ? 'py-0' : '' }}">
                             @if ($usuarios->hasPages())
-                            <div class="d-flex justify-content-between">
-                                <div class="d-flex align-items-center text-secondary">
-                                    Mostrando {{ $usuarios->firstItem() }} - {{ $usuarios->lastItem() }} de
-                                    {{ $usuarios->total() }} registros
+                                <div class="d-flex justify-content-between">
+                                    <div class="d-flex align-items-center text-secondary">
+                                        Mostrando {{ $usuarios->firstItem() }} - {{ $usuarios->lastItem() }} de
+                                        {{ $usuarios->total() }} registros
+                                    </div>
+                                    <div class="mt-3">
+                                        {{ $usuarios->links() }}
+                                    </div>
                                 </div>
-                                <div class="mt-3">
-                                    {{ $usuarios->links() }}
-                                </div>
-                            </div>
                             @else
-                            <div class="d-flex justify-content-between">
-                                <div class="d-flex align-items-center text-secondary">
-                                    Mostrando {{ $usuarios->firstItem() }} - {{ $usuarios->lastItem() }} de
-                                    {{ $usuarios->total() }} registros
+                                <div class="d-flex justify-content-between">
+                                    <div class="d-flex align-items-center text-secondary">
+                                        Mostrando {{ $usuarios->firstItem() }} - {{ $usuarios->lastItem() }} de
+                                        {{ $usuarios->total() }} registros
+                                    </div>
                                 </div>
-                            </div>
                             @endif
                         </div>
                     </div>
@@ -204,7 +207,7 @@
     </div>
 
 
-    <div wire:ignore.self class="modal fade" id="modal-estado-usuario" tabindex="-1" data-bs-backdrop="static">
+    <div wire:ignore.self class="modal fade" id="modal-estado-usuario" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -219,25 +222,25 @@
                     <div class="modal-body px-6">
                         <div class="row g-3">
                             <div class="col-lg-12 mt-2 text-center">
-                                @if($modo === 1)
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="#0ca678" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="icon icon-tabler icons-tabler-outline icon-tabler-lock-open svg-extra-large my-6">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path
-                                        d="M5 11m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z" />
-                                    <path d="M12 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
-                                    <path d="M8 11v-5a4 4 0 0 1 8 0" />
-                                </svg>
+                                @if ($modo === 1)
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="#0ca678" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-lock-open svg-extra-large my-6">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path
+                                            d="M5 11m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z" />
+                                        <path d="M12 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                        <path d="M8 11v-5a4 4 0 0 1 8 0" />
+                                    </svg>
                                 @else
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="#d63939"
-                                    class="icon icon-tabler icons-tabler-filled icon-tabler-lock svg-extra-large my-6">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path
-                                        d="M12 2a5 5 0 0 1 5 5v3a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-10a3 3 0 0 1 -3 -3v-6a3 3 0 0 1 3 -3v-3a5 5 0 0 1 5 -5m0 12a2 2 0 0 0 -1.995 1.85l-.005 .15a2 2 0 1 0 2 -2m0 -10a3 3 0 0 0 -3 3v3h6v-3a3 3 0 0 0 -3 -3" />
-                                </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="#d63939"
+                                        class="icon icon-tabler icons-tabler-filled icon-tabler-lock svg-extra-large my-6">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path
+                                            d="M12 2a5 5 0 0 1 5 5v3a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-10a3 3 0 0 1 -3 -3v-6a3 3 0 0 1 3 -3v-3a5 5 0 0 1 5 -5m0 12a2 2 0 0 0 -1.995 1.85l-.005 .15a2 2 0 1 0 2 -2m0 -10a3 3 0 0 0 -3 3v3h6v-3a3 3 0 0 0 -3 -3" />
+                                    </svg>
                                 @endif
                             </div>
                             <div class="col-lg-12 mt-2 text-center">
@@ -266,7 +269,8 @@
                                         <div>
                                             <h4 class="alert-title text-dark">¡Alerta!</h4>
                                             <div class="text-dark">
-                                                Estás a punto de <strong>{{ $accion_estado }}</strong> el acceso de este
+                                                Estás a punto de <strong>{{ $accion_estado }}</strong> el acceso de
+                                                este
                                                 usuario.
                                                 Esto {{ $modo === 1 ? 'permitirá' : 'restringirá' }} su acceso al
                                                 sistema.
@@ -297,9 +301,10 @@
                     <div class="modal-footer">
                         <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal"
                             wire:click="limpiar_modal">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-ban">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round"
+                                class="icon icon-tabler icons-tabler-outline icon-tabler-ban">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                 <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
                                 <path d="M5.7 5.7l12.6 12.6" />
@@ -310,24 +315,25 @@
                         <div class="ms-auto">
                             <div wire:loading.remove>
                                 <button type="submit" class="btn btn-{{ $modo === 1 ? 'teal' : 'red' }}">
-                                    @if($modo === 1)
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        class="icon icon-tabler icons-tabler-outline icon-tabler-lock-open">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path
-                                            d="M5 11m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z" />
-                                        <path d="M12 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
-                                        <path d="M8 11v-5a4 4 0 0 1 8 0" />
-                                    </svg>
+                                    @if ($modo === 1)
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-lock-open">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path
+                                                d="M5 11m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z" />
+                                            <path d="M12 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                            <path d="M8 11v-5a4 4 0 0 1 8 0" />
+                                        </svg>
                                     @else
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="#ffffff" class="icon icon-tabler icons-tabler-filled icon-tabler-lock">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path
-                                            d="M12 2a5 5 0 0 1 5 5v3a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-10a3 3 0 0 1 -3 -3v-6a3 3 0 0 1 3 -3v-3a5 5 0 0 1 5 -5m0 12a2 2 0 0 0 -1.995 1.85l-.005 .15a2 2 0 1 0 2 -2m0 -10a3 3 0 0 0 -3 3v3h6v-3a3 3 0 0 0 -3 -3" />
-                                    </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="#ffffff"
+                                            class="icon icon-tabler icons-tabler-filled icon-tabler-lock">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path
+                                                d="M12 2a5 5 0 0 1 5 5v3a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-10a3 3 0 0 1 -3 -3v-6a3 3 0 0 1 3 -3v-3a5 5 0 0 1 5 -5m0 12a2 2 0 0 0 -1.995 1.85l-.005 .15a2 2 0 1 0 2 -2m0 -10a3 3 0 0 0 -3 3v3h6v-3a3 3 0 0 0 -3 -3" />
+                                        </svg>
                                     @endif
                                     {{ $accion_estado }}
                                 </button>

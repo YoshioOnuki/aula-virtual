@@ -19,6 +19,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
     <style>
         :root {
             --tblr-font-sans-serif: 'Inter', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
@@ -28,6 +30,19 @@
             font-feature-settings: "cv03", "cv04", "cv11";
         }
     </style>
+
+    <script>
+        window.addEventListener('load', () => {
+            const loadingScreen = document.querySelector('.loading-screen');
+            if (loadingScreen) {
+                loadingScreen.classList.add('hidden'); // Añadir clase `hidden` para transición (si tienes alguna animación)
+                setTimeout(() => {
+                    loadingScreen.remove(); // Eliminar completamente el elemento del DOM
+                }, 500); // Ajusta el tiempo si tienes animación en `.hidden`
+            }
+        });
+    </script>
+
     <script src="{{ asset('assets/dist/js/tabler.min.js?1684106062') }}" defer></script>
     <script src="{{ asset('assets/dist/js/demo.min.js?1684106062') }}" defer></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
@@ -36,6 +51,23 @@
 
 <body class="d-flex flex-column">
     <script src="{{ asset('assets/dist/js/demo-theme.min.js?1684106062') }}"></script>
+
+    <div class="page page-center cursor-progress loading-screen">
+        <div class="container container-slim py-4 d-flex justify-content-center align-items-center">
+            <div class="text-center" style="width: 256px;">
+                <div class="mb-3">
+                    <div class="navbar-brand navbar-brand-autodark">
+                        <img src="{{ asset('/media/logo-pg.webp') }}"
+                            height="150" alt="Logo Posgrado">
+                    </div>
+                </div>
+                <div class="text-muted mb-3">Preparando la aplicación</div>
+                <div class="progress progress-sm">
+                    <div class="progress-bar progress-bar-indeterminate bg-teal"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="page">
         <div class="page-wrapper"

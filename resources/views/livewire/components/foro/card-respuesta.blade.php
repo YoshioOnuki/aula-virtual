@@ -112,7 +112,6 @@
                     :tipo_vista=$tipo_vista :id_curso=$id_gestion_aula_hash
                     :id_gestion_aula_alumno=$id_gestion_aula_alumno :foro_respuesta=$subrespuesta :nivel="$nivel + 1"
                     wire:key="respuesta-{{ $subrespuesta->id_foro_respuesta }}" :modo_respuesta=0 lazy />
-                {{-- <livewire:components.foro.card-respuesta :respuesta="$subrespuesta"  :key="'respuesta-'.$subrespuesta->id_foro_respuesta" /> --}}
             </div>
         @endforeach
     @endif
