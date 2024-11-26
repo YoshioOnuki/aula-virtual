@@ -209,9 +209,9 @@
                 <form autocomplete="off" wire:submit="guardar_entrega_trabajo">
                     <div
                         class="modal-body"
-                        wire:loading.attr="disabled"
-                        wire:loading.class="d-none"
-                        wire:target="abrir_modal_entrega_trabajo"
+                        x-show="!$wire.estado_carga_modal"
+                        x-cloak
+                        x-collapse
                     >
                         <div class="row g-3">
                             <div class="col-lg-12">
@@ -245,15 +245,13 @@
                             </div>
                         </div>
                     </div>
-                        <!-- Spinner de carga para que aparezca mientras se están cargando los datos -->
-                    <div
-                        class="my-5 d-flex justify-content-center align-items-center d-none"
-                        wire:loading
-                        wire:loading.class.remove="d-none"
-                        wire:target="abrir_modal_entrega_trabajo"
-                    >
-                        <div class="spinner-border text-primary" role="status"></div>
-                    </div>
+
+                    <!-- Spinner de carga para que aparezca mientras se están cargando los datos -->
+                    <template x-if="$wire.estado_carga_modal">
+                        <div class="my-5 d-flex justify-content-center align-items-center">
+                            <div class="spinner-border text-primary" role="status"></div>
+                        </div>
+                    </template>
 
                     <div class="modal-footer">
                         <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal"

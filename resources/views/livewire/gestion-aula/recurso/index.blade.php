@@ -197,44 +197,49 @@
                         aria-label="Close" wire:click="limpiar_modal"></button>
                 </div>
                 <form autocomplete="off" wire:submit="guardar_recurso">
-                    @if (!$estado_carga_modal)
-                        <div class="modal-body">
-                            <div class="row g-3">
-                                <div class="col-lg-12">
-                                    <label for="nombre_recurso" class="form-label required">
-                                        Nombre del Recurso
-                                    </label>
-                                    <input type="text" name="nombre_recurso"
-                                        class="form-control @error('nombre_recurso') is-invalid @elseif(strlen($nombre_recurso) > 0) is-valid @enderror"
-                                        id="nombre_recurso" wire:model.live="nombre_recurso"
-                                        placeholder="Ingrese su correo electrónico" />
-                                    @error('nombre_recurso')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                    @enderror
+                    <div
+                        class="modal-body"
+                        x-show="!$wire.estado_carga_modal"
+                        x-cloak
+                        x-collapse
+                    >
+                        <div class="row g-3">
+                            <div class="col-lg-12">
+                                <label for="nombre_recurso" class="form-label required">
+                                    Nombre del Recurso
+                                </label>
+                                <input type="text" name="nombre_recurso"
+                                    class="form-control @error('nombre_recurso') is-invalid @elseif(strlen($nombre_recurso) > 0) is-valid @enderror"
+                                    id="nombre_recurso" wire:model.live="nombre_recurso"
+                                    placeholder="Ingrese su correo electrónico" />
+                                @error('nombre_recurso')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
                                 </div>
-                                <div class="col-lg-12">
-                                    <label for="archivo_recurso" class="form-label required">
-                                        Archivo
-                                    </label>
-                                    <input type="file" class="form-control @error('archivo_recurso') is-invalid @elseif(strlen($archivo_recurso) > 0) is-valid @enderror"
-                                        id="archivo_recurso" wire:model.live="archivo_recurso"
-                                        accept=".pdf,.xls,.xlsx,.doc,.docx,.ppt,.pptx,.txt" />
-                                    @error('archivo_recurso')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                    @enderror
+                                @enderror
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="archivo_recurso" class="form-label required">
+                                    Archivo
+                                </label>
+                                <input type="file" class="form-control @error('archivo_recurso') is-invalid @elseif(strlen($archivo_recurso) > 0) is-valid @enderror"
+                                    id="archivo_recurso" wire:model.live="archivo_recurso"
+                                    accept=".pdf,.xls,.xlsx,.doc,.docx,.ppt,.pptx,.txt" />
+                                @error('archivo_recurso')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
                                 </div>
+                                @enderror
                             </div>
                         </div>
-                    @else
-                        <!-- Spinner de carga para que aparezca mientras se están cargando los datos -->
+                    </div>
+
+                    <!-- Spinner de carga para que aparezca mientras se están cargando los datos -->
+                    <template x-if="$wire.estado_carga_modal">
                         <div class="my-5 d-flex justify-content-center align-items-center">
                             <div class="spinner-border text-primary" role="status"></div>
                         </div>
-                    @endif
+                    </template>
 
                     <div class="modal-footer">
                         <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="limpiar_modal">

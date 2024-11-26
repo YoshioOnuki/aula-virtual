@@ -504,7 +504,7 @@
         </div>
     </div>
 
-
+    {{-- Modal de enviar asistencias --}}
     <div wire:ignore.self class="modal fade" id="modal-enviar-asistencias" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-md" role="document">
             <div class="modal-content {{ $estado_carga_modal ? 'cursor-progress' : '' }}">
@@ -517,58 +517,63 @@
                 </div>
                 <form autocomplete="off" wire:submit="enviar_asistencia" novalidate>
                     <div class="modal-status bg-primary"></div>
-                    @if (!$estado_carga_modal)
-                        <div class="modal-body">
-                            <div class="row g-3">
-                                <div class="col-lg-12">
-                                    <ul style="list-style-type: none;">
-                                        <li class="mb-2">
-                                            <strong>
-                                                Tipo de Asistencia:
-                                            </strong>
-                                            <span class="text-secondary">
-                                                {{ $tipo_asistencia_a_enviar }}
-                                            </span>
-                                        </li>
-                                        <li class="mb-2">
-                                            <strong>Fecha:</strong>
-                                            <span class="text-secondary">
-                                                {{ $fecha_asistencia_a_enviar }}
-                                            </span>
-                                        </li>
-                                        <li class="">
-                                            <strong>Horario:</strong>
-                                            <span class="text-secondary">
-                                                {{ format_hora($hora_inicio_asistencia_a_enviar) }} -
-                                                {{ format_hora($hora_fin_asistencia_a_enviar) }}
-                                            </span>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="col-lg-12">
-                                    <label for="estado_asistencia" class="form-label required">Estado de Asistencia</label>
-                                    <select
-                                        class="form-select @if ($errors->has('estado_asistencia')) is-invalid @elseif($estado_asistencia) is-valid @endif"
-                                        id="estado_asistencia" wire:model.live="estado_asistencia">
-                                        <option value="">Seleccione el tipo de asistencia</option>
-                                        @foreach ($estados as $item)
-                                            <option value="{{ $item->id_estado_asistencia }}" wire:key="estado-{{ $item->id_estado_asistencia }}">
-                                                {{ $item->nombre_estado_asistencia}}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @error('estado_asistencia')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
+                    <div
+                        class="modal-body"
+                        x-show="!$wire.estado_carga_modal"
+                        x-cloak
+                        x-collapse
+                    >
+                        <div class="row g-3">
+                            <div class="col-lg-12">
+                                <ul style="list-style-type: none;">
+                                    <li class="mb-2">
+                                        <strong>
+                                            Tipo de Asistencia:
+                                        </strong>
+                                        <span class="text-secondary">
+                                            {{ $tipo_asistencia_a_enviar }}
+                                        </span>
+                                    </li>
+                                    <li class="mb-2">
+                                        <strong>Fecha:</strong>
+                                        <span class="text-secondary">
+                                            {{ $fecha_asistencia_a_enviar }}
+                                        </span>
+                                    </li>
+                                    <li class="">
+                                        <strong>Horario:</strong>
+                                        <span class="text-secondary">
+                                            {{ format_hora($hora_inicio_asistencia_a_enviar) }} -
+                                            {{ format_hora($hora_fin_asistencia_a_enviar) }}
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="estado_asistencia" class="form-label required">Estado de Asistencia</label>
+                                <select
+                                    class="form-select @if ($errors->has('estado_asistencia')) is-invalid @elseif($estado_asistencia) is-valid @endif"
+                                    id="estado_asistencia" wire:model.live="estado_asistencia">
+                                    <option value="">Seleccione el tipo de asistencia</option>
+                                    @foreach ($estados as $item)
+                                        <option value="{{ $item->id_estado_asistencia }}" wire:key="estado-{{ $item->id_estado_asistencia }}">
+                                            {{ $item->nombre_estado_asistencia}}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('estado_asistencia')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
-                    @else
-                        <!-- Spinner de carga para que aparezca mientras se están cargando los datos -->
+                    </div>
+
+                    <!-- Spinner de carga para que aparezca mientras se están cargando los datos -->
+                    <template x-if="$wire.estado_carga_modal">
                         <div class="my-5 d-flex justify-content-center align-items-center">
                             <div class="spinner-border text-primary" role="status"></div>
                         </div>
-                    @endif
+                    </template>
 
                     <div class="modal-footer">
                         <a class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="limpiar_modal">

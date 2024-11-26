@@ -303,45 +303,50 @@
                         aria-label="Close" wire:click="limpiar_modal"></button>
                 </div>
                 <form autocomplete="off" wire:submit="guardar_webgrafia">
-                    @if (!$estado_carga_modal)
-                        <div class="modal-body">
-                            <div class="row g-3">
-                                <div class="col-lg-12">
-                                    <label for="descripcion_webgrafia" class="form-label required">
-                                        Descripcion de Webgrafia
-                                    </label>
-                                    <input type="text" name="descripcion_webgrafia"
-                                        class="form-control @error('descripcion_webgrafia') is-invalid @elseif(strlen($descripcion_webgrafia) > 0) is-valid @enderror"
-                                        id="descripcion_webgrafia" wire:model.live="descripcion_webgrafia"
-                                        placeholder="Ingrese la descripción" />
-                                    @error('descripcion_webgrafia')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
-                                <div class="col-lg-12">
-                                    <label for="link_webgrafia" class="form-label required">
-                                        Link de Webgrafía
-                                    </label>
-                                    <input type="text" name="link_webgrafia"
-                                        class="form-control @error('link_webgrafia') is-invalid @elseif(strlen($link_webgrafia) > 0) is-valid @enderror"
-                                        id="link_webgrafia" wire:model.live="link_webgrafia"
-                                        placeholder="Ingrese el link" />
-                                    @error('link_webgrafia')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
+                    <div
+                        class="modal-body"
+                        x-show="!$wire.estado_carga_modal"
+                        x-cloak
+                        x-collapse
+                    >
+                        <div class="row g-3">
+                            <div class="col-lg-12">
+                                <label for="descripcion_webgrafia" class="form-label required">
+                                    Descripcion de Webgrafia
+                                </label>
+                                <input type="text" name="descripcion_webgrafia"
+                                    class="form-control @error('descripcion_webgrafia') is-invalid @elseif(strlen($descripcion_webgrafia) > 0) is-valid @enderror"
+                                    id="descripcion_webgrafia" wire:model.live="descripcion_webgrafia"
+                                    placeholder="Ingrese la descripción" />
+                                @error('descripcion_webgrafia')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="link_webgrafia" class="form-label required">
+                                    Link de Webgrafía
+                                </label>
+                                <input type="text" name="link_webgrafia"
+                                    class="form-control @error('link_webgrafia') is-invalid @elseif(strlen($link_webgrafia) > 0) is-valid @enderror"
+                                    id="link_webgrafia" wire:model.live="link_webgrafia"
+                                    placeholder="Ingrese el link" />
+                                @error('link_webgrafia')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                         </div>
-                    @else
-                        <!-- Spinner de carga para que aparezca mientras se están cargando los datos -->
+                    </div>
+
+                    <!-- Spinner de carga para que aparezca mientras se están cargando los datos -->
+                    <template x-if="$wire.estado_carga_modal">
                         <div class="my-5 d-flex justify-content-center align-items-center">
                             <div class="spinner-border text-primary" role="status"></div>
                         </div>
-                    @endif
+                    </template>
 
                     <div class="modal-footer">
                         <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="limpiar_modal">
