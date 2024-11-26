@@ -92,16 +92,21 @@
     {{-- Modal Link de Clase --}}
     <div wire:ignore.self class="modal fade" id="modal-link-clase" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
+            <div class="modal-content {{ $estado_carga_modal ? 'cursor-progress' : '' }}">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        {{ $titulo_link_clase }}
+                        {{ !$estado_carga_modal ? $titulo_link_clase : '***' }}
                     </h5>
                     <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal"
                         aria-label="Close" wire:click="limpiar_modal"></button>
                 </div>
                 <form autocomplete="off" wire:submit="guardar_link_clase">
-                    <div class="modal-body">
+                    <div
+                        class="modal-body"
+                        x-show="!$wire.estado_carga_modal"
+                        x-cloak
+                        x-collapse
+                    >
                         <div class="row g-3">
                             <div class="col-lg-12">
                                 <label for="nombre_link_clase" class="form-label required">
@@ -120,6 +125,13 @@
                         </div>
                     </div>
 
+                    <!-- Spinner de carga para que aparezca mientras se están cargando los datos -->
+                    <template x-if="$wire.estado_carga_modal">
+                        <div class="my-5 d-flex justify-content-center align-items-center">
+                            <div class="spinner-border text-primary" role="status"></div>
+                        </div>
+                    </template>
+
                     <div class="modal-footer">
                         <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="limpiar_modal">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -133,8 +145,13 @@
                         </a>
 
                         <div class="ms-auto">
-                            <button type="submit" class="btn btn-primary"
-                                wire:loading.attr="disabled" wire:target="guardar_link_clase">
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                                wire:loading.attr="disabled"
+                                wire:target="guardar_link_clase"
+                                {{ $estado_carga_modal ? 'disabled cursor-progress' : '' }}
+                            >
                                 <span wire:loading.remove wire:target="guardar_link_clase">
                                     @if ($modo_link_clase === 1)
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -175,25 +192,38 @@
     {{-- Modal Orientaciones --}}
     <div wire:ignore.self class="modal fade" id="modal-orientaciones" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
+            <div class="modal-content {{ $estado_carga_modal ? 'cursor-progress' : '' }}">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        {{ $titulo_orientaciones }}
+                        {{ !$estado_carga_modal ? $titulo_orientaciones : '***' }}
                     </h5>
                     <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal"
                         aria-label="Close" wire:click="limpiar_modal"></button>
                 </div>
-                <form autocomplete="off" wire:submit="guardar_orientaciones">
-                    <div class="modal-body">
+                <form
+                    autocomplete="off"
+                    wire:submit="guardar_orientaciones"
+                >
+                    <div
+                        class="modal-body"
+                        x-show="!$wire.estado_carga_modal"
+                        x-cloak
+                        x-collapse
+                        x-data="{ descripcion_orientaciones: $wire.descripcion_orientaciones }"
+                    >
                         <div class="row g-3">
                             <div class="col-lg-12">
                                 <label for="descripcion_orientaciones" class="form-label required">
                                     Orientaciones Generales
                                 </label>
-                                <div wire:ignore>
-                                    <textarea class="form-control required" wire:model.lazy="descripcion_orientaciones"
-                                        id="descripcion_orientaciones">
-                                        {{ $descripcion_orientaciones }}
+                                <div
+                                    wire:ignore
+                                >
+                                    <textarea
+                                        class="form-control required"
+                                        id="descripcion_orientaciones"
+                                        x-model="descripcion_orientaciones"
+                                    >
                                     </textarea>
                                 </div>
                                 @error('descripcion_orientaciones')
@@ -202,6 +232,13 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Spinner de carga para que aparezca mientras se están cargando los datos -->
+                    <template x-if="$wire.estado_carga_modal">
+                        <div class="my-5 d-flex justify-content-center align-items-center">
+                            <div class="spinner-border text-primary" role="status"></div>
+                        </div>
+                    </template>
 
                     <div class="modal-footer">
                         <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="limpiar_modal">
@@ -216,8 +253,13 @@
                         </a>
 
                         <div class="ms-auto">
-                            <button type="submit" class="btn btn-primary"
-                                wire:loading.attr="disabled" wire:target="guardar_orientaciones">
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                                wire:loading.attr="disabled"
+                                wire:target="guardar_orientaciones"
+                                {{ $estado_carga_modal ? 'disabled cursor-progress' : '' }}
+                            >
                                 <span wire:loading.remove wire:target="guardar_orientaciones">
                                     @if ($modo_orientaciones === 1)
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"

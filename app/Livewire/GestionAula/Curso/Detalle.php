@@ -50,6 +50,7 @@ class Detalle extends Component
     public $cargando_orientaciones = true;
     public $orientaciones_generales_bool = true;
     public $link_clase_bool = true;
+    public $estado_carga_modal = true; // Para manejar el estado de carga del modal
 
     // Variables para page-header
     public $titulo_page_header = 'Detalle';
@@ -79,6 +80,8 @@ class Detalle extends Component
             $this->accion_estado_link_clase = 'Editar';
             $this->nombre_link_clase = $this->link_clase->nombre_link_clase;
         }
+
+        $this->estado_carga_modal = false;
     }
 
 
@@ -99,6 +102,8 @@ class Detalle extends Component
             $this->accion_estado_orientaciones = 'Editar';
             $this->descripcion_orientaciones = $this->orientaciones_generales->descripcion_presentacion;
         }
+
+        $this->estado_carga_modal = false;
     }
 
 
@@ -193,6 +198,7 @@ class Detalle extends Component
                 type: 'info'
             );
             $this->cerrar_modal('#modal-orientaciones');
+            $this->limpiar_modal();
             return;
         }
 
@@ -263,6 +269,8 @@ class Detalle extends Component
      */
     public function limpiar_modal()
     {
+        $this->estado_carga_modal = true;
+
         // Variables de link de clase
         $this->modo_link_clase = 1;
         $this->titulo_link_clase = 'Registrar Link de Clase';
