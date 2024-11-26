@@ -46,6 +46,7 @@ class Detalle extends Component
 
     public $modo_admin = false; // Modo admin, para saber si se esta en modo administrador
     public $es_docente_invitado = false;
+    public $estado_carga_modal = true; // Para manejar el estado de carga del modal
     public $tipo_vista;
 
     // Variables para page-header
@@ -71,6 +72,7 @@ class Detalle extends Component
         } else {
             $this->comentarios = $this->comentarios;
         }
+        $this->estado_carga_modal = false;
     }
 
 
@@ -84,6 +86,8 @@ class Detalle extends Component
         $this->modo = 1;
         $this->titulo_modal = 'Registrar Entrega de Trabajo Académico';
         $this->accion_modal = 'Registrar';
+
+        $this->estado_carga_modal = false;
     }
 
 
@@ -299,6 +303,8 @@ class Detalle extends Component
      */
     public function limpiar_modal()
     {
+        $this->estado_carga_modal = true;
+
         $this->modo = 1;
         $this->titulo_modal = 'Registrar Entrega de Trabajo Académico';
         $this->accion_modal = 'Registrar';
@@ -310,6 +316,15 @@ class Detalle extends Component
 
         // Reiniciar errores
         $this->resetErrorBag();
+    }
+
+
+    /**
+     * Limpiar modal de Comentarios
+     */
+    public function limpiar_modal_comentarios()
+    {
+        $this->estado_carga_modal = true;
     }
 
 

@@ -198,16 +198,21 @@
     {{-- Modal para entrega de trabajo academico --}}
     <div wire:ignore.self class="modal fade" id="modal-entrega" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-            <div class="modal-content">
+            <div class="modal-content {{ $estado_carga_modal ? 'cursor-progress' : '' }}">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        {{ $titulo_modal }}
+                        {{ !$estado_carga_modal ? $titulo_modal : '***' }}
                     </h5>
                     <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal"
                         aria-label="Close" wire:click="limpiar_modal"></button>
                 </div>
                 <form autocomplete="off" wire:submit="guardar_entrega_trabajo">
-                    <div class="modal-body">
+                    <div
+                        class="modal-body"
+                        wire:loading.attr="disabled"
+                        wire:loading.class="d-none"
+                        wire:target="abrir_modal_entrega_trabajo"
+                    >
                         <div class="row g-3">
                             <div class="col-lg-12">
                                 <label for="descripcion_trabajo_academico_alumno" class="form-label">
@@ -240,6 +245,15 @@
                             </div>
                         </div>
                     </div>
+                        <!-- Spinner de carga para que aparezca mientras se están cargando los datos -->
+                    <div
+                        class="my-5 d-flex justify-content-center align-items-center d-none"
+                        wire:loading
+                        wire:loading.class.remove="d-none"
+                        wire:target="abrir_modal_entrega_trabajo"
+                    >
+                        <div class="spinner-border text-primary" role="status"></div>
+                    </div>
 
                     <div class="modal-footer">
                         <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal"
@@ -255,8 +269,11 @@
                         </a>
 
                         <div class="ms-auto">
-                            <button type="submit" class="btn btn-primary w-100" wire:loading.attr="disabled"
-                                wire:target="guardar_entrega_trabajo, archivos_trabajo_alumno, descripcion_trabajo_academico_alumno">
+                            <button
+                                type="submit" class="btn btn-primary w-100"
+                                wire:loading.attr="disabled"
+                                wire:target="guardar_entrega_trabajo, archivos_trabajo_alumno, descripcion_trabajo_academico_alumno, abrir_modal_entrega_trabajo"
+                            >
                                 <span wire:loading.remove
                                     wire:target="guardar_entrega_trabajo, archivos_trabajo_alumno, descripcion_trabajo_academico_alumno">
                                     @if ($modo === 1)
@@ -303,38 +320,45 @@
     {{-- Modal para mostrar comentarios --}}
     <div wire:ignore.self class="modal fade" id="modal-comentarios" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-            <div class="modal-content">
+            <div class="modal-content {{ $estado_carga_modal ? 'cursor-progress' : '' }}">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        Comentarios de la entrega
+                        {{ !$estado_carga_modal ? 'Comentarios de la entrega' : '***' }}
                     </h5>
                     <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                        aria-label="Close" wire:click="limpiar_modal_comentarios"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row g-3">
-                        @forelse($comentarios ?? [] as $comentario)
-                            <div class="col-lg-12" wire:key="comentario-{{ $comentario->id_comentario_trabajo_academico }}">
-                                <div class="hr-text hr-text-center">
-                                    <span>
-                                        {{ $comentario->gestionAulaDocente->usuario->nombre_completo }} -
-                                        <small class="text-muted">
-                                            {{ format_fecha_completa($comentario->created_at) }}
-                                        </small>
-                                    </span>
+                    @if (!$estado_carga_modal)
+                        <div class="row g-3">
+                            @forelse($comentarios ?? [] as $comentario)
+                                <div class="col-lg-12" wire:key="comentario-{{ $comentario->id_comentario_trabajo_academico }}">
+                                    <div class="hr-text hr-text-center">
+                                        <span>
+                                            {{ $comentario->gestionAulaDocente->usuario->nombre_completo }} -
+                                            <small class="text-muted">
+                                                {{ format_fecha_completa($comentario->created_at) }}
+                                            </small>
+                                        </span>
+                                    </div>
+                                    {!! $comentario->descripcion_comentario_trabajo_academico !!}
                                 </div>
-                                {!! $comentario->descripcion_comentario_trabajo_academico !!}
-                            </div>
-                        @empty
-                            <div class="alert alert-info">
-                                No se encontraron comentarios
-                            </div>
-                        @endforelse
-                    </div>
+                            @empty
+                                <div class="alert alert-info">
+                                    No se encontraron comentarios
+                                </div>
+                            @endforelse
+                        </div>
+                    @else
+                        <!-- Spinner de carga para que aparezca mientras se están cargando los datos -->
+                        <div class="my-5 d-flex justify-content-center align-items-center">
+                            <div class="spinner-border text-primary" role="status"></div>
+                        </div>
+                    @endif
                 </div>
 
                 <div class="modal-footer">
-                    <button class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <button class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="limpiar_modal_comentarios">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                             class="icon icon-tabler icons-tabler-outline icon-tabler-ban">
