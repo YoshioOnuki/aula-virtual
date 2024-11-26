@@ -68,9 +68,12 @@
                                         {{-- Boton de registrar --}}
                                         @if ($tipo_vista === 'carga-academica' && $es_docente)
                                             <div class="col-lg-12">
-                                                <a class="card card-link card-link-pop cursor-pointer"
-                                                    wire:click="abrir_modal_registrar_trabajo()" data-bs-toggle="modal"
-                                                    data-bs-target="#modal-trabajo-academico">
+                                                <a
+                                                    class="card card-link card-link-pop cursor-pointer"
+                                                    wire:click="abrir_modal_registrar_trabajo()"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#modal-trabajo-academico"
+                                                >
                                                     <div class="card-body text-secondary">
                                                         <div class="row g-2">
                                                             <div

@@ -297,8 +297,12 @@
 
                                                 @if (in_array(true, $this->check_alumno) && $es_docente)
                                                     <div class="col-lg-5 col-3 d-flex justify-content-end">
-                                                        <a class="btn btn-primary d-none d-md-inline-block"
-                                                            wire:click="abrir_modal_enviar_asistencias">
+                                                        <a
+                                                            class="btn btn-primary d-none d-md-inline-block"
+                                                            wire:click="abrir_modal_enviar_asistencias"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#modal-enviar-asistencias"
+                                                        >
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                                 stroke-width="2" stroke-linecap="round"
@@ -310,8 +314,12 @@
                                                             </svg>
                                                             Enviar Asistencias
                                                         </a>
-                                                        <a class="btn btn-primary d-md-none btn-icon"
-                                                            wire:click="abrir_modal_enviar_asistencias">
+                                                        <a
+                                                            class="btn btn-primary d-md-none btn-icon"
+                                                            wire:click="abrir_modal_enviar_asistencias"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#modal-enviar-asistencias"
+                                                        >
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                                 stroke-width="2" stroke-linecap="round"
@@ -412,9 +420,13 @@
                                                                 </span>
                                                             @else
                                                                 @if ($es_docente)
-                                                                    <button type="button"
+                                                                    <button
+                                                                        type="button"
                                                                         class="btn btn-outline-primary btn-sm {{ in_array(true, $this->check_alumno) ? 'disabled' : '' }}"
-                                                                        wire:click="abrir_modal_enviar_asistencia({{ $item->usuario->gestionAulaAlumno->first()->id_gestion_aula_alumno }})">
+                                                                        wire:click="abrir_modal_enviar_asistencia({{ $item->usuario->gestionAulaAlumno->first()->id_gestion_aula_alumno }})"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#modal-enviar-asistencias"
+                                                                    >
                                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                             height="24" viewBox="0 0 24 24" fill="none"
                                                                             stroke="currentColor" stroke-width="2"
@@ -493,63 +505,70 @@
     </div>
 
 
-    <div wire:ignore.self class="modal fade" id="modal-enviar-asistencia" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div wire:ignore.self class="modal fade" id="modal-enviar-asistencias" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-md" role="document">
-            <div class="modal-content">
+            <div class="modal-content {{ $estado_carga_modal ? 'cursor-progress' : '' }}">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        {{ $titulo_modal_enviar }}
+                        {{ !$estado_carga_modal ? $titulo_modal_enviar : '***' }}
                     </h5>
                     <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal"
                         aria-label="Close" wire:click="limpiar_modal"></button>
                 </div>
                 <form autocomplete="off" wire:submit="enviar_asistencia" novalidate>
                     <div class="modal-status bg-primary"></div>
-                    <div class="modal-body">
-                        <div class="row g-3">
-                            <div class="col-lg-12">
-                                <ul style="list-style-type: none;">
-                                    <li class="mb-2">
-                                        <strong>
-                                            Tipo de Asistencia:
-                                        </strong>
-                                        <span class="text-secondary">
-                                            {{ $tipo_asistencia_a_enviar }}
-                                        </span>
-                                    </li>
-                                    <li class="mb-2">
-                                        <strong>Fecha:</strong>
-                                        <span class="text-secondary">
-                                            {{ $fecha_asistencia_a_enviar }}
-                                        </span>
-                                    </li>
-                                    <li class="">
-                                        <strong>Horario:</strong>
-                                        <span class="text-secondary">
-                                            {{ format_hora($hora_inicio_asistencia_a_enviar) }} -
-                                            {{ format_hora($hora_fin_asistencia_a_enviar) }}
-                                        </span>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="estado_asistencia" class="form-label required">Estado de Asistencia</label>
-                                <select
-                                    class="form-select @if ($errors->has('estado_asistencia')) is-invalid @elseif($estado_asistencia) is-valid @endif"
-                                    id="estado_asistencia" wire:model.live="estado_asistencia">
-                                    <option value="">Seleccione el tipo de asistencia</option>
-                                    @foreach ($estados as $item)
-                                        <option value="{{ $item->id_estado_asistencia }}" wire:key="estado-{{ $item->id_estado_asistencia }}">
-                                            {{ $item->nombre_estado_asistencia}}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('estado_asistencia')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                    @if (!$estado_carga_modal)
+                        <div class="modal-body">
+                            <div class="row g-3">
+                                <div class="col-lg-12">
+                                    <ul style="list-style-type: none;">
+                                        <li class="mb-2">
+                                            <strong>
+                                                Tipo de Asistencia:
+                                            </strong>
+                                            <span class="text-secondary">
+                                                {{ $tipo_asistencia_a_enviar }}
+                                            </span>
+                                        </li>
+                                        <li class="mb-2">
+                                            <strong>Fecha:</strong>
+                                            <span class="text-secondary">
+                                                {{ $fecha_asistencia_a_enviar }}
+                                            </span>
+                                        </li>
+                                        <li class="">
+                                            <strong>Horario:</strong>
+                                            <span class="text-secondary">
+                                                {{ format_hora($hora_inicio_asistencia_a_enviar) }} -
+                                                {{ format_hora($hora_fin_asistencia_a_enviar) }}
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-lg-12">
+                                    <label for="estado_asistencia" class="form-label required">Estado de Asistencia</label>
+                                    <select
+                                        class="form-select @if ($errors->has('estado_asistencia')) is-invalid @elseif($estado_asistencia) is-valid @endif"
+                                        id="estado_asistencia" wire:model.live="estado_asistencia">
+                                        <option value="">Seleccione el tipo de asistencia</option>
+                                        @foreach ($estados as $item)
+                                            <option value="{{ $item->id_estado_asistencia }}" wire:key="estado-{{ $item->id_estado_asistencia }}">
+                                                {{ $item->nombre_estado_asistencia}}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('estado_asistencia')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @else
+                        <!-- Spinner de carga para que aparezca mientras se están cargando los datos -->
+                        <div class="my-5 d-flex justify-content-center align-items-center">
+                            <div class="spinner-border text-primary" role="status"></div>
+                        </div>
+                    @endif
 
                     <div class="modal-footer">
                         <a class="btn btn-outline-secondary" data-bs-dismiss="modal" wire:click="limpiar_modal">
@@ -564,8 +583,13 @@
                         </a>
 
                         <div class="ms-auto">
-                            <button type="submit" class="btn btn-primary w-100" wire:loading.attr="disabled"
-                                wire:target="enviar_asistencia">
+                            <button
+                                type="submit"
+                                class="btn btn-primary w-100"
+                                wire:loading.attr="disabled"
+                                wire:target="enviar_asistencia"
+                                {{ $estado_carga_modal ? 'disabled cursor-progress' : '' }}
+                            >
                                 <span wire:loading.remove
                                     wire:target="enviar_asistencia">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"

@@ -53,6 +53,7 @@ class Detalle extends Component
     public $modo_admin = false; // Modo admin, para saber si se esta en modo administrador
     public $es_docente = false;
     public $es_docente_invitado = false;
+    public $estado_carga_modal = true; // Para manejar el estado de carga del modal
     public $tipo_vista;
 
     // Variables para page-header
@@ -94,11 +95,6 @@ class Detalle extends Component
     public function abrir_modal_enviar_asistencia($id_gestion_aula_alumno)
     {
         $this->limpiar_modal();
-        $this->dispatch(
-            'modal',
-            modal: '#modal-enviar-asistencia',
-            action: 'show'
-        );
 
         $this->titulo_modal_enviar = 'Enviar Asistencia';
         $this->modo_enviar = 0; // Enviar asistencia a un solo alumno
@@ -112,6 +108,8 @@ class Detalle extends Component
         $this->fecha_asistencia_a_enviar = $asistencia->fecha_asistencia;
         $this->hora_inicio_asistencia_a_enviar = $asistencia->hora_inicio_asistencia;
         $this->hora_fin_asistencia_a_enviar = $asistencia->hora_fin_asistencia;
+
+        $this->estado_carga_modal = false;
     }
 
 
@@ -121,11 +119,6 @@ class Detalle extends Component
     public function abrir_modal_enviar_asistencias()
     {
         $this->limpiar_modal();
-        $this->dispatch(
-            'modal',
-            modal: '#modal-enviar-asistencia',
-            action: 'show'
-        );
 
         $this->titulo_modal_enviar = 'Enviar varias asistencias';
         $this->modo_enviar = 1; // Enviar asistencia a varios alumnos
@@ -138,6 +131,8 @@ class Detalle extends Component
         $this->fecha_asistencia_a_enviar = $asistencia->fecha_asistencia;
         $this->hora_inicio_asistencia_a_enviar = $asistencia->hora_inicio_asistencia;
         $this->hora_fin_asistencia_a_enviar = $asistencia->hora_fin_asistencia;
+
+        $this->estado_carga_modal = false;
     }
 
 
@@ -172,6 +167,9 @@ class Detalle extends Component
                     mensaje: 'No se ha seleccionado ningún alumno.',
                     type: 'error'
                 );
+                $this->cerrar_modal('#modal-enviar-asistencias');
+                $this->limpiar_modal();
+
                 return;
             } else {
                 $asistencia_alumno = new AsistenciaAlumno();
@@ -185,10 +183,10 @@ class Detalle extends Component
             $this->check_alumno = [];
             $this->check_all = false;
 
-
             DB::commit();
 
-            $this->cerrar_modal('#modal-enviar-asistencia');
+            $this->cerrar_modal('#modal-enviar-asistencias');
+            $this->limpiar_modal();
 
             $this->dispatch(
                 'toast-basico',
@@ -225,6 +223,8 @@ class Detalle extends Component
      */
     public function limpiar_modal()
     {
+        $this->estado_carga_modal = true;
+
         $this->id_asistencia_enviar = null;
         $this->estado_asistencia = '';
         $this->tipo_asistencia_a_enviar = '';
