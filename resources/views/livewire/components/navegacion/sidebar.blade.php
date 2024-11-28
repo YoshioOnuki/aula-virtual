@@ -71,10 +71,7 @@
                                 <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
                             </svg>
                         </span>
-                        <span class="nav-link-title hide-theme-dark">
-                            Inicio
-                        </span>
-                        <span class="nav-link-title hide-theme-light">
+                        <span class="nav-link-title">
                             Inicio
                         </span>
                     </a>
@@ -94,10 +91,7 @@
                                 <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855" />
                             </svg>
                         </span>
-                        <span class="nav-link-title hide-theme-dark">
-                            Perfil
-                        </span>
-                        <span class="nav-link-title hide-theme-light">
+                        <span class="nav-link-title">
                             Perfil
                         </span>
                     </a>
@@ -168,10 +162,7 @@
                                     <path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4" />
                                 </svg>
                             </span>
-                            <span class="nav-link-title hide-theme-dark">
-                                Alumnos
-                            </span>
-                            <span class="nav-link-title hide-theme-light">
+                            <span class="nav-link-title">
                                 Alumnos
                             </span>
                         </a>
@@ -196,27 +187,21 @@
                                         d="M11 16m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v1a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
                                 </svg>
                             </span>
-                            <span class="nav-link-title hide-theme-dark">
-                                Docentes
-                            </span>
-                            <span class="nav-link-title hide-theme-light">
+                            <span class="nav-link-title">
                                 Docentes
                             </span>
                         </a>
                     </li>
 
-                    <li class="nav-item {{ request()->routeIs('docentes*') || 
-                        request()->routeIs('carga-academica*') ? 'active' : '' }}">
-                        <a class="nav-link {{ request()->routeIs('docentes*') || 
-                            request()->routeIs('carga-academica*') ? 'text-primary fw-medium' : '' }}"
-                            style="cursor: pointer;" href="{{ route('docentes') }}">
+                    <li class="nav-item {{ request()->routeIs('todos-cursos*') ? 'active' : '' }}">
+                        <a class="nav-link {{ request()->routeIs('todos-cursos*') ? 'text-primary fw-medium' : '' }}"
+                            style="cursor: pointer;" href="{{ route('todos-cursos') }}">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round"
                                     class="icon icon-tabler icons-tabler-outline icon-tabler-books
-                                    {{ request()->routeIs('docentes*') || 
-                                    request()->routeIs('carga-academica*') ? 'text-primary' : '' }}">
+                                    {{ request()->routeIs('todos-cursos*') ? 'text-primary' : '' }}">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                     <path
                                         d="M5 4m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" />
@@ -230,10 +215,7 @@
                                     <path d="M16 16l3.923 -.98" />
                                 </svg>
                             </span>
-                            <span class="nav-link-title hide-theme-dark">
-                                Todos los Cursos
-                            </span>
-                            <span class="nav-link-title hide-theme-light">
+                            <span class="nav-link-title">
                                 Todos los Cursos
                             </span>
                         </a>

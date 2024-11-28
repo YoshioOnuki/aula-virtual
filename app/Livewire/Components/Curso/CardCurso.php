@@ -28,6 +28,7 @@ class CardCurso extends Component
     public $foto_docente = array();
 
     public $modo_admin = false; // Modo admin, para saber si se esta en modo administrador
+    public $todos_cursos = false; // Todos los cursos, para saber si se estan mostrando todos los cursos
     public $tipo_vista; // Tipo de vista, para saber si esta en cursos o carga academica
 
 
@@ -184,20 +185,28 @@ class CardCurso extends Component
     }
 
 
-    public function mount($tipo_vista, $usuario, $gestion_aula)
+    public function mount($tipo_vista, $usuario = null, $gestion_aula)
     {
         $this->tipo_vista = $tipo_vista;
-        $this->usuario = $usuario;
+        if($usuario === null) {
+            $gestion_aula_docente = GestionAulaDocente::where('id_gestion_aula', $gestion_aula->id_gestion_aula)
+                ->invitado(false)
+                ->first();
+            $this->usuario = $gestion_aula_docente->usuario;
+            $this->todos_cursos = true;
+        }else{
+            $this->usuario = $usuario;
+        }
 
         $this->gestion_aula = GestionAula::with('curso')
             ->find($gestion_aula->id_gestion_aula);
 
         if ($this->tipo_vista === 'cursos') {
-            $this->gestion_aula_alumno = GestionAulaAlumno::where('id_usuario', $usuario->id_usuario)
+            $this->gestion_aula_alumno = GestionAulaAlumno::where('id_usuario', $this->usuario->id_usuario)
                 ->gestionAula($gestion_aula->id_gestion_aula)
                 ->first();
         } else {
-            $this->gestion_aula_docente = GestionAulaDocente::where('id_usuario', $usuario->id_usuario)
+            $this->gestion_aula_docente = GestionAulaDocente::where('id_usuario', $this->usuario->id_usuario)
                 ->gestionAula($gestion_aula->id_gestion_aula)
                 ->first();
         }

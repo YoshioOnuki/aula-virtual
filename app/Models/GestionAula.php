@@ -221,6 +221,113 @@ class GestionAula extends Model
 
 
     /**
+     * Scope a query to search.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $search
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSearch($query, $search)
+    {
+        if ($search) {
+            return $query->where('grupo_gestion_aula', 'like', '%' . $search . '%')
+                        ->orWhereHas('curso', function ($query) use ($search) {
+                            $query->where('nombre_curso', 'like', '%' . $search . '%')
+                                ->orWhere('codigo_curso', 'like', '%' . $search . '%');
+            });
+        }
+    }
+
+    /**
+     * Scope a query to search curso.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $tipo_programa
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeTipoPrograma($query, $tipo_programa = null)
+    {
+        if ($tipo_programa === null) {
+            return $query;
+        }
+        return $query->whereHas('curso', function ($query) use ($tipo_programa) {
+            $query->whereHas('programa', function ($query) use ($tipo_programa) {
+                $query->where('id_tipo_programa', $tipo_programa);
+            });
+        });
+    }
+
+    /**
+     * Scope a query to search curso.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $facultad
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeFacultad($query, $facultad = null)
+    {
+        if ($facultad === null) {
+            return $query;
+        }
+        return $query->whereHas('curso', function ($query) use ($facultad) {
+            $query->whereHas('programa', function ($query) use ($facultad) {
+                $query->where('id_facultad', $facultad);
+            });
+        });
+    }
+
+    /**
+     * Scope a query to search curso.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $programa
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePrograma($query, $programa = null)
+    {
+        if ($programa === null) {
+            return $query;
+        }
+        return $query->whereHas('curso', function ($query) use ($programa) {
+            $query->where('id_programa', $programa);
+        });
+    }
+
+    /**
+     * Scope a query to search curso.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $ciclo
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeCiclo($query, $ciclo = null)
+    {
+        if ($ciclo === null) {
+            return $query;
+        }
+        return $query->whereHas('curso', function ($query) use ($ciclo) {
+            $query->where('id_ciclo', $ciclo);
+        });
+    }
+
+    /**
+     * Scope a query to search curso.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $plan_estudio
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePlanEstudio($query, $plan_estudio = null)
+    {
+        if ($plan_estudio === null) {
+            return $query;
+        }
+        return $query->whereHas('curso', function ($query) use ($plan_estudio) {
+            $query->where('id_plan_estudio', $plan_estudio);
+        });
+    }
+
+    /**
      * Scope a query to search estado.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
@@ -239,8 +346,11 @@ class GestionAula extends Model
      * @param string $en_curso
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeEnCurso($query, $en_curso)
+    public function scopeEnCurso($query, $en_curso = null)
     {
+        if ($en_curso === null) {
+            return $query;
+        }
         return $query->where('en_curso_gestion_aula', $en_curso);
     }
 

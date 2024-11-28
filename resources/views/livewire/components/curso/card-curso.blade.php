@@ -86,7 +86,7 @@
                                 </span>
                             </div>
                         </div>
-                    @elseif ($tipo_vista === 'carga-academica')
+                    @elseif ($tipo_vista === 'carga-academica' && !$todos_cursos)
                         <div class="d-flex align-items-center mt-4">
                             <div class="w-full">
                                 <span class="badge bg-{{ $tipo_vista === 'cursos' ? 'teal' : 'orange' }}-lt py-2 w-100">
@@ -95,6 +95,14 @@
                                     @elseif ($tipo_vista === 'carga-academica' && !$gestion_aula_docente->es_invitado)
                                         DOCENTE
                                     @endif
+                                </span>
+                            </div>
+                        </div>
+                    @elseif($todos_cursos)
+                        <div class="d-flex align-items-center mt-4">
+                            <div class="w-full">
+                                <span class="badge bg-orange-lt py-2 w-100">
+                                    EN CURSO
                                 </span>
                             </div>
                         </div>

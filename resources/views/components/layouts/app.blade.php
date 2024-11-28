@@ -88,7 +88,13 @@
 <body class="layout-fluid">
     <script src="{{ asset('assets/dist/js/demo-theme.min.js?1684106062') }}"></script>
 
-    @if (request()->routeIs('inicio') || request()->routeIs('dashboard'))
+    @if (request()->routeIs('inicio') ||
+        request()->routeIs('dashboard') ||
+        request()->routeIs('alumnos') ||
+        request()->routeIs('docentes') ||
+        request()->routeIs('todos-cursos') ||
+        request()->routeIs('cursos') ||
+        request()->routeIs('carga-academica'))
         <div class="page page-center cursor-progress loading-screen">
             <div class="container container-slim py-4 d-flex justify-content-center align-items-center">
                 <div class="text-center" style="width: 256px;">
