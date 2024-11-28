@@ -275,6 +275,23 @@ class GestionAula extends Model
             });
         });
     }
+
+    /**
+     * Scope a query to search curso.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $programa
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePrograma($query, $programa = null)
+    {
+        if ($programa === null) {
+            return $query;
+        }
+        return $query->whereHas('curso', function ($query) use ($programa) {
+            $query->where('id_programa', $programa);
+        });
+    }
     /**
      * Scope a query to search estado.
      *
