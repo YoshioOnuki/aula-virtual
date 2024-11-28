@@ -8,6 +8,7 @@ use App\Livewire\Configuracion\Usuario\Index as UsuarioIndex;
 use App\Livewire\GestionAula\Alumnos\Index as AlumnoIndex;
 use App\Livewire\GestionAula\Asistencia\Detalle as AsistenciaDetalle;
 use App\Livewire\GestionAula\Asistencia\Index as AsistenciaIndex;
+use App\Livewire\GestionAula\CargaAcademica\Index  as CargaAcademicaIndex;
 use App\Livewire\GestionAula\Curso\Detalle as CursoDetalle;
 use App\Livewire\GestionAula\Curso\Index as CursoIndex;
 use App\Livewire\GestionAula\Foro\Detalle as ForoDetalle;
@@ -117,7 +118,7 @@ Route::middleware(['throttle:100,1'])->group(function () {
 
         /* =============== GESTION DEL AULA =============== */
             Route::prefix('gestion-aula')->group(function () {
-                //------ BUSQUEDA DE ALUMNOS Y DOCENTES ------//
+                //------ BUSQUEDA DE ALUMNOS, DOCENTES Y CURSOS ------//
                     // Busqueda de alumnos
                     Route::get('/alumnos', AlumnosDocentesIndex::class)
                     ->name('alumnos');
@@ -125,6 +126,10 @@ Route::middleware(['throttle:100,1'])->group(function () {
                     // Busqueda de docentes
                     Route::get('/docentes', AlumnosDocentesIndex::class)
                         ->name('docentes');
+
+                    // Busqueda de cursos
+                    Route::get('/cursos', CargaAcademicaIndex::class)
+                        ->name('todos-cursos');
                 //------  ------//
 
                 //------ ALUMNO ------//
