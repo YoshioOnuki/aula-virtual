@@ -346,8 +346,11 @@ class GestionAula extends Model
      * @param string $en_curso
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeEnCurso($query, $en_curso)
+    public function scopeEnCurso($query, $en_curso = null)
     {
+        if ($en_curso === null) {
+            return $query;
+        }
         return $query->where('en_curso_gestion_aula', $en_curso);
     }
 
