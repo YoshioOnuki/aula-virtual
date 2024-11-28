@@ -221,6 +221,23 @@ class GestionAula extends Model
 
 
     /**
+     * Scope a query to search.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $search
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSearch($query, $search)
+    {
+        if ($search) {
+            return $query->where('grupo_gestion_aula', 'like', '%' . $search . '%')
+                        ->orWhereHas('curso', function ($query) use ($search) {
+                            $query->where('nombre_curso', 'like', '%' . $search . '%')
+                                ->orWhere('codigo_curso', 'like', '%' . $search . '%');
+            });
+        }
+    }
+    /**
      * Scope a query to search estado.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
