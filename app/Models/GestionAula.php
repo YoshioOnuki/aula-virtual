@@ -309,6 +309,24 @@ class GestionAula extends Model
             $query->where('id_ciclo', $ciclo);
         });
     }
+
+    /**
+     * Scope a query to search curso.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $plan_estudio
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePlanEstudio($query, $plan_estudio = null)
+    {
+        if ($plan_estudio === null) {
+            return $query;
+        }
+        return $query->whereHas('curso', function ($query) use ($plan_estudio) {
+            $query->where('id_plan_estudio', $plan_estudio);
+        });
+    }
+
     /**
      * Scope a query to search estado.
      *
