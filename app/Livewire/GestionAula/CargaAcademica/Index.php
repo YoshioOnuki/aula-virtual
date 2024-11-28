@@ -1,9 +1,14 @@
+<?php
+
+namespace App\Livewire\GestionAula\CargaAcademica;
 
 use App\Models\GestionAula;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
+class Index extends Component
+{
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
 
@@ -56,6 +61,8 @@ use Livewire\WithPagination;
     }
 
 
+    public function render()
+    {
         $cursos = GestionAula::with(['curso'])
             ->whereHas('gestionAulaDocente', function ($query) {
                 $query->estado(true);
@@ -71,3 +78,6 @@ use Livewire\WithPagination;
             ->enCurso($this->filtro_en_curso)
             ->paginate($this->mostrar_paginate);
 
+        return view('livewire.gestion-aula.carga-academica.index', compact('cursos'));
+    }
+}
