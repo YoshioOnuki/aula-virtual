@@ -236,10 +236,6 @@ Route::middleware(['throttle:100,1'])->group(function () {
             Route::get('/calificaciones', HomeIndex::class)
                 ->name('calificaciones');
 
-            // Plan de estudio
-            Route::get('/plan-estudio', PlanEstudioIndex::class)
-                ->name('plan-estudio');
-
             // Manuales
             Route::get('/manuales', ManualesIndex::class)
                 ->name('manuales');
