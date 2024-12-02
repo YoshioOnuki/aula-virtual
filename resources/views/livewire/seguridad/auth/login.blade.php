@@ -7,9 +7,7 @@
                     <a class="navbar-brand navbar-brand-autodark animate__animated animate__backInDown ">
                         <picture>
                             <img src="{{ asset('/media/logo-pg.webp') }}" height="160" alt="Logo"
-                                class="rounded hide-theme-light">
-                            <img src="{{ asset('/media/logo-pg.webp') }}" height="160   " alt="Logo"
-                                class="rounded hide-theme-dark">
+                                class="rounded">
                         </picture>
                     </a>
                 </div>

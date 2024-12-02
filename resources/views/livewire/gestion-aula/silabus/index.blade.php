@@ -295,8 +295,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <hr class="mt-5 mb-2 hide-theme-dark">
-                                                        <hr class="mt-5 mb-2 hide-theme-light text-white">
+                                                        <hr class="mt-5 mb-2">
 
                                                         <div class="col-12">
                                                             <label for="silabus" class="form-label required">
