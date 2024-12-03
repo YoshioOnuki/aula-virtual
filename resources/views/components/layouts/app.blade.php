@@ -64,7 +64,8 @@
         window.addEventListener('load', () => {
             const loadingScreen = document.querySelector('.loading-screen');
             if (loadingScreen) {
-                loadingScreen.classList.add('hidden'); // Añadir clase `hidden` para transición (si tienes alguna animación)
+                loadingScreen.classList.add(
+                'hidden'); // Añadir clase `hidden` para transición (si tienes alguna animación)
                 setTimeout(() => {
                     loadingScreen.remove(); // Eliminar completamente el elemento del DOM
                 }, 500); // Ajusta el tiempo si tienes animación en `.hidden`
@@ -89,19 +90,18 @@
     <script src="{{ asset('assets/dist/js/demo-theme.min.js?1684106062') }}"></script>
 
     @if (request()->routeIs('inicio') ||
-        request()->routeIs('dashboard') ||
-        request()->routeIs('alumnos') ||
-        request()->routeIs('docentes') ||
-        request()->routeIs('todos-cursos') ||
-        request()->routeIs('cursos') ||
-        request()->routeIs('carga-academica'))
+            request()->routeIs('dashboard') ||
+            request()->routeIs('alumnos') ||
+            request()->routeIs('docentes') ||
+            request()->routeIs('lista-cursos') ||
+            request()->routeIs('cursos') ||
+            request()->routeIs('carga-academica'))
         <div class="page page-center cursor-progress loading-screen">
             <div class="container container-slim py-4 d-flex justify-content-center align-items-center">
                 <div class="text-center" style="width: 256px;">
                     <div class="mb-3">
                         <div class="navbar-brand navbar-brand-autodark">
-                            <img src="{{ asset('/media/logo-pg.webp') }}"
-                                height="150" alt="Logo Posgrado">
+                            <img src="{{ asset('/media/logo-pg.webp') }}" height="150" alt="Logo Posgrado">
                         </div>
                     </div>
                     <div class="text-muted mb-3">Preparando la aplicación</div>
@@ -156,38 +156,50 @@
             // Configuración inicial de Notyf
             var notyf = new Notyf({
                 duration: 6000, // Duración predeterminada de la notificación
-                position: {x: 'center', y: 'top'}, // Posición predeterminada
+                position: {
+                    x: 'center',
+                    y: 'top'
+                }, // Posición predeterminada
                 dismissible: true, // Hacer todas las notificaciones descartables
-                types: [
-                {
-                    type: 'info',
-                    background: '#4299e1', // Color personalizado para info
-                    icon: {
-                        tagName: 'i',
-                        text: ''
+                types: [{
+                        type: 'info',
+                        background: '#4299e1', // Color personalizado para info
+                        icon: {
+                            tagName: 'i',
+                            text: ''
+                        }
+                    },
+                    {
+                        type: 'warning',
+                        background: '#f59f00', // Color personalizado para warning
+                        icon: {
+                            tagName: 'i',
+                            text: ''
+                        }
                     }
-                },
-                {
-                    type: 'warning',
-                    background: '#f59f00', // Color personalizado para warning
-                    icon: {
-                        tagName: 'i',
-                        text: ''
-                    }
-                }
-            ]
+                ]
             });
 
             // Función para mostrar notificaciones
             function mostrarNotificacion(tipo, mensaje) {
                 if (tipo === 'success') {
-                    notyf.success({message: mensaje});
+                    notyf.success({
+                        message: mensaje
+                    });
                 } else if (tipo === 'error') {
-                    notyf.error({message: mensaje});
+                    notyf.error({
+                        message: mensaje
+                    });
                 } else if (tipo === 'info') {
-                    notyf.open({type: 'info', message: mensaje});
+                    notyf.open({
+                        type: 'info',
+                        message: mensaje
+                    });
                 } else if (tipo === 'warning') {
-                    notyf.open({type: 'warning', message: mensaje});
+                    notyf.open({
+                        type: 'warning',
+                        message: mensaje
+                    });
                 }
             }
 

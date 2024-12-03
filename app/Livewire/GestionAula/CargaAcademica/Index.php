@@ -2,7 +2,13 @@
 
 namespace App\Livewire\GestionAula\CargaAcademica;
 
+use App\Models\Ciclo;
+use App\Models\Facultad;
 use App\Models\GestionAula;
+use App\Models\PlanEstudio;
+use App\Models\Proceso;
+use App\Models\Programa;
+use App\Models\TipoPrograma;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -14,20 +20,29 @@ class Index extends Component
 
     #[Url('mostrar')]
     public $mostrar_paginate = 10;
-    #[Url('buscar')]
+    #[Url(except: '', as: 'buscar')]
     public $search = '';
-    #[Url('filtro-tipo-programa')]
-    public $filtro_tipo_programa; // Tipo de programa (Doctorado, Maestría, etc.)
-    #[Url('filtro-facultad')]
-    public $filtro_facultad;// Facultad (Ingeniería, Ciencias, etc.)
-    #[Url('filtro-programa')]
-    public $filtro_programa; // Programa (Ingeniería de Sistemas, Educacion, etc.)
-    #[Url('filtro-ciclo')]
-    public $filtro_ciclo; // Ciclo (I, II, III, etc.)
-    #[Url('filtro-plan-estudio')]
-    public $filtro_plan_estudio; // Plan de estudio (2010, 2015, etc.)
-    #[Url('filtro-en-curso')]
-    public $filtro_en_curso; // Filtro para mostrar cursos en curso o finalizados
+    #[Url(except: '', as: 'tipo-programa')]
+    public $filtro_tipo_programa = ''; // Tipo de programa (Doctorado, Maestría, etc.)
+    public $cbo_tipo_programa;
+    #[Url(except: '', as: 'facultad')]
+    public $filtro_facultad = '';// Facultad (Ingeniería, Ciencias, etc.)
+    public $cbo_facultad;
+    #[Url(except: '', as: 'programa')]
+    public $filtro_programa = ''; // Programa (Ingeniería de Sistemas, Educacion, etc.)
+    public $cbo_programa;
+    #[Url(except: '', as: 'ciclo')]
+    public $filtro_ciclo = ''; // Ciclo (I, II, III, etc.)
+    public $cbo_ciclo;
+    #[Url(except: '', as: 'plan-estudio')]
+    public $filtro_plan_estudio = ''; // Plan de estudio (2010, 2015, etc.)
+    public $cbo_plan_estudio;
+    #[Url(except: '', as: 'proceso')]
+    public $filtro_proceso = ''; // Proceso (2021-1, 2021-2, etc.)
+    public $cbo_proceso;
+    #[Url(except: '', as: 'en-curso')]
+    public $filtro_en_curso = ''; // Filtro para mostrar cursos en curso o finalizados
+    public $cbo_en_curso;
 
     public $tipo_vista_curso = 'carga-academica';
 
@@ -35,6 +50,65 @@ class Index extends Component
     public $titulo_page_header = 'LISTA DE CURSOS - CARGA ACADÉMICA';
     public $links_page_header = [];
     public $regresar_page_header;
+
+
+    /**
+     * Función para limpiar los filtros
+     */
+    public function limpiar_filtros()
+    {
+        $this->cbo_tipo_programa = '';
+        $this->cbo_facultad = '';
+        $this->cbo_programa = '';
+        $this->cbo_ciclo = '';
+        $this->cbo_plan_estudio = '';
+        $this->cbo_proceso = '';
+        $this->cbo_en_curso = '';
+
+        $this->filtro_tipo_programa = '';
+        $this->filtro_facultad = '';
+        $this->filtro_programa = '';
+        $this->filtro_ciclo = '';
+        $this->filtro_plan_estudio = '';
+        $this->filtro_proceso = '';
+        $this->filtro_en_curso = '';
+    }
+
+    /**
+     * Función para filtrar los cursos
+     */
+    public function filtrar()
+    {
+
+        if ($this->cbo_programa && $this->cbo_facultad) {
+            $this->filtro_programa = $this->cbo_programa;
+            $this->filtro_facultad = '';
+            $this->cbo_facultad = '';
+        }
+        
+        $this->filtro_tipo_programa = $this->cbo_tipo_programa ?? '';
+        $this->filtro_facultad = $this->cbo_facultad ?? '';
+        $this->filtro_programa = $this->cbo_programa ?? '';
+        $this->filtro_ciclo = $this->cbo_ciclo ?? '';
+        $this->filtro_plan_estudio = $this->cbo_plan_estudio ?? '';
+        $this->filtro_proceso = $this->cbo_proceso ?? '';
+        $this->filtro_en_curso = $this->cbo_en_curso ?? '';
+    }
+
+
+    /**
+     * Función para mostrar precargar los filtros
+     */
+    public function pre_cargar_filtros()
+    {
+        $this->cbo_tipo_programa = $this->filtro_tipo_programa;
+        $this->cbo_facultad = $this->filtro_facultad;
+        $this->cbo_programa = $this->filtro_programa;
+        $this->cbo_ciclo = $this->filtro_ciclo;
+        $this->cbo_plan_estudio = $this->filtro_plan_estudio;
+        $this->cbo_proceso = $this->filtro_proceso;
+        $this->cbo_en_curso = $this->filtro_en_curso;
+    }
 
 
     /**
@@ -58,6 +132,7 @@ class Index extends Component
     public function mount()
     {
         $this->obtener_datos_page_header();
+        $this->pre_cargar_filtros();
     }
 
 
@@ -75,9 +150,25 @@ class Index extends Component
             ->programa($this->filtro_programa)
             ->ciclo($this->filtro_ciclo)
             ->planEstudio($this->filtro_plan_estudio)
+            ->proceso($this->filtro_proceso)
             ->enCurso($this->filtro_en_curso)
             ->paginate($this->mostrar_paginate);
 
-        return view('livewire.gestion-aula.carga-academica.index', compact('cursos'));
+        $tipo_programas = TipoPrograma::estado(true)->get();
+        $facultades = Facultad::estado(true)->get();
+        $programas = Programa::estado(true)->get();
+        $ciclos = Ciclo::estado(true)->get();
+        $planes_estudio = PlanEstudio::estado(true)->get();
+        $procesos = Proceso::estado(true)->get();
+
+        return view('livewire.gestion-aula.carga-academica.index', compact([
+            'cursos',
+            'tipo_programas',
+            'facultades',
+            'programas',
+            'ciclos',
+            'planes_estudio',
+            'procesos'
+        ]));
     }
 }
