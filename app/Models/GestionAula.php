@@ -247,7 +247,7 @@ class GestionAula extends Model
      */
     public function scopeTipoPrograma($query, $tipo_programa = null)
     {
-        if ($tipo_programa === null) {
+        if ($tipo_programa === null || $tipo_programa === '') {
             return $query;
         }
         return $query->whereHas('curso', function ($query) use ($tipo_programa) {
@@ -266,7 +266,7 @@ class GestionAula extends Model
      */
     public function scopeFacultad($query, $facultad = null)
     {
-        if ($facultad === null) {
+        if ($facultad === null || $facultad === '') {
             return $query;
         }
         return $query->whereHas('curso', function ($query) use ($facultad) {
@@ -285,7 +285,7 @@ class GestionAula extends Model
      */
     public function scopePrograma($query, $programa = null)
     {
-        if ($programa === null) {
+        if ($programa === null || $programa === '') {
             return $query;
         }
         return $query->whereHas('curso', function ($query) use ($programa) {
@@ -302,7 +302,7 @@ class GestionAula extends Model
      */
     public function scopeCiclo($query, $ciclo = null)
     {
-        if ($ciclo === null) {
+        if ($ciclo === null || $ciclo === '') {
             return $query;
         }
         return $query->whereHas('curso', function ($query) use ($ciclo) {
@@ -319,7 +319,7 @@ class GestionAula extends Model
      */
     public function scopePlanEstudio($query, $plan_estudio = null)
     {
-        if ($plan_estudio === null) {
+        if ($plan_estudio === null || $plan_estudio === '') {
             return $query;
         }
         return $query->whereHas('curso', function ($query) use ($plan_estudio) {
@@ -348,7 +348,7 @@ class GestionAula extends Model
      */
     public function scopeEnCurso($query, $en_curso = null)
     {
-        if ($en_curso === null) {
+        if ($en_curso === null || $en_curso === '') {
             return $query;
         }
         return $query->where('en_curso_gestion_aula', $en_curso);
