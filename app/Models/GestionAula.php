@@ -328,6 +328,21 @@ class GestionAula extends Model
     }
 
     /**
+     * Scope a query to search curso.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $proceso
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeProceso($query, $proceso = null)
+    {
+        if ($proceso === null || $proceso === '') {
+            return $query;
+        }
+        return $query->where('id_proceso', $proceso);
+    }
+
+    /**
      * Scope a query to search estado.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
