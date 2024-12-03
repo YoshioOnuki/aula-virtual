@@ -6,9 +6,8 @@
         </button>
         <h1 class="navbar-brand">
             <a href="{{ route('inicio') }}" class="d-flex align-items-center justify-content-center gap-2">
-                <img src="{{ asset('/media/logo-pg.webp') }}" height="45" alt="Logo Posgrado"
-                    class="rounded">
-                <span class="text-uppercase 
+                <img src="{{ asset('/media/logo-pg.webp') }}" height="45" alt="Logo Posgrado" class="rounded">
+                <span class="text-uppercase
                 " style="font-weight: 800; font-size: 1.2rem;">
                     EPG
                 </span>
@@ -75,8 +74,9 @@
                     <a class="nav-link {{ request()->routeIs('perfil*') ? 'text-primary fw-medium' : '' }}"
                         style="cursor: pointer;" href="{{ route('perfil') }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round"
                                 class="icon icon-tabler icons-tabler-outline icon-tabler-user-circle
                                 {{ request()->routeIs('perfil*') ? 'text-primary' : '' }}">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -95,14 +95,13 @@
                     <li
                         class="nav-item {{ request()->routeIs('usuarios*') || request()->routeIs('registro-alumnos*') || request()->routeIs('autoridades*') ? 'active' : '' }} dropdown">
                         <a class="nav-link dropdown-toggle {{ request()->routeIs('usuarios*') || request()->routeIs('registro-alumnos*') || request()->routeIs('autoridades*') ? 'text-primary fw-medium' : '' }}"
-                            href="#navbar-layout" data-bs-toggle="dropdown" data-bs-auto-close="false"
-                            role="button" aria-expanded="true">
+                            href="#navbar-layout" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button"
+                            aria-expanded="true">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     class="icon {{ request()->routeIs('usuarios*') || request()->routeIs('registro-alumnos*') || request()->routeIs('autoridades*') ? 'text-primary' : '' }}"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                    stroke="currentColor" fill="none" stroke-linecap="round"
-                                    stroke-linejoin="round">
+                                    stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                     <path
                                         d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z">
@@ -137,18 +136,16 @@
 
                     <hr class="ms-lg-3 mt-2 mb-2">
 
-                    <li class="nav-item {{ request()->routeIs('alumnos*') || 
-                            request()->routeIs('cursos*')  ? 'active' : '' }}">
-                        <a class="nav-link {{ request()->routeIs('alumnos*') || 
-                            request()->routeIs('cursos*') ? 'text-primary fw-medium' : '' }}"
+                    <li
+                        class="nav-item {{ request()->routeIs('alumnos*') || request()->routeIs('cursos*') ? 'active' : '' }}">
+                        <a class="nav-link {{ request()->routeIs('alumnos*') || request()->routeIs('cursos*') ? 'text-primary fw-medium' : '' }}"
                             style="cursor: pointer;" href="{{ route('alumnos') }}">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round"
                                     class="icon icon-tabler icons-tabler-outline icon-tabler-school
-                                    {{ request()->routeIs('alumnos*') || 
-                                    request()->routeIs('cursos*') ? 'text-primary' : '' }}">
+                                    {{ request()->routeIs('alumnos*') || request()->routeIs('cursos*') ? 'text-primary' : '' }}">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                     <path d="M22 9l-10 -4l-10 4l10 4l10 -4v6" />
                                     <path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4" />
@@ -160,18 +157,16 @@
                         </a>
                     </li>
 
-                    <li class="nav-item {{ request()->routeIs('docentes*') || 
-                            request()->routeIs('carga-academica*') ? 'active' : '' }}">
-                        <a class="nav-link {{ request()->routeIs('docentes*') || 
-                            request()->routeIs('carga-academica*') ? 'text-primary fw-medium' : '' }}"
+                    <li
+                        class="nav-item {{ request()->routeIs('docentes*') || request()->routeIs('carga-academica*') ? 'active' : '' }}">
+                        <a class="nav-link {{ request()->routeIs('docentes*') || request()->routeIs('carga-academica*') ? 'text-primary fw-medium' : '' }}"
                             style="cursor: pointer;" href="{{ route('docentes') }}">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round"
                                     class="icon icon-tabler icons-tabler-outline icon-tabler-chalkboard
-                                    {{ request()->routeIs('docentes*') || 
-                                    request()->routeIs('carga-academica*') ? 'text-primary' : '' }}">
+                                    {{ request()->routeIs('docentes*') || request()->routeIs('carga-academica*') ? 'text-primary' : '' }}">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                     <path
                                         d="M8 19h-3a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v11a1 1 0 0 1 -1 1" />
@@ -185,15 +180,15 @@
                         </a>
                     </li>
 
-                    <li class="nav-item {{ request()->routeIs('todos-cursos*') ? 'active' : '' }}">
-                        <a class="nav-link {{ request()->routeIs('todos-cursos*') ? 'text-primary fw-medium' : '' }}"
-                            style="cursor: pointer;" href="{{ route('todos-cursos') }}">
+                    <li class="nav-item {{ request()->routeIs('lista-cursos*') ? 'active' : '' }}">
+                        <a class="nav-link {{ request()->routeIs('lista-cursos*') ? 'text-primary fw-medium' : '' }}"
+                            style="cursor: pointer;" href="{{ route('lista-cursos') }}">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round"
                                     class="icon icon-tabler icons-tabler-outline icon-tabler-books
-                                    {{ request()->routeIs('todos-cursos*') ? 'text-primary' : '' }}">
+                                    {{ request()->routeIs('lista-cursos*') ? 'text-primary' : '' }}">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                     <path
                                         d="M5 4m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" />
@@ -208,7 +203,7 @@
                                 </svg>
                             </span>
                             <span class="nav-link-title">
-                                Todos los Cursos
+                                Carga Académica
                             </span>
                         </a>
                     </li>
@@ -255,11 +250,13 @@
                             <div class="dropdown-menu-columns">
                                 <div class="dropdown-menu-column">
                                     <a class="dropdown-item {{ request()->routeIs('estructura-academica.nivel-academico') ? 'active fw-medium' : '' }}"
-                                        style="cursor: pointer;" href="{{ route('estructura-academica.nivel-academico') }}">
+                                        style="cursor: pointer;"
+                                        href="{{ route('estructura-academica.nivel-academico') }}">
                                         Nivel Académico
                                     </a>
                                     <a class="dropdown-item {{ request()->routeIs('estructura-academica.tipo-programa') ? 'active fw-medium' : '' }}"
-                                        style="cursor: pointer;" href="{{ route('estructura-academica.tipo-programa') }}">
+                                        style="cursor: pointer;"
+                                        href="{{ route('estructura-academica.tipo-programa') }}">
                                         Tipo de Programa
                                     </a>
                                     <a class="dropdown-item {{ request()->routeIs('estructura-academica.facultad') ? 'active fw-medium' : '' }}"
@@ -280,10 +277,10 @@
                             href="#navbar-layout" data-bs-toggle="dropdown" data-bs-auto-close="false"
                             role="button" aria-expanded="true">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round"stroke-linejoin="round"
-                                class="icon icon-tabler icons-tabler-outline icon-tabler-book-2
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round"stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-book-2
                                 {{ request()->routeIs('gestion-curso*') ? 'text-primary' : '' }}">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                     <path d="M19 4v16h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12z" />
@@ -438,9 +435,10 @@
                     <button type="submit" class="btn btn-outline-red w-100 mt-2 mb-lg-5"
                         wire:loading.attr="disabled" wire:target="logout">
                         <span wire:loading.remove wire:target="logout">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-bar-to-left"
-                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                class="icon icon-tabler icon-tabler-arrow-bar-to-left" width="24" height="24"
+                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                 <path d="M10 12l10 0"></path>
                                 <path d="M10 12l4 4"></path>
