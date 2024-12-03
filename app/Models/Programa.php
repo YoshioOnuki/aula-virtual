@@ -85,6 +85,19 @@ class Programa extends Model
 
 
     /**
+     * Scope a query to only include programas.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param mixed $facultad
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeFacultad($query, $facultad)
+    {
+        if ($facultad) {
+            return $query->where('id_facultad', $facultad);
+        }
+    }
+    /**
      * Scope a query to only include active programas.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
