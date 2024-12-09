@@ -19,30 +19,25 @@ class Index extends Component
     protected $paginationTheme = 'bootstrap';
 
     #[Url('mostrar')]
-    public $mostrar_paginate = 10;
+    public $mostrar_paginate = 8;
     #[Url(except: '', as: 'buscar')]
     public $search = '';
     #[Url(except: '', as: 'tipo-programa')]
     public $filtro_tipo_programa = ''; // Tipo de programa (Doctorado, Maestría, etc.)
-    public $cbo_tipo_programa;
     #[Url(except: '', as: 'facultad')]
     public $filtro_facultad = '';// Facultad (Ingeniería, Ciencias, etc.)
-    public $cbo_facultad;
     #[Url(except: '', as: 'programa')]
     public $filtro_programa = ''; // Programa (Ingeniería de Sistemas, Educacion, etc.)
-    public $cbo_programa;
     #[Url(except: '', as: 'ciclo')]
     public $filtro_ciclo = ''; // Ciclo (I, II, III, etc.)
-    public $cbo_ciclo;
     #[Url(except: '', as: 'plan-estudio')]
     public $filtro_plan_estudio = ''; // Plan de estudio (2010, 2015, etc.)
-    public $cbo_plan_estudio;
     #[Url(except: '', as: 'proceso')]
     public $filtro_proceso = ''; // Proceso (2021-1, 2021-2, etc.)
-    public $cbo_proceso;
     #[Url(except: '', as: 'en-curso')]
     public $filtro_en_curso = ''; // Filtro para mostrar cursos en curso o finalizados
-    public $cbo_en_curso;
+
+    public $filtro_activo = false;
 
     public $tipo_vista_curso = 'carga-academica';
 
@@ -52,62 +47,27 @@ class Index extends Component
     public $regresar_page_header;
 
 
-    /**
-     * Función para limpiar los filtros
-     */
-    public function limpiar_filtros()
+    private function validar_facultad($facultades)
     {
-        $this->cbo_tipo_programa = '';
-        $this->cbo_facultad = '';
-        $this->cbo_programa = '';
-        $this->cbo_ciclo = '';
-        $this->cbo_plan_estudio = '';
-        $this->cbo_proceso = '';
-        $this->cbo_en_curso = '';
+        // Verificar si la facultad seleccionada es válida
+        $facultadValida = $facultades->contains(fn($facultad) => intval($facultad->id_facultad) === intval($this->filtro_facultad));
 
-        $this->filtro_tipo_programa = '';
-        $this->filtro_facultad = '';
-        $this->filtro_programa = '';
-        $this->filtro_ciclo = '';
-        $this->filtro_plan_estudio = '';
-        $this->filtro_proceso = '';
-        $this->filtro_en_curso = '';
-    }
-
-    /**
-     * Función para filtrar los cursos
-     */
-    public function filtrar()
-    {
-
-        if ($this->cbo_programa && $this->cbo_facultad) {
-            $this->filtro_programa = $this->cbo_programa;
+        // Si la facultad no es válida, limpiar el filtro
+        if (!$facultadValida) {
             $this->filtro_facultad = '';
-            $this->cbo_facultad = '';
         }
-        
-        $this->filtro_tipo_programa = $this->cbo_tipo_programa ?? '';
-        $this->filtro_facultad = $this->cbo_facultad ?? '';
-        $this->filtro_programa = $this->cbo_programa ?? '';
-        $this->filtro_ciclo = $this->cbo_ciclo ?? '';
-        $this->filtro_plan_estudio = $this->cbo_plan_estudio ?? '';
-        $this->filtro_proceso = $this->cbo_proceso ?? '';
-        $this->filtro_en_curso = $this->cbo_en_curso ?? '';
     }
 
 
-    /**
-     * Función para mostrar precargar los filtros
-     */
-    public function pre_cargar_filtros()
+    public function validar_programa($programas)
     {
-        $this->cbo_tipo_programa = $this->filtro_tipo_programa;
-        $this->cbo_facultad = $this->filtro_facultad;
-        $this->cbo_programa = $this->filtro_programa;
-        $this->cbo_ciclo = $this->filtro_ciclo;
-        $this->cbo_plan_estudio = $this->filtro_plan_estudio;
-        $this->cbo_proceso = $this->filtro_proceso;
-        $this->cbo_en_curso = $this->filtro_en_curso;
+        // Verificar si el programa seleccionado es válido
+        $programaValido = $programas->contains(fn($programa) => intval($programa->id_programa) === intval($this->filtro_programa));
+
+        // Si el programa no es válido, limpiar el filtro
+        if (!$programaValido) {
+            $this->filtro_programa = '';
+        }
     }
 
 
@@ -132,7 +92,6 @@ class Index extends Component
     public function mount()
     {
         $this->obtener_datos_page_header();
-        $this->pre_cargar_filtros();
     }
 
 
@@ -155,8 +114,25 @@ class Index extends Component
             ->paginate($this->mostrar_paginate);
 
         $tipo_programas = TipoPrograma::estado(true)->get();
-        $facultades = Facultad::estado(true)->get();
-        $programas = Programa::estado(true)->get();
+
+        $facultades = $this->filtro_tipo_programa !== ''
+            ? Programa::with('facultad')
+                ->estado(true)
+                ->tipoPrograma($this->filtro_tipo_programa)
+                ->get()
+                ->pluck('facultad')
+                ->unique()
+            : Facultad::estado(true)->get();
+
+        $this->validar_facultad($facultades);
+
+        if ($this->filtro_facultad != '' && $this->filtro_tipo_programa != '') {
+            $programas = Programa::estado(true)->facultad($this->filtro_facultad)->tipoPrograma($this->filtro_tipo_programa)->get();
+            $this->validar_programa($programas);
+        } else {
+            $programas = [];
+            $this->filtro_programa = '';
+        }
         $ciclos = Ciclo::estado(true)->get();
         $planes_estudio = PlanEstudio::estado(true)->get();
         $procesos = Proceso::estado(true)->get();
