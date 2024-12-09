@@ -48,7 +48,8 @@ return [
     /**
      * Configuración de las imágenes
      */
-    'fondo_curso_default' => '/media/fondo-cursos/fondo-infor.webp',
+    'fondo_curso_alumno_default' => '/media/fondo-cursos/fondo_alumno.webp',
+    'fondo_curso_docente_default' => '/media/fondo-cursos/fondo_docente.webp',
     'fondo_detalle_doncente' => '/assets/static/photos/businesswoman-working-at-her-laptop-2.jpg',
     'fondo_detalle_alumno' => '/assets/static/photos/colorful-exotic-flowers-and-greenery.jpg',
 
