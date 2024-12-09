@@ -6,8 +6,11 @@
         wire:loading.class.remove="hover-shadow custom-card">
 
         <div class="img-responsive img-responsive-16x9 card-img-top"
-            style="background-image: url('{{ $gestion_aula->fondo_gestion_aula ?? '/media/fondo-cursos/fondo-infor.webp' }}');">
-
+            @if ($tipo_vista === 'cursos')
+                style="background-image: {{ $gestion_aula->fondo_gestion_aula ? 'url('. $gestion_aula->fondo_gestion_aula .')' : 'url(' . config('settings.fondo_curso_alumno_default') . ')' }}">
+            @elseif ($tipo_vista === 'carga-academica')
+                style="background-image: {{ $gestion_aula->fondo_gestion_aula ? 'url('. $gestion_aula->fondo_gestion_aula .')' : 'url(' . config('settings.fondo_curso_docente_default') . ')' }}">
+            @endif
         </div>
 
         <div class="card-avatar avatar avatar-smm rounded-circle">
