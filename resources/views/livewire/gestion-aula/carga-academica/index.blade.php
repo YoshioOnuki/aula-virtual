@@ -32,229 +32,28 @@
 
                                 <div class="d-flex align-items-center justify-content-start">
 
-                                    <div class="custom-dropdown position-relative me-3">
-                                        <button
-                                            id="dropdownButton"
-                                            class="btn btn-outline-azure d-flex justify-content-between align-items-center custom-dropdown-toggle border-azure"
-                                        >
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"
-                                                class="icon icon-tabler icons-tabler-filled icon-tabler-filter">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path
-                                                    d="M20 3h-16a1 1 0 0 0 -1 1v2.227l.008 .223a3 3 0 0 0 .772 1.795l4.22 4.641v8.114a1 1 0 0 0 1.316 .949l6 -2l.108 -.043a1 1 0 0 0 .576 -.906v-6.586l4.121 -4.12a3 3 0 0 0 .879 -2.123v-2.171a1 1 0 0 0 -1 -1z" />
-                                            </svg>
-                                            Filtro
-                                        </button>
-
-                                        <div
-                                            id="dropdownMenu"
-                                            class="dropdown-menu p-3 shadow"
-                                            style="width: 300px;"
-                                        >
-
-                                            <div>
-                                                <label for="cbo_tipo_programa" class="form-label">Tipo Programa</label>
-                                                <select
-                                                    x-model="$wire.cbo_tipo_programa"
-                                                    :class="$wire.cbo_tipo_programa === '' ? 'text-secondary' : ''"
-                                                    class="form-select"
-                                                    id="cbo_tipo_programa"
-                                                    wire:model="cbo_tipo_programa"
-                                                >
-                                                    <option value="">Seleccione el tipo de programa</option>
-                                                    @foreach ($tipo_programas as $item)
-                                                        <option value="{{ $item->id_tipo_programa }}" wire:key="{{ $item->id_tipo_programa }}">
-                                                            {{ $item->nombre_tipo_programa }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-
-                                            <div class="mt-3" wire:ignore>
-                                                <label for="cbo_facultad" class="form-label">
-                                                    <template x-if="$wire.cbo_programa !== ''">
-                                                        <span class="text-secondary">
-                                                            Facultad
-                                                        </span>
-                                                    </template>
-                                                    <template x-if="$wire.cbo_programa === ''">
-                                                        <span class="">
-                                                            Facultad
-                                                        </span>
-                                                    </template>
-
-                                                </label>
-                                                <select
-                                                    x-model="$wire.cbo_facultad"
-                                                    :class="$wire.cbo_facultad === '' ? 'text-secondary' : ''"
-                                                    :disabled="$wire.cbo_programa !== ''"
-                                                    class="form-select "
-                                                    id="cbo_facultad"
-                                                    wire:model="cbo_facultad"
-                                                >
-                                                    <option value="">Seleccione la facultad</option>
-                                                    @foreach ($facultades as $item)
-                                                        <option value="{{ $item->id_facultad }}" wire:key="{{ $item->id_facultad }}">
-                                                            {{ $item->nombre_facultad }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-
-                                            <div class="mt-3">
-                                                <label for="cbo_programa" class="form-label">
-                                                    <template x-if="$wire.cbo_facultad !== ''">
-                                                        <span class="text-secondary">
-                                                            Programa
-                                                        </span>
-                                                    </template>
-                                                    <template x-if="$wire.cbo_facultad === ''">
-                                                        <span class="">
-                                                            Programa
-                                                        </span>
-                                                    </template>
-                                                </label>
-                                                <select
-                                                    x-model="$wire.cbo_programa"
-                                                    :class="$wire.cbo_programa === '' ? 'text-secondary' : ''"
-                                                    :disabled="$wire.cbo_facultad !== ''"
-                                                    class="form-select"
-                                                    id="cbo_programa"
-                                                    wire:model="cbo_programa"
-                                                >
-                                                    <option value="">Seleccione el programa</option>
-                                                    @foreach ($programas as $item)
-                                                        <option value="{{ $item->id_programa }}" wire:key="{{ $item->id_programa }}">
-                                                            {{ $item->mencion_programa == null ? $item->nombre_programa : $item->nombre_programa . ' - ' . $item->mencion_programa }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-
-                                            <div class="mt-3">
-                                                <label for="cbo_ciclo" class="form-label">Ciclo</label>
-                                                <select
-                                                    x-model="$wire.cbo_ciclo"
-                                                    :class="$wire.cbo_ciclo === '' ? 'text-secondary' : ''"
-                                                    class="form-select"
-                                                    id="cbo_ciclo"
-                                                    wire:model="cbo_ciclo"
-                                                >
-                                                    <option value="">Seleccione el ciclo</option>
-                                                    @foreach ($ciclos as $item)
-                                                        <option value="{{ $item->id_ciclo }}" wire:key="{{ $item->id_ciclo }}">
-                                                            {{ $item->nombre_ciclo }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-
-                                            <div class="mt-3">
-                                                <label for="cbo_plan_estudio" class="form-label">Plan de Estudios</label>
-                                                <select
-                                                    x-model="$wire.cbo_plan_estudio"
-                                                    :class="$wire.cbo_plan_estudio === '' ? 'text-secondary' : ''"
-                                                    class="form-select"
-                                                    id="cbo_plan_estudio"
-                                                    wire:model="cbo_plan_estudio"
-                                                >
-                                                    <option value="">Seleccione el plan de estudios</option>
-                                                    @foreach ($planes_estudio as $item)
-                                                        <option value="{{ $item->id_plan_estudio }}" wire:key="{{ $item->id_plan_estudio }}">
-                                                            {{ $item->nombre_plan_estudio }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-
-                                            <div class="mt-3">
-                                                <label for="cbo_proceso" class="form-label">Proceso</label>
-                                                <select
-                                                    x-model="$wire.cbo_proceso"
-                                                    :class="$wire.cbo_proceso === '' ? 'text-secondary' : ''"
-                                                    class="form-select"
-                                                    id="cbo_proceso"
-                                                    wire:model="cbo_proceso"
-                                                >
-                                                    <option value="">Seleccione el proceso</option>
-                                                    @foreach ($procesos as $item)
-                                                        <option value="{{ $item->id_proceso }}" wire:key="{{ $item->id_proceso }}">
-                                                            {{ $item->nombre_proceso }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-
-                                            <div class="mt-3">
-                                                <label for="cbo_en_curso" class="form-label">Estado del Curso</label>
-                                                <select
-                                                    x-model="$wire.cbo_en_curso"
-                                                    :class="$wire.cbo_en_curso === '' ? 'text-secondary' : ''"
-                                                    class="form-select"
-                                                    id="cbo_en_curso"
-                                                    wire:model="cbo_en_curso"
-                                                >
-                                                    <option value="">Seleccione el estado del curso</option>
-                                                    <option value="1" wire:key="1">
-                                                        En Curso
-                                                    </option>
-                                                    <option value="0" wire:key="0">
-                                                        Finalizado
-                                                    </option>
-                                                </select>
-                                            </div>
-
-                                            {{-- Botones --}}
-                                            <div class="mt-3">
-                                                <div class="d-flex justify-content-between">
-
-                                                    <button
-                                                        type="submit" class="btn btn-outline-secondary"
-                                                        wire:loading.attr="disabled"
-                                                        wire:target="limpiar_filtros"
-                                                        wire:click="limpiar_filtros"
-                                                    >
-                                                        <span wire:loading.remove
-                                                            wire:target="limpiar_filtros">
-                                                            Limpiar
-                                                        </span>
-                                                        <span wire:loading wire:target="limpiar_filtros">
-                                                            <div class="spinner-border spinner-border-sm me-2" role="status"></div>
-                                                            Limpiando
-                                                        </span>
-                                                    </button>
-
-                                                    <button
-                                                        type="submit" class="btn btn-azure"
-                                                        wire:loading.attr="disabled"
-                                                        wire:target="filtrar"
-                                                        wire:click="filtrar"
-                                                    >
-                                                        <span wire:loading.remove
-                                                            wire:target="filtrar">
-                                                            Filtrar
-                                                        </span>
-                                                        <span wire:loading wire:target="filtrar">
-                                                            <div class="spinner-border spinner-border-sm me-2" role="status"></div>
-                                                            Cargando
-                                                        </span>
-                                                    </button>
-
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
+                                    <button
+                                        class="btn btn-outline-azure d-flex justify-content-between align-items-center border-azure me-3"
+                                        x-on:click="$wire.filtro_activo = !$wire.filtro_activo"
+                                        :class="$wire.filtro_activo ? 'filter-button-active' : ''"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"
+                                            class="icon icon-tabler icons-tabler-filled icon-tabler-filter">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path
+                                                d="M20 3h-16a1 1 0 0 0 -1 1v2.227l.008 .223a3 3 0 0 0 .772 1.795l4.22 4.641v8.114a1 1 0 0 0 1.316 .949l6 -2l.108 -.043a1 1 0 0 0 .576 -.906v-6.586l4.121 -4.12a3 3 0 0 0 .879 -2.123v-2.171a1 1 0 0 0 -1 -1z" />
+                                        </svg>
+                                        Filtro
+                                    </button>
 
                                     <div class="text-secondary">
                                         Mostrar
                                         <div class="mx-2 d-inline-block">
                                             <select wire:model.live="mostrar_paginate" class="form-select">
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="5">5</option>
-                                                <option value="10">10</option>
-                                                <option value="20">20</option>
+                                                <option value="4">4</option>
+                                                <option value="8">8</option>
+                                                <option value="12">12</option>
+                                                <option value="16">16</option>
                                             </select>
                                         </div>
                                         entradas
@@ -295,6 +94,155 @@
                                             </svg>
                                         </a>
                                     </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div
+                            class="card-body  py-3"
+                            x-show="$wire.filtro_activo"
+                            x-cloak
+                            x-collapse
+                        >
+                            <div class="row row-cards d-flex justify-content-start">
+                                <div class="col-xl-3 col-lg-4 col-md-6 col-12">
+                                    <label for="filtro_tipo_programa" class="form-label">Tipo Programa</label>
+                                    <select
+                                        x-model="$wire.filtro_tipo_programa"
+                                        :class="$wire.filtro_tipo_programa === '' ? 'text-secondary' : ''"
+                                        class="form-select"
+                                        id="filtro_tipo_programa"
+                                        wire:model.lazy="filtro_tipo_programa"
+                                    >
+                                        <option value="">Seleccione el tipo de programa</option>
+                                        @foreach ($tipo_programas as $item)
+                                            <option value="{{ $item->id_tipo_programa }}" wire:key="{{ $item->id_tipo_programa }}">
+                                                {{ $item->nombre_tipo_programa }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="col-xl-3 col-lg-4 col-md-6 col-12">
+                                    <label for="filtro_facultad" class="form-label">Facultad</label>
+                                    <select
+                                        x-model="$wire.filtro_facultad"
+                                        :class="$wire.filtro_facultad === '' ? 'text-secondary' : ''"
+                                        class="form-select "
+                                        id="filtro_facultad"
+                                        wire:model.lazy="filtro_facultad"
+                                    >
+                                        <option value="">Seleccione la facultad</option>
+                                        @foreach ($facultades as $item)
+                                            <option value="{{ $item->id_facultad }}" wire:key="{{ $item->id_facultad }}">
+                                                {{ $item->nombre_facultad }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="col-xl-3 col-lg-4 col-md-6 col-12">
+                                    <label for="filtro_programa" class="form-label">
+                                        <template x-if="$wire.filtro_facultad === '' || $wire.filtro_tipo_programa === ''">
+                                            <span class="text-secondary">
+                                                Programa
+                                            </span>
+                                        </template>
+                                        <template x-if="$wire.filtro_facultad !== '' && $wire.filtro_tipo_programa !== ''">
+                                            <span class="">
+                                                Programa
+                                            </span>
+                                        </template>
+                                    </label>
+                                    <select
+                                        x-model="$wire.filtro_programa"
+                                        :class="$wire.filtro_programa === '' ? 'text-secondary' : ''"
+                                        :disabled="$wire.filtro_facultad === '' || $wire.filtro_tipo_programa === ''"
+                                        class="form-select"
+                                        id="filtro_programa"
+                                        wire:model.lazy="filtro_programa"
+                                    >
+                                        <option value="">Seleccione el programa</option>
+                                        @foreach ($programas as $item)
+                                            <option value="{{ $item->id_programa }}" wire:key="{{ $item->id_programa }}">
+                                                {{ $item->mencion_programa == null ? $item->nombre_programa : $item->nombre_programa . ' - ' . $item->mencion_programa }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="col-xl-3 col-lg-4 col-md-6 col-12">
+                                    <label for="filtro_ciclo" class="form-label">Ciclo</label>
+                                    <select
+                                        x-model="$wire.filtro_ciclo"
+                                        :class="$wire.filtro_ciclo === '' ? 'text-secondary' : ''"
+                                        class="form-select"
+                                        id="filtro_ciclo"
+                                        wire:model.lazy="filtro_ciclo"
+                                    >
+                                        <option value="">Seleccione el ciclo</option>
+                                        @foreach ($ciclos as $item)
+                                            <option value="{{ $item->id_ciclo }}" wire:key="{{ $item->id_ciclo }}">
+                                                {{ $item->nombre_ciclo }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="col-xl-3 col-lg-4 col-md-6 col-12">
+                                    <label for="filtro_plan_estudio" class="form-label">Plan de Estudios</label>
+                                    <select
+                                        x-model="$wire.filtro_plan_estudio"
+                                        :class="$wire.filtro_plan_estudio === '' ? 'text-secondary' : ''"
+                                        class="form-select"
+                                        id="filtro_plan_estudio"
+                                        wire:model.lazy="filtro_plan_estudio"
+                                    >
+                                        <option value="">Seleccione el plan de estudios</option>
+                                        @foreach ($planes_estudio as $item)
+                                            <option value="{{ $item->id_plan_estudio }}" wire:key="{{ $item->id_plan_estudio }}">
+                                                {{ $item->nombre_plan_estudio }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="col-xl-3 col-lg-4 col-md-6 col-12">
+                                    <label for="filtro_proceso" class="form-label">Proceso</label>
+                                    <select
+                                        x-model="$wire.filtro_proceso"
+                                        :class="$wire.filtro_proceso === '' ? 'text-secondary' : ''"
+                                        class="form-select"
+                                        id="filtro_proceso"
+                                        wire:model.lazy="filtro_proceso"
+                                    >
+                                        <option value="">Seleccione el proceso</option>
+                                        @foreach ($procesos as $item)
+                                            <option value="{{ $item->id_proceso }}" wire:key="{{ $item->id_proceso }}">
+                                                {{ $item->nombre_proceso }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="col-xl-3 col-lg-4 col-md-6 col-12">
+                                    <label for="filtro_en_curso" class="form-label">Estado del Curso</label>
+                                    <select
+                                        x-model="$wire.filtro_en_curso"
+                                        :class="$wire.filtro_en_curso === '' ? 'text-secondary' : ''"
+                                        class="form-select"
+                                        id="filtro_en_curso"
+                                        wire:model.lazy="filtro_en_curso"
+                                    >
+                                        <option value="">Seleccione el estado del curso</option>
+                                        <option value="1" wire:key="1">
+                                            En Curso
+                                        </option>
+                                        <option value="0" wire:key="0">
+                                            Finalizado
+                                        </option>
+                                    </select>
                                 </div>
 
                             </div>

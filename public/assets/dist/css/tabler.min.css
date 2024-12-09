@@ -25776,25 +25776,7 @@ img {
 	background: #0ca678 !important;
 }
 
-
-.dropdown-menu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    z-index: 1000;
-    background-color: white;
-    border: 1px solid #ddd;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-    border-radius: 0.25rem;
-}
-
-/* Mantener el color del botón cuando el dropdown está abierto */
-.custom-dropdown .custom-dropdown-toggle.active {
+.filter-button-active {
     background-color: #4299e1;
     color: #fcfdfe;
-}
-
-.dropdown-menu.show {
-    display: block;
 }
