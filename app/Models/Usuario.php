@@ -404,6 +404,20 @@ class Usuario extends Authenticatable
         return $query->where('correo_usuario', $correo);
     }
 
+    /**
+     * Scope a query to search by rol.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param int $rol
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeRol($query, $rol)
+    {
+        return $query->whereHas('roles', function ($subQuery) use ($rol) {
+            $subQuery->where('nombre_rol', $rol);
+        });
+    }
+
 
     /**
      * The "booted" method of the model.
