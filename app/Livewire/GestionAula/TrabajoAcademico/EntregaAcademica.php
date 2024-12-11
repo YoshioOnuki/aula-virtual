@@ -9,6 +9,7 @@ use App\Models\TrabajoAcademico;
 use App\Models\TrabajoAcademicoAlumno;
 use App\Traits\UsuarioTrait;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Vinkla\Hashids\Facades\Hashids;
 
@@ -39,16 +40,10 @@ class EntregaAcademica extends Component
     public $regresar_page_header;
 
 
-    // Listener para actualizar la vista actualizar_estado_entrega
-    protected $listeners = [
-        'actualizar_estado_entrega' => 'actualizar_estado_entrega',
-        'permiso_denegado' => 'permiso_denegado'
-    ];
-
-
     /**
      * Evento para actualizar el estado de la entrega académica
      */
+    #[On('actualizar_estado_entrega')]
     public function actualizar_estado_entrega()
     {
         $this->dispatch('actualizar_estado_entrega_alumno');
@@ -58,6 +53,7 @@ class EntregaAcademica extends Component
     /**
      * Evento para mostrar un mensaje de permiso denegado
      */
+    #[On('permiso_denegado')]
     public function permiso_denegado()
     {
         $this->dispatch(

@@ -7,6 +7,7 @@ use App\Models\ForoRespuesta;
 use App\Models\GestionAula;
 use App\Models\GestionAulaAlumno;
 use App\Traits\UsuarioTrait;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Vinkla\Hashids\Facades\Hashids;
 
@@ -38,8 +39,6 @@ class Detalle extends Component
     public $links_page_header = [];
     public $regresar_page_header;
 
-    protected $listeners = ['abrir_modal_eliminar_respuesta' => 'abrir_modal_eliminar_respuesta'];
-
 
     /**
      * Mostrar toast de éxito
@@ -57,6 +56,7 @@ class Detalle extends Component
     /**
      * Abrir modal para eliminar respuesta
      */
+    #[On('abrir_modal_eliminar_respuesta')]
     public function abrir_modal_eliminar_respuesta($id_foro_respuesta)
     {
         $this->limpiar_modal_eliminar();

@@ -7,6 +7,7 @@ use App\Models\Recurso;
 use App\Traits\UsuarioTrait;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -56,14 +57,11 @@ class Index extends Component
     public $links_page_header = [];
     public $regresar_page_header;
 
-    protected $listeners = [
-        'abrir-modal-recurso-editar' => 'abrir_modal_recurso_editar',
-    ];
-
 
     /**
      * Abrir modal para editar un recurso
      */
+    #[On('abrir-modal-recurso-editar')]
     public function abrir_modal_recurso_editar(Recurso $recurso)
     {
         $this->modo = 0;

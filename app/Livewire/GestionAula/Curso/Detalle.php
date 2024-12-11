@@ -8,6 +8,7 @@ use App\Models\Presentacion;
 use App\Traits\UsuarioTrait;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -57,15 +58,11 @@ class Detalle extends Component
     public $links_page_header = [];
     public $regresar_page_header;
 
-    protected $listeners = [
-        'abrir-modal-link-clase' => 'abrir_modal_link_clase',
-        'abrir-modal-orientaciones' => 'abrir_modal_orientaciones',
-    ];
-
 
     /**
      * Función para abrir el modal de Link de Clase
      */
+    #[On('abrir-modal-link-clase')]
     public function abrir_modal_link_clase()
     {
         $this->limpiar_modal();
@@ -88,6 +85,7 @@ class Detalle extends Component
     /**
      * Función para abrir el modal de Orientaciones
      */
+    #[On('abrir-modal-orientaciones')]
     public function abrir_modal_orientaciones()
     {
         $this->limpiar_modal();
@@ -187,6 +185,7 @@ class Detalle extends Component
                 mensaje: 'El campo de Orientaciones Generales es obligatorio',
                 type: 'error'
             );
+            $this->validate();
             return;
         } elseif (
             $this->orientaciones_generales !== null &&
@@ -201,6 +200,7 @@ class Detalle extends Component
             $this->limpiar_modal();
             return;
         }
+        $this->validate();
 
         try {
             DB::beginTransaction();
