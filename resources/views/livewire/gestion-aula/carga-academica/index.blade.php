@@ -33,7 +33,7 @@
                                 <div class="d-flex align-items-center justify-content-start">
 
                                     <button
-                                        class="btn btn-outline-azure d-flex justify-content-between align-items-center border-azure me-3"
+                                        class="btn btn-outline-azure d-flex justify-content-between align-items-center border-azure me-3  d-none d-lg-inline-block"
                                         x-on:click="$wire.filtro_activo = !$wire.filtro_activo"
                                         :class="$wire.filtro_activo ? 'filter-button-active' : ''"
                                     >
@@ -44,6 +44,18 @@
                                                 d="M20 3h-16a1 1 0 0 0 -1 1v2.227l.008 .223a3 3 0 0 0 .772 1.795l4.22 4.641v8.114a1 1 0 0 0 1.316 .949l6 -2l.108 -.043a1 1 0 0 0 .576 -.906v-6.586l4.121 -4.12a3 3 0 0 0 .879 -2.123v-2.171a1 1 0 0 0 -1 -1z" />
                                         </svg>
                                         Filtro
+                                    </button>
+                                    <button
+                                        class="btn btn-outline-azure d-flex justify-content-between align-items-center border-azure me-3 pe-1 d-lg-none"
+                                        x-on:click="$wire.filtro_activo = !$wire.filtro_activo"
+                                        :class="$wire.filtro_activo ? 'filter-button-active' : ''"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"
+                                            class="icon icon-tabler icons-tabler-filled icon-tabler-filter">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path
+                                                d="M20 3h-16a1 1 0 0 0 -1 1v2.227l.008 .223a3 3 0 0 0 .772 1.795l4.22 4.641v8.114a1 1 0 0 0 1.316 .949l6 -2l.108 -.043a1 1 0 0 0 .576 -.906v-6.586l4.121 -4.12a3 3 0 0 0 .879 -2.123v-2.171a1 1 0 0 0 -1 -1z" />
+                                        </svg>
                                     </button>
 
                                     <div class="text-secondary">
