@@ -33,6 +33,12 @@ class CardCurso extends Component
     public $tipo_vista; // Tipo de vista, para saber si esta en cursos o carga academica
 
 
+    public function editar_carga_academica($id_gestion_aula)
+    {
+        $this->dispatch('abrir-modal-editar-carga-academica', ['id_gestion_aula' => $id_gestion_aula]);
+    }
+
+
     /**
      * Redirigir a la vista de detalle del curso
      */
