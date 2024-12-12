@@ -83,12 +83,12 @@
                                             @endphp
                                             @forelse ($alumnos as $item)
                                                 <tr
-                                                    class="{{ !$item->usuario->gestionAulaAlumno[0]->estado_gestion_aula_alumno ? 'bg-red text-white fw-bold' : '' }}"
-                                                    wire:key="alumno-{{ $item->usuario->gestionAulaAlumno[0]->id_gestion_aula_alumno }}"
+                                                    class="{{ !$item->usuario->gestionAulaAlumno->first()->estado_gestion_aula_alumno ? 'bg-red text-white fw-bold' : '' }}"
+                                                    wire:key="alumno-{{ $item->usuario->gestionAulaAlumno->first()->id_gestion_aula_alumno }}"
                                                 >
                                                     <td>
                                                         <span
-                                                            class="{{ !$item->usuario->gestionAulaAlumno[0]->estado_gestion_aula_alumno ? 'text-white' : 'text-secondary' }}">
+                                                            class="{{ !$item->usuario->gestionAulaAlumno->first()->estado_gestion_aula_alumno ? 'text-white' : 'text-secondary' }}">
                                                             {{ $i++ }}
                                                         </span>
                                                     </td>
@@ -106,7 +106,7 @@
                                                                 </div>
 
                                                                 <div x-data="{ isCopied: false }"
-                                                                    class="col-auto {{ !$item->usuario->gestionAulaAlumno[0]->estado_gestion_aula_alumno ? 'text-white' : 'text-secondary' }}">
+                                                                    class="col-auto {{ !$item->usuario->gestionAulaAlumno->first()->estado_gestion_aula_alumno ? 'text-white' : 'text-secondary' }}">
                                                                     <a class="text-reset cursor-pointer copy-to-clipboard"
                                                                         @click="navigator.clipboard.writeText('{{ $item->usuario->persona->documento_persona }}')
                                                                         .then(() => {
