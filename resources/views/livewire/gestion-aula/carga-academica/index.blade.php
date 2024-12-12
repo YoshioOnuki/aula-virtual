@@ -82,8 +82,12 @@
                                     </div>
 
                                     <div class="col-lg-5 col-3 d-flex justify-content-end">
-                                        <a class="btn btn-primary d-none d-lg-inline-block"
-                                            href="">
+                                        <a
+                                            class="btn btn-primary d-none d-lg-inline-block cursor-pointer"
+                                            wire:click="abrir_modal_carga_academica"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#modal-carga-academica"
+                                        >
                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
                                                 height="24" viewBox="0 0 24 24" stroke-width="2"
                                                 stroke="currentColor" fill="none" stroke-linecap="round"
@@ -94,8 +98,12 @@
                                             </svg>
                                             Registrar
                                         </a>
-                                        <a class="btn btn-primary d-lg-none btn-icon"
-                                            href="">
+                                        <a
+                                            class="btn btn-primary d-lg-none btn-icon cursor-pointer"
+                                            wire:click="abrir_modal_carga_academica"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#modal-carga-academica"
+                                        >
                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
                                                 height="24" viewBox="0 0 24 24" stroke-width="2"
                                                 stroke="currentColor" fill="none" stroke-linecap="round"
@@ -265,7 +273,7 @@
 
                                 @forelse ($cursos as $item)
                                     <livewire:components.curso.card-curso :tipo_vista=$tipo_vista_curso
-                                        :usuario=null :gestion_aula=$item
+                                        :usuario=null :gestion_aula=$item :modo_config=true
                                         wire:key="cursos-{{ $item->id_gestion_aula }}" lazy />
                                 @empty
 
@@ -319,29 +327,262 @@
         </div>
     </div>
 
+
+    {{-- Modal de carga academica --}}
+    <div wire:ignore.self class="modal fade" id="modal-carga-academica" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content {{ $estado_carga_modal ? 'cursor-progress' : '' }}">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        {{ !$estado_carga_modal ? $titulo_modal : '***' }}
+                    </h5>
+                    <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal"
+                        aria-label="Close" wire:click="limpiar_modal"></button>
+                </div>
+                <form autocomplete="off" wire:submit="guardar_carga_academica">
+                    <div
+                        class="modal-body"
+                        x-show="!$wire.estado_carga_modal"
+                        x-cloak
+                        x-collapse
+                    >
+                        <div class="row g-3">
+
+                            <div class="col-lg-12">
+                                <label for="id_curso" class="form-label required">
+                                    Curso
+                                </label>
+                                <div wire:ignore>
+                                    <select
+                                        id="id_curso"
+                                        class="form-select"
+                                        :class="$wire.id_curso ? 'is-valid' : ''"
+                                        wire:model.live="id_curso"
+                                        x-init="tom_id_curso = new TomSelect($el, {
+                                            create: false,
+                                            placeholder: 'Seleccione el curso',
+                                            sortField: { field: 'text', direction: 'asc' }
+                                        })"
+                                        @set-reset.window="tom_id_curso.clear()"
+                                    >
+                                        <option value="">Seleccione el curso</option>
+                                        @foreach ($cursos_carga_academica as $item)
+                                            <option value="{{ $item->id_curso }}" wire:key="cursos-{{ $item->id_curso }}">
+                                                {{ $item->planEstudio->nombre_plan_estudio }} -
+                                                {{ $item->ciclo->nombre_ciclo }} -
+                                                {{ $item->nombre_curso }} -
+                                                {{-- todo el tipo de progtrama en mayusculas --}}
+                                                {{ strtoupper($item->programa->tipoPrograma->nombre_tipo_programa) }} -
+                                                {{ $item->programa->nombre_programa }} {{ $item->programa->mencion_programa == null ? '' : ' - ' . $item->programa->mencion_programa }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+
+                                </div>
+                                @error('id_curso')
+                                    <span class="error text-danger fs-5">
+                                        {{ $message }}
+                                    </span>
+                                @enderror
+                            </div>
+
+                            <div class="col-lg-6">
+                                <label for="grupo_gestion_aula" class="form-label required">
+                                    Grupo
+                                </label>
+                                <input type="text" name="grupo_gestion_aula"
+                                    class="form-control text-uppercase @error('grupo_gestion_aula') is-invalid @elseif(strlen($grupo_gestion_aula) > 0) is-valid @enderror"
+                                    id="grupo_gestion_aula" wire:model.live="grupo_gestion_aula"
+                                    placeholder="Ingrese el grupo 'A' - 'B'... " />
+                                @error('grupo_gestion_aula')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            </div>
+
+                            <div class="col-lg-6">
+                                <label for="id_proceso" class="form-label required">
+                                    Proceso
+                                </label>
+                                <select
+                                    class="form-control @error('id_proceso') is-invalid @elseif(strlen($id_proceso) > 0) is-valid @enderror"
+                                    id="id_proceso"
+                                    :class="$wire.id_proceso === '' ? 'text-secondary' : ''"
+                                    wire:model.live="id_proceso"
+                                >
+                                    <option value="">Seleccione el proceso</option>
+                                    @foreach ($procesos as $item)
+                                        <option value="{{ $item->id_proceso }}" wire:key="{{ $item->id_proceso }}">
+                                            {{ $item->nombre_proceso }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('id_proceso')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            </div>
+
+                            <div
+                                class="hr-text hr-text-center mt-6"
+                                x-show="$wire.id_curso"
+                                x-cloak
+                                x-collapse
+                            >
+                                <span>
+                                    Asignación de Docente y Alumnos
+                                </span>
+                            </div>
+
+                            <div
+                                class="col-lg-12"
+                                x-show="$wire.id_curso"
+                                x-cloak
+                                x-collapse
+                            >
+                                <label for="id_docente" class="form-label">
+                                    Docente
+                                </label>
+                                <div wire:ignore>
+                                    <select
+                                        id="id_docente"
+                                        class="form-select @if ($errors->has('id_docente')) is-invalid @elseif($id_docente) is-valid @endif"
+                                        wire:model.live="id_docente"
+                                        x-init="
+                                            tom_id_docente = new TomSelect($el, {
+                                                create: false,
+                                                placeholder: 'Seleccione el docente',
+                                                sortField: { field: 'text', direction: 'asc' }
+                                            })
+                                        "
+                                        @set-reset.window="tom_id_docente.clear()"
+                                    >
+                                        <option value="">Seleccione el docente</option>
+                                        @foreach ($docentes as $item)
+                                            <option value="{{ $item->id_usuario }}" wire:key="docentes-{{ $item->id_usuario }}">
+                                                {{ $item->nombre_completo }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+
+                                </div>
+                                @error('id_docente')
+                                    <div class="form-label text-danger">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+
+                            <div
+                                class="col-lg-12"
+                                x-show="$wire.id_curso"
+                                x-cloak
+                                x-collapse
+                            >
+                                <label for="alumnos_seleccionados" class="form-label">
+                                    Alumnos
+                                </label>
+                                <div wire:ignore>
+                                    <select
+                                        id="alumnos_seleccionados"
+                                        class="form-select @error('alumnos_seleccionados') is-invalid @elseif(is_array($alumnos_seleccionados) && count($alumnos_seleccionados) > 0) is-valid @enderror"
+                                        wire:model.live="alumnos_seleccionados"
+                                        multiple
+                                        x-init="
+                                            tom_alumnos_seleccionados = new TomSelect($el, {
+                                                create: false,
+                                                placeholder: 'Seleccione los alumnos',
+                                                plugins: ['remove_button'],
+                                                sortField: { field: 'text', direction: 'asc' }
+                                            })
+                                        "
+                                        @set-reset.window="tom_alumnos_seleccionados.clear()"
+                                    >
+                                        <option value="">Seleccione los alumnos</option>
+                                        @foreach ($alumnos ?? [] as $item)
+                                            <option value="{{ $item->id_usuario }}" wire:key="alumno-{{ $item->id_usuario }}">
+                                                {{ $item->nombre_completo }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                @error('alumnos_seleccionados')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
+
+                    <!-- Spinner de carga para que aparezca mientras se están cargando los datos -->
+                    <template x-if="$wire.estado_carga_modal">
+                        <div class="my-5 d-flex justify-content-center align-items-center">
+                            <div class="spinner-border text-primary" role="status"></div>
+                        </div>
+                    </template>
+
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal"
+                            wire:click="limpiar_modal">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-ban">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                <path d="M5.7 5.7l12.6 12.6" />
+                            </svg>
+                            Cancelar
+                        </a>
+
+                        <div class="ms-auto">
+                            <button
+                                type="submit" class="btn btn-primary w-100"
+                                wire:loading.attr="disabled"
+                                wire:target="guardar_carga_academica"
+                                {{ $estado_carga_modal ? 'disabled cursor-progress' : '' }}
+                            >
+                                <span wire:loading.remove wire:target="guardar_carga_academica">
+                                    @if ($modo === 1)
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M12 5l0 14" />
+                                            <path d="M5 12l14 0" />
+                                        </svg>
+                                    @else
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                            <path
+                                                d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                            <path d="M16 5l3 3" />
+                                        </svg>
+                                    @endif
+                                    {{ $accion_modal }}
+                                </span>
+                                <span wire:loading wire:target="guardar_carga_academica">
+                                    <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                                    Guardando
+                                </span>
+                            </button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </div>
-
-@script
-
-<script>
-document.getElementById('dropdownButton').addEventListener('click', function (event) {
-    event.stopPropagation(); // Evita cerrar al hacer clic en el botón
-    document.getElementById('dropdownMenu').classList.toggle('show');
-
-    // Cambia la clase 'active' al botón
-    this.classList.toggle('active');
-});
-
-// Evita que el dropdown se cierre al interactuar con elementos internos
-document.getElementById('dropdownMenu').addEventListener('click', function (event) {
-    event.stopPropagation(); // No cierra el dropdown si se hace clic dentro de él
-});
-
-// Cierra el dropdown si se hace clic fuera y elimina la clase activa
-document.addEventListener('click', function () {
-    document.getElementById('dropdownMenu').classList.remove('show');
-    document.getElementById('dropdownButton').classList.remove('active');
-});
-</script>
-
-@endscript

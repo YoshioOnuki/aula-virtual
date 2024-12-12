@@ -9,7 +9,10 @@ use App\Models\PlanEstudio;
 use App\Models\Proceso;
 use App\Models\Programa;
 use App\Models\TipoPrograma;
+use App\Models\Usuario;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Url;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -37,7 +40,23 @@ class Index extends Component
     #[Url(except: '', as: 'en-curso')]
     public $filtro_en_curso = ''; // Filtro para mostrar cursos en curso o finalizados
 
+    // Variables para el modal
+    public $titulo_modal = 'Registrar carga académica o curso a dictar';
+    public $accion_modal = 'Registrar';
+    public $modo = 1; // 1: Registrar, 0: Editar
+    #[Validate('required|integer', as: 'curso')]
+    public $id_curso;
+    #[Validate('required|max:1|regex:/^[a-zA-Z]+$/', as: 'grupo')]
+    public $grupo_gestion_aula;
+    #[Validate('required|integer', as: 'proceso')]
+    public $id_proceso;
+    #[Validate('nullable|integer', as: 'docente')]
+    public $id_docente;
+    #[Validate('nullable|array', as: 'alumnos')]
+    public $alumnos_seleccionados;
+
     public $filtro_activo = false;
+    public $estado_carga_modal = true;
 
     public $tipo_vista_curso = 'carga-academica';
 
@@ -45,6 +64,98 @@ class Index extends Component
     public $titulo_page_header = 'LISTA DE CURSOS - CARGA ACADÉMICA';
     public $links_page_header = [];
     public $regresar_page_header;
+
+
+    public function guardar_carga_academica()
+    {
+        $this->validate([
+            'id_curso' => 'required|integer',
+            'grupo_gestion_aula' => 'required|max:1|regex:/^[a-zA-Z]+$/',
+            'id_proceso' => 'required|integer',
+            'id_docente' => 'nullable|integer',
+            'alumnos_seleccionados' => 'nullable|array'
+        ]);
+
+        try
+        {
+            DB::beginTransaction();
+
+                $gestion_aula = GestionAula::create([
+                    'grupo_gestion_aula' => strtoupper($this->grupo_gestion_aula),
+                    'estado_gestion_aula' => true,
+                    'en_curso_gestion_aula' => true,
+                    'id_curso' => $this->id_curso,
+                    'id_proceso' => $this->id_proceso
+                ]);
+
+                if ($this->id_docente) {
+                    $gestion_aula->gestionAulaDocente()->create([
+                        'estado_gestion_aula_docente' => true,
+                        'id_usuario' => $this->id_docente,
+                    ]);
+                }
+
+                if ($this->alumnos_seleccionados) {
+                    foreach ($this->alumnos_seleccionados as $alumno) {
+                        $gestion_aula->gestionAulaAlumno()->create([
+                            'estado_gestion_aula_alumno' => true,
+                            'id_usuario' => $alumno,
+                        ]);
+                    }
+                }
+
+            DB::commit();
+
+            $this->cerrar_modal();
+            $this->limpiar_modal();
+
+            $this->dispatch(
+                'toast-basico',
+                mensaje: 'Carga académica registrada correctamente',
+                type: 'success'
+            );
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            dd($e);
+            $this->dispatch(
+                'toast-basico',
+                mensaje: 'Ha ocurrido un error al guardar la carga académica',
+                type: 'error'
+            );
+        }
+    }
+
+
+    /**
+     * Cerrar modal
+     */
+    public function cerrar_modal($modal = '#modal-carga-academica')
+    {
+        $this->dispatch(
+            'modal',
+            modal: $modal,
+            action: 'hide'
+        );
+    }
+
+
+    public function limpiar_modal()
+    {
+        $this->modo = 1;
+        $this->titulo_modal = 'Registrar carga académica o curso a dictar';
+        $this->accion_modal = 'Registrar';
+        $this->estado_carga_modal = true;
+        $this->dispatch('set-reset');
+        $this->reset([
+            'id_curso',
+            'grupo_gestion_aula',
+            'id_proceso',
+            'id_docente',
+            'alumnos_seleccionados',
+        ]);
+        $this->resetErrorBag();
+    }
 
 
     private function validar_facultad($facultades)
@@ -98,9 +209,6 @@ class Index extends Component
     public function render()
     {
         $cursos = GestionAula::with(['curso'])
-            ->whereHas('gestionAulaDocente', function ($query) {
-                $query->estado(true);
-            })
             ->estado(true)
             ->orderBy('created_at', 'desc')
             ->search($this->search)
@@ -112,6 +220,7 @@ class Index extends Component
             ->proceso($this->filtro_proceso)
             ->enCurso($this->filtro_en_curso)
             ->paginate($this->mostrar_paginate);
+
 
         $tipo_programas = TipoPrograma::estado(true)->get();
 
@@ -137,6 +246,19 @@ class Index extends Component
         $planes_estudio = PlanEstudio::estado(true)->get();
         $procesos = Proceso::estado(true)->get();
 
+        $cursos_carga_academica = Curso::with(['ciclo', 'programa', 'programa.tipoPrograma', 'planEstudio'])
+            ->estado(true)->get();
+
+        $docentes = Usuario::with(['roles', 'persona'])
+            ->rol('DOCENTE')
+            ->estado(true)
+            ->get();
+
+        $alumnos = Usuario::with(['roles', 'persona'])
+            ->rol('ALUMNO')
+            ->estado(true)
+            ->get();
+
         return view('livewire.gestion-aula.carga-academica.index', compact([
             'cursos',
             'tipo_programas',
@@ -144,7 +266,10 @@ class Index extends Component
             'programas',
             'ciclos',
             'planes_estudio',
-            'procesos'
+            'procesos',
+            'cursos_carga_academica',
+            'docentes',
+            'alumnos',
         ]));
     }
 }
