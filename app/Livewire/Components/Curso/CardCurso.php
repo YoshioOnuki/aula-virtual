@@ -29,6 +29,7 @@ class CardCurso extends Component
 
     public $modo_admin = false; // Modo admin, para saber si se esta en modo administrador
     public $todos_cursos = false; // Todos los cursos, para saber si se estan mostrando todos los cursos
+    public $modo_config = false;
     public $tipo_vista; // Tipo de vista, para saber si esta en cursos o carga academica
 
 
@@ -185,9 +186,10 @@ class CardCurso extends Component
     }
 
 
-    public function mount($tipo_vista, $usuario = null, $gestion_aula)
+    public function mount($tipo_vista, $usuario = null, $gestion_aula, $modo_config = false)
     {
         $this->tipo_vista = $tipo_vista;
+        $this->modo_config = $modo_config;
         if($usuario === null) {
             $gestion_aula_docente = GestionAulaDocente::where('id_gestion_aula', $gestion_aula->id_gestion_aula)
                 ->invitado(false)
