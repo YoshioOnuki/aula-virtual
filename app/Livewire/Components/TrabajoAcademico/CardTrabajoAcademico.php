@@ -5,6 +5,7 @@ namespace App\Livewire\Components\TrabajoAcademico;
 use App\Models\GestionAulaAlumno;
 use App\Models\TrabajoAcademico;
 use Livewire\Attributes\Lazy;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Vinkla\Hashids\Facades\Hashids;
 
@@ -20,9 +21,6 @@ class CardTrabajoAcademico extends Component
     public $es_docente;
 
 
-    protected $listeners = ['actualizar-trabajos-academicos' => 'mostrar_trabajos'];
-
-
     /**
      * Evento para abrir modal de edición de trabajo académico
      */
@@ -35,6 +33,7 @@ class CardTrabajoAcademico extends Component
     /**
      * Actualizar trabajos académicos
      */
+    #[On('actualizar-trabajos-academicos')]
     public function mostrar_trabajos()
     {
         $this->mount($this->tipo_vista, $this->usuario, $this->id_gestion_aula, $this->trabajo_academico);

@@ -4,6 +4,7 @@ namespace App\Livewire\Components\Foro;
 
 use App\Models\Foro;
 use Livewire\Attributes\Lazy;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Vinkla\Hashids\Facades\Hashids;
 
@@ -15,8 +16,6 @@ class CardForo extends Component
     public $id_usuario_hash;
     public $id_gestion_aula;
     public $foro;
-
-    protected $listeners = ['actualizar-foros' => '$actualizar_foros'];
 
 
     /**
@@ -31,6 +30,7 @@ class CardForo extends Component
     /**
      * Actualizar foros despues de registrar o editar
      */
+    #[On('actualizar-foros')]
     public function actualizar_foros()
     {
         $this->mount($this->tipo_vista, $this->usuario, $this->id_gestion_aula, $this->foro);

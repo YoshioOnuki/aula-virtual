@@ -3,6 +3,7 @@
 namespace App\Livewire\Components\Curso;
 
 use App\Models\GestionAula;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class DatosCurso extends Component
@@ -19,12 +20,11 @@ class DatosCurso extends Component
 
     public $tipo_vista; // Para saber que tipo de vista se está mostrando
 
-    protected $listeners = ['actualizar_datos_curso' => 'actualizar_datos_curso'];
-
 
     /**
      * Actualiza los datos del curso, renderizando la vista
      */
+    #[On('actualizar_datos_curso')]
     public function actualizar_datos_curso()
     {
         $this->mount($this->id_gestion_aula, $this->ruta_pagina, $this->tipo_vista);

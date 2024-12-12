@@ -8,6 +8,7 @@ use App\Models\GestionAulaDocente;
 use App\Traits\UsuarioTrait;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -70,8 +71,6 @@ class Index extends Component
     public $links_page_header = [];
     public $regresar_page_header;
 
-    protected $listeners = ['abrir-modal-foro-editar' => 'abrir_modal_editar_foro'];
-
 
     /**
      * Mostrar toast de éxito
@@ -108,6 +107,7 @@ class Index extends Component
     /**
      * Abrir modal para editar un foro
      */
+    #[On('abrir-modal-foro-editar')]
     public function abrir_modal_editar_foro($id_foro)
     {
         $this->limpiar_modal();

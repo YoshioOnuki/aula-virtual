@@ -8,6 +8,7 @@ use App\Models\GestionAulaAlumno;
 use App\Models\GestionAulaDocente;
 use App\Models\TrabajoAcademicoAlumno;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Vinkla\Hashids\Facades\Hashids;
@@ -30,8 +31,6 @@ class CardRevisarTrabajo extends Component
     public $nota_trabajo_academico;
     #[Validate('required')]
     public $descripcion_comentario_trabajo_academico;
-
-    protected $listeners = ['actualizar_estado_entrega_alumno' => 'actualizar_estado_entrega_alumno'];
 
 
     /**
@@ -143,6 +142,7 @@ class CardRevisarTrabajo extends Component
     /**
      * Actualizar datos de la entrega del trabajo académico
      */
+    #[On('actualizar_estado_entrega_alumno')]
     public function actualizar_estado_entrega_alumno()
     {
         $this->trabajo_academico_alumno = TrabajoAcademicoAlumno::find($this->trabajo_academico_alumno->id_trabajo_academico_alumno);

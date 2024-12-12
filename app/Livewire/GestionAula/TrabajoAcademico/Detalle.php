@@ -11,6 +11,7 @@ use App\Models\TrabajoAcademico;
 use App\Models\TrabajoAcademicoAlumno;
 use App\Traits\UsuarioTrait;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -54,12 +55,11 @@ class Detalle extends Component
     public $links_page_header = [];
     public $regresar_page_header;
 
-    protected $listeners = ['abrir-modal-comentarios' => 'abrir_modal_comentarios'];
-
 
     /**
      * Abrir modal de comentarios
      */
+    #[On('abrir-modal-comentarios')]
     public function abrir_modal_comentarios()
     {
         // $this->comentarios = $this->trabajo_academico_alumno->comentariosTrabajoAcademico;

@@ -4,6 +4,7 @@ namespace App\Livewire\Components\Recurso;
 
 use App\Models\Recurso;
 use Livewire\Attributes\Lazy;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 #[Lazy(isolate: false)]
@@ -15,12 +16,11 @@ class CardRecurso extends Component
     public $id_gestion_aula;
     public $es_docente;
 
-    protected $listeners = ['load-recursos' => 'load_recursos'];
-
 
     /**
      * Cargar recursos
      */
+    #[On('load-recursos')]
     public function load_recursos()
     {
         $this->mount($this->tipo_vista, $this->usuario, $this->id_gestion_aula, $this->recurso);

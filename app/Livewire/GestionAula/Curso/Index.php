@@ -42,6 +42,7 @@ class Index extends Component
                 ->enCurso(true)
                 ->orderBy('created_at', 'desc')
                 ->get();
+            $gestion_aulas = $gestion_aulas->sortBy('grupo_gestion_aula');
             $gestion_aulas = $gestion_aulas->sortBy('curso.nombre_curso');
 
             $gestion_aulas_finalizadas = GestionAula::with('curso')
@@ -53,6 +54,7 @@ class Index extends Component
                 ->enCurso(false)
                 ->orderBy('created_at', 'desc')
                 ->get();
+            $gestion_aulas_finalizadas = $gestion_aulas_finalizadas->sortBy('grupo_gestion_aula');
             $gestion_aulas_finalizadas = $gestion_aulas_finalizadas->sortBy('curso.nombre_curso');
         } else {
             $gestion_aulas = GestionAula::with('curso')
@@ -64,6 +66,7 @@ class Index extends Component
                 ->enCurso(true)
                 ->orderBy('created_at', 'desc')
                 ->get();
+            $gestion_aulas = $gestion_aulas->sortBy('grupo_gestion_aula');
             $gestion_aulas = $gestion_aulas->sortBy('curso.nombre_curso');
 
             $gestion_aulas_finalizadas = GestionAula::with('curso')
@@ -75,6 +78,7 @@ class Index extends Component
                 ->enCurso(false)
                 ->orderBy('created_at', 'desc')
                 ->get();
+            $gestion_aulas_finalizadas = $gestion_aulas_finalizadas->sortBy('grupo_gestion_aula');
             $gestion_aulas_finalizadas = $gestion_aulas_finalizadas->sortBy('curso.nombre_curso');
         }
 

@@ -6,6 +6,7 @@ use App\Models\GestionAulaAlumno;
 use App\Models\TrabajoAcademico;
 use App\Models\TrabajoAcademicoAlumno;
 use App\Traits\UsuarioTrait;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class CardEstadoTrabajo extends Component
@@ -29,8 +30,6 @@ class CardEstadoTrabajo extends Component
 
     public bool $lista_alumnos;
 
-    protected $listeners = ['actualizar_estado_trabajo' => 'actualizar_estado_trabajo'];
-
 
     /**
      * Evento para abrir el modal de comentarios
@@ -44,6 +43,7 @@ class CardEstadoTrabajo extends Component
     /**
      * Actualizar estado del trabajo académico
      */
+    #[On('actualizar_estado_trabajo')]
     public function actualizar_estado_trabajo()
     {
         if ($this->tipo_vista === 'carga-academica')

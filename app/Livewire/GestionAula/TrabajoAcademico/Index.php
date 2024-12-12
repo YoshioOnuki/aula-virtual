@@ -8,6 +8,7 @@ use App\Models\TrabajoAcademico;
 use App\Traits\UsuarioTrait;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -49,8 +50,6 @@ class Index extends Component
     public $nombre_archivo_trabajo_academico = [];
     public $iteration = 1;
 
-    protected $listeners = ['abrir-modal-trabajo-editar' => 'abrir_modal_editar_trabajo'];
-
     public $modo_admin = false; // Modo admin, para saber si se esta en modo administrador
     public $es_docente = false;
     public $es_docente_invitado = false;
@@ -81,6 +80,7 @@ class Index extends Component
     /**
      * Abrir modal para editar trabajo académico
      */
+    #[On('abrir-modal-trabajo-editar')]
     public function abrir_modal_editar_trabajo($id_trabajo_academico)
     {
         $this->limpiar_modal();

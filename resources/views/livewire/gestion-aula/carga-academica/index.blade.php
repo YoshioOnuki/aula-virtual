@@ -33,7 +33,7 @@
                                 <div class="d-flex align-items-center justify-content-start">
 
                                     <button
-                                        class="btn btn-outline-azure d-flex justify-content-between align-items-center border-azure me-3"
+                                        class="btn btn-outline-azure d-flex justify-content-between align-items-center border-azure me-3  d-none d-lg-inline-block"
                                         x-on:click="$wire.filtro_activo = !$wire.filtro_activo"
                                         :class="$wire.filtro_activo ? 'filter-button-active' : ''"
                                     >
@@ -44,6 +44,18 @@
                                                 d="M20 3h-16a1 1 0 0 0 -1 1v2.227l.008 .223a3 3 0 0 0 .772 1.795l4.22 4.641v8.114a1 1 0 0 0 1.316 .949l6 -2l.108 -.043a1 1 0 0 0 .576 -.906v-6.586l4.121 -4.12a3 3 0 0 0 .879 -2.123v-2.171a1 1 0 0 0 -1 -1z" />
                                         </svg>
                                         Filtro
+                                    </button>
+                                    <button
+                                        class="btn btn-outline-azure d-flex justify-content-between align-items-center border-azure me-3 pe-1 d-lg-none"
+                                        x-on:click="$wire.filtro_activo = !$wire.filtro_activo"
+                                        :class="$wire.filtro_activo ? 'filter-button-active' : ''"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"
+                                            class="icon icon-tabler icons-tabler-filled icon-tabler-filter">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path
+                                                d="M20 3h-16a1 1 0 0 0 -1 1v2.227l.008 .223a3 3 0 0 0 .772 1.795l4.22 4.641v8.114a1 1 0 0 0 1.316 .949l6 -2l.108 -.043a1 1 0 0 0 .576 -.906v-6.586l4.121 -4.12a3 3 0 0 0 .879 -2.123v-2.171a1 1 0 0 0 -1 -1z" />
+                                        </svg>
                                     </button>
 
                                     <div class="text-secondary">
@@ -70,8 +82,12 @@
                                     </div>
 
                                     <div class="col-lg-5 col-3 d-flex justify-content-end">
-                                        <a class="btn btn-primary d-none d-lg-inline-block"
-                                            href="">
+                                        <a
+                                            class="btn btn-primary d-none d-lg-inline-block cursor-pointer"
+                                            wire:click="abrir_modal_carga_academica"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#modal-carga-academica"
+                                        >
                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
                                                 height="24" viewBox="0 0 24 24" stroke-width="2"
                                                 stroke="currentColor" fill="none" stroke-linecap="round"
@@ -82,8 +98,12 @@
                                             </svg>
                                             Registrar
                                         </a>
-                                        <a class="btn btn-primary d-lg-none btn-icon"
-                                            href="">
+                                        <a
+                                            class="btn btn-primary d-lg-none btn-icon cursor-pointer"
+                                            wire:click="abrir_modal_carga_academica"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#modal-carga-academica"
+                                        >
                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
                                                 height="24" viewBox="0 0 24 24" stroke-width="2"
                                                 stroke="currentColor" fill="none" stroke-linecap="round"
@@ -253,7 +273,7 @@
 
                                 @forelse ($cursos as $item)
                                     <livewire:components.curso.card-curso :tipo_vista=$tipo_vista_curso
-                                        :usuario=null :gestion_aula=$item
+                                        :usuario=null :gestion_aula=$item :modo_config=true
                                         wire:key="cursos-{{ $item->id_gestion_aula }}" lazy />
                                 @empty
 
@@ -307,29 +327,439 @@
         </div>
     </div>
 
+
+    {{-- Modal de carga academica --}}
+    <div wire:ignore.self class="modal fade" id="modal-carga-academica" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content {{ $estado_carga_modal ? 'cursor-progress' : '' }}">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        {{ !$estado_carga_modal ? $titulo_modal : '***' }}
+                    </h5>
+                    <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal"
+                        aria-label="Close" wire:click="limpiar_modal"></button>
+                </div>
+                <form autocomplete="off" wire:submit="guardar_carga_academica">
+                    <div
+                        class="modal-body"
+                        x-show="!$wire.estado_carga_modal"
+                        x-cloak
+                        x-collapse
+                    >
+                        <div class="row g-3">
+
+                            <div class="col-lg-12">
+                                <label for="id_curso" class="form-label required">
+                                    Curso
+                                </label>
+                                <div wire:ignore>
+                                    <select
+                                        id="id_curso"
+                                        class="form-select"
+                                        :class="$wire.id_curso ? 'is-valid' : ''"
+                                        wire:model.live="id_curso"
+                                        x-init="tom_id_curso = new TomSelect($el, {
+                                            create: false,
+                                            placeholder: 'Seleccione el curso',
+                                            sortField: { field: 'text', direction: 'asc' }
+                                        })"
+                                        @set-reset.window="tom_id_curso.clear()"
+                                        @set-id-curso.window="
+                                            tom_id_curso.addOptions($event.detail.data);
+                                            tom_id_curso.addItems($event.detail.data);
+                                        "
+                                    >
+                                        <option value="">Seleccione el curso</option>
+                                        @foreach ($cursos_carga_academica as $item)
+                                            <option value="{{ $item->id_curso }}" wire:key="cursos-{{ $item->id_curso }}">
+                                                {{ $item->planEstudio->nombre_plan_estudio }} -
+                                                {{ $item->ciclo->nombre_ciclo }} -
+                                                {{ $item->nombre_curso }} -
+                                                {{-- todo el tipo de progtrama en mayusculas --}}
+                                                {{ strtoupper($item->programa->tipoPrograma->nombre_tipo_programa) }} -
+                                                {{ $item->programa->nombre_programa }} {{ $item->programa->mencion_programa == null ? '' : ' - ' . $item->programa->mencion_programa }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+
+                                </div>
+                                @error('id_curso')
+                                    <span class="error text-danger fs-5">
+                                        {{ $message }}
+                                    </span>
+                                @enderror
+                            </div>
+
+                            <div class="col-lg-6">
+                                <label for="grupo_gestion_aula" class="form-label required">
+                                    Grupo
+                                </label>
+                                <input type="text" name="grupo_gestion_aula"
+                                    class="form-control text-uppercase @error('grupo_gestion_aula') is-invalid @elseif(strlen($grupo_gestion_aula) > 0) is-valid @enderror"
+                                    id="grupo_gestion_aula" wire:model.live="grupo_gestion_aula"
+                                    placeholder="Ingrese el grupo 'A' - 'B'... " />
+                                @error('grupo_gestion_aula')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            </div>
+
+                            <div class="col-lg-6">
+                                <label for="id_proceso" class="form-label required">
+                                    Proceso
+                                </label>
+                                <select
+                                    class="form-control @error('id_proceso') is-invalid @elseif(strlen($id_proceso) > 0) is-valid @enderror"
+                                    id="id_proceso"
+                                    :class="$wire.id_proceso === '' ? 'text-secondary' : ''"
+                                    wire:model.live="id_proceso"
+                                >
+                                    <option value="">Seleccione el proceso</option>
+                                    @foreach ($procesos as $item)
+                                        <option value="{{ $item->id_proceso }}" wire:key="{{ $item->id_proceso }}">
+                                            {{ $item->nombre_proceso }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('id_proceso')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            </div>
+
+                            <div
+                                class="hr-text hr-text-center mt-6"
+                                x-show="$wire.id_curso"
+                                x-cloak
+                                x-collapse
+                            >
+                                <span>
+                                    Asignación de Docente y Alumnos
+                                </span>
+                            </div>
+
+                            <div
+                                class="col-lg-12"
+                                x-show="$wire.id_curso"
+                                x-cloak
+                                x-collapse
+                            >
+                                <label for="id_docente" class="form-label">
+                                    Docente
+                                </label>
+                                <div wire:ignore>
+                                    <select
+                                        id="id_docente"
+                                        class="form-select @if ($errors->has('id_docente')) is-invalid @elseif($id_docente) is-valid @endif"
+                                        wire:model.live="id_docente"
+                                        x-init="
+                                            tom_id_docente = new TomSelect($el, {
+                                                create: false,
+                                                placeholder: 'Seleccione el docente',
+                                                sortField: { field: 'text', direction: 'asc' }
+                                            })
+                                        "
+                                        @set-reset.window="tom_id_docente.clear()"
+                                        @set-id-docente.window="
+                                            tom_id_docente.addOptions($event.detail.data);
+                                            tom_id_docente.addItems($event.detail.data);
+                                        "
+                                    >
+                                        <option value="">Seleccione el docente</option>
+                                        @foreach ($docentes as $item)
+                                            <option value="{{ $item->id_usuario }}" wire:key="docentes-{{ $item->id_usuario }}">
+                                                {{ $item->nombre_completo }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+
+                                </div>
+                                @error('id_docente')
+                                    <div class="form-label text-danger">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+
+                            <div
+                                class="col-lg-12"
+                                x-show="$wire.id_curso"
+                                x-cloak
+                                x-collapse
+                            >
+                                <label for="alumnos_seleccionados" class="form-label">
+                                    Alumnos
+                                </label>
+                                <div wire:ignore>
+                                    <select
+                                        id="alumnos_seleccionados"
+                                        class="form-select @error('alumnos_seleccionados') is-invalid @elseif(is_array($alumnos_seleccionados) && count($alumnos_seleccionados) > 0) is-valid @enderror"
+                                        wire:model.live="alumnos_seleccionados"
+                                        multiple
+                                        x-init="
+                                            tom_alumnos_seleccionados = new TomSelect($el, {
+                                                create: false,
+                                                placeholder: 'Seleccione los alumnos',
+                                                plugins: ['remove_button'],
+                                                sortField: { field: 'text', direction: 'asc' }
+                                            })
+                                        "
+                                        @set-reset.window="tom_alumnos_seleccionados.clear()"
+                                        @set-alumnos-matriculados.window="
+                                            tom_alumnos_seleccionados.addOptions($event.detail.data);
+                                            tom_alumnos_seleccionados.addItems($event.detail.data);
+                                        "
+                                    >
+                                        <option value="">Seleccione los alumnos</option>
+                                        @foreach ($alumnos ?? [] as $item)
+                                            <option value="{{ $item->id_usuario }}" wire:key="alumno-{{ $item->id_usuario }}">
+                                                {{ $item->nombre_completo }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                @error('alumnos_seleccionados')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+
+                            @if ($modo === 0)
+                                <div class="hr-text hr-text-center mt-6">
+                                    <span>
+                                        Alumnos Matriculados
+                                    </span>
+                                </div>
+
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <div class="card animate__animated animate__fadeIn  ">
+
+                                            <div class="card-body border-bottom py-3">
+                                                <div class="d-flex align-items-center justify-content-between">
+                                                    <div class="text-secondary">
+                                                        Mostrar
+                                                        <div class="mx-2 d-inline-block">
+                                                            <select wire:model.live="mostrar_paginate_alumnos" class="form-select">
+                                                                <option value="5">5</option>
+                                                                <option value="10">10</option>
+                                                                <option value="20">20</option>
+                                                                <option value="30">30</option>
+                                                                <option value="50">50</option>
+                                                            </select>
+                                                        </div>
+                                                        entradas
+                                                    </div>
+                                                    <div class="text-secondary">
+                                                        <div class="">
+                                                            <div class="d-inline-block">
+                                                                <input type="text" class="form-control"
+                                                                    wire:model.live.debounce.500ms="search_alumnos"
+                                                                    aria-label="Search invoice" placeholder="Buscar">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="table-responsive">
+                                                <table class="table card-table table-vcenter text-nowrap table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="w-1">No.</th>
+                                                            <th class="col-1">Código</th>
+                                                            <th>Alumno</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @php
+                                                            $i = 1;
+                                                        @endphp
+                                                        @forelse ($alumnos_matriculados as $item)
+                                                            <tr
+                                                                class="{{ !$item->usuario->gestionAulaAlumno->first()->estado_gestion_aula_alumno ? 'bg-red text-white fw-bold' : '' }}"
+                                                                wire:key="alumno-matriculado-{{ $item->usuario->gestionAulaAlumno->first()->id_gestion_aula_alumno }}"
+                                                            >
+                                                                <td>
+                                                                    <span
+                                                                        class="{{ !$item->usuario->gestionAulaAlumno->first()->estado_gestion_aula_alumno ? 'text-white' : 'text-secondary' }}">
+                                                                        {{ $i++ }}
+                                                                    </span>
+                                                                </td>
+                                                                <td>
+                                                                    {{ $item->codigo_alumno_persona }}
+                                                                </td>
+                                                                <td>
+                                                                    <div class="d-flex py-1 align-items-center">
+                                                                        <img src="{{ asset($item->usuario->mostrarFoto('azure')) }}"
+                                                                            alt="avatar"
+                                                                            class="avatar rounded avatar-static me-2">
+                                                                        <div class="flex-fill">
+                                                                            <div class="font-weight-medium">
+                                                                                {{ $item->nombre_completo }}
+                                                                            </div>
+
+                                                                            <div x-data="{ isCopied: false }"
+                                                                                class="col-auto {{ !$item->usuario->gestionAulaAlumno->first()->estado_gestion_aula_alumno ? 'text-white' : 'text-secondary' }}">
+                                                                                <a class="text-reset cursor-pointer copy-to-clipboard"
+                                                                                    @click="navigator.clipboard.writeText('{{ $item->usuario->persona->documento_persona }}')
+                                                                                    .then(() => {
+                                                                                        isCopied = true;
+                                                                                        setTimeout(() => isCopied = false, 1000);
+                                                                                    }).catch(err => console.error('Error al copiar al portapapeles: ', err))"
+                                                                                    x-show="!isCopied">
+                                                                                    {{ $item->documento_persona }}
+                                                                                </a>
+
+                                                                                <span x-show="isCopied" class="text-primary">
+                                                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                        width="24" height="24"
+                                                                                        viewBox="0 0 24 24" fill="none"
+                                                                                        stroke="currentColor" stroke-width="2"
+                                                                                        stroke-linecap="round"
+                                                                                        stroke-linejoin="round"
+                                                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-copy-check">
+                                                                                        <path stroke="none" d="M0 0h24v24H0z"
+                                                                                            fill="none" />
+                                                                                        <path stroke="none" d="M0 0h24v24H0z" />
+                                                                                        <path
+                                                                                            d="M7 9.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" />
+                                                                                        <path
+                                                                                            d="M4.012 16.737a2 2 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" />
+                                                                                        <path d="M11 14l2 2l4 -4" />
+                                                                                    </svg>
+                                                                                    Copiado
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        @empty
+                                                            @if ($alumnos_matriculados->count() == 0 && $search != '')
+                                                                <tr>
+                                                                    <td colspan="3">
+                                                                        <div class="text-center"
+                                                                            style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                                            <span class="text-secondary">
+                                                                                No se encontraron resultados para
+                                                                                "<strong>{{ $search }}</strong>"
+                                                                            </span>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            @else
+                                                                <tr>
+                                                                    <td colspan="3">
+                                                                        <div class="text-center"
+                                                                            style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                                            <span class="text-secondary">
+                                                                                No hay alumnos matriculados
+                                                                            </span>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            @endif
+                                                        @endforelse
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <div class="card-footer {{ $alumnos_matriculados->hasPages() ? 'py-0' : '' }}">
+                                                @if ($alumnos_matriculados->hasPages())
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="d-flex align-items-center text-secondary">
+                                                            Mostrando {{ $alumnos_matriculados->firstItem() }} - {{ $alumnos_matriculados->lastItem() }} de
+                                                            {{ $alumnos_matriculados->total() }} registros
+                                                        </div>
+                                                        <div class="mt-3">
+                                                            {{ $alumnos_matriculados->links() }}
+                                                        </div>
+                                                    </div>
+                                                @else
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="d-flex align-items-center text-secondary">
+                                                            Mostrando {{ $alumnos_matriculados->firstItem() }} - {{ $alumnos_matriculados->lastItem() }} de
+                                                            {{ $alumnos_matriculados->total() }} registros
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+
+
+                        </div>
+                    </div>
+
+                    <!-- Spinner de carga para que aparezca mientras se están cargando los datos -->
+                    <template x-if="$wire.estado_carga_modal">
+                        <div class="my-5 d-flex justify-content-center align-items-center">
+                            <div class="spinner-border text-primary" role="status"></div>
+                        </div>
+                    </template>
+
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal"
+                            wire:click="limpiar_modal">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-ban">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                <path d="M5.7 5.7l12.6 12.6" />
+                            </svg>
+                            Cancelar
+                        </a>
+
+                        <div class="ms-auto">
+                            <button
+                                type="submit" class="btn btn-primary w-100"
+                                wire:loading.attr="disabled"
+                                wire:target="guardar_carga_academica"
+                                {{ $estado_carga_modal ? 'disabled cursor-progress' : '' }}
+                            >
+                                <span wire:loading.remove wire:target="guardar_carga_academica">
+                                    @if ($modo === 1)
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M12 5l0 14" />
+                                            <path d="M5 12l14 0" />
+                                        </svg>
+                                    @else
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                            <path
+                                                d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                            <path d="M16 5l3 3" />
+                                        </svg>
+                                    @endif
+                                    {{ $accion_modal }}
+                                </span>
+                                <span wire:loading wire:target="guardar_carga_academica">
+                                    <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                                    Guardando
+                                </span>
+                            </button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </div>
-
-@script
-
-<script>
-document.getElementById('dropdownButton').addEventListener('click', function (event) {
-    event.stopPropagation(); // Evita cerrar al hacer clic en el botón
-    document.getElementById('dropdownMenu').classList.toggle('show');
-
-    // Cambia la clase 'active' al botón
-    this.classList.toggle('active');
-});
-
-// Evita que el dropdown se cierre al interactuar con elementos internos
-document.getElementById('dropdownMenu').addEventListener('click', function (event) {
-    event.stopPropagation(); // No cierra el dropdown si se hace clic dentro de él
-});
-
-// Cierra el dropdown si se hace clic fuera y elimina la clase activa
-document.addEventListener('click', function () {
-    document.getElementById('dropdownMenu').classList.remove('show');
-    document.getElementById('dropdownButton').classList.remove('active');
-});
-</script>
-
-@endscript
