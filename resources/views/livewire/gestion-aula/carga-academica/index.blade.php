@@ -364,6 +364,10 @@
                                             sortField: { field: 'text', direction: 'asc' }
                                         })"
                                         @set-reset.window="tom_id_curso.clear()"
+                                        @set-id-curso.window="
+                                            tom_id_curso.addOptions($event.detail.data);
+                                            tom_id_curso.addItems($event.detail.data);
+                                        "
                                     >
                                         <option value="">Seleccione el curso</option>
                                         @foreach ($cursos_carga_academica as $item)
@@ -458,6 +462,10 @@
                                             })
                                         "
                                         @set-reset.window="tom_id_docente.clear()"
+                                        @set-id-docente.window="
+                                            tom_id_docente.addOptions($event.detail.data);
+                                            tom_id_docente.addItems($event.detail.data);
+                                        "
                                     >
                                         <option value="">Seleccione el docente</option>
                                         @foreach ($docentes as $item)
@@ -499,6 +507,10 @@
                                             })
                                         "
                                         @set-reset.window="tom_alumnos_seleccionados.clear()"
+                                        @set-alumnos-matriculados.window="
+                                            tom_alumnos_seleccionados.addOptions($event.detail.data);
+                                            tom_alumnos_seleccionados.addItems($event.detail.data);
+                                        "
                                     >
                                         <option value="">Seleccione los alumnos</option>
                                         @foreach ($alumnos ?? [] as $item)
@@ -515,7 +527,172 @@
                                 @enderror
                             </div>
 
+                            @if ($modo === 0)
+                                <div class="hr-text hr-text-center mt-6">
+                                    <span>
+                                        Alumnos Matriculados
+                                    </span>
+                                </div>
 
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <div class="card animate__animated animate__fadeIn  ">
+
+                                            <div class="card-body border-bottom py-3">
+                                                <div class="d-flex align-items-center justify-content-between">
+                                                    <div class="text-secondary">
+                                                        Mostrar
+                                                        <div class="mx-2 d-inline-block">
+                                                            <select wire:model.live="mostrar_paginate_alumnos" class="form-select">
+                                                                <option value="5">5</option>
+                                                                <option value="10">10</option>
+                                                                <option value="20">20</option>
+                                                                <option value="30">30</option>
+                                                                <option value="50">50</option>
+                                                            </select>
+                                                        </div>
+                                                        entradas
+                                                    </div>
+                                                    <div class="text-secondary">
+                                                        <div class="">
+                                                            <div class="d-inline-block">
+                                                                <input type="text" class="form-control"
+                                                                    wire:model.live.debounce.500ms="search_alumnos"
+                                                                    aria-label="Search invoice" placeholder="Buscar">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="table-responsive">
+                                                <table class="table card-table table-vcenter text-nowrap table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="w-1">No.</th>
+                                                            <th class="col-1">Código</th>
+                                                            <th>Alumno</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @php
+                                                            $i = 1;
+                                                        @endphp
+                                                        @forelse ($alumnos_matriculados as $item)
+                                                            <tr
+                                                                class="{{ !$item->usuario->gestionAulaAlumno->first()->estado_gestion_aula_alumno ? 'bg-red text-white fw-bold' : '' }}"
+                                                                wire:key="alumno-matriculado-{{ $item->usuario->gestionAulaAlumno->first()->id_gestion_aula_alumno }}"
+                                                            >
+                                                                <td>
+                                                                    <span
+                                                                        class="{{ !$item->usuario->gestionAulaAlumno->first()->estado_gestion_aula_alumno ? 'text-white' : 'text-secondary' }}">
+                                                                        {{ $i++ }}
+                                                                    </span>
+                                                                </td>
+                                                                <td>
+                                                                    {{ $item->codigo_alumno_persona }}
+                                                                </td>
+                                                                <td>
+                                                                    <div class="d-flex py-1 align-items-center">
+                                                                        <img src="{{ asset($item->usuario->mostrarFoto('azure')) }}"
+                                                                            alt="avatar"
+                                                                            class="avatar rounded avatar-static me-2">
+                                                                        <div class="flex-fill">
+                                                                            <div class="font-weight-medium">
+                                                                                {{ $item->nombre_completo }}
+                                                                            </div>
+
+                                                                            <div x-data="{ isCopied: false }"
+                                                                                class="col-auto {{ !$item->usuario->gestionAulaAlumno->first()->estado_gestion_aula_alumno ? 'text-white' : 'text-secondary' }}">
+                                                                                <a class="text-reset cursor-pointer copy-to-clipboard"
+                                                                                    @click="navigator.clipboard.writeText('{{ $item->usuario->persona->documento_persona }}')
+                                                                                    .then(() => {
+                                                                                        isCopied = true;
+                                                                                        setTimeout(() => isCopied = false, 1000);
+                                                                                    }).catch(err => console.error('Error al copiar al portapapeles: ', err))"
+                                                                                    x-show="!isCopied">
+                                                                                    {{ $item->documento_persona }}
+                                                                                </a>
+
+                                                                                <span x-show="isCopied" class="text-primary">
+                                                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                        width="24" height="24"
+                                                                                        viewBox="0 0 24 24" fill="none"
+                                                                                        stroke="currentColor" stroke-width="2"
+                                                                                        stroke-linecap="round"
+                                                                                        stroke-linejoin="round"
+                                                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-copy-check">
+                                                                                        <path stroke="none" d="M0 0h24v24H0z"
+                                                                                            fill="none" />
+                                                                                        <path stroke="none" d="M0 0h24v24H0z" />
+                                                                                        <path
+                                                                                            d="M7 9.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" />
+                                                                                        <path
+                                                                                            d="M4.012 16.737a2 2 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" />
+                                                                                        <path d="M11 14l2 2l4 -4" />
+                                                                                    </svg>
+                                                                                    Copiado
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        @empty
+                                                            @if ($alumnos_matriculados->count() == 0 && $search != '')
+                                                                <tr>
+                                                                    <td colspan="3">
+                                                                        <div class="text-center"
+                                                                            style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                                            <span class="text-secondary">
+                                                                                No se encontraron resultados para
+                                                                                "<strong>{{ $search }}</strong>"
+                                                                            </span>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            @else
+                                                                <tr>
+                                                                    <td colspan="3">
+                                                                        <div class="text-center"
+                                                                            style="padding-bottom: 2rem; padding-top: 2rem;">
+                                                                            <span class="text-secondary">
+                                                                                No hay alumnos matriculados
+                                                                            </span>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            @endif
+                                                        @endforelse
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <div class="card-footer {{ $alumnos_matriculados->hasPages() ? 'py-0' : '' }}">
+                                                @if ($alumnos_matriculados->hasPages())
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="d-flex align-items-center text-secondary">
+                                                            Mostrando {{ $alumnos_matriculados->firstItem() }} - {{ $alumnos_matriculados->lastItem() }} de
+                                                            {{ $alumnos_matriculados->total() }} registros
+                                                        </div>
+                                                        <div class="mt-3">
+                                                            {{ $alumnos_matriculados->links() }}
+                                                        </div>
+                                                    </div>
+                                                @else
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="d-flex align-items-center text-secondary">
+                                                            Mostrando {{ $alumnos_matriculados->firstItem() }} - {{ $alumnos_matriculados->lastItem() }} de
+                                                            {{ $alumnos_matriculados->total() }} registros
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
 
 
                         </div>

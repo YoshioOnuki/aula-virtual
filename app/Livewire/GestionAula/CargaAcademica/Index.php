@@ -3,14 +3,17 @@
 namespace App\Livewire\GestionAula\CargaAcademica;
 
 use App\Models\Ciclo;
+use App\Models\Curso;
 use App\Models\Facultad;
 use App\Models\GestionAula;
+use App\Models\Persona;
 use App\Models\PlanEstudio;
 use App\Models\Proceso;
 use App\Models\Programa;
 use App\Models\TipoPrograma;
 use App\Models\Usuario;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -23,8 +26,10 @@ class Index extends Component
 
     #[Url('mostrar')]
     public $mostrar_paginate = 8;
+    public $mostrar_paginate_alumnos = 10;
     #[Url(except: '', as: 'buscar')]
     public $search = '';
+    public $search_alumnos = '';
     #[Url(except: '', as: 'tipo-programa')]
     public $filtro_tipo_programa = ''; // Tipo de programa (Doctorado, Maestría, etc.)
     #[Url(except: '', as: 'facultad')]
@@ -54,8 +59,10 @@ class Index extends Component
     public $id_docente;
     #[Validate('nullable|array', as: 'alumnos')]
     public $alumnos_seleccionados;
+    public $id_gestion_aula;
 
     public $filtro_activo = false;
+    public $config_activo = false;
     public $estado_carga_modal = true;
 
     public $tipo_vista_curso = 'carga-academica';
@@ -68,6 +75,7 @@ class Index extends Component
 
     public function guardar_carga_academica()
     {
+        // dd($this->id_curso, $this->grupo_gestion_aula, $this->id_proceso, $this->id_docente, $this->alumnos_seleccionados);
         $this->validate([
             'id_curso' => 'required|integer',
             'grupo_gestion_aula' => 'required|max:1|regex:/^[a-zA-Z]+$/',
@@ -80,6 +88,55 @@ class Index extends Component
         {
             DB::beginTransaction();
 
+            if ($this->modo === 0) {
+                $gestion_aula = GestionAula::where('id_gestion_aula', $this->id_gestion_aula)->first();
+
+                $gestion_aula->grupo_gestion_aula = strtoupper($this->grupo_gestion_aula);
+                $gestion_aula->id_curso = $this->id_curso;
+                $gestion_aula->id_proceso = $this->id_proceso;
+                $gestion_aula->save();
+
+                if ($this->id_docente) {
+                    $gestion_aula_docente = $gestion_aula->gestionAulaDocente->first();
+                    if ($gestion_aula_docente) {
+                        $gestion_aula_docente->id_usuario = $this->id_docente;
+                        $gestion_aula_docente->save();
+                    } else {
+                        $gestion_aula->gestionAulaDocente()->create([
+                            'estado_gestion_aula_docente' => true,
+                            'id_usuario' => $this->id_docente,
+                        ]);
+                    }
+                }
+
+                // Validar si hay alumnos en gestión de aula-alumno
+                if ($gestion_aula->gestionAulaAlumno->isEmpty()) {
+                    foreach ($this->alumnos_seleccionados as $alumno) {
+                        $gestion_aula->gestionAulaAlumno()->create([
+                            'estado_gestion_aula_alumno' => true,
+                            'id_usuario' => $alumno,
+                        ]);
+                    }
+                } else {
+                    // Comparar los alumnos seleccionados con los alumnos matriculados, si hay diferencias, actualizar
+                    $comparar_alumnos = $gestion_aula->gestionAulaAlumno->pluck('id_usuario')->toArray();
+                    $diferencias_menos = array_diff($comparar_alumnos, $this->alumnos_seleccionados);
+                    $diferencias_mas = array_diff($this->alumnos_seleccionados, $comparar_alumnos);
+
+                    if ($diferencias_menos) {
+                        $gestion_aula->gestionAulaAlumno()->whereIn('id_usuario', $diferencias_menos)->delete();
+                    }
+                    if ($diferencias_mas) {
+                        foreach ($diferencias_mas as $alumno) {
+                            $gestion_aula->gestionAulaAlumno()->create([
+                                'estado_gestion_aula_alumno' => true,
+                                'id_usuario' => $alumno,
+                            ]);
+                        }
+                    }
+                }
+
+            } else {
                 $gestion_aula = GestionAula::create([
                     'grupo_gestion_aula' => strtoupper($this->grupo_gestion_aula),
                     'estado_gestion_aula' => true,
@@ -103,6 +160,10 @@ class Index extends Component
                         ]);
                     }
                 }
+            }
+
+            // $gestion_aula->load('gestionAulaAlumno', 'gestionAulaDocente');
+            // dd($gestion_aula->toArray(), $gestion_aula->gestionAulaDocente->toArray(), $gestion_aula->gestionAulaAlumno->toArray());
 
             DB::commit();
 
@@ -124,6 +185,38 @@ class Index extends Component
                 type: 'error'
             );
         }
+    }
+
+
+    #[On('abrir-modal-editar-carga-academica')]
+    public function abrir_modal_carga_academica($id_gestion_aula = null)
+    {
+        $this->limpiar_modal();
+        if ($id_gestion_aula) {
+            $this->id_gestion_aula = $id_gestion_aula;
+            $gestion_aula = GestionAula::with(['curso', 'gestionAulaDocente', 'gestionAulaAlumno'])
+                ->find($id_gestion_aula)->first();
+
+            $this->modo = 0;
+            $this->titulo_modal = 'Editar carga académica o curso a dictar';
+            $this->accion_modal = 'Editar';
+
+            $this->dispatch('set-id-curso', data: $gestion_aula->id_curso);
+            $this->dispatch('set-id-docente', data: $gestion_aula->gestionAulaDocente->first()->id_usuario ?? null);
+            $this->dispatch('set-alumnos-matriculados', data: $gestion_aula->gestionAulaAlumno->pluck('id_usuario')->toArray() ?? []);
+
+            $this->id_curso = $gestion_aula->id_curso;
+            $this->grupo_gestion_aula = $gestion_aula->grupo_gestion_aula;
+            $this->id_proceso = $gestion_aula->id_proceso;
+            $this->id_docente = $gestion_aula->gestionAulaDocente->first()->id_usuario ?? null;
+            $this->alumnos_seleccionados = $gestion_aula->gestionAulaAlumno->pluck('id_usuario')->toArray() ?? [];
+        } else {
+            $this->modo = 1;
+            $this->titulo_modal = 'Registrar carga académica o curso a dictar';
+            $this->accion_modal = 'Registrar';
+        }
+
+        $this->estado_carga_modal = false;
     }
 
 
@@ -153,6 +246,7 @@ class Index extends Component
             'id_proceso',
             'id_docente',
             'alumnos_seleccionados',
+            'id_gestion_aula'
         ]);
         $this->resetErrorBag();
     }
@@ -259,6 +353,29 @@ class Index extends Component
             ->estado(true)
             ->get();
 
+        if ($this->modo === 0) {
+            $alumnos_matriculados = Persona::with([
+                'usuario' => function ($query) {
+                    $query->with([
+                        'gestionAulaAlumno' => function ($query) {
+                            $query->where('id_gestion_aula', $this->id_gestion_aula);
+                        }
+                    ]);
+                }
+            ])
+                ->whereHas('usuario.gestionAulaAlumno', function ($query) {
+                    $query->where('id_gestion_aula', $this->id_gestion_aula)
+                        ->estado(true);
+                })
+                ->search($this->search_alumnos)
+                ->orderBy('nombres_persona', 'asc')
+                ->orderBy('apellido_paterno_persona', 'asc')
+                ->orderBy('apellido_materno_persona', 'asc')
+                ->paginate($this->mostrar_paginate_alumnos);
+        } else {
+            $alumnos_matriculados = [];
+        }
+
         return view('livewire.gestion-aula.carga-academica.index', compact([
             'cursos',
             'tipo_programas',
@@ -270,6 +387,7 @@ class Index extends Component
             'cursos_carga_academica',
             'docentes',
             'alumnos',
+            'alumnos_matriculados'
         ]));
     }
 }
