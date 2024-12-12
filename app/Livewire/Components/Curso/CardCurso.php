@@ -194,7 +194,7 @@ class CardCurso extends Component
             $gestion_aula_docente = GestionAulaDocente::where('id_gestion_aula', $gestion_aula->id_gestion_aula)
                 ->invitado(false)
                 ->first();
-            $this->usuario = $gestion_aula_docente->usuario;
+            $this->usuario = $gestion_aula_docente->usuario ?? null;
             $this->todos_cursos = true;
         }else{
             $this->usuario = $usuario;
@@ -203,11 +203,11 @@ class CardCurso extends Component
         $this->gestion_aula = GestionAula::with('curso')
             ->find($gestion_aula->id_gestion_aula);
 
-        if ($this->tipo_vista === 'cursos') {
+        if ($this->tipo_vista === 'cursos' && $this->usuario) {
             $this->gestion_aula_alumno = GestionAulaAlumno::where('id_usuario', $this->usuario->id_usuario)
                 ->gestionAula($gestion_aula->id_gestion_aula)
                 ->first();
-        } else {
+        } elseif ($this->tipo_vista === 'carga-academica' && $this->usuario) {
             $this->gestion_aula_docente = GestionAulaDocente::where('id_usuario', $this->usuario->id_usuario)
                 ->gestionAula($gestion_aula->id_gestion_aula)
                 ->first();

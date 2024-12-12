@@ -114,7 +114,9 @@
                         <div class="d-flex align-items-center mt-4">
                             <div class="w-full">
                                 <span class="badge bg-orange py-2 w-100 text-white">
-                                    {{ $gestion_aula_docente->es_invitado ? 'INVITADO - FINALIZADO' : 'FINALIZADO' }}
+                                    {{ $gestion_aula_docente ?
+                                        $gestion_aula_docente->es_invitado ? 'INVITADO - FINALIZADO' : 'FINALIZADO' :
+                                        'SIN DOCENTE' }}
                                 </span>
                             </div>
                         </div>
@@ -133,8 +135,12 @@
                     @elseif($todos_cursos)
                         <div class="d-flex align-items-center mt-4">
                             <div class="w-full">
-                                <span class="badge bg-orange-lt py-2 w-100">
-                                    EN CURSO
+                                <span class="badge bg-{{ $gestion_aula_docente ? 'orange' : 'yellow' }}-lt py-2 w-100">
+                                    @if ($gestion_aula_docente)
+                                        EN CURSO
+                                    @else
+                                        SIN DOCENTE
+                                    @endif
                                 </span>
                             </div>
                         </div>
