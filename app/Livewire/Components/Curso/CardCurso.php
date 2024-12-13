@@ -39,6 +39,12 @@ class CardCurso extends Component
     }
 
 
+    public function eliminar_carga_academica($id_gestion_aula)
+    {
+        $this->dispatch('abrir-modal-eliminar-carga-academica', ['id_gestion_aula' => $id_gestion_aula]);
+    }
+
+
     /**
      * Redirigir a la vista de detalle del curso
      */
