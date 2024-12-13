@@ -27,7 +27,12 @@
                     >
                         Editar
                     </a>
-                    <a class="dropdown-item cursor-pointer" wire:click="eliminar_carga_academica({{ $gestion_aula->id_gestion_aula }})">
+                    <a
+                        class="dropdown-item cursor-pointer"
+                        wire:click="eliminar_carga_academica({{ $gestion_aula->id_gestion_aula }})"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modal-eliminar-carga-academica"
+                    >
                         Eliminar
                     </a>
                 </div>

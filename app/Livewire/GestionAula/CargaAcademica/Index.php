@@ -45,7 +45,7 @@ class Index extends Component
     #[Url(except: '', as: 'en-curso')]
     public $filtro_en_curso = ''; // Filtro para mostrar cursos en curso o finalizados
 
-    // Variables para el modal
+    // Variables para el modal de registro y edición
     public $titulo_modal = 'Registrar carga académica o curso a dictar';
     public $accion_modal = 'Registrar';
     public $modo = 1; // 1: Registrar, 0: Editar
@@ -60,6 +60,12 @@ class Index extends Component
     #[Validate('nullable|array', as: 'alumnos')]
     public $alumnos_seleccionados;
     public $id_gestion_aula;
+
+    // Variables para el modal de eliminación
+    public $id_gestion_aula_eliminar;
+    public $curso_a_eliminar;
+    public $proceso_a_eliminar;
+    public $docente_a_eliminar;
 
     public $filtro_activo = false;
     public $config_activo = false;
@@ -188,6 +194,74 @@ class Index extends Component
     }
 
 
+    public function eliminar_carga_academica()
+    {
+        try
+        {
+            DB::beginTransaction();
+
+            $gestion_aula = GestionAula::with([
+                'asistencia',
+                'trabajoAcademico',
+                'linkClase',
+                'presentacion',
+                'recurso',
+                'foro',
+                'silabus',
+                'webgrafia',
+                'gestionAulaDocente',
+                'gestionAulaAlumno'
+            ])->where('id_gestion_aula', $this->id_gestion_aula_eliminar)->first();
+
+            // Validar si la gestión de aula tiene registros tablas de asistencia, trabajo académico, link de clases, prsentacion, recurso, foro, silabus, webgrafía
+            // Si tiene registros, no se puede eliminar
+            if ($gestion_aula->asistencia->isNotEmpty() ||
+                $gestion_aula->trabajoAcademico->isNotEmpty() ||
+                $gestion_aula->recurso->isNotEmpty() ||
+                $gestion_aula->foro->isNotEmpty() ||
+                $gestion_aula->webgrafia->isNotEmpty() ||
+                $gestion_aula->linkClase !== null ||
+                $gestion_aula->presentacion !== null ||
+                $gestion_aula->silabus !== null)
+            {
+                $this->dispatch(
+                    'toast-basico',
+                    mensaje: 'No se puede eliminar la carga académica, tiene registros asociados',
+                    type: 'error'
+                );
+                $this->cerrar_modal('#modal-eliminar-carga-academica');
+                $this->limpiar_modal_eliminar();
+                return;
+            }
+
+            // Eliminar gestión de aula y sus relaciones (docente y alumnos)
+            $gestion_aula->gestionAulaDocente()->delete();
+            $gestion_aula->gestionAulaAlumno()->delete();
+            $gestion_aula->delete();
+
+            DB::commit();
+
+            $this->cerrar_modal('#modal-eliminar-carga-academica');
+            $this->limpiar_modal_eliminar();
+
+            $this->dispatch(
+                'toast-basico',
+                mensaje: 'Carga académica eliminada correctamente',
+                type: 'success'
+            );
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            // dd($e);
+            $this->dispatch(
+                'toast-basico',
+                mensaje: 'Ha ocurrido un error al eliminar la carga académica',
+                type: 'error'
+            );
+        }
+    }
+
+
     #[On('abrir-modal-editar-carga-academica')]
     public function abrir_modal_carga_academica($id_gestion_aula = null)
     {
@@ -220,6 +294,21 @@ class Index extends Component
     }
 
 
+    #[On('abrir-modal-eliminar-carga-academica')]
+    public function abrir_modal_eliminar_carga_academica($id_gestion_aula)
+    {
+        $gestion_aula = GestionAula::with(['curso', 'proceso', 'gestionAulaDocente'])
+            ->find($id_gestion_aula)->first();
+
+        $this->id_gestion_aula_eliminar = $id_gestion_aula;
+        $this->curso_a_eliminar = $gestion_aula->curso->nombre_curso . ' - ' . $gestion_aula->grupo_gestion_aula;
+        $this->proceso_a_eliminar = $gestion_aula->proceso->nombre_proceso;
+        $this->docente_a_eliminar = $gestion_aula->gestionAulaDocente->first()->usuario->nombre_completo ?? 'Sin docente asignado';
+
+        $this->estado_carga_modal = false;
+    }
+
+
     /**
      * Cerrar modal
      */
@@ -233,12 +322,24 @@ class Index extends Component
     }
 
 
+    public function limpiar_modal_eliminar()
+    {
+        $this->reset([
+            'id_gestion_aula_eliminar',
+            'curso_a_eliminar',
+            'proceso_a_eliminar',
+            'docente_a_eliminar'
+        ]);
+        $this->resetErrorBag();
+        $this->estado_carga_modal = true;
+    }
+
+
     public function limpiar_modal()
     {
         $this->modo = 1;
         $this->titulo_modal = 'Registrar carga académica o curso a dictar';
         $this->accion_modal = 'Registrar';
-        $this->estado_carga_modal = true;
         $this->dispatch('set-reset');
         $this->reset([
             'id_curso',
@@ -249,6 +350,7 @@ class Index extends Component
             'id_gestion_aula'
         ]);
         $this->resetErrorBag();
+        $this->estado_carga_modal = true;
     }
 
 
