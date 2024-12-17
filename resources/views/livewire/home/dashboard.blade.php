@@ -235,12 +235,12 @@
                                     Páginas más visitadas
                                 </h3>
                                 <div class="ms-auto">
-                                    <a wire:click="estado_acceso_auditoria()"
-                                        class="text-decoration-none cursor-pointer hover-shadow-sm">
+                                    <a
+                                        class="text-decoration-none ">
                                         <span class="badge bg-{{ config('settings.acceso_auditoria') ? 'teal' : 'red' }}-lt status-{{ config('settings.acceso_auditoria') ? 'teal' : 'red' }} px-3 py-2 fs-4">
                                             <span class="status-dot status-dot-animated me-2"></span>
-                                            {{ config('settings.acceso_auditoria') ? 'Desactivar' : 'Activar' }}
-                                            auditoría de accesos
+                                            Auditoría de accesos
+                                            {{ config('settings.acceso_auditoria') ? 'activada' : 'desactivada' }}
                                         </span>
                                     </a>
                                 </div>
