@@ -15,8 +15,6 @@ use App\Livewire\GestionAula\Foro\Detalle as ForoDetalle;
 use App\Livewire\GestionAula\Foro\ForoFormulario;
 use App\Livewire\GestionAula\Foro\Index as ForoIndex;
 use App\Livewire\GestionAula\Foro\RespuestaFormulario;
-use App\Livewire\GestionAula\Manuales\Index as ManualesIndex;
-use App\Livewire\GestionAula\PlanEstudio\Index as PlanEstudioIndex;
 use App\Livewire\GestionAula\Recurso\Index as RecursoIndex;
 use App\Livewire\GestionAula\Silabus\Index as SilabusIndex;
 use App\Livewire\GestionAula\TrabajoAcademico\Detalle as TrabajoAcademicoDetalle;
@@ -101,7 +99,7 @@ Route::middleware(['throttle:100,1'])->group(function () {
         /* =============== GESTION DEL CURSO =============== */
         Route::prefix('gestion-curso')->group(function () {
             // Plan de estudio
-            Route::get('/plan-estudio', PlanEstudioIndex::class)
+            Route::get('/plan-estudio', HomeIndex::class)
                 ->name('gestion-curso.plan-estudio');
             // Ciclo
             Route::get('/ciclo', HomeIndex::class)
@@ -237,7 +235,7 @@ Route::middleware(['throttle:100,1'])->group(function () {
             ->name('calificaciones');
 
         // Manuales
-        Route::get('/manuales', ManualesIndex::class)
+        Route::get('/manuales', HomeIndex::class)
             ->name('manuales');
         /* ===============  =============== */
     });
