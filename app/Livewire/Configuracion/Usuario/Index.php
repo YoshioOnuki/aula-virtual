@@ -29,6 +29,8 @@ class Index extends Component
     public $correo_usuario;
     public $rol_usuario;
 
+    public $estado_carga_modal = true;
+
 
     /**
      * Método para abrir el modal de estado del usuario
@@ -50,11 +52,7 @@ class Index extends Component
             $this->accion_estado = 'Deshabilitar';
         }
 
-        $this->dispatch(
-            'modal',
-            modal: '#modal-estado-usuario',
-            action: 'show'
-        );
+        $this->estado_carga_modal = false;
 
     }
 
@@ -131,15 +129,8 @@ class Index extends Component
 
         // Reiniciar errores
         $this->resetErrorBag();
-    }
 
-
-    public function mount()
-    {
-        $this->titulo_modal = 'Estado de Usuario';
-        $this->accion_estado = 'Habilitar';
-        $this->modo = 1;
-
+        $this->estado_carga_modal = true;
     }
 
 

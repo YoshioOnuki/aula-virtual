@@ -484,7 +484,12 @@
                 </div>
                 <form autocomplete="off" wire:submit="eliminar_foro({{ $id_foro_a_eliminar }})" novalidate>
                     <div class="modal-status bg-red"></div>
-                    <div class="modal-body px-6">
+                    <div
+                        class="modal-body px-6"
+                        {{-- x-show="!$wire.estado_carga_modal"
+                        x-cloak
+                        x-collapse --}}
+                    >
                         <div class="row g-3">
                             <div class="col-lg-12 mt-2 text-center text-red">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"

@@ -216,9 +216,7 @@
                                 <label for="descripcion_orientaciones" class="form-label required">
                                     Orientaciones Generales
                                 </label>
-                                <div
-                                    wire:ignore
-                                >
+                                <div wire:ignore>
                                     <textarea
                                         class="form-control required"
                                         id="descripcion_orientaciones"

@@ -115,16 +115,24 @@
                                             </td>
                                             <td>
                                                 @if ($item->estado_usuario == 1)
-                                                    <a wire:click="abrir_modal_estado({{ $item->id_usuario }}, 0)"
-                                                        class="text-decoration-none cursor-pointer">
+                                                    <a
+                                                        wire:click="abrir_modal_estado({{ $item->id_usuario }}, 0)"
+                                                        class="text-decoration-none cursor-pointer"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#modal-estado-usuario"
+                                                    >
                                                         <span class="badge bg-teal-lt status-teal px-3 py-2 fs-4">
                                                             <span class="status-dot status-dot-animated me-2"></span>
                                                             Activo
                                                         </span>
                                                     </a>
                                                 @elseif ($item->estado_usuario == 0)
-                                                    <a wire:click="abrir_modal_estado({{ $item->id_usuario }}, 1)"
-                                                        class="text-decoration-none cursor-pointer">
+                                                    <a
+                                                        wire:click="abrir_modal_estado({{ $item->id_usuario }}, 1)"
+                                                        class="text-decoration-none cursor-pointer"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#modal-estado-usuario"
+                                                    >
                                                         <span class="badge bg-red-lt status-red px-3 py-2 fs-4">
                                                             <span class="status-dot status-dot-animated me-2"></span>
                                                             Inactivo
@@ -209,17 +217,24 @@
 
     <div wire:ignore.self class="modal fade" id="modal-estado-usuario" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
+            <div class="modal-content {{ $estado_carga_modal ? 'cursor-progress' : '' }}">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        {{ $titulo_modal }}
+                        {{ !$estado_carga_modal ? $titulo_modal : '***' }}
                     </h5>
                     <button type="button" class="btn-close icon-rotate-custom" data-bs-dismiss="modal"
                         aria-label="Close" wire:click="limpiar_modal"></button>
                 </div>
                 <form autocomplete="off" wire:submit="cambiar_estado">
-                    <div class="modal-status bg-{{ $modo === 1 ? 'teal' : 'red' }}"></div>
-                    <div class="modal-body px-6">
+                    @if (!$estado_carga_modal)
+                        <div class="modal-status bg-{{ $modo === 1 ? 'teal' : 'red' }}"></div>
+                    @endif
+                    <div
+                        class="modal-body px-6"
+                        x-show="!$wire.estado_carga_modal"
+                        x-cloak
+                        x-collapse
+                    >
                         <div class="row g-3">
                             <div class="col-lg-12 mt-2 text-center">
                                 @if ($modo === 1)
@@ -298,6 +313,13 @@
                         </div>
                     </div>
 
+                    <!-- Spinner de carga para que aparezca mientras se están cargando los datos -->
+                    <template x-if="$wire.estado_carga_modal">
+                        <div class="my-5 d-flex justify-content-center align-items-center">
+                            <div class="spinner-border text-primary" role="status"></div>
+                        </div>
+                    </template>
+
                     <div class="modal-footer">
                         <a href="#" class="btn btn-outline-secondary" data-bs-dismiss="modal"
                             wire:click="limpiar_modal">
@@ -313,9 +335,18 @@
                         </a>
 
                         <div class="ms-auto">
-                            <div wire:loading.remove>
-                                <button type="submit" class="btn btn-{{ $modo === 1 ? 'teal' : 'red' }}">
-                                    @if ($modo === 1)
+
+                            <button
+                                type="submit"
+                                class="btn
+                                {{ $estado_carga_modal ? 'btn-secondary' : ($modo === 1 ? 'btn-teal' : 'btn-red') }}
+                                w-100"
+                                wire:loading.attr="disabled"
+                                wire:target="cambiar_estado"
+                                {{ $estado_carga_modal ? 'disabled cursor-progress' : '' }}
+                            >
+                                <span wire:loading.remove wire:target="cambiar_estado">
+                                    @if ($modo === 1 && !$estado_carga_modal)
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2"
                                             stroke-linecap="round" stroke-linejoin="round"
@@ -326,7 +357,7 @@
                                             <path d="M12 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
                                             <path d="M8 11v-5a4 4 0 0 1 8 0" />
                                         </svg>
-                                    @else
+                                    @elseif ($modo === 0 && !$estado_carga_modal)
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="#ffffff"
                                             class="icon icon-tabler icons-tabler-filled icon-tabler-lock">
@@ -335,15 +366,14 @@
                                                 d="M12 2a5 5 0 0 1 5 5v3a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-10a3 3 0 0 1 -3 -3v-6a3 3 0 0 1 3 -3v-3a5 5 0 0 1 5 -5m0 12a2 2 0 0 0 -1.995 1.85l-.005 .15a2 2 0 1 0 2 -2m0 -10a3 3 0 0 0 -3 3v3h6v-3a3 3 0 0 0 -3 -3" />
                                         </svg>
                                     @endif
-                                    {{ $accion_estado }}
-                                </button>
-                            </div>
-                            <div wire:loading>
-                                <button type="submit" class="btn btn-{{ $modo === 1 ? 'teal' : 'red' }}" disabled>
+                                    {{ !$estado_carga_modal ? $accion_estado : '***' }}
+                                </span>
+                                <span wire:loading wire:target="cambiar_estado">
                                     <div class="spinner-border spinner-border-sm me-2" role="status"></div>
                                     Cargando
-                                </button>
-                            </div>
+                                </span>
+                            </button>
+
                         </div>
                     </div>
                 </form>

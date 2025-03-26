@@ -521,7 +521,7 @@
                                     </select>
                                 </div>
                                 @error('alumnos_seleccionados')
-                                    <div class="invalid-feedback">
+                                    <div class="text-danger fs-5 mt-1">
                                         {{ $message }}
                                     </div>
                                 @enderror
